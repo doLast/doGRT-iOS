@@ -1,0 +1,284 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2515ED3414C5817600FDCD6D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515ED3314C5817600FDCD6D /* UIKit.framework */; };
+		2515ED3614C5817600FDCD6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515ED3514C5817600FDCD6D /* Foundation.framework */; };
+		2515ED3814C5817600FDCD6D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515ED3714C5817600FDCD6D /* CoreGraphics.framework */; };
+		2515ED3A14C5817600FDCD6D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515ED3914C5817600FDCD6D /* CoreData.framework */; };
+		2515ED4014C5817600FDCD6D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2515ED3E14C5817600FDCD6D /* InfoPlist.strings */; };
+		2515ED4214C5817600FDCD6D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED4114C5817600FDCD6D /* main.m */; };
+		2515ED4614C5817600FDCD6D /* GRTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED4514C5817600FDCD6D /* GRTAppDelegate.m */; };
+		2515ED4914C5817600FDCD6D /* doGRT.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED4714C5817600FDCD6D /* doGRT.xcdatamodeld */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2515ED2F14C5817600FDCD6D /* doGRT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = doGRT.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2515ED3314C5817600FDCD6D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		2515ED3514C5817600FDCD6D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2515ED3714C5817600FDCD6D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2515ED3914C5817600FDCD6D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		2515ED3D14C5817600FDCD6D /* doGRT-Info.plist */ = {isa = PBXFileReference; path = "doGRT-Info.plist"; sourceTree = "<group>"; };
+		2515ED3F14C5817600FDCD6D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2515ED4114C5817600FDCD6D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2515ED4314C5817600FDCD6D /* doGRT-Prefix.pch */ = {isa = PBXFileReference; path = "doGRT-Prefix.pch"; sourceTree = "<group>"; };
+		2515ED4414C5817600FDCD6D /* GRTAppDelegate.h */ = {isa = PBXFileReference; path = GRTAppDelegate.h; sourceTree = "<group>"; };
+		2515ED4514C5817600FDCD6D /* GRTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GRTAppDelegate.m; sourceTree = "<group>"; };
+		2515ED4814C5817600FDCD6D /* doGRT.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = doGRT.xcdatamodel; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2515ED2C14C5817600FDCD6D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2515ED3414C5817600FDCD6D /* UIKit.framework in Frameworks */,
+				2515ED3614C5817600FDCD6D /* Foundation.framework in Frameworks */,
+				2515ED3814C5817600FDCD6D /* CoreGraphics.framework in Frameworks */,
+				2515ED3A14C5817600FDCD6D /* CoreData.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2515ED2414C5817500FDCD6D = {
+			isa = PBXGroup;
+			children = (
+				2515ED3B14C5817600FDCD6D /* doGRT */,
+				2515ED3214C5817600FDCD6D /* Frameworks */,
+				2515ED3014C5817600FDCD6D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2515ED3014C5817600FDCD6D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2515ED2F14C5817600FDCD6D /* doGRT.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2515ED3214C5817600FDCD6D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2515ED3314C5817600FDCD6D /* UIKit.framework */,
+				2515ED3514C5817600FDCD6D /* Foundation.framework */,
+				2515ED3714C5817600FDCD6D /* CoreGraphics.framework */,
+				2515ED3914C5817600FDCD6D /* CoreData.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2515ED3B14C5817600FDCD6D /* doGRT */ = {
+			isa = PBXGroup;
+			children = (
+				2515ED4414C5817600FDCD6D /* GRTAppDelegate.h */,
+				2515ED4514C5817600FDCD6D /* GRTAppDelegate.m */,
+				2515ED4714C5817600FDCD6D /* doGRT.xcdatamodeld */,
+				2515ED3C14C5817600FDCD6D /* Supporting Files */,
+			);
+			path = doGRT;
+			sourceTree = "<group>";
+		};
+		2515ED3C14C5817600FDCD6D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2515ED3D14C5817600FDCD6D /* doGRT-Info.plist */,
+				2515ED3E14C5817600FDCD6D /* InfoPlist.strings */,
+				2515ED4114C5817600FDCD6D /* main.m */,
+				2515ED4314C5817600FDCD6D /* doGRT-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2515ED2E14C5817600FDCD6D /* doGRT */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2515ED4C14C5817600FDCD6D /* Build configuration list for PBXNativeTarget "doGRT" */;
+			buildPhases = (
+				2515ED2B14C5817600FDCD6D /* Sources */,
+				2515ED2C14C5817600FDCD6D /* Frameworks */,
+				2515ED2D14C5817600FDCD6D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = doGRT;
+			productName = doGRT;
+			productReference = 2515ED2F14C5817600FDCD6D /* doGRT.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2515ED2614C5817500FDCD6D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 2515ED2914C5817500FDCD6D /* Build configuration list for PBXProject "doGRT" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2515ED2414C5817500FDCD6D;
+			productRefGroup = 2515ED3014C5817600FDCD6D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2515ED2E14C5817600FDCD6D /* doGRT */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2515ED2D14C5817600FDCD6D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2515ED4014C5817600FDCD6D /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2515ED2B14C5817600FDCD6D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2515ED4214C5817600FDCD6D /* main.m in Sources */,
+				2515ED4614C5817600FDCD6D /* GRTAppDelegate.m in Sources */,
+				2515ED4914C5817600FDCD6D /* doGRT.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2515ED3E14C5817600FDCD6D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2515ED3F14C5817600FDCD6D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2515ED4A14C5817600FDCD6D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		2515ED4B14C5817600FDCD6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2515ED4D14C5817600FDCD6D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "doGRT/doGRT-Prefix.pch";
+				INFOPLIST_FILE = "doGRT/doGRT-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		2515ED4E14C5817600FDCD6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "doGRT/doGRT-Prefix.pch";
+				INFOPLIST_FILE = "doGRT/doGRT-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2515ED2914C5817500FDCD6D /* Build configuration list for PBXProject "doGRT" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2515ED4A14C5817600FDCD6D /* Debug */,
+				2515ED4B14C5817600FDCD6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2515ED4C14C5817600FDCD6D /* Build configuration list for PBXNativeTarget "doGRT" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2515ED4D14C5817600FDCD6D /* Debug */,
+				2515ED4E14C5817600FDCD6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		2515ED4714C5817600FDCD6D /* doGRT.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				2515ED4814C5817600FDCD6D /* doGRT.xcdatamodel */,
+			);
+			currentVersion = 2515ED4814C5817600FDCD6D /* doGRT.xcdatamodel */;
+			path = doGRT.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 2515ED2614C5817500FDCD6D /* Project object */;
+}
