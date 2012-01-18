@@ -1,4 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="11C74" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="BusStop" representedClassName="BusStop" syncable="YES">
+        <attribute name="stopId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="stopLat" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="stopLon" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="stopName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Calendar" representedClassName="Calendar" syncable="YES">
+        <attribute name="endDate" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="friday" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="monday" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="saturday" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="serviceId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="startDate" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="sunday" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="thursday" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="tuesday" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="wednesday" optional="YES" attributeType="Boolean" syncable="YES"/>
+    </entity>
+    <entity name="Route" representedClassName="Route" syncable="YES">
+        <attribute name="routeId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="routeLongName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="routeShortName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="StopTime" representedClassName="StopTime" syncable="YES">
+        <attribute name="arrivalTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="departureTime" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="stopId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="stopSequence" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="tripId" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Trip" representedClassName="Trip" syncable="YES">
+        <attribute name="routeId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="serviceId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tripHeadsign" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tripId" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="UserChosenBusStop" syncable="YES">
+        <attribute name="addTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="stopId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="stopName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="UserChosenBusStop" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="BusStop" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="Trip" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="Route" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="StopTime" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="Calendar" positionX="160" positionY="192" width="128" height="195"/>
+    </elements>
 </model>

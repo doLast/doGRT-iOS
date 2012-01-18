@@ -13,8 +13,33 @@
 		2515ED3A14C5817600FDCD6D /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515ED3914C5817600FDCD6D /* CoreData.framework */; };
 		2515ED4014C5817600FDCD6D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2515ED3E14C5817600FDCD6D /* InfoPlist.strings */; };
 		2515ED4214C5817600FDCD6D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED4114C5817600FDCD6D /* main.m */; };
-		2515ED4614C5817600FDCD6D /* GRTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED4514C5817600FDCD6D /* GRTAppDelegate.m */; };
-		2515ED4914C5817600FDCD6D /* doGRT.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED4714C5817600FDCD6D /* doGRT.xcdatamodeld */; };
+		2515ED5F14C581CD00FDCD6D /* GRTAddingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5014C581CD00FDCD6D /* GRTAddingViewController.m */; };
+		2515ED6014C581CD00FDCD6D /* GRTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5214C581CD00FDCD6D /* GRTAppDelegate.m */; };
+		2515ED6114C581CD00FDCD6D /* GRTBusInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5414C581CD00FDCD6D /* GRTBusInfo.m */; };
+		2515ED6214C581CD00FDCD6D /* GRTCVSParsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5614C581CD00FDCD6D /* GRTCVSParsing.m */; };
+		2515ED6314C581CD00FDCD6D /* GRTFlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5814C581CD00FDCD6D /* GRTFlipsideViewController.m */; };
+		2515ED6414C581CD00FDCD6D /* GRTMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5A14C581CD00FDCD6D /* GRTMainViewController.m */; };
+		2515ED6514C581CD00FDCD6D /* GRTMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5C14C581CD00FDCD6D /* GRTMapAnnotation.m */; };
+		2515ED6614C581CD00FDCD6D /* GRTStartingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5E14C581CD00FDCD6D /* GRTStartingViewController.m */; };
+		2515ED6D14C5828700FDCD6D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2515ED6814C5828700FDCD6D /* Default.png */; };
+		2515ED6E14C5828700FDCD6D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2515ED6914C5828700FDCD6D /* Default@2x.png */; };
+		2515ED7114C5828700FDCD6D /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 2515ED6C14C5828700FDCD6D /* iTunesArtwork */; };
+		2515ED7414C582C300FDCD6D /* doGRT.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED7214C582C300FDCD6D /* doGRT.xcdatamodeld */; };
+		2515ED7A14C582E900FDCD6D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2515ED7614C582E900FDCD6D /* InfoPlist.strings */; };
+		2515ED7B14C582E900FDCD6D /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2515ED7814C582E900FDCD6D /* MainStoryboard.storyboard */; };
+		2515ED8C14C5830300FDCD6D /* doGRT.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 2515ED8014C5830300FDCD6D /* doGRT.sqlite */; };
+		2515ED8E14C5830300FDCD6D /* GRTTimeTableEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED8314C5830300FDCD6D /* GRTTimeTableEntry.m */; };
+		2515EDA114C5832500FDCD6D /* BusStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED9614C5832500FDCD6D /* BusStop.m */; };
+		2515EDA214C5832500FDCD6D /* Calendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED9814C5832500FDCD6D /* Calendar.m */; };
+		2515EDA314C5832500FDCD6D /* Route.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED9A14C5832500FDCD6D /* Route.m */; };
+		2515EDA414C5832500FDCD6D /* StopTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED9C14C5832500FDCD6D /* StopTime.m */; };
+		2515EDA514C5832500FDCD6D /* Trip.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED9E14C5832500FDCD6D /* Trip.m */; };
+		2515EDA614C5832500FDCD6D /* UserChosenBusStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515EDA014C5832500FDCD6D /* UserChosenBusStop.m */; };
+		2515EDA814C5838000FDCD6D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515EDA714C5838000FDCD6D /* CoreLocation.framework */; };
+		2515EDAA14C5838700FDCD6D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515EDA914C5838700FDCD6D /* MapKit.framework */; };
+		2515EDAC14C5839300FDCD6D /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515EDAB14C5839300FDCD6D /* MessageUI.framework */; };
+		2561EA0414C594F7003EA97D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2561EA0214C594F7003EA97D /* Icon.png */; };
+		2561EA0514C594F7003EA97D /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2561EA0314C594F7003EA97D /* Icon@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,13 +48,52 @@
 		2515ED3514C5817600FDCD6D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2515ED3714C5817600FDCD6D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2515ED3914C5817600FDCD6D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		2515ED3D14C5817600FDCD6D /* doGRT-Info.plist */ = {isa = PBXFileReference; path = "doGRT-Info.plist"; sourceTree = "<group>"; };
+		2515ED3D14C5817600FDCD6D /* doGRT-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "doGRT-Info.plist"; sourceTree = "<group>"; };
 		2515ED3F14C5817600FDCD6D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2515ED4114C5817600FDCD6D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		2515ED4314C5817600FDCD6D /* doGRT-Prefix.pch */ = {isa = PBXFileReference; path = "doGRT-Prefix.pch"; sourceTree = "<group>"; };
-		2515ED4414C5817600FDCD6D /* GRTAppDelegate.h */ = {isa = PBXFileReference; path = GRTAppDelegate.h; sourceTree = "<group>"; };
-		2515ED4514C5817600FDCD6D /* GRTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GRTAppDelegate.m; sourceTree = "<group>"; };
-		2515ED4814C5817600FDCD6D /* doGRT.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = doGRT.xcdatamodel; sourceTree = "<group>"; };
+		2515ED4314C5817600FDCD6D /* doGRT-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "doGRT-Prefix.pch"; sourceTree = "<group>"; };
+		2515ED4F14C581CD00FDCD6D /* GRTAddingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTAddingViewController.h; sourceTree = "<group>"; };
+		2515ED5014C581CD00FDCD6D /* GRTAddingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTAddingViewController.m; sourceTree = "<group>"; };
+		2515ED5114C581CD00FDCD6D /* GRTAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTAppDelegate.h; sourceTree = "<group>"; };
+		2515ED5214C581CD00FDCD6D /* GRTAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTAppDelegate.m; sourceTree = "<group>"; };
+		2515ED5314C581CD00FDCD6D /* GRTBusInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTBusInfo.h; sourceTree = "<group>"; };
+		2515ED5414C581CD00FDCD6D /* GRTBusInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTBusInfo.m; sourceTree = "<group>"; };
+		2515ED5514C581CD00FDCD6D /* GRTCVSParsing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTCVSParsing.h; sourceTree = "<group>"; };
+		2515ED5614C581CD00FDCD6D /* GRTCVSParsing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTCVSParsing.m; sourceTree = "<group>"; };
+		2515ED5714C581CD00FDCD6D /* GRTFlipsideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTFlipsideViewController.h; sourceTree = "<group>"; };
+		2515ED5814C581CD00FDCD6D /* GRTFlipsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTFlipsideViewController.m; sourceTree = "<group>"; };
+		2515ED5914C581CD00FDCD6D /* GRTMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTMainViewController.h; sourceTree = "<group>"; };
+		2515ED5A14C581CD00FDCD6D /* GRTMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTMainViewController.m; sourceTree = "<group>"; };
+		2515ED5B14C581CD00FDCD6D /* GRTMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTMapAnnotation.h; sourceTree = "<group>"; };
+		2515ED5C14C581CD00FDCD6D /* GRTMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTMapAnnotation.m; sourceTree = "<group>"; };
+		2515ED5D14C581CD00FDCD6D /* GRTStartingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStartingViewController.h; sourceTree = "<group>"; };
+		2515ED5E14C581CD00FDCD6D /* GRTStartingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStartingViewController.m; sourceTree = "<group>"; };
+		2515ED6814C5828700FDCD6D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		2515ED6914C5828700FDCD6D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		2515ED6C14C5828700FDCD6D /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
+		2515ED7314C582C300FDCD6D /* doGRT.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = doGRT.xcdatamodel; sourceTree = "<group>"; };
+		2515ED7714C582E900FDCD6D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
+		2515ED7914C582E900FDCD6D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
+		2515ED8014C5830300FDCD6D /* doGRT.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = doGRT.sqlite; sourceTree = "<group>"; };
+		2515ED8214C5830300FDCD6D /* GRTTimeTableEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTTimeTableEntry.h; sourceTree = "<group>"; };
+		2515ED8314C5830300FDCD6D /* GRTTimeTableEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTTimeTableEntry.m; sourceTree = "<group>"; };
+		2515ED9514C5832500FDCD6D /* BusStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusStop.h; sourceTree = "<group>"; };
+		2515ED9614C5832500FDCD6D /* BusStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusStop.m; sourceTree = "<group>"; };
+		2515ED9714C5832500FDCD6D /* Calendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calendar.h; sourceTree = "<group>"; };
+		2515ED9814C5832500FDCD6D /* Calendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Calendar.m; sourceTree = "<group>"; };
+		2515ED9914C5832500FDCD6D /* Route.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Route.h; sourceTree = "<group>"; };
+		2515ED9A14C5832500FDCD6D /* Route.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Route.m; sourceTree = "<group>"; };
+		2515ED9B14C5832500FDCD6D /* StopTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StopTime.h; sourceTree = "<group>"; };
+		2515ED9C14C5832500FDCD6D /* StopTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StopTime.m; sourceTree = "<group>"; };
+		2515ED9D14C5832500FDCD6D /* Trip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trip.h; sourceTree = "<group>"; };
+		2515ED9E14C5832500FDCD6D /* Trip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Trip.m; sourceTree = "<group>"; };
+		2515ED9F14C5832500FDCD6D /* UserChosenBusStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserChosenBusStop.h; sourceTree = "<group>"; };
+		2515EDA014C5832500FDCD6D /* UserChosenBusStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserChosenBusStop.m; sourceTree = "<group>"; };
+		2515EDA714C5838000FDCD6D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		2515EDA914C5838700FDCD6D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		2515EDAB14C5839300FDCD6D /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		2561EA0214C594F7003EA97D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		2561EA0314C594F7003EA97D /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +101,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2515EDAC14C5839300FDCD6D /* MessageUI.framework in Frameworks */,
+				2515EDAA14C5838700FDCD6D /* MapKit.framework in Frameworks */,
+				2515EDA814C5838000FDCD6D /* CoreLocation.framework in Frameworks */,
 				2515ED3414C5817600FDCD6D /* UIKit.framework in Frameworks */,
 				2515ED3614C5817600FDCD6D /* Foundation.framework in Frameworks */,
 				2515ED3814C5817600FDCD6D /* CoreGraphics.framework in Frameworks */,
@@ -67,6 +134,9 @@
 		2515ED3214C5817600FDCD6D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2515EDAB14C5839300FDCD6D /* MessageUI.framework */,
+				2515EDA914C5838700FDCD6D /* MapKit.framework */,
+				2515EDA714C5838000FDCD6D /* CoreLocation.framework */,
 				2515ED3314C5817600FDCD6D /* UIKit.framework */,
 				2515ED3514C5817600FDCD6D /* Foundation.framework */,
 				2515ED3714C5817600FDCD6D /* CoreGraphics.framework */,
@@ -78,9 +148,26 @@
 		2515ED3B14C5817600FDCD6D /* doGRT */ = {
 			isa = PBXGroup;
 			children = (
-				2515ED4414C5817600FDCD6D /* GRTAppDelegate.h */,
-				2515ED4514C5817600FDCD6D /* GRTAppDelegate.m */,
-				2515ED4714C5817600FDCD6D /* doGRT.xcdatamodeld */,
+				2515ED5114C581CD00FDCD6D /* GRTAppDelegate.h */,
+				2515ED5214C581CD00FDCD6D /* GRTAppDelegate.m */,
+				2515ED5314C581CD00FDCD6D /* GRTBusInfo.h */,
+				2515ED5414C581CD00FDCD6D /* GRTBusInfo.m */,
+				2515ED5B14C581CD00FDCD6D /* GRTMapAnnotation.h */,
+				2515ED5C14C581CD00FDCD6D /* GRTMapAnnotation.m */,
+				2515ED5514C581CD00FDCD6D /* GRTCVSParsing.h */,
+				2515ED5614C581CD00FDCD6D /* GRTCVSParsing.m */,
+				2515ED7214C582C300FDCD6D /* doGRT.xcdatamodeld */,
+				2515ED5D14C581CD00FDCD6D /* GRTStartingViewController.h */,
+				2515ED5E14C581CD00FDCD6D /* GRTStartingViewController.m */,
+				2515ED5914C581CD00FDCD6D /* GRTMainViewController.h */,
+				2515ED5A14C581CD00FDCD6D /* GRTMainViewController.m */,
+				2515ED5714C581CD00FDCD6D /* GRTFlipsideViewController.h */,
+				2515ED5814C581CD00FDCD6D /* GRTFlipsideViewController.m */,
+				2515ED4F14C581CD00FDCD6D /* GRTAddingViewController.h */,
+				2515ED5014C581CD00FDCD6D /* GRTAddingViewController.m */,
+				2515ED7C14C5830300FDCD6D /* Data */,
+				2515ED9414C5832500FDCD6D /* ManagedObject */,
+				2515ED6714C5828700FDCD6D /* Resources */,
 				2515ED3C14C5817600FDCD6D /* Supporting Files */,
 			);
 			path = doGRT;
@@ -95,6 +182,57 @@
 				2515ED4314C5817600FDCD6D /* doGRT-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		2515ED6714C5828700FDCD6D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2515ED7514C582E900FDCD6D /* en.lproj */,
+				2515ED6814C5828700FDCD6D /* Default.png */,
+				2515ED6914C5828700FDCD6D /* Default@2x.png */,
+				2561EA0214C594F7003EA97D /* Icon.png */,
+				2561EA0314C594F7003EA97D /* Icon@2x.png */,
+				2515ED6C14C5828700FDCD6D /* iTunesArtwork */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		2515ED7514C582E900FDCD6D /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				2515ED7614C582E900FDCD6D /* InfoPlist.strings */,
+				2515ED7814C582E900FDCD6D /* MainStoryboard.storyboard */,
+			);
+			path = en.lproj;
+			sourceTree = "<group>";
+		};
+		2515ED7C14C5830300FDCD6D /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2515ED8014C5830300FDCD6D /* doGRT.sqlite */,
+				2515ED8214C5830300FDCD6D /* GRTTimeTableEntry.h */,
+				2515ED8314C5830300FDCD6D /* GRTTimeTableEntry.m */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2515ED9414C5832500FDCD6D /* ManagedObject */ = {
+			isa = PBXGroup;
+			children = (
+				2515ED9514C5832500FDCD6D /* BusStop.h */,
+				2515ED9614C5832500FDCD6D /* BusStop.m */,
+				2515ED9714C5832500FDCD6D /* Calendar.h */,
+				2515ED9814C5832500FDCD6D /* Calendar.m */,
+				2515ED9914C5832500FDCD6D /* Route.h */,
+				2515ED9A14C5832500FDCD6D /* Route.m */,
+				2515ED9B14C5832500FDCD6D /* StopTime.h */,
+				2515ED9C14C5832500FDCD6D /* StopTime.m */,
+				2515ED9D14C5832500FDCD6D /* Trip.h */,
+				2515ED9E14C5832500FDCD6D /* Trip.m */,
+				2515ED9F14C5832500FDCD6D /* UserChosenBusStop.h */,
+				2515EDA014C5832500FDCD6D /* UserChosenBusStop.m */,
+			);
+			path = ManagedObject;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,6 +286,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				2515ED4014C5817600FDCD6D /* InfoPlist.strings in Resources */,
+				2515ED6D14C5828700FDCD6D /* Default.png in Resources */,
+				2515ED6E14C5828700FDCD6D /* Default@2x.png in Resources */,
+				2515ED7114C5828700FDCD6D /* iTunesArtwork in Resources */,
+				2515ED7A14C582E900FDCD6D /* InfoPlist.strings in Resources */,
+				2515ED7B14C582E900FDCD6D /* MainStoryboard.storyboard in Resources */,
+				2515ED8C14C5830300FDCD6D /* doGRT.sqlite in Resources */,
+				2561EA0414C594F7003EA97D /* Icon.png in Resources */,
+				2561EA0514C594F7003EA97D /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,8 +305,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				2515ED4214C5817600FDCD6D /* main.m in Sources */,
-				2515ED4614C5817600FDCD6D /* GRTAppDelegate.m in Sources */,
-				2515ED4914C5817600FDCD6D /* doGRT.xcdatamodeld in Sources */,
+				2515ED5F14C581CD00FDCD6D /* GRTAddingViewController.m in Sources */,
+				2515ED6014C581CD00FDCD6D /* GRTAppDelegate.m in Sources */,
+				2515ED6114C581CD00FDCD6D /* GRTBusInfo.m in Sources */,
+				2515ED6214C581CD00FDCD6D /* GRTCVSParsing.m in Sources */,
+				2515ED6314C581CD00FDCD6D /* GRTFlipsideViewController.m in Sources */,
+				2515ED6414C581CD00FDCD6D /* GRTMainViewController.m in Sources */,
+				2515ED6514C581CD00FDCD6D /* GRTMapAnnotation.m in Sources */,
+				2515ED6614C581CD00FDCD6D /* GRTStartingViewController.m in Sources */,
+				2515ED7414C582C300FDCD6D /* doGRT.xcdatamodeld in Sources */,
+				2515ED8E14C5830300FDCD6D /* GRTTimeTableEntry.m in Sources */,
+				2515EDA114C5832500FDCD6D /* BusStop.m in Sources */,
+				2515EDA214C5832500FDCD6D /* Calendar.m in Sources */,
+				2515EDA314C5832500FDCD6D /* Route.m in Sources */,
+				2515EDA414C5832500FDCD6D /* StopTime.m in Sources */,
+				2515EDA514C5832500FDCD6D /* Trip.m in Sources */,
+				2515EDA614C5832500FDCD6D /* UserChosenBusStop.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +335,22 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
+		2515ED7614C582E900FDCD6D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2515ED7714C582E900FDCD6D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		2515ED7814C582E900FDCD6D /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2515ED7914C582E900FDCD6D /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -184,6 +360,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -199,6 +376,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -209,7 +387,8 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -218,6 +397,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -226,10 +406,13 @@
 		2515ED4D14C5817600FDCD6D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "doGRT/doGRT-Prefix.pch";
 				INFOPLIST_FILE = "doGRT/doGRT-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -237,10 +420,13 @@
 		2515ED4E14C5817600FDCD6D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "doGRT/doGRT-Prefix.pch";
 				INFOPLIST_FILE = "doGRT/doGRT-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -264,16 +450,17 @@
 				2515ED4E14C5817600FDCD6D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		2515ED4714C5817600FDCD6D /* doGRT.xcdatamodeld */ = {
+		2515ED7214C582C300FDCD6D /* doGRT.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				2515ED4814C5817600FDCD6D /* doGRT.xcdatamodel */,
+				2515ED7314C582C300FDCD6D /* doGRT.xcdatamodel */,
 			);
-			currentVersion = 2515ED4814C5817600FDCD6D /* doGRT.xcdatamodel */;
+			currentVersion = 2515ED7314C582C300FDCD6D /* doGRT.xcdatamodel */;
 			path = doGRT.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

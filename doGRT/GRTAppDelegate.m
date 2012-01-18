@@ -2,7 +2,7 @@
 //  GRTAppDelegate.m
 //  doGRT
 //
-//  Created by Greg Wang on 12-1-17.
+//  Created by Greg Wang on 12-1-12.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
@@ -17,13 +17,21 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+		
+	[[NSUserDefaults standardUserDefaults] 
+	 registerDefaults:[NSDictionary 
+					   dictionaryWithObjectsAndKeys:
+						[NSNumber numberWithBool:YES], @"firstLaunch", 
+						[NSNumber numberWithInteger:201201], @"dataVersion", nil]];
+	
+	NSLog(@"App finish launching with firstLaunch: %d, dataVersion: %d", 
+		  [[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"], 
+		  [[NSUserDefaults standardUserDefaults] integerForKey:@"dataVersion"]);
+	
     return YES;
 }
-
+							
 - (void)applicationWillResignActive:(UIApplication *)application
 {
 	/*
@@ -128,6 +136,14 @@
     }
     
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"doGRT.sqlite"];
+	
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if(![fileManager fileExistsAtPath:[storeURL path]]){
+		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"doGRT" ofType:@"sqlite"];
+		if(defaultStorePath){
+			[fileManager copyItemAtPath:defaultStorePath toPath:[storeURL path] error:nil];
+		}
+	}
     
     NSError *error = nil;
     __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
