@@ -7,15 +7,22 @@
 //
 
 #import "GRTFlipsideViewController.h"
+#import "GRTMainViewController.h"
 #import "UserChosenBusStop.h"
+
+@interface GRTFlipsideViewController ()
+@property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (retain, nonatomic) NSMutableArray *busStopArray;
+@property (retain, nonatomic) NSNumber *chosenIndex;
+@end
 
 @implementation GRTFlipsideViewController
 
-@synthesize delegate = _delegate;
 @synthesize busStopCell = _busStopCell;
 
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize busStopArray = _busStopArray;
+@synthesize chosenIndex = _chosenIndex;
 
 - (void)awakeFromNib
 {
@@ -34,8 +41,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-	self.title = @"Choose One";
-//	self.navigationItem.leftBarButtonItem = self.editButtonItem;
+	self.title = @"Bus Stops";
+	self.navigationItem.leftBarButtonItem = self.editButtonItem;
 	
 	self.managedObjectContext = [(id) [[UIApplication sharedApplication] delegate]managedObjectContext];
 	
@@ -49,9 +56,8 @@
 	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
 	[request setSortDescriptors:sortDescriptors];
 	
-	NSError *error = nil;
 	NSMutableArray *mutableFetchResults = 
-	[[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+	[[self.managedObjectContext executeFetchRequest:request error:nil] mutableCopy];
 	if (mutableFetchResults == nil) {
 		// Handle the error.
 	}
@@ -146,11 +152,7 @@
     }
 }
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-	UserChosenBusStop *busStop = [self.busStopArray objectAtIndex:indexPath.row];
-	
-	[self.delegate flipsideViewControllerDidFinishWithBusStopNumber:busStop.stopId 
-													withBusStopName:busStop.stopName];
-	[self.navigationController popViewControllerAnimated:YES];
+	self.chosenIndex = [NSNumber numberWithInteger:indexPath.row];
 	return indexPath;
 }
 
@@ -183,11 +185,21 @@
 	[self dismissModalViewControllerAnimated:YES];
 }
 
+#pragma mark - Segue setting
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:@"showAdding"]) {
         [[segue destinationViewController] setDelegate:self];
     }
+	else if([[segue identifier] isEqualToString:@"showTimeTable"]) {
+		GRTMainViewController *vc = (GRTMainViewController *)[segue destinationViewController];
+		assert([vc isKindOfClass:[GRTMainViewController class]]);
+		UserChosenBusStop *busStop = (UserChosenBusStop *) [self.busStopArray objectAtIndex:[self.chosenIndex unsignedIntegerValue]];
+		
+		vc.busStopNumber = busStop.stopId;
+		vc.busStopName = busStop.stopName;
+	}
 }
 
 @end

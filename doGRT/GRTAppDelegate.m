@@ -137,13 +137,13 @@
     
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"doGRT.sqlite"];
 	
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	if(![fileManager fileExistsAtPath:[storeURL path]]){
-		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"doGRT" ofType:@"sqlite"];
-		if(defaultStorePath){
-			[fileManager copyItemAtPath:defaultStorePath toPath:[storeURL path] error:nil];
-		}
-	}
+//	NSFileManager *fileManager = [NSFileManager defaultManager];
+//	if(![fileManager fileExistsAtPath:[storeURL path]]){
+//		NSString *defaultStorePath = [[NSBundle mainBundle] pathForResource:@"doGRT" ofType:@"sqlite"];
+//		if(defaultStorePath){
+//			[fileManager copyItemAtPath:defaultStorePath toPath:[storeURL path] error:nil];
+//		}
+//	}
     
     NSError *error = nil;
     __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
@@ -172,8 +172,12 @@
          Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
          
          */
+		
+		[[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+		if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]){
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
+		}
     }    
     
     return __persistentStoreCoordinator;

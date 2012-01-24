@@ -9,21 +9,17 @@
 #import "GRTFlipsideViewController.h"
 #import <MessageUI/MessageUI.h>
 
-#import <CoreData/CoreData.h>
+@interface GRTMainViewController : UITableViewController <MFMessageComposeViewControllerDelegate>
 
-@interface GRTMainViewController : UITableViewController <GRTFlipsideViewControllerDelegate,  MFMessageComposeViewControllerDelegate>
-
-//@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+// outlets
 @property (assign, nonatomic) IBOutlet UIBarButtonItem *sendTextButton;
-@property (retain, nonatomic) NSNumber *busStopNumber;
-@property (retain, nonatomic) NSNumber *lastBusStopNumber;
-@property (retain, nonatomic) NSString *busStopName;
-//@property (retain, nonatomic) NSIndexPath *lastLeft;
-@property (assign, nonatomic) NSInteger curTime;
-
 @property (assign, nonatomic) IBOutlet UITableViewCell *timeTableCell;
-@property (retain, nonatomic) NSMutableArray *timeTableArray;
 
+// properties
+@property (retain, nonatomic) NSNumber *busStopNumber;
+@property (retain, nonatomic) NSString *busStopName;
+
+// actions
 - (IBAction)sendTextToGrtWhenClick:(UIBarButtonItem *)sender;
 
 @end

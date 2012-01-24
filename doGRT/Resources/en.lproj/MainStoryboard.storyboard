@@ -42,14 +42,9 @@
                         </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" id="bUz-wi-n2o">
-                        <barButtonItem key="leftBarButtonItem" title="Send Text" id="M3R-QF-rXs">
+                        <barButtonItem key="rightBarButtonItem" title="Send Text" id="M3R-QF-rXs">
                             <connections>
                                 <action selector="sendTextToGrtWhenClick:" destination="2" id="wcM-UQ-jqg"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="bookmarks" id="kiz-x4-mrm">
-                            <connections>
-                                <segue destination="caO-R6-JHW" kind="push" identifier="showAlternate" id="HgJ-KQ-mMw"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -58,7 +53,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="416" y="182"/>
+            <point key="canvasLocation" x="910" y="456"/>
         </scene>
         <scene sceneID="2ct-vu-ecf">
             <objects>
@@ -76,11 +71,11 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="busStopCell" textLabel="TF7-di-0G0" detailTextLabel="loX-zo-kOy" style="IBUITableViewCellStyleValue1" id="awb-Im-yoI">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="busStopCell" textLabel="TF7-di-0G0" detailTextLabel="loX-zo-kOy" style="IBUITableViewCellStyleValue1" id="awb-Im-yoI">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TF7-di-0G0">
@@ -91,7 +86,7 @@
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" text="Subtitle" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="loX-zo-kOy">
-                                            <rect key="frame" x="253" y="11" width="57" height="21"/>
+                                            <rect key="frame" x="233" y="11" width="57" height="21"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.2196078431372549" green="0.32941176470588235" blue="0.52941176470588236" alpha="1" colorSpace="calibratedRGB"/>
@@ -100,6 +95,9 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <connections>
+                                    <segue destination="2" kind="push" identifier="showTimeTable" id="e64-tc-o7y"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -116,7 +114,7 @@
                     </navigationItem>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="899" y="182"/>
+            <point key="canvasLocation" x="437" y="182"/>
         </scene>
         <scene sceneID="WRr-H3-fow">
             <objects>
@@ -146,7 +144,7 @@
                             </navigationBar>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="blackTranslucent" id="TeY-ra-mBO">
                                 <rect key="frame" x="0.0" y="44" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <barButtonItem style="plain" id="w1R-iy-sGY">
                                         <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Select a stop or enter the stop number here..." minimumFontSize="17" clearButtonMode="always" id="ROj-Ge-Hdp">
@@ -181,7 +179,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="1379" y="182"/>
+            <point key="canvasLocation" x="910" y="-142"/>
         </scene>
         <scene sceneID="rxa-ee-HSG">
             <objects>
@@ -209,7 +207,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="2" kind="relationship" relationship="rootViewController" id="J5u-8b-LsM"/>
+                        <segue destination="caO-R6-JHW" kind="relationship" relationship="rootViewController" id="pkS-vY-VZF"/>
                     </connections>
                 </navigationController>
             </objects>
@@ -237,7 +235,6 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTFlipsideViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="busStopCell" candidateClass="UITableViewCell"/>
-                <relationship kind="outlet" name="delegate"/>
             </relationships>
         </class>
         <class className="GRTMainViewController" superclassName="UITableViewController">

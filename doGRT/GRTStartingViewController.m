@@ -7,7 +7,7 @@
 //
 
 #import "GRTStartingViewController.h"
-//#import "GRTCVSParsing.h"
+#import "GRTBusInfo.h"
 
 @implementation GRTStartingViewController
 
@@ -55,6 +55,7 @@
 //		 setValue:[NSNumber numberWithInteger: 201201] forKey:@"dataVersion"];
 //		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
 //	}
+	[GRTBusInfo openDB];
 	[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
 	[self performSegueWithIdentifier:@"showMain" sender:self];
 }

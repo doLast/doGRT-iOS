@@ -11,17 +11,8 @@
 
 @class GRTFlipsideViewController;
 
-@protocol GRTFlipsideViewControllerDelegate
-- (void)flipsideViewControllerDidFinishWithBusStopNumber:(NSNumber *)busStopNumber 
-										 withBusStopName:(NSString *)busStopName;
-@end
-
 @interface GRTFlipsideViewController : UITableViewController <GRTAddingViewControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet id <GRTFlipsideViewControllerDelegate> delegate;
 @property (assign, nonatomic) IBOutlet UITableViewCell *busStopCell;
-
-@property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (retain, nonatomic) NSMutableArray *busStopArray;
 
 @end

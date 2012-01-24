@@ -8,7 +8,7 @@
 
 #import "GRTAddingViewController.h"
 #import "GRTBusInfo.h"
-#import "BusStop.h"
+#import "GRTBusStopEntry.h"
 #import "GRTMapAnnotation.h"
 
 @interface GRTAddingViewController()
@@ -29,8 +29,6 @@
 @synthesize stopLocating = _stopLocating;
 @synthesize lastCenter = _lastCenter;
 @synthesize lastSpan = _lastSpan;
-
-@synthesize managedObjectContext = _managedObjectContext;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -60,43 +58,39 @@
 }
 
 - (void)updateMapView:(MKMapView *)mapView inRegion:(MKCoordinateRegion)region{
+	// if didn't move, stop updating
 	if(self.lastCenter.latitude == mapView.region.center.latitude && 
 	   self.lastCenter.longitude == mapView.region.center.longitude &&
 	   self.lastSpan.latitudeDelta == mapView.region.span.latitudeDelta &&
 	   self.lastSpan.longitudeDelta == mapView.region.span.longitudeDelta){
-		[self.mapView setUserTrackingMode:MKUserTrackingModeNone];
 		return;
 	}
 	
+	// record the this region as last
 	self.lastCenter = mapView.region.center;
 	self.lastSpan = mapView.region.span;
 	
-//	NSNumber *latitudeStart = [NSNumber numberWithDouble:self.lastCenter.latitude - self.lastSpan.latitudeDelta/2.0];
-//    NSNumber *latitudeStop = [NSNumber numberWithDouble:self.lastCenter.latitude + self.lastSpan.latitudeDelta/2.0];
-//    NSNumber *longitudeStart = [NSNumber numberWithDouble:self.lastCenter.longitude - self.lastSpan.longitudeDelta/2.0];
-//    NSNumber *longitudeStop = [NSNumber numberWithDouble:self.lastCenter.longitude + self.lastSpan.longitudeDelta/2.0];
-	
-//	[mapView removeAnnotations:mapView.annotations];
-	NSMutableArray *toRemove = [NSMutableArray arrayWithCapacity:30];
+	// find out all need to remove annotations
+	NSMutableArray *toRemove = [NSMutableArray arrayWithCapacity:50];
 	for (id annotation in mapView.annotations){
-		if ([annotation isKindOfClass:[GRTMapAnnotation class]]){
-//			CLLocationCoordinate2D coordinate = ((GRTMapAnnotation *) annotation).coordinate;
-			
+		if ([annotation isKindOfClass:[GRTMapAnnotation class]]){			
 			[toRemove addObject:annotation];
 		}
 	}
 	[mapView removeAnnotations:toRemove];
 	
-	GRTBusInfo *busInfo = [[GRTBusInfo alloc] init];
+	// get bus stops in current region	
+	NSArray *busStops = [GRTBusInfo getBusStopsAt:self.lastCenter 
+										   inSpan:self.lastSpan withLimit:40];
 	
-	NSArray *busStops = [busInfo getBusStopsAt:self.lastCenter 
-										inSpan:self.lastSpan withLimit:20];
-	BusStop *busStop;
+	// add bus stops to the annotations
+	GRTBusStopEntry *busStop = nil;
+	GRTMapAnnotation *annotation = nil;
 	for(busStop in busStops){
 		CLLocationCoordinate2D coordinate = 
 		CLLocationCoordinate2DMake([busStop.stopLat doubleValue], 
 								   [busStop.stopLon doubleValue]);
-		GRTMapAnnotation *annotation = 
+		annotation = 
 			[[GRTMapAnnotation alloc] initAtCoordinate:coordinate 
 											 withTitle:busStop.stopName 
 										  withSubtitle:[NSString stringWithFormat:@"%@", busStop.stopId]];
@@ -119,7 +113,6 @@
 	self.navigationBar.title = @"Add a Bus Stop";
 	self.saveButton.enabled = NO;
 	
-	self.managedObjectContext = [(id) [[UIApplication sharedApplication] delegate]managedObjectContext];
 	[self updateMapView:self.mapView withLocation:CLLocationCoordinate2DMake(43.47273, -80.541218) andSpan:MKCoordinateSpanMake(0.05, 0.05)];
 }
 
@@ -177,8 +170,7 @@
 	}
 	
 	// Loop up stop number for name
-	GRTBusInfo *busInfo = [[GRTBusInfo alloc] init];
-	NSString *busStopName = [busInfo getBusStopNameById:busStopNumber];
+	NSString *busStopName = [GRTBusInfo getBusStopNameById:busStopNumber];
 	
 	// Check invalid stop number
 	if(busStopName == nil){

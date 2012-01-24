@@ -7,78 +7,78 @@
 //
 
 #import "GRTBusInfo.h"
-#import "BusStop.h"
-#import "Calendar.h"
-#import "Route.h"
-#import "StopTime.h"
-#import "Trip.h"
+
+#import "FMDatabase.h"
+#import "FMResultSet.h"
 
 #import "GRTTimeTableEntry.h"
+#import "GRTBusStopEntry.h"
 
 @implementation GRTBusInfo
 
-@synthesize managedObjectContext = _managedObjectContext;
-
-- (GRTBusInfo *) init {
-	self = [super init];
-	if(self){
-		self.managedObjectContext = [(id) [[UIApplication sharedApplication] delegate] managedObjectContext];
++ (FMDatabase *) openDB{
+	static FMDatabase *db;
+	
+	if(db == nil || ![db open]){
+		NSString *dbURL = [[NSBundle mainBundle] pathForResource:@"GRT_GTFS" ofType:@"sqlite"];
+		db = [FMDatabase databaseWithPath:dbURL];
+		if (![db open]) {
+			NSLog(@"Could not open db.");
+			abort();
+		}
 	}
-	return self;
+	
+	return db;
 }
 
-- (NSArray *) getBusStopsAt:(CLLocationCoordinate2D)coordinate 
++ (NSArray *) getBusStopsAt:(CLLocationCoordinate2D)coordinate 
 					 inSpan:(MKCoordinateSpan)span 
 				  withLimit:(NSUInteger)limit{
 	
-	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"BusStop"];
+	FMDatabase *db = [self openDB];
 	
 	NSNumber *latitudeStart = [NSNumber numberWithDouble:coordinate.latitude - span.latitudeDelta/2.0];
     NSNumber *latitudeStop = [NSNumber numberWithDouble:coordinate.latitude + span.latitudeDelta/2.0];
     NSNumber *longitudeStart = [NSNumber numberWithDouble:coordinate.longitude - span.longitudeDelta/2.0];
     NSNumber *longitudeStop = [NSNumber numberWithDouble:coordinate.longitude + span.longitudeDelta/2.0];
 	
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"stopLat>%@ AND stopLat<%@ AND stopLon>%@ AND stopLon<%@", latitudeStart, latitudeStop, longitudeStart, longitudeStop];
-    [request setPredicate:predicate];
+	FMResultSet *result = [db executeQuery:@"SELECT * FROM BusStop WHERE stopLat>? AND stopLat<? AND stopLon>? AND stopLon<? LIMIT ?", latitudeStart, latitudeStop, longitudeStart, longitudeStop, [NSNumber numberWithInt:limit]];
 	
-	[request setFetchLimit:limit];
-	
-	NSError *error = nil;
-	NSArray *fetchResults = [self.managedObjectContext executeFetchRequest:request 
-																	 error:&error];
-	if (fetchResults == nil) {
-		// Handle the error.
+	NSMutableArray *busStops = [[NSMutableArray alloc] init];
+	while ([result next]){
+		GRTBusStopEntry *newStop = [[GRTBusStopEntry alloc] init];
+		newStop.stopId = [NSNumber numberWithInt:[result intForColumn:@"stopId"]];
+		newStop.stopName = [result stringForColumn:@"stopName"];
+		newStop.stopLat = [NSNumber numberWithDouble:[result doubleForColumn:@"stopLat"]];
+		newStop.stopLon = [NSNumber numberWithDouble:[result doubleForColumn:@"stopLon"]];
+		
+		[busStops addObject:newStop];
 	}
-	
-	return  fetchResults;
-	
-	// return an array of BusStop
+		
+	return busStops;
+	// return an array of GRTBusStopEntry
 }
 
-- (NSString *) getBusStopNameById:(NSNumber *)stopId{
-	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"BusStop"];
++ (NSString *) getBusStopNameById:(NSNumber *)stopId{
 	
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"stopId=%@", stopId];
-	[request setPredicate:predicate];
+	FMDatabase *db = [self openDB];
 	
-	NSError *error = nil;
-	NSArray *fetchResults = [self.managedObjectContext executeFetchRequest:request 
-																	 error:&error];
+	FMResultSet *result = [db executeQuery:@"SELECT stopName FROM BusStop WHERE stopId=?", stopId];
 	
-	if (fetchResults == nil){
-		// Handle the error.
+	NSString *stopName = nil;
+	while ([result next]) {
+		//retrieve values for each record
+		stopName = [result stringForColumn:@"stopName"];
+		NSLog(@"Got stop name %@", stopName);
 	}
 	
-	if ([fetchResults count] > 1){
-		NSLog(@"Getting %d bus stop entries by stopId %@", [fetchResults count], stopId);
-	}
-	else if([fetchResults count] == 0){
-		return nil;
-	}
-	return [(BusStop *)[fetchResults objectAtIndex:0] stopName];
+	return stopName;
 }
 
-- (NSArray *) getCurrentTimeTableById:(NSNumber *)stopId{
++ (NSArray *) getCurrentTimeTableById:(NSNumber *)stopId{
+	
+//	NSLog(@"Getting current time table");
+	
 //	NSArray *yesterday = [self getTimeTableById:stopId forDate:[NSDate dateWithTimeIntervalSinceNow:-86400]];
 //	NSArray *today = [self getTimeTableById:stopId forDate:[NSDate date]];
 //	yesterday = [yesterday filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"departureTime>=230000"]];
@@ -93,9 +93,7 @@
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];
 	NSInteger cutTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
-	
-	NSLog(@"CurrentTime %d", cutTime);
-	
+		
 	NSArray *table = nil;
 	if(cutTime < 10000){
 		table = [self getTimeTableById:stopId forDate:[NSDate dateWithTimeIntervalSinceNow:-86400]];
@@ -121,7 +119,10 @@
 
 }
 
-- (NSArray *) getTimeTableById:(NSNumber *)stopId forDate:(NSDate *)date{
++ (NSArray *) getTimeTableById:(NSNumber *)stopId forDate:(NSDate *)date{
+	
+//	NSLog(@"Getting time table for date %@", date);
+	
 	// Get what day for the date
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *comps = [calendar components:NSWeekdayCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:date];
@@ -157,140 +158,39 @@
 	return [self getTimeTableById:stopId forDay:dayName andDate:dateName withLimit:0];
 }
 	
-- (NSArray *) getTimeTableById:(NSNumber *)stopId 
++ (NSArray *) getTimeTableById:(NSNumber *)stopId 
 						forDay:(NSString *)day 
 					   andDate:(NSUInteger)date
 					 withLimit:(NSUInteger)limit{
-	NSFetchRequest *request = nil;
-	NSArray *predArray = nil;
-	NSPredicate *predicate = nil;
-	NSError *error = nil;
-	NSLog(@"Getting time table by id:%@, limit:%d", stopId, limit);
 	
-	// Finding all trips that pass by the stop
-	request = [NSFetchRequest fetchRequestWithEntityName:@"StopTime"];
-	[request setPropertiesToFetch:[NSArray arrayWithObjects:@"tripId", nil]];
-	[request setReturnsDistinctResults:YES];
-	[request setPredicate:[NSPredicate predicateWithFormat:@"stopId=%@", stopId]];
-
-	NSArray *tripsPassByStop = [self.managedObjectContext executeFetchRequest:request 
-																		error:&error];
-	if (tripsPassByStop == nil) {
-		// Handle the error.
-	}
-	if ([tripsPassByStop count] == 0){
-		return nil;
-	}
-//	NSLog(@"Get trips that pass by the stop: ");
-//	for (StopTime *trip in tripsPassByStop) {
-//		NSLog(@"TripId: %@", trip.tripId);
-//	}
+	FMDatabase *db = [self openDB];
 	
-	// Find the services available on the day, get an array of Calendar
-	request = [NSFetchRequest fetchRequestWithEntityName:@"Calendar"];
-	predicate = [NSPredicate predicateWithFormat:@"%K=YES AND startDate<=%d AND endDate>=%d", day, date, date];
-	[request setPredicate:predicate];
-//	NSLog(@"Finding today available services predicate: %@", predicate);
+	NSString *query = [NSString stringWithFormat:@"SELECT R.routeId, T.tripHeadsign, S.arrivalTime, S.departureTime FROM Calendar as C, Trip as T, Route as R, StopTime as S WHERE C.%@=1 AND C.startDate<=? AND C.endDate>=? AND T.serviceId=C.serviceId AND S.stopId=? AND S.tripId=T.tripId AND R.routeId=T.routeId", day];
 	
-	NSArray *servicesAvailableToday = 
-		[self.managedObjectContext executeFetchRequest:request error:&error];
-	if (servicesAvailableToday == nil){
-		// Handle the error.
+	FMResultSet *result = 
+	[db executeQuery:query, [NSNumber numberWithInt:date], [NSNumber numberWithInt:date], stopId];
+	
+	if (result == nil){
+		NSLog(@"%@", [db lastErrorMessage]);
 		abort();
 	}
-	if([servicesAvailableToday count] == 0){
-		// No available service found
-		NSLog(@"No available service found");
-		return nil;
+	
+	NSMutableArray *timeTable = [[NSMutableArray alloc] initWithCapacity:100];
+	while ([result next]) {
+//		NSLog(@"Got next");
+		//retrieve values for each record
+		GRTTimeTableEntry *newEntry = [[GRTTimeTableEntry alloc] init];
+		newEntry.routeId = [NSNumber numberWithInt:[result intForColumn:@"routeId"]];
+		newEntry.tripHeadsign = [result stringForColumn:@"tripHeadsign"];
+		newEntry.arrivalTime = [NSNumber numberWithInt:[result intForColumn:@"arrivalTime"]];
+		newEntry.departureTime = [NSNumber numberWithInt:[result intForColumn:@"departureTime"]];
+		[timeTable addObject:newEntry];
+//		NSLog(@"Entry Constructed");
+//		NSLog(@"Route %@ %@ leaving at %@", newEntry.routeId, newEntry.tripHeadsign, newEntry.departureTime);
 	}
-//	NSLog(@"Services available at today are:");
-//	for (Calendar *cal in servicesAvailableToday) {
-//		NSLog(@"Service: %@", cal.serviceId);
-//	}
-	
-	// Construct trip predicate	
-	NSMutableArray *tripArray = [[NSMutableArray alloc] init];
-	StopTime *aTrip;
-	for (aTrip in tripsPassByStop) {
-		[tripArray addObject:aTrip.tripId];
-	}
-	
-	// Construct service predicate
-	NSMutableArray *serviceArray = [[NSMutableArray alloc] init];
-	Calendar *calendarEntry;
-	for (calendarEntry in servicesAvailableToday) {
-		[serviceArray addObject:calendarEntry.serviceId];
-	}
-	
-	// Find the valid trips
-	request = [NSFetchRequest fetchRequestWithEntityName:@"Trip"];
-	[request setReturnsDistinctResults:YES];
-	
-	NSPredicate *tripPred = [NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForKeyPath:@"tripId"] rightExpression:[NSExpression expressionForConstantValue:tripArray] modifier:NSDirectPredicateModifier type:NSInPredicateOperatorType options:0];
-	
-	NSPredicate *servicePred = [NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForKeyPath:@"serviceId"] rightExpression:[NSExpression expressionForConstantValue:serviceArray] modifier:NSDirectPredicateModifier type:NSInPredicateOperatorType options:0];
-	predArray = [NSArray arrayWithObjects:tripPred, servicePred, nil];
-	
-	predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
-	[request setPredicate:predicate];
-//	NSLog(@"Finding valid trips predicate:%@", predicate);
-	
-	NSArray *tripsAvailableToday = [self.managedObjectContext executeFetchRequest:request 
-																			error:&error];
-	if (tripsAvailableToday == nil) {
-		// Handle the error.
-	}
-	if ([tripsAvailableToday count] == 0){
-		return nil;
-	}
-	NSMutableDictionary *tripDict = [[NSMutableDictionary alloc] initWithCapacity:[tripsAvailableToday count]];
-	for (Trip *trip in tripsAvailableToday){
-		[tripDict setValue:trip forKey:trip.tripId];
-	}	
-//	NSLog(@"Get valid trips today by the stop: ");
-//	for (Trip *trip in tripsAvailableToday) {
-//		NSLog(@"TripId: %@", trip.tripId);
-//	}
-	
-	// Get the time table for today
-	request = [NSFetchRequest fetchRequestWithEntityName:@"StopTime"];
-	
-	[request setPropertiesToFetch:[NSArray arrayWithObjects:@"tripId", @"arrivalTime", @"departureTime", nil]];
-	[request setReturnsDistinctResults:YES];
-	
-//	NSPredicate *stopIdPredicate = [NSPredicate predicateWithFormat:@"stopId = %@ AND arrivalTime>%d", stopId, comps.hour * 10000 + comps.minute * 100 + comps.second - 1000];
-	NSPredicate *stopIdPredicate = [NSPredicate predicateWithFormat:@"stopId = %@", stopId];
-	NSPredicate *tripIdPredicate = [NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForKeyPath:@"tripId"] rightExpression:[NSExpression expressionForConstantValue:[tripDict allKeys]] modifier:NSDirectPredicateModifier type:NSInPredicateOperatorType options:0];
-	predArray = [NSArray arrayWithObjects:stopIdPredicate, tripIdPredicate, nil];
-	
-	predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predArray];
-	[request setPredicate:predicate];
-//	NSLog(@"Finding time table predicate:%@", predicate);
-	
-	if (limit != 0) [request setFetchLimit:limit];
-	
-	NSArray *timeTableResult = [self.managedObjectContext executeFetchRequest:request 
-																		error:&error];
-	if (timeTableResult == nil) {
-		// Handle the error.
-	}
-	if ([timeTableResult count] == 0){
-		return nil;
-	}
-	
-//	NSLog(@"Finish fetching time table, get %d items", [timeTableResult count]);
-	
-	NSMutableArray *timeTable = [[NSMutableArray alloc] initWithCapacity:[timeTableResult count]];
-	for (StopTime *time in timeTableResult){
-		Trip *trip = [tripDict objectForKey:time.tripId];
-		[timeTable addObject:[[GRTTimeTableEntry alloc] initWithRouteId:trip.routeId tripHeadsign:trip.tripHeadsign arrivalTime:time.arrivalTime departureTime:time.departureTime]];
-//		NSLog(@"timeTable item: %@, %@, %@, %@", trip.routeId, trip.tripHeadsign, time.arrivalTime, time.departureTime);
-	}
-	
+		
 	NSArray *sortedTimeTable = [timeTable sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"departureTime" ascending:YES]]];
 	
-//	NSLog(@"Finish sorting time table");
-	// return an array of GRTTimeTableEntry
 	return sortedTimeTable;
 }
 

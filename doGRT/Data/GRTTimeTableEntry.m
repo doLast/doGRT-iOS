@@ -16,16 +16,16 @@
 @synthesize arrivalTime = _arrivalTime;
 @synthesize departureTime = _departureTime;
 
-- (GRTTimeTableEntry *) initWithRouteId:(NSString *)routeId 
-						   tripHeadsign:(NSString *)tripHeadsign 
-							arrivalTime:(NSNumber *)arrivalTime 
-						  departureTime:(NSNumber *)departureTime{
-	self = [super init];
-	self.routeId = routeId;
-	self.tripHeadsign = tripHeadsign;
-	self.arrivalTime = arrivalTime;
-	self.departureTime = departureTime;
-	return self;
-}
+//- (GRTTimeTableEntry *) initWithRouteId:(NSNumber *)routeId 
+//						   tripHeadsign:(NSString *)tripHeadsign 
+//							arrivalTime:(NSNumber *)arrivalTime 
+//						  departureTime:(NSNumber *)departureTime{
+//	self = [super init];
+//	self.routeId = routeId;
+//	self.tripHeadsign = tripHeadsign;
+//	self.arrivalTime = arrivalTime;
+//	self.departureTime = departureTime;
+//	return self;
+//}
 
 @end

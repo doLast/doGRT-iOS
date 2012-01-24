@@ -10,16 +10,16 @@
 
 @interface GRTTimeTableEntry : NSObject
 
-@property (retain, nonatomic) NSString *routeId;
+@property (retain, nonatomic) NSNumber *routeId;
 //@property (retain, nonatomic) NSString *routeLongName;
 //@property (retain, nonatomic) NSString *routeShortName;
 @property (retain, nonatomic) NSString *tripHeadsign;
 @property (retain, nonatomic) NSNumber *arrivalTime;
 @property (retain, nonatomic) NSNumber *departureTime;
 
-- (GRTTimeTableEntry *) initWithRouteId:(NSString *)routeId 
-						   tripHeadsign:(NSString *)tripHeadsign 
-							arrivalTime:(NSNumber *)arrivalTime 
-						  departureTime:(NSNumber *)departureTime;
+//- (GRTTimeTableEntry *) initWithRouteId:(NSString *)routeId 
+//						   tripHeadsign:(NSString *)tripHeadsign 
+//							arrivalTime:(NSNumber *)arrivalTime 
+//						  departureTime:(NSNumber *)departureTime;
 
 @end

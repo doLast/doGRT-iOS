@@ -25,9 +25,6 @@
 @property (assign, nonatomic) IBOutlet UITextField *busStopNumberText;
 @property (assign, nonatomic) IBOutlet MKMapView *mapView;
 
-//@property (assign, nonatomic) MKCoordinateRegion mapRegion;
-@property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
-
 // Actions
 - (IBAction)valueChanged:(UITextField *)sender;
 - (IBAction)cancel:(UIBarButtonItem *)sender;

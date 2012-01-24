@@ -12,22 +12,30 @@
 
 @interface GRTMainViewController ()
 @property (retain, nonatomic) MFMessageComposeViewController *messageComposeViewController;
+@property (assign, nonatomic) NSInteger curTime;
+@property (retain, nonatomic) NSNumber *lastBusStopNumber;
+@property (retain, nonatomic) NSMutableArray *timeTableArray;
+
 @end
+
 
 @implementation GRTMainViewController
 
-//@synthesize managedObjectContext = _managedObjectContext;
+// outlets
 @synthesize sendTextButton = _sendTextButton;
-@synthesize busStopNumber = _busStopNumber;
-@synthesize lastBusStopNumber = _lastBusStopNumber;
-@synthesize busStopName = _busStopName;
-//@synthesize lastLeft = _lastLeft;
-@synthesize curTime = _curTime;
-
-@synthesize messageComposeViewController = _messageComposeViewController;
-
 @synthesize timeTableCell = _timeTableCell;
+
+// properties
+@synthesize busStopNumber = _busStopNumber;
+@synthesize busStopName = _busStopName;
+
+// private properties
+@synthesize messageComposeViewController = _messageComposeViewController;
+@synthesize curTime = _curTime;
+@synthesize lastBusStopNumber = _lastBusStopNumber;
 @synthesize timeTableArray = _timeTableArray;
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -62,24 +70,22 @@
 }
 
 - (void)updateTimeTable{
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];	
-	self.curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
 	if(self.lastBusStopNumber == nil || ![self.busStopNumber isEqualToNumber:self.lastBusStopNumber]){
+		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];	
+		self.curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
+	
 		self.timeTableArray = [[NSMutableArray alloc] init];
 		[self.tableView reloadData];
-		GRTBusInfo *busInfo = [[GRTBusInfo alloc] init];
-		self.timeTableArray = [[busInfo getCurrentTimeTableById:self.busStopNumber] mutableCopy];
+		self.timeTableArray = [[GRTBusInfo getCurrentTimeTableById:self.busStopNumber] mutableCopy];
 		[self.tableView reloadData];
-		
-//		[self.tableView scrollToRowAtIndexPath:self.lastLeft atScrollPosition:UITableViewScrollPositionTop animated:YES];
 	}
 	self.lastBusStopNumber = self.busStopNumber;
 }
 
 - (BOOL)updateView{
 	if([self.busStopNumber integerValue] == 0){
-		[self performSegueWithIdentifier:@"showAlternate" sender:self];
+		[self.navigationController popViewControllerAnimated:YES];
 		return NO;
 	}
 	return YES;
@@ -91,10 +97,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-	self.busStopNumber = [NSNumber numberWithInteger:0];
-	
-	
-//	The view should be update after appear, in order to let user choose a stop
 }
 
 - (void)viewDidUnload
@@ -133,22 +135,6 @@
 {
     // Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-#pragma mark - Flipside View
-
-- (void)flipsideViewControllerDidFinishWithBusStopNumber:(NSNumber *)busStopNumber 
-										 withBusStopName:(NSString *)busStopName
-{
-	self.busStopNumber = busStopNumber;
-	self.busStopName = busStopName;
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([[segue identifier] isEqualToString:@"showAlternate"]) {
-        [[segue destinationViewController] setDelegate:self];
-    }
 }
 
 #pragma mark - Sending Text View
@@ -198,7 +184,6 @@
 	if(time < self.curTime){
 		cell.textLabel.textColor = [UIColor colorWithRed:255 green:0 blue:0 alpha:1];
 		leave = @"Left";
-//		self.lastLeft = indexPath;
 	}
 	else {
 		cell.textLabel.textColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
