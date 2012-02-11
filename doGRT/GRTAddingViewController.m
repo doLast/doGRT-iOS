@@ -9,7 +9,7 @@
 #import "GRTAddingViewController.h"
 #import "GRTBusInfo.h"
 #import "GRTBusStopEntry.h"
-#import "GRTMapAnnotation.h"
+#import "GRTStopRoutesViewController.h"
 
 @interface GRTAddingViewController()
 @property (assign, nonatomic) BOOL stopLocating;
@@ -30,14 +30,6 @@
 @synthesize lastCenter = _lastCenter;
 @synthesize lastSpan = _lastSpan;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -69,35 +61,27 @@
 	// record the this region as last
 	self.lastCenter = mapView.region.center;
 	self.lastSpan = mapView.region.span;
-	
-	// find out all need to remove annotations
-	NSMutableArray *toRemove = [NSMutableArray arrayWithCapacity:50];
-	for (id annotation in mapView.annotations){
-		if ([annotation isKindOfClass:[GRTMapAnnotation class]]){			
-			[toRemove addObject:annotation];
-		}
-	}
-	[mapView removeAnnotations:toRemove];
-	
-	// get bus stops in current region	
-	NSArray *busStops = [GRTBusInfo getBusStopsAt:self.lastCenter 
-										   inSpan:self.lastSpan withLimit:40];
-	
-	// add bus stops to the annotations
-	GRTBusStopEntry *busStop = nil;
-	GRTMapAnnotation *annotation = nil;
-	for(busStop in busStops){
-		CLLocationCoordinate2D coordinate = 
-		CLLocationCoordinate2DMake([busStop.stopLat doubleValue], 
-								   [busStop.stopLon doubleValue]);
-		annotation = 
-			[[GRTMapAnnotation alloc] initAtCoordinate:coordinate 
-											 withTitle:busStop.stopName 
-										  withSubtitle:[NSString stringWithFormat:@"%@", busStop.stopId]];
 		
-		[mapView addAnnotation:annotation];
-	}
+	// find out all need to remove annotations	
+	NSSet *visibleAnnotations = [mapView annotationsInMapRect:[mapView visibleMapRect]];
+	NSSet *allAnnotations = [NSSet setWithArray:[mapView annotations]];
+	NSMutableSet *nonVisibleAnnotations = [NSMutableSet setWithSet:allAnnotations];
+	[nonVisibleAnnotations minusSet:visibleAnnotations];
+	[nonVisibleAnnotations filterUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTBusStopEntry class]]];
+	[mapView removeAnnotations:[nonVisibleAnnotations allObjects]];
+	
+	// if not too many annotations currently on the map
+	if([[mapView annotations] count] < 50){
+		// get bus stops in current region	
+		NSArray *newStops = [GRTBusInfo getBusStopsAt:self.lastCenter 
+											   inSpan:self.lastSpan
+											withLimit:50];
 
+		NSMutableSet *newAnnotations = [NSMutableSet setWithArray:newStops];
+		[newAnnotations minusSet:visibleAnnotations];
+		
+		[mapView addAnnotations:[newAnnotations allObjects]];
+	}
 }
 
 - (void)updateView{
@@ -113,7 +97,9 @@
 	self.navigationBar.title = @"Add a Bus Stop";
 	self.saveButton.enabled = NO;
 	
-	[self updateMapView:self.mapView withLocation:CLLocationCoordinate2DMake(43.47273, -80.541218) andSpan:MKCoordinateSpanMake(0.05, 0.05)];
+	[self updateMapView:self.mapView withLocation:CLLocationCoordinate2DMake(43.47273, -80.541218) andSpan:MKCoordinateSpanMake(0.02, 0.02)];
+	
+	self.stopLocating = NO;
 }
 
 - (void)viewDidUnload
@@ -126,12 +112,20 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-	[self.mapView setUserTrackingMode:MKUserTrackingModeFollow];
+	if(!self.stopLocating) {
+		self.mapView.userTrackingMode = MKUserTrackingModeFollow;
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[super viewDidDisappear:animated];
+	self.stopLocating = YES;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -170,7 +164,7 @@
 	}
 	
 	// Loop up stop number for name
-	NSString *busStopName = [GRTBusInfo getBusStopNameById:busStopNumber];
+	NSString *busStopName = [GRTBusInfo getBusStopNameByStop:busStopNumber];
 	
 	// Check invalid stop number
 	if(busStopName == nil){
@@ -188,6 +182,12 @@
 //	[self updateMapView:mapView 
 //		   withLocation:userLocation.location.coordinate
 //				andSpan:MKCoordinateSpanMake(0.005, 0.005)];
+//	NSLog(@"Location Updated");
+//	if(userLocation.updating){
+//		self.mapView.userTrackingMode = MKUserTrackingModeNone;
+//		self.stopLocating = YES;
+//		NSLog(@"Stop following");
+//	}
 //}
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
@@ -197,6 +197,29 @@
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
 	self.busStopNumberText.text = view.annotation.subtitle;
 	[self valueChanged:self.busStopNumberText];
+	self.mapView.userTrackingMode = MKUserTrackingModeNone;
+}
+
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views{
+	for (MKAnnotationView *view in views) {
+		if([view.annotation isKindOfClass:[GRTBusStopEntry class]]) view.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+	}
+}
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control{
+	[self performSegueWithIdentifier:@"showStopRoutes" sender:view];
+}
+
+#pragma mark - Segue setting
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([[segue identifier] isEqualToString:@"showStopRoutes"]) {
+		GRTStopRoutesViewController *vc = (GRTStopRoutesViewController *)[segue destinationViewController];
+		assert([vc isKindOfClass:[GRTStopRoutesViewController class]]);
+		MKAnnotationView *view = (MKAnnotationView *)sender;
+		vc.busStopNumber = [NSNumber numberWithInteger:[view.annotation.subtitle integerValue]];
+	}
 }
 
 

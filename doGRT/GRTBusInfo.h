@@ -14,16 +14,28 @@
 
 @interface GRTBusInfo : NSObject
 
+/* Class Methods */
 + (FMDatabase *) openDB;
 + (NSArray *) getBusStopsAt:(CLLocationCoordinate2D)coordinate 
 					 inSpan:(MKCoordinateSpan)span 
 				  withLimit:(NSUInteger)limit;
-+ (NSString *) getBusStopNameById:(NSNumber *)stopId;
-+ (NSArray *) getCurrentTimeTableById:(NSNumber *)stopId;
-+ (NSArray *) getTimeTableById:(NSNumber *)stopId forDate:(NSDate *)date;
-+ (NSArray *) getTimeTableById:(NSNumber *)stopId 
-						forDay:(NSString *)day 
-					   andDate:(NSUInteger)date
-					 withLimit:(NSUInteger)limit;
++ (NSString *) getBusStopNameByStop:(NSNumber *)stopId;
+
++ (NSArray *) getTripsByStop:(NSNumber *)stopId;
++ (NSArray *) getRoutesByStop:(NSNumber *)stopId;
+
+/* Instance Methods */
+- (GRTBusInfo *)initByStop:(NSNumber *)stopId;
+
+//- (NSArray *) getCurrentRoutes;
+- (NSArray *) getCurrentTimeTable;
+- (NSArray *) getCurrentTimeTableByRoute:(NSNumber *)routeId;
+
+//- (NSArray *) getTimeTableById:(NSNumber *)stopId 
+//					   forDate:(NSDate *)date;
+//- (NSArray *) getTimeTableById:(NSNumber *)stopId 
+//					   byRoute:(NSNumber *)routeId
+//					   forDate:(NSDate *)date;
+
 
 @end

@@ -12,7 +12,34 @@
 
 @synthesize stopId = _stopId;
 @synthesize stopName = _stopName;
-@synthesize stopLat = _stopLat;
-@synthesize stopLon = _stopLon;
+@synthesize coordinate = _coordinate;
+
+- (NSString *) title {
+	return _stopName;
+}
+
+- (NSString *) subtitle {
+	return [NSString stringWithFormat:@"%@", _stopId];
+}
+
+- (NSNumber *) stopLat {
+	return [NSNumber numberWithDouble:_coordinate.latitude];
+}
+
+- (NSNumber *) stopLon {
+	return [NSNumber numberWithDouble:_coordinate.longitude];
+}
+
+- (GRTBusStopEntry *) initAtCoordinate:(CLLocationCoordinate2D)coordinate
+							withStopId:(NSNumber *)stopId 
+						  withStopName:(NSString *)stopName{
+	self = [super init];
+	if(self != nil){
+		_coordinate = coordinate;
+		_stopId = stopId;
+		_stopName = stopName;
+	}
+	return self;
+}
 
 @end

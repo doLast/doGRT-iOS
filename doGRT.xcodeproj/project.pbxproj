@@ -16,9 +16,8 @@
 		2515ED5F14C581CD00FDCD6D /* GRTAddingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5014C581CD00FDCD6D /* GRTAddingViewController.m */; };
 		2515ED6014C581CD00FDCD6D /* GRTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5214C581CD00FDCD6D /* GRTAppDelegate.m */; };
 		2515ED6114C581CD00FDCD6D /* GRTBusInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5414C581CD00FDCD6D /* GRTBusInfo.m */; };
-		2515ED6314C581CD00FDCD6D /* GRTFlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5814C581CD00FDCD6D /* GRTFlipsideViewController.m */; };
+		2515ED6314C581CD00FDCD6D /* GRTStopListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5814C581CD00FDCD6D /* GRTStopListViewController.m */; };
 		2515ED6414C581CD00FDCD6D /* GRTMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5A14C581CD00FDCD6D /* GRTMainViewController.m */; };
-		2515ED6514C581CD00FDCD6D /* GRTMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5C14C581CD00FDCD6D /* GRTMapAnnotation.m */; };
 		2515ED6614C581CD00FDCD6D /* GRTStartingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2515ED5E14C581CD00FDCD6D /* GRTStartingViewController.m */; };
 		2515ED6D14C5828700FDCD6D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2515ED6814C5828700FDCD6D /* Default.png */; };
 		2515ED6E14C5828700FDCD6D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2515ED6914C5828700FDCD6D /* Default@2x.png */; };
@@ -33,12 +32,15 @@
 		2515EDAC14C5839300FDCD6D /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515EDAB14C5839300FDCD6D /* MessageUI.framework */; };
 		2561EA0414C594F7003EA97D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2561EA0214C594F7003EA97D /* Icon.png */; };
 		2561EA0514C594F7003EA97D /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2561EA0314C594F7003EA97D /* Icon@2x.png */; };
+		259CD1FD14E56E0A00717D37 /* GRTStopRoutesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 259CD1FB14E56E0900717D37 /* GRTStopRoutesViewController.m */; };
 		25EAB18914CD770D004A9DEC /* GRT_GTFS.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 25EAB18814CD770D004A9DEC /* GRT_GTFS.sqlite */; };
 		25EAB19214CD77E7004A9DEC /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EAB18D14CD77E7004A9DEC /* FMDatabase.m */; settings = {COMPILER_FLAGS = " -fno-objc-arc"; }; };
 		25EAB19314CD77E7004A9DEC /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EAB18F14CD77E7004A9DEC /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = " -fno-objc-arc"; }; };
 		25EAB19414CD77E7004A9DEC /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EAB19114CD77E7004A9DEC /* FMResultSet.m */; settings = {COMPILER_FLAGS = " -fno-objc-arc"; }; };
 		25EAB19614CD783F004A9DEC /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 25EAB19514CD783F004A9DEC /* libsqlite3.dylib */; };
 		25EAB19D14CD82B1004A9DEC /* GRTBusStopEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EAB19C14CD82B1004A9DEC /* GRTBusStopEntry.m */; };
+		25F18A9C14DBDC2E008B1A31 /* GRTTripEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F18A9B14DBDC2E008B1A31 /* GRTTripEntry.m */; };
+		25F18AA014DC1A40008B1A31 /* GRTRouteTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F18A9E14DC1A40008B1A31 /* GRTRouteTimeViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,12 +59,10 @@
 		2515ED5214C581CD00FDCD6D /* GRTAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTAppDelegate.m; sourceTree = "<group>"; };
 		2515ED5314C581CD00FDCD6D /* GRTBusInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTBusInfo.h; sourceTree = "<group>"; };
 		2515ED5414C581CD00FDCD6D /* GRTBusInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTBusInfo.m; sourceTree = "<group>"; };
-		2515ED5714C581CD00FDCD6D /* GRTFlipsideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTFlipsideViewController.h; sourceTree = "<group>"; };
-		2515ED5814C581CD00FDCD6D /* GRTFlipsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTFlipsideViewController.m; sourceTree = "<group>"; };
+		2515ED5714C581CD00FDCD6D /* GRTStopListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopListViewController.h; sourceTree = "<group>"; };
+		2515ED5814C581CD00FDCD6D /* GRTStopListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopListViewController.m; sourceTree = "<group>"; };
 		2515ED5914C581CD00FDCD6D /* GRTMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTMainViewController.h; sourceTree = "<group>"; };
 		2515ED5A14C581CD00FDCD6D /* GRTMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTMainViewController.m; sourceTree = "<group>"; };
-		2515ED5B14C581CD00FDCD6D /* GRTMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTMapAnnotation.h; sourceTree = "<group>"; };
-		2515ED5C14C581CD00FDCD6D /* GRTMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTMapAnnotation.m; sourceTree = "<group>"; };
 		2515ED5D14C581CD00FDCD6D /* GRTStartingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStartingViewController.h; sourceTree = "<group>"; };
 		2515ED5E14C581CD00FDCD6D /* GRTStartingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStartingViewController.m; sourceTree = "<group>"; };
 		2515ED6814C5828700FDCD6D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -80,6 +80,8 @@
 		2515EDAB14C5839300FDCD6D /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		2561EA0214C594F7003EA97D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		2561EA0314C594F7003EA97D /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		259CD1FA14E56E0900717D37 /* GRTStopRoutesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopRoutesViewController.h; sourceTree = "<group>"; };
+		259CD1FB14E56E0900717D37 /* GRTStopRoutesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopRoutesViewController.m; sourceTree = "<group>"; };
 		25EAB18814CD770D004A9DEC /* GRT_GTFS.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = GRT_GTFS.sqlite; sourceTree = "<group>"; };
 		25EAB18C14CD77E7004A9DEC /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		25EAB18D14CD77E7004A9DEC /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
@@ -90,6 +92,10 @@
 		25EAB19514CD783F004A9DEC /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		25EAB19B14CD82B1004A9DEC /* GRTBusStopEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTBusStopEntry.h; sourceTree = "<group>"; };
 		25EAB19C14CD82B1004A9DEC /* GRTBusStopEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTBusStopEntry.m; sourceTree = "<group>"; };
+		25F18A9A14DBDC2E008B1A31 /* GRTTripEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTTripEntry.h; sourceTree = "<group>"; };
+		25F18A9B14DBDC2E008B1A31 /* GRTTripEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTTripEntry.m; sourceTree = "<group>"; };
+		25F18A9D14DC1A40008B1A31 /* GRTRouteTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTRouteTimeViewController.h; sourceTree = "<group>"; };
+		25F18A9E14DC1A40008B1A31 /* GRTRouteTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTRouteTimeViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,17 +156,19 @@
 				2515ED5214C581CD00FDCD6D /* GRTAppDelegate.m */,
 				2515ED5314C581CD00FDCD6D /* GRTBusInfo.h */,
 				2515ED5414C581CD00FDCD6D /* GRTBusInfo.m */,
-				2515ED5B14C581CD00FDCD6D /* GRTMapAnnotation.h */,
-				2515ED5C14C581CD00FDCD6D /* GRTMapAnnotation.m */,
 				2515ED7214C582C300FDCD6D /* doGRT.xcdatamodeld */,
 				2515ED5D14C581CD00FDCD6D /* GRTStartingViewController.h */,
 				2515ED5E14C581CD00FDCD6D /* GRTStartingViewController.m */,
-				2515ED5714C581CD00FDCD6D /* GRTFlipsideViewController.h */,
-				2515ED5814C581CD00FDCD6D /* GRTFlipsideViewController.m */,
-				2515ED5914C581CD00FDCD6D /* GRTMainViewController.h */,
-				2515ED5A14C581CD00FDCD6D /* GRTMainViewController.m */,
+				2515ED5714C581CD00FDCD6D /* GRTStopListViewController.h */,
+				2515ED5814C581CD00FDCD6D /* GRTStopListViewController.m */,
 				2515ED4F14C581CD00FDCD6D /* GRTAddingViewController.h */,
 				2515ED5014C581CD00FDCD6D /* GRTAddingViewController.m */,
+				259CD1FA14E56E0900717D37 /* GRTStopRoutesViewController.h */,
+				259CD1FB14E56E0900717D37 /* GRTStopRoutesViewController.m */,
+				2515ED5914C581CD00FDCD6D /* GRTMainViewController.h */,
+				2515ED5A14C581CD00FDCD6D /* GRTMainViewController.m */,
+				25F18A9D14DC1A40008B1A31 /* GRTRouteTimeViewController.h */,
+				25F18A9E14DC1A40008B1A31 /* GRTRouteTimeViewController.m */,
 				2515ED7C14C5830300FDCD6D /* Data */,
 				25EAB18B14CD77E7004A9DEC /* FMDB */,
 				2515ED9414C5832500FDCD6D /* ManagedObject */,
@@ -211,6 +219,8 @@
 				2515ED8314C5830300FDCD6D /* GRTTimeTableEntry.m */,
 				25EAB19B14CD82B1004A9DEC /* GRTBusStopEntry.h */,
 				25EAB19C14CD82B1004A9DEC /* GRTBusStopEntry.m */,
+				25F18A9A14DBDC2E008B1A31 /* GRTTripEntry.h */,
+				25F18A9B14DBDC2E008B1A31 /* GRTTripEntry.m */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -310,9 +320,8 @@
 				2515ED5F14C581CD00FDCD6D /* GRTAddingViewController.m in Sources */,
 				2515ED6014C581CD00FDCD6D /* GRTAppDelegate.m in Sources */,
 				2515ED6114C581CD00FDCD6D /* GRTBusInfo.m in Sources */,
-				2515ED6314C581CD00FDCD6D /* GRTFlipsideViewController.m in Sources */,
+				2515ED6314C581CD00FDCD6D /* GRTStopListViewController.m in Sources */,
 				2515ED6414C581CD00FDCD6D /* GRTMainViewController.m in Sources */,
-				2515ED6514C581CD00FDCD6D /* GRTMapAnnotation.m in Sources */,
 				2515ED6614C581CD00FDCD6D /* GRTStartingViewController.m in Sources */,
 				2515ED7414C582C300FDCD6D /* doGRT.xcdatamodeld in Sources */,
 				2515ED8E14C5830300FDCD6D /* GRTTimeTableEntry.m in Sources */,
@@ -321,6 +330,9 @@
 				25EAB19314CD77E7004A9DEC /* FMDatabaseAdditions.m in Sources */,
 				25EAB19414CD77E7004A9DEC /* FMResultSet.m in Sources */,
 				25EAB19D14CD82B1004A9DEC /* GRTBusStopEntry.m in Sources */,
+				25F18A9C14DBDC2E008B1A31 /* GRTTripEntry.m in Sources */,
+				25F18AA014DC1A40008B1A31 /* GRTRouteTimeViewController.m in Sources */,
+				259CD1FD14E56E0A00717D37 /* GRTStopRoutesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +420,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COMPRESS_PNG_FILES = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "doGRT/doGRT-Prefix.pch";
 				INFOPLIST_FILE = "doGRT/doGRT-Info.plist";
@@ -422,6 +435,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COMPRESS_PNG_FILES = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "doGRT/doGRT-Prefix.pch";
 				INFOPLIST_FILE = "doGRT/doGRT-Info.plist";

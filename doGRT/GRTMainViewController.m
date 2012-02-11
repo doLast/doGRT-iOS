@@ -7,14 +7,20 @@
 //
 
 #import "GRTMainViewController.h"
+#import "GRTRouteTimeViewController.h"
+
 #import "GRTBusInfo.h"
 #import "GRTTimeTableEntry.h"
+#import "GRTTripEntry.h"
 
 @interface GRTMainViewController ()
 @property (retain, nonatomic) MFMessageComposeViewController *messageComposeViewController;
 @property (assign, nonatomic) NSInteger curTime;
-@property (retain, nonatomic) NSNumber *lastBusStopNumber;
 @property (retain, nonatomic) NSMutableArray *timeTableArray;
+@property (retain, nonatomic) NSMutableArray *routeArray;
+@property (retain, nonatomic) GRTBusInfo *busInfo;
+@property (assign, nonatomic) BOOL isMixed;
+@property (retain, nonatomic) NSNumber *chosenIndex;
 
 @end
 
@@ -23,7 +29,7 @@
 
 // outlets
 @synthesize sendTextButton = _sendTextButton;
-@synthesize timeTableCell = _timeTableCell;
+@synthesize tableCell = _tableCell;
 
 // properties
 @synthesize busStopNumber = _busStopNumber;
@@ -32,10 +38,19 @@
 // private properties
 @synthesize messageComposeViewController = _messageComposeViewController;
 @synthesize curTime = _curTime;
-@synthesize lastBusStopNumber = _lastBusStopNumber;
 @synthesize timeTableArray = _timeTableArray;
+@synthesize routeArray = _routeArray;
+@synthesize busInfo = _busInfo;
+@synthesize chosenIndex = _chosenIndex;
+@synthesize isMixed = _isMixed;
 
-
+- (GRTBusInfo *) busInfo{
+	if(_busInfo == nil){
+//		NSLog(@"Creating GRTBusInfo Instance");
+		_busInfo = [[GRTBusInfo alloc] initByStop:self.busStopNumber];
+	}
+	return _busInfo;
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -43,26 +58,10 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-- (NSString *) fillSpaceForString:(NSString *)str{
-	return [@"    " substringFromIndex:[str length]];
-}
-
 #pragma mark - View Update
 
 - (void)updateTitle{
-	if([self.busStopNumber integerValue] == 0 ){
-		self.title = @"No Stop Chosen";
-	}
-	else{
-		self.title = [NSString stringWithFormat:@"%@", self.busStopName];
-	}
-	
-	if([MFMessageComposeViewController canSendText]){
-		self.sendTextButton.enabled = true;
-	}
-	else {
-		self.sendTextButton.enabled = false;
-	}
+	self.title = [NSString stringWithFormat:@"%@", self.busStopName];
 }
 
 - (void)updateLoading{
@@ -70,17 +69,27 @@
 }
 
 - (void)updateTimeTable{
-	if(self.lastBusStopNumber == nil || ![self.busStopNumber isEqualToNumber:self.lastBusStopNumber]){
-		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-		NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];	
-		self.curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];	
+	self.curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
 	
-		self.timeTableArray = [[NSMutableArray alloc] init];
-		[self.tableView reloadData];
-		self.timeTableArray = [[GRTBusInfo getCurrentTimeTableById:self.busStopNumber] mutableCopy];
-		[self.tableView reloadData];
+	self.timeTableArray = [[self.busInfo getCurrentTimeTable] mutableCopy];
+}
+
+- (void)updateRouteTable{
+	self.routeArray = [[GRTBusInfo getRoutesByStop:self.busStopNumber] mutableCopy];
+}
+
+- (void)updateTable{
+	[self updateLoading];
+	if(self.isMixed && self.timeTableArray == nil) {
+		[self updateTimeTable];
 	}
-	self.lastBusStopNumber = self.busStopNumber;
+	if(self.routeArray == nil){
+		[self updateRouteTable];
+	}
+	[self updateTitle];
+	[self.tableView reloadData];
 }
 
 - (BOOL)updateView{
@@ -97,6 +106,38 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+	UIBarButtonItem *flexibleSpaceButtonItem = [[UIBarButtonItem alloc]
+												initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+												target:nil action:nil];
+	
+	// Create and configure the segmented control
+	UISegmentedControl *displayToggle = [[UISegmentedControl alloc]
+										 initWithItems:[NSArray arrayWithObjects:@"Routes List",
+														@"Mixed Schedule", nil]];
+	displayToggle.segmentedControlStyle = UISegmentedControlStyleBar;
+	displayToggle.selectedSegmentIndex = 0;
+	[displayToggle addTarget:self action:@selector(toggleDisplay:) 
+			forControlEvents:UIControlEventValueChanged];
+	
+	// Create the bar button item for the segmented control
+	UIBarButtonItem *displayToggleButtonItem = [[UIBarButtonItem alloc]
+												initWithCustomView:displayToggle];
+	
+	// Set our toolbar items
+	self.toolbarItems = [NSArray arrayWithObjects:
+                         flexibleSpaceButtonItem,
+                         displayToggleButtonItem,
+                         flexibleSpaceButtonItem,
+                         nil];
+	
+	if([MFMessageComposeViewController canSendText]){
+		self.sendTextButton.enabled = true;
+	}
+	else {
+		self.sendTextButton.enabled = false;
+	}
+	
+	self.isMixed = NO;
 }
 
 - (void)viewDidUnload
@@ -116,7 +157,7 @@
 {
     [super viewDidAppear:animated];
 	if([self updateView]){
-		[self updateTimeTable];
+		[self updateTable];
 	}
 	[self updateTitle];
 }
@@ -134,7 +175,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return YES; //(interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - Sending Text View
@@ -159,50 +200,82 @@
 
 #pragma mark - Table View Delegate
 
+- (IBAction)toggleDisplay:(UISegmentedControl *)sender{
+	self.isMixed = (sender.selectedSegmentIndex == 1);
+	[self updateTable];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.timeTableArray count];
+	NSInteger result;
+	if(self.isMixed) result = [self.timeTableArray count];
+	else result = [self.routeArray count];
+	return result;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	static NSString *CellIdentifier = @"timeTableCell";
+	static NSString *CellIdentifier = nil;
+	
+	if(self.isMixed) CellIdentifier = @"timeTableCell";
+	else CellIdentifier = @"routeCell";
 	
     // Dequeue or create a new cell.
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
 		//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
 		[[NSBundle mainBundle] loadNibNamed:CellIdentifier owner:self options:nil];
-        cell = self.timeTableCell;
-        self.timeTableCell = nil;
+        cell = self.tableCell;
+        self.tableCell = nil;
     }
 	
-    GRTTimeTableEntry *entry = (GRTTimeTableEntry *)[self.timeTableArray objectAtIndex:indexPath.row];
+    if(self.isMixed) {
+		GRTTimeTableEntry *entry = (GRTTimeTableEntry *)[self.timeTableArray objectAtIndex:indexPath.row];
 	
-	NSInteger time = [entry.departureTime integerValue];
-	
-	NSString *leave = nil;
-	if(time < self.curTime){
-		cell.textLabel.textColor = [UIColor colorWithRed:255 green:0 blue:0 alpha:1];
-		leave = @"Left";
+		NSInteger time = [entry.departureTime integerValue];
+		
+		if(time < self.curTime){
+			cell.detailTextLabel.textColor = [UIColor colorWithRed:150.0/255 green:150.0/255 blue:150.0/255 alpha:1];
+		}
+		else {
+			cell.detailTextLabel.textColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+		}
+		
+		if(time >= 240000){
+			time -= 240000;
+		}
+		else if(time < 0){
+			time += 240000;
+		}
+		NSString *tripName = [NSString stringWithFormat:@"%@ %@", entry.routeId, entry.tripHeadsign];
+		
+		cell.detailTextLabel.text = tripName;
+		cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d:%02d", time / 10000, (time / 100) % 100, time % 100 ];
 	}
 	else {
-		cell.textLabel.textColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
-		leave = @"Leaving";
+		GRTTripEntry *entry = (GRTTripEntry *)[self.routeArray objectAtIndex:indexPath.row];
+		cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", entry.routeId, entry.routeLongName];
 	}
-	
-	if(time >= 240000){
-		time -= 240000;
-	}
-	else if(time < 0){
-		time += 240000;
-	}
-	
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", entry.routeId, entry.tripHeadsign];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ at: %02d:%02d:%02d", leave, time / 10000, (time / 100) % 100, time % 100 ];
-		
-	
 	
     return cell;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+	self.chosenIndex = [NSNumber numberWithInteger:indexPath.row];
+	return indexPath;
+}
+
+#pragma mark - Segue setting
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+	if([[segue identifier] isEqualToString:@"showRouteTime"]) {
+		GRTRouteTimeViewController *vc = (GRTRouteTimeViewController *)[segue destinationViewController];
+		assert([vc isKindOfClass:[GRTRouteTimeViewController class]]);
+		GRTTripEntry *route = (GRTTripEntry *) [self.routeArray objectAtIndex:[self.chosenIndex unsignedIntegerValue]];
+		
+		vc.busInfo = self.busInfo;
+		vc.route = route;
+	}
 }
 
 @end
