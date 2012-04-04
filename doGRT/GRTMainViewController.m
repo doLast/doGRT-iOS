@@ -181,8 +181,7 @@
 #pragma mark - Sending Text View
 
 - (IBAction)sendTextToGrtWhenClick:(UIBarButtonItem *)sender{
-	if([MFMessageComposeViewController canSendText] && 
-	   self.messageComposeViewController == nil){ 
+	if([MFMessageComposeViewController canSendText]){
 		self.messageComposeViewController = [[MFMessageComposeViewController alloc] init];
 	}
 	else {
