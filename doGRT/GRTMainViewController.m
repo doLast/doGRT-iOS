@@ -185,6 +185,9 @@
 	   self.messageComposeViewController == nil){ 
 		self.messageComposeViewController = [[MFMessageComposeViewController alloc] init];
 	}
+	else {
+		return;
+	}
 	if(self.messageComposeViewController == nil){
 		abort();
 	}

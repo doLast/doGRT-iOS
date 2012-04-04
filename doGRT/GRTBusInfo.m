@@ -92,6 +92,30 @@
 	// return an array of GRTBusStopEntry
 }
 
++ (NSArray *) getBusStopsByRouteId:(NSString *)routeId{
+	
+	NSMutableSet *stops = [[NSMutableSet alloc] init];
+	
+	FMDatabase *db = [self openDB];
+	
+	FMResultSet *result = [db executeQuery:@"SELECT DISTINCT B.stopId, B.stopName, B.stopLat, B.stopLon \
+						   FROM BusStop as B, Trip as T, StopTime as S \
+						   WHERE T.routeId=? AND S.tripId=T.tripId AND B.stopId=S.stopId", routeId];
+	
+	while ([result next]){
+		NSNumber *stopId = [NSNumber numberWithInt:[result intForColumn:@"stopId"]];
+		NSString *stopName = [result stringForColumn:@"stopName"];
+		CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([result doubleForColumn:@"stopLat"], [result doubleForColumn:@"stopLon"]);
+		
+		GRTBusStopEntry *stop = [[GRTBusStopEntry alloc] initAtCoordinate:coordinate withStopId:stopId withStopName:stopName];
+		
+		[stops addObject:stop];
+	}
+	
+	return [stops allObjects];
+	// return an array of GRTBusStopEntry
+}
+
 + (NSString *) getBusStopNameByStop:(NSNumber *)stopId{
 	
 	FMDatabase *db = [self openDB];
@@ -102,7 +126,7 @@
 	while ([result next]) {
 		//retrieve values for each record
 		stopName = [result stringForColumn:@"stopName"];
-		NSLog(@"Got stop name %@", stopName);
+//		NSLog(@"Got stop name %@", stopName);
 	}
 	
 	return stopName;
@@ -125,7 +149,7 @@
 			GRTTripEntry *entry = [[GRTTripEntry alloc] init];
 //			entry.tripId = [NSNumber numberWithInt:[result intForColumn:@"tripId"]];
 			entry.tripHeadsign = [result stringForColumn:@"tripHeadsign"];
-			entry.routeId = [NSNumber numberWithInt:[result intForColumn:@"routeId"]];
+			entry.routeId = [result stringForColumn:@"routeId"];
 			entry.routeLongName = [result stringForColumn:@"routeLongName"];
 			entry.routeShortName = [result stringForColumn:@"routeShortname"];
 			[trips addObject:entry];
@@ -191,7 +215,7 @@
 	while ([result next]) {
 		//retrieve values for each record
 		GRTTimeTableEntry *timeTableEntry = [[GRTTimeTableEntry alloc] init];
-		timeTableEntry.routeId = [NSNumber numberWithInt:[result intForColumn:@"routeId"]];
+		timeTableEntry.routeId = [result stringForColumn:@"routeId"];
 		timeTableEntry.tripHeadsign = [result stringForColumn:@"tripHeadsign"];
 		timeTableEntry.arrivalTime = [NSNumber numberWithInt:[result intForColumn:@"arrivalTime"]];
 		timeTableEntry.departureTime = [NSNumber numberWithInt:[result intForColumn:@"departureTime"]];
@@ -259,8 +283,9 @@
 	return [table filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:[NSString stringWithFormat:@"departureTime>%d", time]]];
 }
 
-- (NSArray *) getCurrentTimeTableByRoute:(NSNumber *)routeId{
-	return [[self getCurrentTimeTable] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:[NSString stringWithFormat:@"routeId=%@", routeId]]];
+- (NSArray *) getCurrentTimeTableByRoute:(NSString *)routeId{
+	return [[self getCurrentTimeTable] filteredArrayUsingPredicate:
+			[NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForKeyPath:@"routeId"] rightExpression:[NSExpression expressionForConstantValue:routeId] modifier:NSDirectPredicateModifier type:NSEqualToPredicateOperatorType options:0]];
 }
 
 

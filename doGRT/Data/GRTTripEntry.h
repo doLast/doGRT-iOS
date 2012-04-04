@@ -12,7 +12,7 @@
 
 @property (retain, nonatomic) NSNumber *tripId;
 @property (retain, nonatomic) NSString *tripHeadsign;
-@property (retain, nonatomic) NSNumber *routeId;
+@property (retain, nonatomic) NSString *routeId;
 @property (retain, nonatomic) NSString *routeLongName;
 @property (retain, nonatomic) NSString *routeShortName;
 

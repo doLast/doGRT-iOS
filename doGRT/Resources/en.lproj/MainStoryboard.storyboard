@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="11D50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="yxM-fz-3c1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.1" toolsVersion="2182" systemVersion="11D50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="yxM-fz-3c1">
     <dependencies>
+        <deployment defaultVersion="1296" identifier="iOS"/>
         <development defaultVersion="4200" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="933"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
     </dependencies>
     <scenes>
+        <!--Main View Controller-->
         <scene sceneID="5">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
@@ -76,6 +78,7 @@
             </objects>
             <point key="canvasLocation" x="910" y="456"/>
         </scene>
+        <!--Route Time View Controller-->
         <scene sceneID="axI-bJ-lvT">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OYM-E2-356" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -116,11 +119,46 @@
                             <outlet property="delegate" destination="oxr-Vb-zbY" id="Lb3-Fr-Cdd"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="QpG-f1-jM9"/>
+                    <navigationItem key="navigationItem" id="QpG-f1-jM9">
+                        <barButtonItem key="rightBarButtonItem" title="Map This Route" id="8B1-h5-jXi">
+                            <connections>
+                                <segue destination="5De-2E-apt" kind="push" identifier="showRouteMap" id="giE-hj-hlQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
             </objects>
             <point key="canvasLocation" x="1325" y="456"/>
         </scene>
+        <!--Route Map View Controller-->
+        <scene sceneID="Eo1-HE-dnh">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="l5d-6d-O1S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="5De-2E-apt" customClass="GRTRouteMapViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5fx-9G-u16">
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="lJI-R1-H46">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="372"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="5De-2E-apt" id="wTF-qy-bzT"/>
+                                </connections>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="y0x-8S-A6c"/>
+                    <connections>
+                        <outlet property="mapView" destination="lJI-R1-H46" id="JF3-wy-rah"/>
+                        <segue destination="qme-ur-gSp" kind="modal" identifier="showStopRoutes" id="bFD-tM-Ck2"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="1763" y="456"/>
+        </scene>
+        <!--Stop List View Controller-->
         <scene sceneID="2ct-vu-ecf">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XN9-oo-MwH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -129,7 +167,7 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <label key="tableFooterView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Swap to delete a bus stop..." textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" enabled="NO" id="FbH-bL-gzL">
+                        <label key="tableFooterView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Click + to add a new bus stop" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" enabled="NO" id="FbH-bL-gzL">
                             <rect key="frame" x="0.0" y="66" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -182,6 +220,7 @@
             </objects>
             <point key="canvasLocation" x="437" y="182"/>
         </scene>
+        <!--Adding View Controller-->
         <scene sceneID="WRr-H3-fow">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R9o-b1-aL8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -248,6 +287,7 @@
             </objects>
             <point key="canvasLocation" x="910" y="-142"/>
         </scene>
+        <!--Stop Routes View Controller-->
         <scene sceneID="hMS-hz-8MA">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="acx-LF-4ys" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -256,7 +296,7 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="wnv-Q2-6vw">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="wnv-Q2-6vw">
                                 <rect key="frame" x="0.0" y="44" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -309,6 +349,69 @@
             </objects>
             <point key="canvasLocation" x="1325" y="-142"/>
         </scene>
+        <!--Stop Routes View Controller-->
+        <scene sceneID="qhy-BL-jGX">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Bm-yj-Qkd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="qme-ur-gSp" customClass="GRTStopRoutesViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BLW-vL-l3p">
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="4GI-cD-fZ5">
+                                <rect key="frame" x="0.0" y="44" width="320" height="416"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="routeCell" textLabel="lGA-Ad-mh7" style="IBUITableViewCellStyleDefault" id="ZWQ-4W-0RF">
+                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" text="Route Number and Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lGA-Ad-mh7">
+                                                    <rect key="frame" x="10" y="0.0" width="300" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="qme-ur-gSp" id="BNm-xq-kX7"/>
+                                    <outlet property="delegate" destination="qme-ur-gSp" id="MTu-7w-j41"/>
+                                </connections>
+                            </tableView>
+                            <navigationBar contentMode="scaleToFill" barStyle="blackTranslucent" id="ccI-gL-MKi">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="STOP_ROUTES_LIST" id="x13-g1-psV">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="C8I-ZK-Kze">
+                                            <connections>
+                                                <action selector="backToAddingWhenClick:" destination="qme-ur-gSp" id="xfX-lr-sfI"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                    </view>
+                    <connections>
+                        <outlet property="navigationBar" destination="x13-g1-psV" id="WDe-De-Kb1"/>
+                        <outlet property="tableView" destination="4GI-cD-fZ5" id="QTa-By-Hcc"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="2183" y="456"/>
+        </scene>
+        <!--Starting View Controller-->
         <scene sceneID="rxa-ee-HSG">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Veo-om-JaY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -324,6 +427,7 @@
             </objects>
             <point key="canvasLocation" x="-515" y="182"/>
         </scene>
+        <!--Navigation Controller-->
         <scene sceneID="s4m-Eg-ELM">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tAe-xa-LSk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -370,6 +474,12 @@
                 <relationship kind="action" name="toggleDisplay:" candidateClass="UISegmentedControl"/>
                 <relationship kind="outlet" name="sendTextButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="tableCell" candidateClass="UITableViewCell"/>
+            </relationships>
+        </class>
+        <class className="GRTRouteMapViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTRouteMapViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
             </relationships>
         </class>
         <class className="GRTRouteTimeViewController" superclassName="UITableViewController">

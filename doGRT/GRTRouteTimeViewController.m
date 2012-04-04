@@ -11,6 +11,7 @@
 #import "GRTBusInfo.h"
 #import "GRTTripEntry.h"
 #import "GRTTimeTableEntry.h"
+#import "GRTRouteMapViewController.h"
 
 @interface GRTRouteTimeViewController ()
 @property (assign, nonatomic) NSInteger curTime;
@@ -38,7 +39,7 @@
 #pragma mark - View Update
 
 - (void)updateTitle{
-	self.title = [NSString stringWithFormat:@"%@ %@", self.route.routeId, self.route.routeLongName];
+	self.title = [NSString stringWithFormat:@"%@", self.route.routeId];
 }
 
 - (void)updateLoading{
@@ -50,7 +51,7 @@
 	NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];	
 	self.curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
 	
-	self.timeTableArray = [[self.busInfo getCurrentTimeTableByRoute:[self.route routeId]] mutableCopy];
+	self.timeTableArray = [[self.busInfo getCurrentTimeTableByRoute:self.route.routeId] mutableCopy];
 }
 
 #pragma mark - View lifecycle
@@ -130,6 +131,17 @@
 	cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d:%02d", time / 10000, (time / 100) % 100, time % 100 ];
 	
     return cell;
+}
+
+#pragma mark - Segue setting
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([[segue identifier] isEqualToString:@"showRouteMap"]) {
+		GRTRouteMapViewController *vc = (GRTRouteMapViewController *)[segue destinationViewController];
+		assert([vc isKindOfClass:[GRTRouteMapViewController class]]);
+		vc.route = self.route;
+	}
 }
 
 

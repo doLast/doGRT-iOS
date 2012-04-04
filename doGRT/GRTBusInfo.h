@@ -19,6 +19,7 @@
 + (NSArray *) getBusStopsAt:(CLLocationCoordinate2D)coordinate 
 					 inSpan:(MKCoordinateSpan)span 
 				  withLimit:(NSUInteger)limit;
++ (NSArray *) getBusStopsByRouteId:(NSString *)routeId;
 + (NSString *) getBusStopNameByStop:(NSNumber *)stopId;
 
 + (NSArray *) getTripsByStop:(NSNumber *)stopId;
@@ -29,7 +30,7 @@
 
 //- (NSArray *) getCurrentRoutes;
 - (NSArray *) getCurrentTimeTable;
-- (NSArray *) getCurrentTimeTableByRoute:(NSNumber *)routeId;
+- (NSArray *) getCurrentTimeTableByRoute:(NSString *)routeId;
 
 //- (NSArray *) getTimeTableById:(NSNumber *)stopId 
 //					   forDate:(NSDate *)date;

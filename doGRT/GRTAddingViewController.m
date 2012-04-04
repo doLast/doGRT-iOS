@@ -97,7 +97,7 @@
 	self.navigationBar.title = @"Add a Bus Stop";
 	self.saveButton.enabled = NO;
 	
-	[self updateMapView:self.mapView withLocation:CLLocationCoordinate2DMake(43.47273, -80.541218) andSpan:MKCoordinateSpanMake(0.02, 0.02)];
+	[self updateMapView:self.mapView withLocation:CLLocationCoordinate2DMake(43.47273, -80.541218) andSpan:MKCoordinateSpanMake(0.05, 0.05)];
 	
 	self.stopLocating = NO;
 }

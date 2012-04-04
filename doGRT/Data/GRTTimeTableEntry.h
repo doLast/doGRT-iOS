@@ -10,7 +10,7 @@
 
 @interface GRTTimeTableEntry : NSObject
 
-@property (retain, nonatomic) NSNumber *routeId;
+@property (retain, nonatomic) NSString *routeId;
 //@property (retain, nonatomic) NSString *routeLongName;
 //@property (retain, nonatomic) NSString *routeShortName;
 @property (retain, nonatomic) NSString *tripHeadsign;
