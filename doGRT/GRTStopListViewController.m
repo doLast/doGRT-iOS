@@ -186,10 +186,12 @@
     if (buttonIndex == 1) {
 		UITextField *textField = [alertView textFieldAtIndex:0];
 		UserChosenBusStop *busStop = (UserChosenBusStop *) [self.busStopArray objectAtIndex:[self.chosenIndex unsignedIntegerValue]];
-		busStop.stopName = textField.text;
+		if(textField.text.length > 0) {
+			busStop.stopName = textField.text;
 		
-		if (![self.managedObjectContext save:nil]) {
-			// Handle the error.
+			if (![self.managedObjectContext save:nil]) {
+				// Handle the error.
+			}
 		}
     }
 }

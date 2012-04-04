@@ -49,8 +49,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 	
-	self.title = [NSString stringWithFormat:@"%@ %@", self.route.routeId, self.route.routeLongName];
-	
 	[self updateMapView:self.mapView withLocation:CLLocationCoordinate2DMake(43.47273, -80.541218) andSpan:MKCoordinateSpanMake(0.02, 0.02)];
 }
 
@@ -64,14 +62,20 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+	
+	self.title = @"Loading...";
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
 	
-	self.mapView.userTrackingMode = MKUserTrackingModeFollow;
-	[self setupMapView:self.mapView forRouteId:self.route.routeId];
+	if([self.mapView.annotations count] < 2){
+		self.mapView.userTrackingMode = MKUserTrackingModeFollow;
+		[self setupMapView:self.mapView forRouteId:self.route.routeId];
+	}
+	
+	self.title = [NSString stringWithFormat:@"%@ %@", self.route.routeId, self.route.routeLongName];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
