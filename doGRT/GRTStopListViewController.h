@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "GRTAddingViewController.h"
 
-@interface GRTStopListViewController : UITableViewController <GRTAddingViewControllerDelegate>
+@interface GRTStopListViewController : UITableViewController <GRTAddingViewControllerDelegate, UIAlertViewDelegate>
 
 @property (assign, nonatomic) IBOutlet UITableViewCell *busStopCell;
+@property (assign, nonatomic) IBOutlet UILabel *helpMessage;
 
 @end

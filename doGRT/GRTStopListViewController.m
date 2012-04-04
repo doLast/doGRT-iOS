@@ -19,6 +19,7 @@
 @implementation GRTStopListViewController
 
 @synthesize busStopCell = _busStopCell;
+@synthesize helpMessage = _helpMessage;
 
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize busStopArray = _busStopArray;
@@ -29,6 +30,16 @@
 {
     [super didReceiveMemoryWarning];
     // Release any cached data, images, etc that aren't in use.
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated{
+	[super setEditing:editing animated:animated];
+	if(editing){
+		self.helpMessage.text = @"Select a bus stop to edit its name";
+	}
+	else {
+		self.helpMessage.text = @"Press + to add a new bus stop";
+	}
 }
 
 #pragma mark - View lifecycle
@@ -59,6 +70,8 @@
 	}
 	
 	self.busStopArray = mutableFetchResults;
+	
+	self.helpMessage.text = @"Press + to add a stop";
 }
 
 - (void)viewDidUnload
@@ -147,9 +160,44 @@
         }
     }
 }
+
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 	self.chosenIndex = [NSNumber numberWithInteger:indexPath.row];
+	if(self.editing){
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Edit Stop Name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
+		alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+		UITextField *textField = [alert textFieldAtIndex:0];
+		
+		UserChosenBusStop *busStop = (UserChosenBusStop *) [self.busStopArray objectAtIndex:[self.chosenIndex unsignedIntegerValue]];
+		textField.text = busStop.stopName;
+		
+		[alert show];
+	}
+	else {
+		[self performSegueWithIdentifier:@"showMain" sender:tableView];
+	}
+	
 	return indexPath;
+}
+
+#pragma mark - Alert View Delegate
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+		UITextField *textField = [alertView textFieldAtIndex:0];
+		UserChosenBusStop *busStop = (UserChosenBusStop *) [self.busStopArray objectAtIndex:[self.chosenIndex unsignedIntegerValue]];
+		busStop.stopName = textField.text;
+		
+		if (![self.managedObjectContext save:nil]) {
+			// Handle the error.
+		}
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+		[self.tableView reloadData];
+    }
 }
 
 #pragma mark - Adding View
