@@ -23,7 +23,7 @@
 	 registerDefaults:[NSDictionary 
 					   dictionaryWithObjectsAndKeys:
 						[NSNumber numberWithBool:YES], @"firstLaunch", 
-						[NSNumber numberWithInteger:201201], @"dataVersion", nil]];
+						[NSNumber numberWithInteger:20120421], @"dataVersion", nil]];
 	
 	NSLog(@"App finish launching with firstLaunch: %d, dataVersion: %d", 
 		  [[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"], 
