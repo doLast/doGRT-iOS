@@ -202,11 +202,9 @@
 	
 	// setup database query
 	FMDatabase *db = [GRTBusInfo openDB];
-	// "C.endDate>=? AND " is deleted from the query in order to keep functionality 
-	// when data is expired. 
-	NSString *query = [NSString stringWithFormat:@"SELECT R.routeId, R.routeLongName, R.routeShortName, T.tripHeadsign, S.arrivalTime, S.departureTime FROM Calendar as C, Trip as T, Route as R, StopTime as S WHERE C.%@=1 AND C.startDate<=? AND T.serviceId=C.serviceId AND S.stopId=? AND S.tripId=T.tripId AND R.routeId=T.routeId ORDER BY S.departureTime", dayName];
+	NSString *query = [NSString stringWithFormat:@"SELECT R.routeId, R.routeLongName, R.routeShortName, T.tripHeadsign, S.arrivalTime, S.departureTime FROM Calendar as C, Trip as T, Route as R, StopTime as S WHERE C.%@=1 AND C.startDate<=? AND C.endDate>=? AND T.serviceId=C.serviceId AND S.stopId=? AND S.tripId=T.tripId AND R.routeId=T.routeId ORDER BY S.departureTime", dayName];
 	
-	FMResultSet *result = [db executeQuery:query, dateAsNumber, /* dateAsNumber, */self.stopId];
+	FMResultSet *result = [db executeQuery:query, dateAsNumber, dateAsNumber, self.stopId];
 	if (result == nil){
 		NSLog(@"%@", [db lastErrorMessage]);
 		abort();
