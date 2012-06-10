@@ -17,8 +17,6 @@
 
 @interface GRTBusInfo () 
 @property (retain, nonatomic) NSNumber *stopId;
-//@property (retain, nonatomic) NSArray *timeTableArray;
-//@property (retain, nonatomic) NSMutableDictionary *routeDict;
 @property (retain, nonatomic) NSMutableDictionary *dateToTimeMapping;
 
 - (NSString *) dayOfWeekToDayName:(NSUInteger)dayOfWeek;
@@ -28,8 +26,6 @@
 @implementation GRTBusInfo
 
 @synthesize stopId = _stopId;
-//@synthesize timeTableArray = _timeTableArray;
-//@synthesize routeDict = _routeDict;
 @synthesize dateToTimeMapping = _dateToTimeMapping;
 
 /* Class Methods */
@@ -124,7 +120,7 @@
 	
 	NSString *stopName = nil;
 	while ([result next]) {
-		//retrieve values for each record
+		// retrieve values for each record
 		stopName = [result stringForColumn:@"stopName"];
 //		NSLog(@"Got stop name %@", stopName);
 	}
@@ -201,10 +197,17 @@
 	}
 	
 	// setup database query
+	/* Removed line "AND C.startDate<=? AND C.endDate>=? \" */
 	FMDatabase *db = [GRTBusInfo openDB];
-	NSString *query = [NSString stringWithFormat:@"SELECT R.routeId, R.routeLongName, R.routeShortName, T.tripHeadsign, S.arrivalTime, S.departureTime FROM Calendar as C, Trip as T, Route as R, StopTime as S WHERE C.%@=1 AND C.startDate<=? AND C.endDate>=? AND T.serviceId=C.serviceId AND S.stopId=? AND S.tripId=T.tripId AND R.routeId=T.routeId ORDER BY S.departureTime", dayName];
+	NSString *query = [NSString stringWithFormat:@"SELECT R.routeId, R.routeLongName, R.routeShortName, \
+					   T.tripHeadsign, S.arrivalTime, S.departureTime \
+					   FROM Calendar as C, Trip as T, Route as R, StopTime as S \
+					   WHERE C.%@=1 \
+					   AND T.serviceId=C.serviceId AND S.stopId=? \
+					   AND S.tripId=T.tripId AND R.routeId=T.routeId \
+					   ORDER BY S.departureTime", dayName];
 	
-	FMResultSet *result = [db executeQuery:query, dateAsNumber, dateAsNumber, self.stopId];
+	FMResultSet *result = [db executeQuery:query/*, dateAsNumber, dateAsNumber*/, self.stopId];
 	if (result == nil){
 		NSLog(@"%@", [db lastErrorMessage]);
 		abort();
@@ -220,18 +223,7 @@
 		timeTableEntry.arrivalTime = [NSNumber numberWithInt:[result intForColumn:@"arrivalTime"]];
 		timeTableEntry.departureTime = [NSNumber numberWithInt:[result intForColumn:@"departureTime"]];
 		[timeTableArray addObject:timeTableEntry];
-		//		NSLog(@"Route %@ %@ leaving at %@", newEntry.routeId, newEntry.tripHeadsign, newEntry.departureTime);
-		
-//		if(![self.routeDict objectForKey:timeTableEntry.routeId]){
-//			GRTRouteEntry *routeEntry = [[GRTRouteEntry alloc] init];
-//			routeEntry.routeId = timeTableEntry.routeId;
-//			routeEntry.routeLongName = [result stringForColumn:@"routeLongName"];
-//			routeEntry.routeShortName = [result stringForColumn:@"routeShortName"];
-//			[self.routeDict setObject:routeEntry forKey:routeEntry.routeId];
-//		}
-//		if(![self.tripDict objectForKey:timeTableEntry.tripHeadsign]){
-//			[self.tripDict setObject:timeTableEntry forKey:timeTableEntry.tripHeadsign];
-//		}
+//		NSLog(@"Route %@ %@ leaving at %@", newEntry.routeId, newEntry.tripHeadsign, newEntry.departureTime);
 	}
 	
 	[self.dateToTimeMapping setObject:timeTableArray forKey:dateAsNumber];
@@ -244,19 +236,10 @@
 	if(self){
 		// Initialize containers
 		self.dateToTimeMapping = [[NSMutableDictionary alloc] init];
-//		self.routeDict = [[NSMutableDictionary alloc] init];
 		self.stopId = stopId;
-		
-//		[self fetchDataForDate:[NSDate date]];
 	}
 	return self;
 }
-
-//- (NSArray *) getCurrentRoutes{
-//	return [[self.routeDict allValues] sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"routeId" ascending:YES]]];
-	// return an array of GRTRouteEntry
-	
-//}
 
 - (NSArray *) getCurrentTimeTable{
 	NSDate *curDate = [NSDate date];
