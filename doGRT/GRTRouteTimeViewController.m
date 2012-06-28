@@ -14,18 +14,19 @@
 #import "GRTRouteMapViewController.h"
 
 @interface GRTRouteTimeViewController ()
-@property (assign, nonatomic) NSInteger curTime;
+//@property (assign, nonatomic) NSInteger curTime;
+@property (assign, nonatomic) NSInteger comingBusIndex;
 @property (retain, nonatomic) NSMutableArray *timeTableArray;
 
 @end
 
 @implementation GRTRouteTimeViewController
 
-@synthesize tableCell = _tableCell;
 @synthesize busInfo = _busInfo;
 @synthesize route = _route;
 
-@synthesize curTime = _curTime;
+//@synthesize curTime = _curTime;
+@synthesize comingBusIndex = _comingBusIndex;
 @synthesize timeTableArray = _timeTableArray;
 
 - (void)didReceiveMemoryWarning
@@ -49,9 +50,11 @@
 - (void)updateTimeTable{
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];	
-	self.curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
-	
+	NSInteger curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
+		
 	self.timeTableArray = [[self.busInfo getCurrentTimeTableByRoute:self.route.routeId] mutableCopy];
+	
+	self.comingBusIndex = [[self.timeTableArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"departureTime<=%d", curTime, nil]] count];
 }
 
 #pragma mark - View lifecycle
@@ -81,6 +84,11 @@
 	[self updateTimeTable];
 	[self.tableView reloadData];
 	[self updateTitle];
+	
+	if (self.comingBusIndex > 1) {
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 1 inSection:0];
+		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -91,34 +99,50 @@
 
 #pragma mark - Table View Delegate
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [self.timeTableArray count];
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+	return 2;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	static NSString *CellIdentifier = @"timeTableCell";
-	
-    // Dequeue or create a new cell.
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-		//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-		[[NSBundle mainBundle] loadNibNamed:CellIdentifier owner:self options:nil];
-        cell = self.tableCell;
-        self.tableCell = nil;
-    }
-	
-	GRTTimeTableEntry *entry = (GRTTimeTableEntry *)[self.timeTableArray objectAtIndex:indexPath.row];
-	
-	NSInteger time = [entry.departureTime integerValue];
-	
-	if(time < self.curTime){
-		cell.detailTextLabel.textColor = [UIColor colorWithRed:150.0/255 green:150.0/255 blue:150.0/255 alpha:1];
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	NSString *title;
+	if (section == 0) {
+		title = @"Left Buses";
+	}
+	else if (section == 1) {
+		title = @"Coming Buses";
+	}
+	return title;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+{
+	if (section == 0) {
+		return self.comingBusIndex;
 	}
 	else {
-		cell.detailTextLabel.textColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+		return [self.timeTableArray count] - self.comingBusIndex;
+	}
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+	
+	static NSString *cellIdentifier;
+	if(indexPath.section == 0){
+		cellIdentifier = @"leftTimeTableCell";
+	}
+	else if (indexPath.section == 1) {
+		cellIdentifier = @"timeTableCell";
 	}
 	
+    // Dequeue or create a new cell.
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	
+	GRTTimeTableEntry *entry = (GRTTimeTableEntry *)[self.timeTableArray objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)];
+	
+	NSInteger time = [entry.departureTime integerValue];
 	if(time >= 240000){
 		time -= 240000;
 	}

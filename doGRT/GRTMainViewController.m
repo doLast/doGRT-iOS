@@ -15,7 +15,8 @@
 
 @interface GRTMainViewController ()
 @property (retain, nonatomic) MFMessageComposeViewController *messageComposeViewController;
-@property (assign, nonatomic) NSInteger curTime;
+//@property (assign, nonatomic) NSInteger curTime;
+@property (assign, nonatomic) NSInteger comingBusIndex;
 @property (retain, nonatomic) NSMutableArray *timeTableArray;
 @property (retain, nonatomic) NSMutableArray *routeArray;
 @property (retain, nonatomic) GRTBusInfo *busInfo;
@@ -29,7 +30,6 @@
 
 // outlets
 @synthesize sendTextButton = _sendTextButton;
-@synthesize tableCell = _tableCell;
 
 // properties
 @synthesize busStopNumber = _busStopNumber;
@@ -37,7 +37,8 @@
 
 // private properties
 @synthesize messageComposeViewController = _messageComposeViewController;
-@synthesize curTime = _curTime;
+//@synthesize curTime = _curTime;
+@synthesize comingBusIndex = _comingBusIndex;
 @synthesize timeTableArray = _timeTableArray;
 @synthesize routeArray = _routeArray;
 @synthesize busInfo = _busInfo;
@@ -71,9 +72,11 @@
 - (void)updateTimeTable{
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];	
-	self.curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
+	NSInteger curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
 	
 	self.timeTableArray = [[self.busInfo getCurrentTimeTable] mutableCopy];
+	
+	self.comingBusIndex = [[self.timeTableArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"departureTime<=%d", curTime, nil]] count];
 }
 
 - (void)updateRouteTable{
@@ -90,6 +93,11 @@
 	}
 	[self updateTitle];
 	[self.tableView reloadData];
+	
+	if(self.isMixed && self.comingBusIndex > 3){
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 3 inSection:0];
+		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+	}
 }
 
 - (BOOL)updateView{
@@ -207,40 +215,67 @@
 	[self updateTable];
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+	if(self.isMixed){
+		return 2;
+	}
+	else {
+		return 1;
+	}
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	NSString *title;
+	if (!self.isMixed) {
+		title = nil;
+	}
+	else if (section == 0) {
+		title = @"Left Buses";
+	}
+	else if (section == 1) {
+		title = @"Coming Buses";
+	}
+	return title;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	NSInteger result;
-	if(self.isMixed) result = [self.timeTableArray count];
-	else result = [self.routeArray count];
+	if(!self.isMixed) {
+		result = [self.routeArray count];
+	}
+	else if (section == 0) {
+		result = self.comingBusIndex;
+	}
+	else {
+		result = [self.timeTableArray count] - self.comingBusIndex;
+	}
 	return result;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	static NSString *CellIdentifier = nil;
+	static NSString *cellIdentifier = nil;
 	
-	if(self.isMixed) CellIdentifier = @"timeTableCell";
-	else CellIdentifier = @"routeCell";
+	if(!self.isMixed) {
+		cellIdentifier = @"routeCell";
+	}
+	else if (indexPath.section == 0) {
+		cellIdentifier = @"leftTimeTableCell";
+	}
+	else if (indexPath.section == 1) {
+		cellIdentifier = @"timeTableCell";
+	}
+	 
 	
     // Dequeue or create a new cell.
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-		//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-		[[NSBundle mainBundle] loadNibNamed:CellIdentifier owner:self options:nil];
-        cell = self.tableCell;
-        self.tableCell = nil;
-    }
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	
     if(self.isMixed) {
-		GRTTimeTableEntry *entry = (GRTTimeTableEntry *)[self.timeTableArray objectAtIndex:indexPath.row];
+		GRTTimeTableEntry *entry = (GRTTimeTableEntry *)[self.timeTableArray objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)];
 	
 		NSInteger time = [entry.departureTime integerValue];
-		
-		if(time < self.curTime){
-			cell.detailTextLabel.textColor = [UIColor colorWithRed:150.0/255 green:150.0/255 blue:150.0/255 alpha:1];
-		}
-		else {
-			cell.detailTextLabel.textColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
-		}
 		
 		if(time >= 240000){
 			time -= 240000;

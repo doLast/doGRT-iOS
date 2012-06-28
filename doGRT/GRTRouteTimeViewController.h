@@ -14,7 +14,6 @@
 @interface GRTRouteTimeViewController : UITableViewController
 
 // outlets
-@property (assign, nonatomic) IBOutlet UITableViewCell *tableCell;
 
 // properties
 @property (retain, nonatomic) GRTBusInfo *busInfo;

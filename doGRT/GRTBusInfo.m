@@ -260,10 +260,11 @@
 		}
 		table = [morningTable arrayByAddingObjectsFromArray:table];
 	}
-	time -= 3000;
-	if(time / 100 % 100 > 60) time -= 4000;
+//	time -= 3000;
+//	if(time / 100 % 100 > 60) time -= 4000;
 	
-	return [table filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:[NSString stringWithFormat:@"departureTime>%d", time]]];
+//	return [table filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:[NSString stringWithFormat:@"departureTime>%d", time]]];
+	return table;
 }
 
 - (NSArray *) getCurrentTimeTableByRoute:(NSString *)routeId{

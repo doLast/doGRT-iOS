@@ -13,7 +13,6 @@
 
 // outlets
 @property (assign, nonatomic) IBOutlet UIBarButtonItem *sendTextButton;
-@property (assign, nonatomic) IBOutlet UITableViewCell *tableCell;
 
 // properties
 @property (retain, nonatomic) NSNumber *busStopNumber;
