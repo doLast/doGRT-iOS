@@ -286,7 +286,7 @@
 		NSString *tripName = [NSString stringWithFormat:@"%@ %@", entry.routeId, entry.tripHeadsign];
 		
 		cell.detailTextLabel.text = tripName;
-		cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d:%02d", time / 10000, (time / 100) % 100, time % 100 ];
+		cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", time / 10000, (time / 100) % 100 ];
 	}
 	else {
 		GRTTripEntry *entry = (GRTTripEntry *)[self.routeArray objectAtIndex:indexPath.row];
