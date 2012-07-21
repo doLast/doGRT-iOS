@@ -422,7 +422,4 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="6cG-BA-EKK"/>
-    </inferredMetricsTieBreakers>
 </document>
