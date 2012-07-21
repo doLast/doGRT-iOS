@@ -10,6 +10,10 @@
 #import "GRTMainViewController.h"
 #import "UserChosenBusStop.h"
 
+NSString * const kGRTAddNewBusStopNotification = @"GRTAddNewBusStopNotification";
+NSString * const kGRTAddNewBusStopNotificationStopId = @"GRTAddNewBusStopNotificationStopId";
+NSString * const kGRTAddNewBusStopNotificationStopName = @"GRTAddNewBusStopNotificationStopName";
+
 @interface GRTStopListViewController ()
 @property (weak, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (retain, nonatomic) NSMutableArray *busStopArray;
@@ -51,6 +55,7 @@
 	self.title = @"Bus Stops";
 	self.navigationItem.leftBarButtonItem = self.editButtonItem;
 	
+	// Load user chosen bus stops
 	self.managedObjectContext = [(id) [[UIApplication sharedApplication] delegate]managedObjectContext];
 	
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -71,34 +76,11 @@
 	
 	self.busStopArray = mutableFetchResults;
 	
+	// Set help message
 	self.helpMessage.text = @"Press + to add a stop";
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-	[super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-	[super viewDidDisappear:animated];
+	
+	// Subscribe to Add notification
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAddNewBusStopNotification:) name:kGRTAddNewBusStopNotification object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -204,14 +186,15 @@
 
 #pragma mark - Adding View
 
-- (void)addingViewControllerDidFinishWithBusStopNumber:(NSNumber *)busStopNumber
-									   withBusStopName:(NSString *)busStopName{
-	if(busStopNumber){
+- (void)handleAddNewBusStopNotification:(NSNotification *)notification{
+	NSNumber *busStopNumber = [notification.userInfo objectForKey:kGRTAddNewBusStopNotificationStopId];
+	NSString *busStopName = [notification.userInfo objectForKey:kGRTAddNewBusStopNotificationStopName];
+	
+	if(busStopNumber && busStopName){
 		
 		NSPredicate *pred = [NSPredicate predicateWithFormat:@"stopId=%@", busStopNumber];
 		NSArray *result = [self.busStopArray filteredArrayUsingPredicate:pred];
 		if([result count] > 0){
-			[self dismissModalViewControllerAnimated:YES];
 			return;
 		}
 		
@@ -236,17 +219,13 @@
 	else {
 		// nil
 	}
-	[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - Segue setting
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"showAdding"]) {
-        [[segue destinationViewController] setDelegate:self];
-    }
-	else if([[segue identifier] isEqualToString:@"showMain"]) {
+	if([[segue identifier] isEqualToString:@"showMain"]) {
 		GRTMainViewController *vc = (GRTMainViewController *)[segue destinationViewController];
 		assert([vc isKindOfClass:[GRTMainViewController class]]);
 		UserChosenBusStop *busStop = (UserChosenBusStop *) [self.busStopArray objectAtIndex:[self.chosenIndex unsignedIntegerValue]];

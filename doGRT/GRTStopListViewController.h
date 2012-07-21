@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GRTAddingViewController.h"
 
-@interface GRTStopListViewController : UITableViewController <GRTAddingViewControllerDelegate, UIAlertViewDelegate>
+extern NSString * const kGRTAddNewBusStopNotification;
+extern NSString * const kGRTAddNewBusStopNotificationStopId;
+extern NSString * const kGRTAddNewBusStopNotificationStopName;
+
+@interface GRTStopListViewController : UITableViewController <UIAlertViewDelegate>
 
 @property (assign, nonatomic) IBOutlet UITableViewCell *busStopCell;
 @property (assign, nonatomic) IBOutlet UILabel *helpMessage;

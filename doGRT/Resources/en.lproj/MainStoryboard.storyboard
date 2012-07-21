@@ -108,7 +108,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="910" y="456"/>
+            <point key="canvasLocation" x="1521" y="182"/>
         </scene>
         <!--Route Time View Controller-->
         <scene sceneID="axI-bJ-lvT">
@@ -192,7 +192,7 @@
                     </navigationItem>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="1325" y="456"/>
+            <point key="canvasLocation" x="2009" y="182"/>
         </scene>
         <!--Route Map View Controller-->
         <scene sceneID="Eo1-HE-dnh">
@@ -216,11 +216,11 @@
                     <navigationItem key="navigationItem" id="y0x-8S-A6c"/>
                     <connections>
                         <outlet property="mapView" destination="lJI-R1-H46" id="JF3-wy-rah"/>
-                        <segue destination="qme-ur-gSp" kind="modal" identifier="showStopRoutes" id="bFD-tM-Ck2"/>
+                        <segue destination="2" kind="push" identifier="showMain" id="WOC-Y3-exg"/>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="1763" y="456"/>
+            <point key="canvasLocation" x="978" y="512"/>
         </scene>
         <!--Stop List View Controller-->
         <scene sceneID="2ct-vu-ecf">
@@ -273,7 +273,7 @@
                     <navigationItem key="navigationItem" id="aXP-7V-7gL">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="tio-A0-Yoq">
                             <connections>
-                                <segue destination="bwz-1U-usx" kind="modal" identifier="showAdding" modalTransitionStyle="coverVertical" id="H8m-Ya-Tvx"/>
+                                <segue destination="6SP-Hb-Iv0" kind="push" id="INI-pf-vgh"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -286,195 +286,57 @@
             <point key="canvasLocation" x="437" y="182"/>
         </scene>
         <!--Adding View Controller-->
-        <scene sceneID="WRr-H3-fow">
+        <scene sceneID="oLa-1i-ixb">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="R9o-b1-aL8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController id="bwz-1U-usx" customClass="GRTAddingViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="teF-xK-m6L">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="leW-63-Kby" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="6SP-Hb-Iv0" customClass="GRTAddingViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="WCw-DM-941">
+                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" barStyle="blackTranslucent" id="BUh-AB-1eu">
+                            <searchBar contentMode="redraw" placeholder="Select a stop or search in here..." id="8Ya-4t-BBh">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem title="ADD_NEW_BUS_STOP" id="Nuu-0r-TuD">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="XwN-VZ-pPg">
-                                            <connections>
-                                                <action selector="cancel:" destination="bwz-1U-usx" id="eFy-mz-WTc"/>
-                                            </connections>
-                                        </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="bG7-Lv-fbB">
-                                            <connections>
-                                                <action selector="save:" destination="bwz-1U-usx" id="8jx-tg-WQP"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="blackTranslucent" id="TeY-ra-mBO">
-                                <rect key="frame" x="0.0" y="44" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <barButtonItem style="plain" id="w1R-iy-sGY">
-                                        <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Select a stop or enter the stop number here..." minimumFontSize="17" clearButtonMode="always" id="ROj-Ge-Hdp">
-                                            <rect key="frame" x="12" y="6" width="296" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="done"/>
-                                            <connections>
-                                                <action selector="valueChanged:" destination="bwz-1U-usx" eventType="editingChanged" id="7ap-xD-IoH"/>
-                                            </connections>
-                                        </textField>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="flA-pA-8Mx">
-                                <rect key="frame" x="0.0" y="88" width="320" height="372"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <gestureRecognizers/>
+                                <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <outlet property="delegate" destination="bwz-1U-usx" id="8eX-ju-tj7"/>
+                                    <outlet property="delegate" destination="6SP-Hb-Iv0" id="CvA-xu-dYB"/>
+                                </connections>
+                            </searchBar>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="Lfr-EK-jk4">
+                                <rect key="frame" x="0.0" y="44" width="320" height="328"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="6SP-Hb-Iv0" id="ciu-Jp-fjG"/>
                                 </connections>
                             </mapView>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
-                        <gestureRecognizers/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="oDp-W0-p1Z">
+                        <barButtonItem key="rightBarButtonItem" title="Add" style="done" id="0hc-a2-bCL">
+                            <connections>
+                                <action selector="save:" destination="6SP-Hb-Iv0" id="oXJ-TF-8wT"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="busStopNumberText" destination="ROj-Ge-Hdp" id="ISb-3c-oQO"/>
-                        <outlet property="mapView" destination="flA-pA-8Mx" id="t3z-aN-aIm"/>
-                        <outlet property="navigationBar" destination="Nuu-0r-TuD" id="JOg-xu-jCa"/>
-                        <outlet property="saveButton" destination="bG7-Lv-fbB" id="ejf-bt-Jub"/>
-                        <segue destination="4IK-4u-rrg" kind="modal" identifier="showStopRoutes" id="O7e-WT-utQ"/>
+                        <outlet property="mapView" destination="Lfr-EK-jk4" id="Fjy-n5-NyP"/>
+                        <outlet property="saveButton" destination="0hc-a2-bCL" id="L6z-f0-7U8"/>
+                        <outlet property="searchDisplayController" destination="Ml3-zl-mOg" id="Bgy-GB-Rn6"/>
+                        <segue destination="2" kind="push" identifier="showMain" id="bgx-MR-P21"/>
                     </connections>
                 </viewController>
-            </objects>
-            <point key="canvasLocation" x="910" y="-142"/>
-        </scene>
-        <!--Stop Routes View Controller-->
-        <scene sceneID="hMS-hz-8MA">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="acx-LF-4ys" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController id="4IK-4u-rrg" customClass="GRTStopRoutesViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="bGm-vE-Yin">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="wnv-Q2-6vw">
-                                <rect key="frame" x="0.0" y="44" width="320" height="416"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="routeCell" textLabel="ZcH-Tg-F8A" style="IBUITableViewCellStyleDefault" id="dIF-Xs-RZf">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" text="Route Number and Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZcH-Tg-F8A">
-                                                    <rect key="frame" x="10" y="0.0" width="300" height="43"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="4IK-4u-rrg" id="8IW-JG-P2U"/>
-                                    <outlet property="delegate" destination="4IK-4u-rrg" id="uzC-IJ-QAJ"/>
-                                </connections>
-                            </tableView>
-                            <navigationBar contentMode="scaleToFill" barStyle="blackTranslucent" id="lNX-mL-oD6">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem title="STOP_ROUTES_LIST" id="eYw-QW-QOh">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="odN-Gc-gf1">
-                                            <connections>
-                                                <action selector="backToAddingWhenClick:" destination="4IK-4u-rrg" id="MBD-2Q-HRf"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                        </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
-                    </view>
+                <searchDisplayController id="Ml3-zl-mOg">
                     <connections>
-                        <outlet property="navigationBar" destination="eYw-QW-QOh" id="Pmv-0m-cO2"/>
-                        <outlet property="tableView" destination="wnv-Q2-6vw" id="HDP-UM-Tvt"/>
+                        <outlet property="delegate" destination="6SP-Hb-Iv0" id="yb2-Zw-qzX"/>
+                        <outlet property="searchBar" destination="8Ya-4t-BBh" id="9DU-Ov-HnV"/>
+                        <outlet property="searchContentsController" destination="6SP-Hb-Iv0" id="Ese-XC-eJt"/>
+                        <outlet property="searchResultsDataSource" destination="6SP-Hb-Iv0" id="mBT-Da-bzd"/>
+                        <outlet property="searchResultsDelegate" destination="6SP-Hb-Iv0" id="Itf-Wu-GfD"/>
                     </connections>
-                </viewController>
+                </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1325" y="-142"/>
-        </scene>
-        <!--Stop Routes View Controller-->
-        <scene sceneID="qhy-BL-jGX">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2Bm-yj-Qkd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController id="qme-ur-gSp" customClass="GRTStopRoutesViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="BLW-vL-l3p">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="4GI-cD-fZ5">
-                                <rect key="frame" x="0.0" y="44" width="320" height="416"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="routeCell" textLabel="lGA-Ad-mh7" style="IBUITableViewCellStyleDefault" id="ZWQ-4W-0RF">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" text="Route Number and Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lGA-Ad-mh7">
-                                                    <rect key="frame" x="10" y="0.0" width="300" height="43"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </view>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="qme-ur-gSp" id="BNm-xq-kX7"/>
-                                    <outlet property="delegate" destination="qme-ur-gSp" id="MTu-7w-j41"/>
-                                </connections>
-                            </tableView>
-                            <navigationBar contentMode="scaleToFill" barStyle="blackTranslucent" id="ccI-gL-MKi">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem title="STOP_ROUTES_LIST" id="x13-g1-psV">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="C8I-ZK-Kze">
-                                            <connections>
-                                                <action selector="backToAddingWhenClick:" destination="qme-ur-gSp" id="xfX-lr-sfI"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                        </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
-                    </view>
-                    <connections>
-                        <outlet property="navigationBar" destination="x13-g1-psV" id="WDe-De-Kb1"/>
-                        <outlet property="tableView" destination="4GI-cD-fZ5" id="QTa-By-Hcc"/>
-                    </connections>
-                </viewController>
-            </objects>
-            <point key="canvasLocation" x="2183" y="456"/>
+            <point key="canvasLocation" x="978" y="-160"/>
         </scene>
         <!--Starting View Controller-->
         <scene sceneID="rxa-ee-HSG">
@@ -522,13 +384,8 @@
         <class className="GRTAddingViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTAddingViewController.h"/>
             <relationships>
-                <relationship kind="action" name="cancel:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="save:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="valueChanged:" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="busStopNumberText" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="delegate"/>
                 <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
-                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationItem"/>
                 <relationship kind="outlet" name="saveButton" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>
@@ -538,7 +395,6 @@
                 <relationship kind="action" name="sendTextToGrtWhenClick:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="toggleDisplay:" candidateClass="UISegmentedControl"/>
                 <relationship kind="outlet" name="sendTextButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="tableCell" candidateClass="UITableViewCell"/>
             </relationships>
         </class>
         <class className="GRTRouteMapViewController" superclassName="UIViewController">
@@ -549,9 +405,6 @@
         </class>
         <class className="GRTRouteTimeViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTRouteTimeViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="tableCell" candidateClass="UITableViewCell"/>
-            </relationships>
         </class>
         <class className="GRTStartingViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStartingViewController.h"/>
@@ -563,19 +416,13 @@
                 <relationship kind="outlet" name="helpMessage" candidateClass="UILabel"/>
             </relationships>
         </class>
-        <class className="GRTStopRoutesViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopRoutesViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="backToAddingWhenClick:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationItem"/>
-                <relationship kind="outlet" name="tableCell" candidateClass="UITableViewCell"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="6cG-BA-EKK"/>
+    </inferredMetricsTieBreakers>
 </document>

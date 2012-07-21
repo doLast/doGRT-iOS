@@ -7,10 +7,11 @@
 //
 
 #import "GRTRouteMapViewController.h"
+#import "GRTMainViewController.h"
+
 #import "GRTBusInfo.h"
 #import "GRTTripEntry.h"
 #import "GRTBusStopEntry.h"
-#import "GRTStopRoutesViewController.h"
 
 @implementation GRTRouteMapViewController
 
@@ -110,18 +111,21 @@
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control{
-	[self performSegueWithIdentifier:@"showStopRoutes" sender:view];
+	[self performSegueWithIdentifier:@"showMain" sender:view];
 }
 
 #pragma mark - Segue setting
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([[segue identifier] isEqualToString:@"showStopRoutes"]) {
-		GRTStopRoutesViewController *vc = (GRTStopRoutesViewController *)[segue destinationViewController];
-		assert([vc isKindOfClass:[GRTStopRoutesViewController class]]);
-		MKAnnotationView *view = (MKAnnotationView *)sender;
-		vc.busStopNumber = [NSNumber numberWithInteger:[view.annotation.subtitle integerValue]];
+	if([[segue identifier] isEqualToString:@"showMain"] && 
+	   [sender isKindOfClass:[MKAnnotationView class]]) {
+		GRTMainViewController *vc = (GRTMainViewController *)[segue destinationViewController];
+		
+		MKAnnotationView *annotationView = (MKAnnotationView *)sender;
+		
+		vc.busStopNumber = [NSNumber numberWithInteger:[annotationView.annotation.subtitle integerValue]];
+		vc.busStopName = annotationView.annotation.title;
 	}
 }
 
