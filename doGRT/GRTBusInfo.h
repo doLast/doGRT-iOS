@@ -21,6 +21,7 @@
 				  withLimit:(NSUInteger)limit;
 + (NSArray *) getBusStopsByRouteId:(NSString *)routeId;
 + (NSString *) getBusStopNameByStop:(NSNumber *)stopId;
++ (NSArray *) getBusStopsLike:(NSString *)str;
 
 + (NSArray *) getTripsByStop:(NSNumber *)stopId;
 + (NSArray *) getRoutesByStop:(NSNumber *)stopId;

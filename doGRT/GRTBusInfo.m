@@ -44,11 +44,10 @@
 	return db;
 }
 
-+ (NSArray *) getBusStopsAt:(CLLocationCoordinate2D)coordinate 
-					 inSpan:(MKCoordinateSpan)span 
-				  withLimit:(NSUInteger)limit{
-	
++ (NSSet *)busStops
+{
 	static NSSet *stops = nil;
+
 	if(stops == nil){
 		NSMutableSet *newStops = [[NSMutableSet alloc] init];
 		
@@ -68,6 +67,14 @@
 		stops = newStops;
 	}
 	assert(stops != nil);
+	
+	return stops;
+}
+
++ (NSArray *) getBusStopsAt:(CLLocationCoordinate2D)coordinate 
+					 inSpan:(MKCoordinateSpan)span 
+				  withLimit:(NSUInteger)limit{
+	NSSet *stops = [GRTBusInfo busStops];
 		
 	NSNumber *latitudeStart = [NSNumber numberWithDouble:coordinate.latitude - span.latitudeDelta/2.0];
     NSNumber *latitudeStop = [NSNumber numberWithDouble:coordinate.latitude + span.latitudeDelta/2.0];
@@ -88,7 +95,22 @@
 	// return an array of GRTBusStopEntry
 }
 
-+ (NSArray *) getBusStopsByRouteId:(NSString *)routeId{
++ (NSArray *) getBusStopsLike:(NSString *)str{
+	NSSet *stops = [GRTBusInfo busStops];
+	NSArray *components = [str componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	NSMutableArray *subpredicates = [NSMutableArray array];
+
+	for (NSString *component in components) {
+		if([component length] == 0) { continue; }
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"stopId.description contains[cd] %@ || stopName contains[cd] %@", component, component];
+		[subpredicates addObject:predicate];
+	}
+	
+	return [[stops filteredSetUsingPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates]] allObjects];
+}
+
++ (NSArray *) getBusStopsByRouteId:(NSString *)routeId
+{
 	
 	NSMutableSet *stops = [[NSMutableSet alloc] init];
 	
@@ -112,7 +134,8 @@
 	// return an array of GRTBusStopEntry
 }
 
-+ (NSString *) getBusStopNameByStop:(NSNumber *)stopId{
++ (NSString *) getBusStopNameByStop:(NSNumber *)stopId
+{
 	
 	FMDatabase *db = [self openDB];
 	
@@ -128,7 +151,9 @@
 	return stopName;
 }
 
-+ (NSArray *) getTripsByStop:(NSNumber *)stopId{
+
++ (NSArray *) getTripsByStop:(NSNumber *)stopId
+{
 	
 	static NSMutableDictionary *tripDict = nil;
 	if(tripDict == nil){
@@ -159,7 +184,8 @@
 	return [tripDict objectForKey:stopId];
 }
 
-+ (NSArray *) getRoutesByStop:(NSNumber *)stopId{
++ (NSArray *) getRoutesByStop:(NSNumber *)stopId
+{
 	NSArray *trips = [GRTBusInfo getTripsByStop:stopId];
 	NSMutableDictionary *routes = [[NSMutableDictionary alloc] init];
 	for (GRTTripEntry *entry in trips) {
@@ -171,7 +197,8 @@
 }
 
 /* Instance Methods */
-- (NSString *) dayOfWeekToDayName:(NSUInteger)dayOfWeek{
+- (NSString *) dayOfWeekToDayName:(NSUInteger)dayOfWeek
+{
 	NSString *dayName = nil;
 	if(dayOfWeek == 1) dayName = @"sunday";
 	else if(dayOfWeek == 2) dayName = @"monday";
@@ -183,7 +210,8 @@
 	return dayName;
 }
 
-- (NSArray *) fetchDataForDate:(NSDate *)date{
+- (NSArray *) fetchDataForDate:(NSDate *)date
+{
 	// prepare data for query
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *dateComps = [calendar components:NSWeekdayCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:date];
@@ -231,7 +259,8 @@
 	return timeTableArray;
 }
 
-- (GRTBusInfo *) initByStop:(NSNumber *)stopId{
+- (GRTBusInfo *) initByStop:(NSNumber *)stopId
+{
 	self = [super init];
 	if(self){
 		// Initialize containers
@@ -241,7 +270,8 @@
 	return self;
 }
 
-- (NSArray *) getCurrentTimeTable{
+- (NSArray *) getCurrentTimeTable
+{
 	NSDate *curDate = [NSDate date];
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *dateComps = [calendar components: NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:curDate];
