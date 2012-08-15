@@ -276,7 +276,7 @@
 		2515ED2614C5817500FDCD6D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0440;
 			};
 			buildConfigurationList = 2515ED2914C5817500FDCD6D /* Build configuration list for PBXProject "doGRT" */;
 			compatibilityVersion = "Xcode 3.2";
