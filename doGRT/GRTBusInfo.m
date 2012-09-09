@@ -230,7 +230,7 @@
 	NSString *query = [NSString stringWithFormat:@"SELECT R.routeId, R.routeLongName, R.routeShortName, \
 					   T.tripHeadsign, S.arrivalTime, S.departureTime \
 					   FROM Calendar as C, Trip as T, Route as R, StopTime as S \
-					   WHERE C.%@=1 \
+					   WHERE C.%@ \
 					   AND T.serviceId=C.serviceId AND S.stopId=? \
 					   AND S.tripId=T.tripId AND R.routeId=T.routeId \
 					   ORDER BY S.departureTime", dayName];
