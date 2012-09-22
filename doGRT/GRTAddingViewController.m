@@ -105,8 +105,9 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	[super viewDidDisappear:animated];
 	self.stopLocating = YES;
+	self.mapView.userTrackingMode = MKUserTrackingModeNone;
+	[super viewDidDisappear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
