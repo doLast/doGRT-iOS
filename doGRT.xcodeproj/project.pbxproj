@@ -34,6 +34,7 @@
 		2561EA0514C594F7003EA97D /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2561EA0314C594F7003EA97D /* Icon@2x.png */; };
 		2590035F1610E5A100FE051C /* GRTBusStopsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2590035E1610E5A100FE051C /* GRTBusStopsViewController.m */; };
 		259003651610EB4A00FE051C /* UINavigationController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 259003641610EB4A00FE051C /* UINavigationController+Rotation.m */; };
+		25900367161101BD00FE051C /* GRT_GTFS.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 25900366161101BD00FE051C /* GRT_GTFS.sqlite */; };
 		259FF60B160F7BCD00B50F14 /* Launch.png in Resources */ = {isa = PBXBuildFile; fileRef = 259FF608160F7BCD00B50F14 /* Launch.png */; };
 		259FF60C160F7BCD00B50F14 /* Launch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 259FF609160F7BCD00B50F14 /* Launch@2x.png */; };
 		259FF60D160F7BCD00B50F14 /* Launch-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 259FF60A160F7BCD00B50F14 /* Launch-568h@2x.png */; };
@@ -41,7 +42,6 @@
 		25AE069315FCD01300079095 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 25AE069115FCD01300079095 /* FMDatabasePool.m */; };
 		25C7493C15E09173003AB331 /* iPhoneStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25C7493B15E09173003AB331 /* iPhoneStoryboard.storyboard */; };
 		25C7493E15E09190003AB331 /* iPadStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25C7493D15E09190003AB331 /* iPadStoryboard.storyboard */; };
-		25EAB18914CD770D004A9DEC /* GRT_GTFS.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 25EAB18814CD770D004A9DEC /* GRT_GTFS.sqlite */; };
 		25EAB19214CD77E7004A9DEC /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EAB18D14CD77E7004A9DEC /* FMDatabase.m */; };
 		25EAB19414CD77E7004A9DEC /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EAB19114CD77E7004A9DEC /* FMResultSet.m */; };
 		25EAB19614CD783F004A9DEC /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 25EAB19514CD783F004A9DEC /* libsqlite3.dylib */; };
@@ -92,6 +92,7 @@
 		2590035E1610E5A100FE051C /* GRTBusStopsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTBusStopsViewController.m; sourceTree = "<group>"; };
 		259003631610EB4A00FE051C /* UINavigationController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Rotation.h"; sourceTree = "<group>"; };
 		259003641610EB4A00FE051C /* UINavigationController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Rotation.m"; sourceTree = "<group>"; };
+		25900366161101BD00FE051C /* GRT_GTFS.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = GRT_GTFS.sqlite; sourceTree = "<group>"; };
 		259FF608160F7BCD00B50F14 /* Launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Launch.png; sourceTree = "<group>"; };
 		259FF609160F7BCD00B50F14 /* Launch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Launch@2x.png"; sourceTree = "<group>"; };
 		259FF60A160F7BCD00B50F14 /* Launch-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Launch-568h@2x.png"; sourceTree = "<group>"; };
@@ -101,7 +102,6 @@
 		25AE069115FCD01300079095 /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
 		25C7493B15E09173003AB331 /* iPhoneStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPhoneStoryboard.storyboard; sourceTree = "<group>"; };
 		25C7493D15E09190003AB331 /* iPadStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPadStoryboard.storyboard; sourceTree = "<group>"; };
-		25EAB18814CD770D004A9DEC /* GRT_GTFS.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = GRT_GTFS.sqlite; sourceTree = "<group>"; };
 		25EAB18C14CD77E7004A9DEC /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		25EAB18D14CD77E7004A9DEC /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
 		25EAB19014CD77E7004A9DEC /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
@@ -212,6 +212,7 @@
 			children = (
 				25C7493B15E09173003AB331 /* iPhoneStoryboard.storyboard */,
 				25C7493D15E09190003AB331 /* iPadStoryboard.storyboard */,
+				25900366161101BD00FE051C /* GRT_GTFS.sqlite */,
 				2515ED6814C5828700FDCD6D /* Default.png */,
 				2515ED6914C5828700FDCD6D /* Default@2x.png */,
 				253519D7160E52C40042BEA4 /* Default-568h@2x.png */,
@@ -228,7 +229,6 @@
 		2515ED7C14C5830300FDCD6D /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				25EAB18814CD770D004A9DEC /* GRT_GTFS.sqlite */,
 				2515ED8214C5830300FDCD6D /* GRTTimeTableEntry.h */,
 				2515ED8314C5830300FDCD6D /* GRTTimeTableEntry.m */,
 				25EAB19B14CD82B1004A9DEC /* GRTBusStopEntry.h */,
@@ -330,13 +330,13 @@
 				2515ED7114C5828700FDCD6D /* iTunesArtwork in Resources */,
 				2561EA0414C594F7003EA97D /* Icon.png in Resources */,
 				2561EA0514C594F7003EA97D /* Icon@2x.png in Resources */,
-				25EAB18914CD770D004A9DEC /* GRT_GTFS.sqlite in Resources */,
 				25C7493C15E09173003AB331 /* iPhoneStoryboard.storyboard in Resources */,
 				25C7493E15E09190003AB331 /* iPadStoryboard.storyboard in Resources */,
 				253519D8160E52C40042BEA4 /* Default-568h@2x.png in Resources */,
 				259FF60B160F7BCD00B50F14 /* Launch.png in Resources */,
 				259FF60C160F7BCD00B50F14 /* Launch@2x.png in Resources */,
 				259FF60D160F7BCD00B50F14 /* Launch-568h@2x.png in Resources */,
+				25900367161101BD00FE051C /* GRT_GTFS.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

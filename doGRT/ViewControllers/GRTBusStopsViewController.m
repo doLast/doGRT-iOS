@@ -28,6 +28,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		self.mapView.hidden = YES;
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -48,13 +51,15 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-		[self.navigationController setNavigationBarHidden:YES animated:NO];
-		self.mapView.hidden = NO;
-	}
-	else {
-		self.mapView.hidden = YES;
-		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+			[self.navigationController setNavigationBarHidden:YES animated:NO];
+			self.mapView.hidden = NO;
+		}
+		else {
+			self.mapView.hidden = YES;
+			[self.navigationController setNavigationBarHidden:NO animated:NO];
+		}
 	}
 }
 
