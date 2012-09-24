@@ -32,6 +32,8 @@
 		253519D8160E52C40042BEA4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 253519D7160E52C40042BEA4 /* Default-568h@2x.png */; };
 		2561EA0414C594F7003EA97D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2561EA0214C594F7003EA97D /* Icon.png */; };
 		2561EA0514C594F7003EA97D /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2561EA0314C594F7003EA97D /* Icon@2x.png */; };
+		2590035F1610E5A100FE051C /* GRTBusStopsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2590035E1610E5A100FE051C /* GRTBusStopsViewController.m */; };
+		259003651610EB4A00FE051C /* UINavigationController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 259003641610EB4A00FE051C /* UINavigationController+Rotation.m */; };
 		259FF60B160F7BCD00B50F14 /* Launch.png in Resources */ = {isa = PBXBuildFile; fileRef = 259FF608160F7BCD00B50F14 /* Launch.png */; };
 		259FF60C160F7BCD00B50F14 /* Launch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 259FF609160F7BCD00B50F14 /* Launch@2x.png */; };
 		259FF60D160F7BCD00B50F14 /* Launch-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 259FF60A160F7BCD00B50F14 /* Launch-568h@2x.png */; };
@@ -86,6 +88,10 @@
 		253519D7160E52C40042BEA4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		2561EA0214C594F7003EA97D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		2561EA0314C594F7003EA97D /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		2590035D1610E5A100FE051C /* GRTBusStopsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTBusStopsViewController.h; sourceTree = "<group>"; };
+		2590035E1610E5A100FE051C /* GRTBusStopsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTBusStopsViewController.m; sourceTree = "<group>"; };
+		259003631610EB4A00FE051C /* UINavigationController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Rotation.h"; sourceTree = "<group>"; };
+		259003641610EB4A00FE051C /* UINavigationController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Rotation.m"; sourceTree = "<group>"; };
 		259FF608160F7BCD00B50F14 /* Launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Launch.png; sourceTree = "<group>"; };
 		259FF609160F7BCD00B50F14 /* Launch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Launch@2x.png"; sourceTree = "<group>"; };
 		259FF60A160F7BCD00B50F14 /* Launch-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Launch-568h@2x.png"; sourceTree = "<group>"; };
@@ -163,6 +169,7 @@
 		2515ED3B14C5817600FDCD6D /* doGRT */ = {
 			isa = PBXGroup;
 			children = (
+				2590035B1610E53C00FE051C /* ViewControllers */,
 				2515ED5114C581CD00FDCD6D /* GRTAppDelegate.h */,
 				2515ED5214C581CD00FDCD6D /* GRTAppDelegate.m */,
 				2515ED5314C581CD00FDCD6D /* GRTBusInfo.h */,
@@ -239,6 +246,17 @@
 				2515EDA014C5832500FDCD6D /* UserChosenBusStop.m */,
 			);
 			path = ManagedObject;
+			sourceTree = "<group>";
+		};
+		2590035B1610E53C00FE051C /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				259003631610EB4A00FE051C /* UINavigationController+Rotation.h */,
+				259003641610EB4A00FE051C /* UINavigationController+Rotation.m */,
+				2590035D1610E5A100FE051C /* GRTBusStopsViewController.h */,
+				2590035E1610E5A100FE051C /* GRTBusStopsViewController.m */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		25EAB18B14CD77E7004A9DEC /* FMDB */ = {
@@ -347,6 +365,8 @@
 				251FBE8E152C55420000DACC /* GRTRouteMapViewController.m in Sources */,
 				25AE069215FCD01300079095 /* FMDatabaseAdditions.m in Sources */,
 				25AE069315FCD01300079095 /* FMDatabasePool.m in Sources */,
+				2590035F1610E5A100FE051C /* GRTBusStopsViewController.m in Sources */,
+				259003651610EB4A00FE051C /* UINavigationController+Rotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
