@@ -11,6 +11,9 @@
 
 @interface GRTStopTimesViewController ()
 
+@property (nonatomic, strong) NSDate *date;
+@property (nonatomic, strong) NSArray *currentStopTimes;
+
 @end
 
 @implementation GRTStopTimesViewController
@@ -18,14 +21,36 @@
 @synthesize tableView = _tableView;
 
 @synthesize stopTimes = _stopTimes;
+@synthesize date = _date;
+@synthesize currentStopTimes = _currentStopTimes;
+
+- (void)setDate:(NSDate *)date
+{
+	if (_date != nil) {
+		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		NSDateComponents *newComps = [calendar components:NSWeekdayCalendarUnit fromDate:date];
+		NSDateComponents *oldComps = [calendar components:NSWeekdayCalendarUnit fromDate:self.date];
+		
+		NSUInteger newDay = newComps.weekday;
+		NSUInteger oldDay = oldComps.weekday;
+		
+		if (newDay == oldDay) {
+			return;
+		}
+	}
+	_date = date;
+	self.currentStopTimes = [self.stopTimes stopTimesForDate:_date];
+	[self.tableView reloadData];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     NSAssert(self.stopTimes != nil, @"Must have a stopTimes");
-	
+
 	self.title = self.stopTimes.stop.stopName;
+	self.date = [NSDate date];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -48,24 +73,24 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+	return 1; // TODO: Splite left and coming buses
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+    return [self.currentStopTimes count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"stopTimesCell";
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
     
-    // Configure the cell...
+	GRTStopTime *stopTime = [self.currentStopTimes objectAtIndex:indexPath.row];
+	NSUInteger time = [stopTime.departureTime integerValue];
+	
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
+	cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", time / 10000, (time / 100) % 100 ];
     
     return cell;
 }

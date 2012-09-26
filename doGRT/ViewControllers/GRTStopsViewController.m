@@ -68,6 +68,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	[super viewWillAppear:animated];
 	[self setNavigationBarHidden:self.searchDisplayController.active animated:animated];
 	[self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
 }
@@ -75,6 +76,7 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[self setNavigationBarHidden:NO animated:animated];
+	[super viewDidDisappear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
