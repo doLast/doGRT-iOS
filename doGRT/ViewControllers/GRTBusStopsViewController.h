@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
-@interface GRTBusStopsViewController : UIViewController
+@interface GRTBusStopsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;
+
+- (IBAction)showSearch:(id)sender;
 
 @end
