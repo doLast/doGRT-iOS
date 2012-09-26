@@ -11,7 +11,7 @@
 
 @interface GRTStopTimes : NSObject
 
-@property (nonatomic, copy, readonly) GRTStop *stop;
+@property (nonatomic, strong, readonly) GRTStop *stop;
 
 - (NSArray *)stopTimesForDate:(NSDate *)date;
 - (NSArray *)stopTimesForDate:(NSDate *)date andRoute:(GRTRoute *)route;

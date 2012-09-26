@@ -13,7 +13,7 @@
 
 @interface GRTStopTimes ()
 
-@property (nonatomic, copy) GRTStop *stop;
+@property (nonatomic, strong) GRTStop *stop;
 @property (nonatomic, strong, readonly) NSArray *stopTimes;
 
 @end
