@@ -7,6 +7,7 @@
 //
 
 #import "GRTStopTimesViewController.h"
+#import "UINavigationController+Rotation.h"
 
 @interface GRTStopTimesViewController ()
 
@@ -16,15 +17,25 @@
 
 @synthesize tableView = _tableView;
 
+@synthesize stopTimes = _stopTimes;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    NSAssert(self.stopTimes != nil, @"Must have a stopTimes");
+	
+	self.title = self.stopTimes.stop.stopName;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+	return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+	return UIInterfaceOrientationMaskAll;
 }
 
 - (void)didReceiveMemoryWarning

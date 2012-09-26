@@ -6,10 +6,11 @@
 //
 //
 
-#import <UIKit/UIKit.h>
+#import "GRTGtfsSystem.h"
 
 @interface GRTStopTimesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) GRTStopTimes *stopTimes;
 
 @end

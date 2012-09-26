@@ -75,7 +75,8 @@
         <!--Stop Times View Controller-->
         <scene sceneID="nl6-TA-fOI">
             <objects>
-                <viewController id="5n4-tf-3Yl" customClass="GRTStopTimesViewController" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yht-bN-D3z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="stopTimesView" id="5n4-tf-3Yl" customClass="GRTStopTimesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="poG-mn-V3X">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -97,7 +98,6 @@
                         <outlet property="tableView" destination="HEl-yQ-oXv" id="Com-KX-Qhj"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yht-bN-D3z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="506" y="800"/>
         </scene>

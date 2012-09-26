@@ -8,6 +8,7 @@
 
 #import "GRTStopsViewController.h"
 #import "UINavigationController+Rotation.h"
+#import "GRTStopTimesViewController.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -33,7 +34,6 @@
 {
 	if (stops != _stops) {
 		_stops = stops;
-//		[self ];
 	}
 }
 
@@ -50,10 +50,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		self.mapView.alpha = 0.0;
-	}
 	
 	if (self.stops == nil) {
 		self.stops = [[GRTUserProfile defaultUserProfile] favoriteStops];
@@ -70,10 +66,15 @@
 	[self setMapView:self.mapView withRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
 }
 
-- (void)didReceiveMemoryWarning
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+	[self setNavigationBarHidden:self.searchDisplayController.active animated:animated];
+	[self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[self setNavigationBarHidden:NO animated:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -90,7 +91,7 @@
 {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-			[UIView animateWithDuration:0.5 animations:^{
+			[UIView animateWithDuration:duration animations:^{
 				self.mapView.alpha = 1.0;
 			} completion:^(BOOL finished){
 				[self updateMapView:self.mapView inRegion:self.mapView.region];
@@ -100,7 +101,7 @@
 			}];
 		}
 		else {
-			[UIView animateWithDuration:0.5 animations:^{
+			[UIView animateWithDuration:duration animations:^{
 				self.mapView.alpha = 0.0;
 			} completion:^(BOOL finished){
 				self.mapView.userTrackingMode = MKUserTrackingModeNone;
@@ -142,6 +143,14 @@
 		
 		[mapView addAnnotations:[newAnnotations allObjects]];
 	}
+}
+
+- (void)pushStopTimesForStop:(GRTStop *)stop
+{
+	GRTStopTimes *stopTimes = [[GRTStopTimes alloc] initWithStop:stop];
+	GRTStopTimesViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
+	viewController.stopTimes = stopTimes;
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - actions
@@ -209,6 +218,9 @@
 		[self.searchDisplayController setActive:NO animated:YES];
 		[self setMapView:self.mapView withRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake([stop.stopLat doubleValue], [stop.stopLon doubleValue]), 300, 300) animated:NO];
 	}
+	else {
+		[self pushStopTimesForStop:stop];
+	}
 }
 
 #pragma mark - Map View Delegate
@@ -248,7 +260,12 @@
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
-	
+	if ([view.annotation respondsToSelector:@selector(stop)]) {
+		GRTStop *stop = [((id<GRTStopAnnotation>) view.annotation) stop];
+		if (stop != nil) {
+			[self pushStopTimesForStop:stop];
+		}
+	}
 }
 
 
@@ -281,7 +298,7 @@
 		[self.delegate didSearchedStop:stop.stop];
 	}
 	else {
-		// TODO: showStopTimes
+		[self pushStopTimesForStop:stop.stop];
 	}
 }
 
