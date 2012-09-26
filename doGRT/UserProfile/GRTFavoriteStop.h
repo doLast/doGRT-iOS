@@ -11,9 +11,9 @@
 
 @interface GRTFavoriteStop : NSManagedObject <MKAnnotation>
 
-@property (nonatomic, retain) NSNumber * stop_id;
-@property (nonatomic, retain) NSString * display_name;
-@property (nonatomic, retain) NSNumber * display_order;
+@property (nonatomic, retain) NSNumber * stopId;
+@property (nonatomic, retain) NSString * displayName;
+@property (nonatomic, retain) NSNumber * displayOrder;
 
 // Center latitude and longitude of the annotion view.
 // The implementation of this property must be KVO compliant.

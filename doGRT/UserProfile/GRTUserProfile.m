@@ -38,9 +38,9 @@
 - (void)addFavoriteStop:(GRTStop *)stop
 {
 	GRTFavoriteStop *favoriteStop = [NSEntityDescription insertNewObjectForEntityForName:@"GRTFavoriteStop" inManagedObjectContext:self.managedObjectContext];
-	favoriteStop.stop_id = stop.stopId;
-	favoriteStop.display_name = stop.stopName;
-	favoriteStop.display_order = [NSNumber numberWithInteger:[[self favoriteStops] count]];
+	favoriteStop.stopId = stop.stopId;
+	favoriteStop.displayName = stop.stopName;
+	favoriteStop.displayOrder = [NSNumber numberWithInteger:[[self favoriteStops] count]];
 	
 	NSError *error = nil;
 	if (![self.managedObjectContext save:&error]) {

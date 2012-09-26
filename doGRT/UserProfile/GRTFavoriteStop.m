@@ -11,24 +11,24 @@
 
 @implementation GRTFavoriteStop
 
-@dynamic stop_id;
-@dynamic display_name;
-@dynamic display_order;
+@dynamic stopId;
+@dynamic displayName;
+@dynamic displayOrder;
 
 - (CLLocationCoordinate2D)coordinate
 {
-	GRTStop *stop = [[GRTGtfsSystem defaultGtfsSystem] stopById:self.stop_id];
+	GRTStop *stop = [[GRTGtfsSystem defaultGtfsSystem] stopById:self.stopId];
 	return stop.coordinate;
 }
 
 - (NSString *)title
 {
-	return self.display_name;
+	return self.displayName;
 }
 
 - (NSString *)subtitle
 {
-	return [NSString stringWithFormat:@"%@", self.stop_id];
+	return [NSString stringWithFormat:@"%@", self.stopId];
 }
 
 @end
