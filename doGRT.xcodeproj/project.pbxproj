@@ -39,6 +39,7 @@
 		2564646816124554000FC7DC /* GRTTripEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 2564646516124554000FC7DC /* GRTTripEntry.m */; };
 		2564647016129142000FC7DC /* GRTFavoriteStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 2564646F16129142000FC7DC /* GRTFavoriteStop.m */; };
 		256464731612916E000FC7DC /* GRTUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 256464721612916E000FC7DC /* GRTUserProfile.m */; };
+		256464761612AAB3000FC7DC /* GRTStopTimesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 256464751612AAB2000FC7DC /* GRTStopTimesViewController.m */; };
 		2590035F1610E5A100FE051C /* GRTStopsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2590035E1610E5A100FE051C /* GRTStopsViewController.m */; };
 		259003651610EB4A00FE051C /* UINavigationController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 259003641610EB4A00FE051C /* UINavigationController+Rotation.m */; };
 		25900367161101BD00FE051C /* GRT_GTFS.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 25900366161101BD00FE051C /* GRT_GTFS.sqlite */; };
@@ -113,8 +114,10 @@
 		2564646F16129142000FC7DC /* GRTFavoriteStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTFavoriteStop.m; sourceTree = "<group>"; };
 		256464711612916E000FC7DC /* GRTUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTUserProfile.h; sourceTree = "<group>"; };
 		256464721612916E000FC7DC /* GRTUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTUserProfile.m; sourceTree = "<group>"; };
-		2590035D1610E5A100FE051C /* GRTStopsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopsViewController.h; sourceTree = "<group>"; };
-		2590035E1610E5A100FE051C /* GRTStopsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopsViewController.m; sourceTree = "<group>"; };
+		256464741612AAB2000FC7DC /* GRTStopTimesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopTimesViewController.h; sourceTree = "<group>"; };
+		256464751612AAB2000FC7DC /* GRTStopTimesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopTimesViewController.m; sourceTree = "<group>"; };
+		2590035D1610E5A100FE051C /* GRTStopsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GRTStopsViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		2590035E1610E5A100FE051C /* GRTStopsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GRTStopsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		259003631610EB4A00FE051C /* UINavigationController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Rotation.h"; sourceTree = "<group>"; };
 		259003641610EB4A00FE051C /* UINavigationController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Rotation.m"; sourceTree = "<group>"; };
 		25900366161101BD00FE051C /* GRT_GTFS.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = GRT_GTFS.sqlite; sourceTree = "<group>"; };
@@ -323,6 +326,8 @@
 				259003641610EB4A00FE051C /* UINavigationController+Rotation.m */,
 				2590035D1610E5A100FE051C /* GRTStopsViewController.h */,
 				2590035E1610E5A100FE051C /* GRTStopsViewController.m */,
+				256464741612AAB2000FC7DC /* GRTStopTimesViewController.h */,
+				256464751612AAB2000FC7DC /* GRTStopTimesViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -387,7 +392,7 @@
 		2515ED2614C5817500FDCD6D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = 2515ED2914C5817500FDCD6D /* Build configuration list for PBXProject "doGRT" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -465,6 +470,7 @@
 				2564646816124554000FC7DC /* GRTTripEntry.m in Sources */,
 				2564647016129142000FC7DC /* GRTFavoriteStop.m in Sources */,
 				256464731612916E000FC7DC /* GRTUserProfile.m in Sources */,
+				256464761612AAB3000FC7DC /* GRTStopTimesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

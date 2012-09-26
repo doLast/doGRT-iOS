@@ -14,22 +14,26 @@
 
 @interface GRTStopsViewController ()
 
-@property (nonatomic, strong) NSArray *stops;
+@property (nonatomic, strong) id<GRTStopAnnotation> searchedStop;
 
 @end
 
 @implementation GRTStopsViewController
 
+@synthesize stops = _stops;
+@synthesize searchedStop = _searchedStop;
+
 @synthesize tableView = _tableView;
 @synthesize mapView = _mapView;
+@synthesize searchResultViewController = _searchResultViewController;
+@synthesize delegate = _delegate;
 
-@synthesize stops = _stops;
 
 - (void)setStops:(NSArray *)stops
 {
 	if (stops != _stops) {
 		_stops = stops;
-		[self updateMapView];
+//		[self ];
 	}
 }
 
@@ -54,14 +58,16 @@
 	if (self.stops == nil) {
 		self.stops = [[GRTUserProfile defaultUserProfile] favoriteStops];
 	}
-//	self.stops = [[GRTGtfsSystem defaultGtfsSystem] stopsWithNameLike:@"Sunview"];
+	if (self.searchResultViewController != nil) {
+		self.searchResultViewController.stops = nil;
+	}
 	
 	// Hide SearchBar
 	UISearchBar *searchBar = self.searchDisplayController.searchBar;
 	[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
 	
 	// Center Waterloo on map
-	[self setMapViewWithRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
+	[self setMapView:self.mapView withRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
 }
 
 - (void)didReceiveMemoryWarning
@@ -86,11 +92,18 @@
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 			[UIView animateWithDuration:0.5 animations:^{
 				self.mapView.alpha = 1.0;
+			} completion:^(BOOL finished){
+				[self updateMapView:self.mapView inRegion:self.mapView.region];
+//				if (self.mapView.userLocation == nil) {
+					self.mapView.userTrackingMode = MKUserTrackingModeFollow;
+//				}
 			}];
 		}
 		else {
 			[UIView animateWithDuration:0.5 animations:^{
 				self.mapView.alpha = 0.0;
+			} completion:^(BOOL finished){
+				self.mapView.userTrackingMode = MKUserTrackingModeNone;
 			}];
 		}
 	}
@@ -98,14 +111,37 @@
 
 #pragma mark - view update
 
-- (void)setMapViewWithRegion:(MKCoordinateRegion)region animated:(BOOL)animated
+- (void)setMapView:(MKMapView *)mapView withRegion:(MKCoordinateRegion)region animated:(BOOL)animated
 {
-	[self.mapView setRegion:region animated:animated];
+	if (self.searchedStop != nil) {
+		for (id<MKAnnotation> annotationView in mapView.selectedAnnotations) {
+			[mapView deselectAnnotation:annotationView animated:NO];
+		}
+		[self.mapView selectAnnotation:self.searchedStop animated:YES];
+	}
+	[mapView setRegion:region animated:animated];
 }
 
-- (void)updateMapView
-{
-	[self.mapView addAnnotations:self.stops];
+- (void)updateMapView:(MKMapView *)mapView inRegion:(MKCoordinateRegion)region{
+	
+	// find out all need to remove annotations
+	NSSet *visibleAnnotations = [mapView annotationsInMapRect:[mapView visibleMapRect]];
+	NSSet *allAnnotations = [NSSet setWithArray:mapView.annotations];
+	NSMutableSet *nonVisibleAnnotations = [NSMutableSet setWithSet:allAnnotations];
+	[nonVisibleAnnotations minusSet:visibleAnnotations];
+	[nonVisibleAnnotations filterUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTStop class]]];
+	[mapView removeAnnotations:[nonVisibleAnnotations allObjects]];
+	
+	// if not too many annotations currently on the map
+	if([[mapView annotations] count] < 50){
+		// get bus stops in current region
+		NSArray *newStops = [[GRTGtfsSystem defaultGtfsSystem] stopsInRegion:region];
+		
+		NSMutableSet *newAnnotations = [NSMutableSet setWithArray:newStops];
+		[newAnnotations minusSet:visibleAnnotations];
+		
+		[mapView addAnnotations:[newAnnotations allObjects]];
+	}
 }
 
 #pragma mark - actions
@@ -155,16 +191,38 @@
 	[self setNavigationBarHidden:NO animated:YES];
 }
 
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+	if (controller.active && [searchString length] > 1) {
+		self.searchResultViewController.stops = [[GRTGtfsSystem defaultGtfsSystem] stopsWithNameLike:searchString];
+		return YES;
+	}
+	return NO;
+}
+
+#pragma mark - stops search delegate
+
+- (void)didSearchedStop:(GRTStop *)stop
+{
+	if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+		self.searchedStop = stop;
+		[self.searchDisplayController setActive:NO animated:YES];
+		[self setMapView:self.mapView withRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake([stop.stopLat doubleValue], [stop.stopLon doubleValue]), 300, 300) animated:NO];
+	}
+}
+
 #pragma mark - Map View Delegate
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
-	
+	[self updateMapView:mapView inRegion:mapView.region];
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-	
+	if (view.annotation == self.searchedStop) {
+		self.searchedStop = nil;
+	}
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
@@ -177,9 +235,14 @@
 	for (MKAnnotationView *view in views) {
 		if ([view isKindOfClass:[MKPinAnnotationView class]]) {
 			MKPinAnnotationView *pin = (MKPinAnnotationView *) view;
-			pin.pinColor = MKPinAnnotationColorGreen;
+			if ([view.annotation isKindOfClass:[GRTFavoriteStop class]]) {
+				pin.pinColor = MKPinAnnotationColorGreen;
+			}
 			pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 		}
+	}
+	if (self.searchedStop != nil && [mapView.selectedAnnotations count] == 0) {
+		[mapView selectAnnotation:self.searchedStop animated:NO];
 	}
 }
 
@@ -199,15 +262,27 @@
 	static NSString *CellIdentifier = @"stopCell";
 	
     // Dequeue or create a new cell.
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
-	id<MKAnnotation> stop = [self.stops objectAtIndex:indexPath.row];
+	id<GRTStopAnnotation> stop = [self.stops objectAtIndex:indexPath.row];
 	
     cell.textLabel.text = stop.title;
 	
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", stop.subtitle];
 	
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	id<GRTStopAnnotation> stop = [self.stops objectAtIndex:indexPath.row];
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSearchedStop:)]) {
+		[self.delegate didSearchedStop:stop.stop];
+	}
+	else {
+		// TODO: showStopTimes
+	}
 }
 
 @end
