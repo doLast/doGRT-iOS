@@ -94,12 +94,13 @@
 		
 		if ([result next]) {
 			NSNumber *tripId = [NSNumber numberWithInt:[result intForColumn:@"tripId"]];
-			NSString *tripHeadsign = [result stringForColumn:@"tripHeadsigh"];
+			NSString *tripHeadsign = [result stringForColumn:@"tripHeadsign"];
 			NSNumber *routeId = [NSNumber numberWithInt:[result intForColumn:@"routeId"]];
+			NSString *serviceId = [result stringForColumn:@"serviceId"];
 			NSNumber *shapeId = nil;
 //			NSNumber *shapeId = [NSNumber numberWithInt:[result intForColumn:@"shapeId"]];
 			
-			trip = [[GRTTrip alloc] initWithTripId:tripId tripHeadsign:tripHeadsign routeId:routeId shapeId:shapeId];
+			trip = [[GRTTrip alloc] initWithTripId:tripId tripHeadsign:tripHeadsign routeId:routeId serviceId:serviceId shapeId:shapeId];
 			[self.trips	setObject:trip forKey:trip.tripId];
 		}
 	}
