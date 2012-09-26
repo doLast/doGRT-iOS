@@ -15,10 +15,15 @@
 @dynamic displayName;
 @dynamic displayOrder;
 
-- (CLLocationCoordinate2D)coordinate
+- (GRTStop *)stop
 {
 	GRTStop *stop = [[GRTGtfsSystem defaultGtfsSystem] stopById:self.stopId];
-	return stop.coordinate;
+	return stop;
+}
+
+- (CLLocationCoordinate2D)coordinate
+{
+	return self.stop.coordinate;
 }
 
 - (NSString *)title

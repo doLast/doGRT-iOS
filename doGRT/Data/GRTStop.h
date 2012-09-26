@@ -9,12 +9,21 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
-@interface GRTStop : NSObject <MKAnnotation>
+@class GRTStop;
+
+@protocol GRTStopAnnotation <MKAnnotation>
+
+@property (nonatomic, readonly) GRTStop *stop;
+
+@end
+
+@interface GRTStop : NSObject <GRTStopAnnotation>
 
 @property (nonatomic, strong, readonly) NSNumber *stopId;
 @property (nonatomic, strong, readonly) NSString *stopName;
 @property (nonatomic, readonly) NSNumber *stopLat;
 @property (nonatomic, readonly) NSNumber *stopLon;
+@property (nonatomic, readonly) GRTStop *stop;
 
 // Center latitude and longitude of the annotion view.
 // The implementation of this property must be KVO compliant.

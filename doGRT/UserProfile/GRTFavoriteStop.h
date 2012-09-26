@@ -7,13 +7,14 @@
 //
 
 #import <CoreData/CoreData.h>
-#import <MapKit/MapKit.h>
+#import "GRTStop.h"
 
-@interface GRTFavoriteStop : NSManagedObject <MKAnnotation>
+@interface GRTFavoriteStop : NSManagedObject <GRTStopAnnotation>
 
 @property (nonatomic, retain) NSNumber * stopId;
 @property (nonatomic, retain) NSString * displayName;
 @property (nonatomic, retain) NSNumber * displayOrder;
+@property (nonatomic, readonly) GRTStop *stop;
 
 // Center latitude and longitude of the annotion view.
 // The implementation of this property must be KVO compliant.

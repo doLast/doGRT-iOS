@@ -92,9 +92,11 @@ static const int kMaxStopsLimit = 50;
 
 #pragma mark - stops
 
-- (NSArray *)stopsAt:(CLLocationCoordinate2D)coordinate
-			  inSpan:(MKCoordinateSpan)span
+- (NSArray *)stopsInRegion:(MKCoordinateRegion)region;
 {
+	CLLocationCoordinate2D coordinate = region.center;
+	MKCoordinateSpan span = region.span;
+	
 	NSNumber *latitudeStart = [NSNumber numberWithDouble:coordinate.latitude - span.latitudeDelta/2.0];
     NSNumber *latitudeStop = [NSNumber numberWithDouble:coordinate.latitude + span.latitudeDelta/2.0];
     NSNumber *longitudeStart = [NSNumber numberWithDouble:coordinate.longitude - span.longitudeDelta/2.0];
@@ -112,7 +114,7 @@ static const int kMaxStopsLimit = 50;
 	return busStops;
 }
 
-- (NSArray *) stopsWithNameLike:(NSString *)str
+- (NSArray *)stopsWithNameLike:(NSString *)str
 {
 	NSArray *components = [str componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	NSMutableArray *subpredicates = [NSMutableArray array];

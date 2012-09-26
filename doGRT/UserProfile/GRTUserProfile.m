@@ -51,7 +51,7 @@
 - (NSArray *)favoriteStops
 {
 	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GRTFavoriteStop"];
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order"
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"displayOrder"
 																   ascending:YES];
 	[request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
 	

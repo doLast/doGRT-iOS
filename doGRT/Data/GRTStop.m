@@ -22,6 +22,11 @@
 @synthesize stopName = _stopName;
 @synthesize coordinate = _coordinate;
 
+- (GRTStop *)stop
+{
+	return self;
+}
+
 - (NSString *) title {
 	return self.stopName;
 }

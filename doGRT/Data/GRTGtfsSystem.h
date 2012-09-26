@@ -22,8 +22,7 @@
 
 + (GRTGtfsSystem *)defaultGtfsSystem;
 
-- (NSArray *)stopsAt:(CLLocationCoordinate2D)coordinate
-			  inSpan:(MKCoordinateSpan)span;
-- (NSArray *) stopsWithNameLike:(NSString *)str;
+- (NSArray *)stopsInRegion:(MKCoordinateRegion)region;
+- (NSArray *)stopsWithNameLike:(NSString *)str;
 
 @end
