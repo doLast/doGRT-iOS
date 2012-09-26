@@ -9,7 +9,7 @@
             <objects>
                 <viewController id="2" customClass="GRTMainViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Sft-HS-sOM">
-                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <label key="tableFooterView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Schedule valid until Dec 23, 2012" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" enabled="NO" id="lJ7-Uh-1Ig">
@@ -113,7 +113,7 @@
             <objects>
                 <tableViewController id="oxr-Vb-zbY" customClass="GRTRouteTimeViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Jmy-Zq-hxs">
-                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <label key="tableFooterView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Schedule valid until Dec 23, 2012" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" enabled="NO" id="DSu-N4-3Ur">
@@ -197,11 +197,11 @@
             <objects>
                 <viewController id="5De-2E-apt" customClass="GRTRouteMapViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5fx-9G-u16">
-                        <rect key="frame" x="0.0" y="64" width="320" height="372"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="lJI-R1-H46">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="372"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="5De-2E-apt" id="wTF-qy-bzT"/>
@@ -218,7 +218,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l5d-6d-O1S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1504" y="512"/>
+            <point key="canvasLocation" x="978" y="510"/>
         </scene>
         <!--Stop List View Controller-->
         <scene sceneID="2ct-vu-ecf">
@@ -339,6 +339,7 @@
         <!--Starting View Controller-->
         <scene sceneID="rxa-ee-HSG">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Veo-om-JaY" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="yxM-fz-3c1" customClass="GRTStartingViewController" sceneMemberID="viewController">
                     <imageView key="view" userInteractionEnabled="NO" contentMode="scaleToFill" image="Launch" id="0L0-0f-vvi">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
@@ -348,14 +349,13 @@
                         <segue destination="xoR-t6-Wi2" kind="modal" identifier="showMain" modalTransitionStyle="flipHorizontal" id="gBf-5s-1o5"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Veo-om-JaY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-515" y="182"/>
         </scene>
-        <!--Bus Stops View Controller-->
+        <!--Stops View Controller-->
         <scene sceneID="q0A-ru-mfH">
             <objects>
-                <viewController id="1Mx-hj-Dgb" customClass="GRTBusStopsViewController" sceneMemberID="viewController">
+                <viewController id="1Mx-hj-Dgb" customClass="GRTStopsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="49Y-kj-GiT">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -488,6 +488,6 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="bgx-MR-P21"/>
+        <segue reference="WOC-Y3-exg"/>
     </inferredMetricsTieBreakers>
 </document>

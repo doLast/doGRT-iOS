@@ -6,23 +6,32 @@
 //
 //
 
-#import "GRTBusStopsViewController.h"
+#import "GRTStopsViewController.h"
 #import "UINavigationController+Rotation.h"
 
 #import "GRTGtfsSystem.h"
+#import "GRTUserProfile.h"
 
-@interface GRTBusStopsViewController ()
+@interface GRTStopsViewController ()
 
 @property (nonatomic, strong) NSArray *stops;
 
 @end
 
-@implementation GRTBusStopsViewController
+@implementation GRTStopsViewController
 
 @synthesize tableView = _tableView;
 @synthesize mapView = _mapView;
 
 @synthesize stops = _stops;
+
+- (void)setStops:(NSArray *)stops
+{
+	if (stops != _stops) {
+		_stops = stops;
+		[self updateMapView];
+	}
+}
 
 #pragma mark - view life-cycle
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -42,11 +51,17 @@
 		self.mapView.alpha = 0.0;
 	}
 	
-	self.stops = [[GRTGtfsSystem defaultGtfsSystem] stopsWithNameLike:@"Sunview"];
+	if (self.stops == nil) {
+		self.stops = [[GRTUserProfile defaultUserProfile] favoriteStops];
+	}
+//	self.stops = [[GRTGtfsSystem defaultGtfsSystem] stopsWithNameLike:@"Sunview"];
 	
 	// Hide SearchBar
 	UISearchBar *searchBar = self.searchDisplayController.searchBar;
 	[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
+	
+	// Center Waterloo on map
+	[self setMapViewWithRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,6 +94,18 @@
 			}];
 		}
 	}
+}
+
+#pragma mark - view update
+
+- (void)setMapViewWithRegion:(MKCoordinateRegion)region animated:(BOOL)animated
+{
+	[self.mapView setRegion:region animated:animated];
+}
+
+- (void)updateMapView
+{
+	[self.mapView addAnnotations:self.stops];
 }
 
 #pragma mark - actions
@@ -128,6 +155,40 @@
 	[self setNavigationBarHidden:NO animated:YES];
 }
 
+#pragma mark - Map View Delegate
+
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+	
+}
+
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+	
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
+{
+	
+}
+
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
+{
+	for (MKAnnotationView *view in views) {
+		if ([view isKindOfClass:[MKPinAnnotationView class]]) {
+			MKPinAnnotationView *pin = (MKPinAnnotationView *) view;
+			pin.pinColor = MKPinAnnotationColorGreen;
+			pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+		}
+	}
+}
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+{
+	
+}
+
+
 #pragma mark - Table View Delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -140,11 +201,11 @@
     // Dequeue or create a new cell.
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	
-	GRTStop *stop = [self.stops objectAtIndex:indexPath.row];
+	id<MKAnnotation> stop = [self.stops objectAtIndex:indexPath.row];
 	
-    cell.textLabel.text = stop.stopName;
+    cell.textLabel.text = stop.title;
 	
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", stop.stopId];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", stop.subtitle];
 	
     return cell;
 }

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
-@interface GRTBusStopsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate>
+@interface GRTStopsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;

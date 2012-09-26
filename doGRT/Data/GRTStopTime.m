@@ -7,6 +7,7 @@
 //
 
 #import "GRTStopTime.h"
+#import "GRTGtfsSystem+Internal.h"
 
 @interface GRTStopTime ()
 
@@ -24,7 +25,7 @@
 
 - (GRTTrip *)trip
 {
-	return nil; // TODO
+	return [[GRTGtfsSystem defaultGtfsSystem] tripById:self.tripId];
 }
 
 - (GRTStopTime *)initWithTripId:(NSNumber *)tripId arrivalTime:(NSNumber *)arrivalTime departureTime:(NSNumber *)departureTime

@@ -15,7 +15,7 @@ static const int kMaxStopsLimit = 50;
 @interface GRTGtfsSystem ()
 
 @property (nonatomic, strong, readonly) FMDatabase *db;
-@property (nonatomic, strong, readonly) NSSet *stops;
+@property (nonatomic, strong, readonly) NSDictionary *stops;
 @property (nonatomic, strong) NSCache *services;
 @property (nonatomic, strong) NSCache *routes;
 @property (nonatomic, strong) NSCache *trips;
@@ -45,10 +45,10 @@ static const int kMaxStopsLimit = 50;
 	return _db;
 }
 
-- (NSSet *)stops
+- (NSDictionary *)stops
 {
 	if (_stops == nil) {
-		NSMutableSet *newStops = [[NSMutableSet alloc] init];
+		NSMutableDictionary *newStops = [[NSMutableDictionary alloc] init];
 		
 		FMResultSet *result = [self.db executeQuery:@"SELECT * FROM BusStop"];
 		while ([result next]){
@@ -59,7 +59,7 @@ static const int kMaxStopsLimit = 50;
 			
 			GRTStop *newStop = [[GRTStop alloc] initWithStopId:stopId stopName:stopName stopLat:stopLat stopLon:stopLon];
 			
-			[newStops addObject:newStop];
+			[newStops setObject:newStop forKey:newStop.stopId];
 		}
 		
 		_stops = newStops;
@@ -100,17 +100,16 @@ static const int kMaxStopsLimit = 50;
     NSNumber *longitudeStart = [NSNumber numberWithDouble:coordinate.longitude - span.longitudeDelta/2.0];
     NSNumber *longitudeStop = [NSNumber numberWithDouble:coordinate.longitude + span.longitudeDelta/2.0];
 	
-	NSSet *busStops = [self.stops filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"stopLat>%@ && stopLat<%@ && stopLon>%@ && stopLon<%@", latitudeStart, latitudeStop, longitudeStart, longitudeStop]];
+	NSArray *busStops = [[self.stops allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"stopLat>%@ && stopLat<%@ && stopLon>%@ && stopLon<%@", latitudeStart, latitudeStop, longitudeStart, longitudeStop]];
 	
-	NSArray *stopArray = [busStops allObjects];
-	if([stopArray count] > kMaxStopsLimit){
+	if([busStops count] > kMaxStopsLimit){
 		NSRange range;
 		range.location = 0;
 		range.length = kMaxStopsLimit;
-		stopArray = [stopArray subarrayWithRange:range];
+		busStops = [busStops subarrayWithRange:range];
 	}
 	
-	return stopArray;
+	return busStops;
 }
 
 - (NSArray *) stopsWithNameLike:(NSString *)str
@@ -124,14 +123,7 @@ static const int kMaxStopsLimit = 50;
 		[subpredicates addObject:predicate];
 	}
 	
-	return [[self.stops filteredSetUsingPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates]] allObjects];
+	return [[self.stops allValues] filteredArrayUsingPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:subpredicates]];
 }
-
-//#pragma mark - stopTimes
-//
-//- (GRTStopTimes *)stopTimesForStop:(GRTStop *)stop date:(NSDate *)date
-//{
-//	return nil; // TODO
-//}
 
 @end

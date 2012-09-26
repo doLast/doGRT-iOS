@@ -14,6 +14,7 @@
 
 @dynamic db;
 @dynamic services;
+@dynamic stops;
 @dynamic routes;
 @dynamic trips;
 @dynamic shapes;
@@ -48,6 +49,11 @@
 		}
 	}
 	return service;
+}
+
+- (GRTStop *)stopById:(NSNumber *)stopId
+{
+	return [self.stops objectForKey:stopId];
 }
 
 - (GRTRoute *)routeById:(NSNumber *)routeId

@@ -7,6 +7,7 @@
 //
 
 #import "GRTTrip.h"
+#import "GRTGtfsSystem+Internal.h"
 
 @interface GRTTrip ()
 
@@ -26,12 +27,12 @@
 
 - (GRTRoute *)route
 {
-	return nil; // TODO
+	return [[GRTGtfsSystem defaultGtfsSystem] routeById:self.routeId];
 }
 
 - (GRTShape *)shape
 {
-	return nil; // TODO
+	return [[GRTGtfsSystem defaultGtfsSystem] shapeById:self.shapeId];
 }
 
 - (GRTTrip *)initWithTripId:(NSNumber *)tripId tripHeadsign:(NSString *)tripHeadsign routeId:(NSNumber *)routeId shapeId:(NSNumber *)shapeId

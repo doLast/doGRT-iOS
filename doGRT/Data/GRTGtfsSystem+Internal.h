@@ -13,11 +13,13 @@
 @interface GRTGtfsSystem (Internal)
 @property (nonatomic, strong, readonly) FMDatabase *db;
 @property (nonatomic, strong, readonly) NSCache *services;
+@property (nonatomic, strong, readonly) NSDictionary *stops;
 @property (nonatomic, strong, readonly) NSCache *routes;
 @property (nonatomic, strong, readonly) NSCache *trips;
 @property (nonatomic, strong, readonly) NSCache *shapes;
 
 - (GRTService *)serviceById:(NSString *)serviceId;
+- (GRTStop *)stopById:(NSNumber *)stopId;
 - (GRTRoute *)routeById:(NSNumber *)routeId;
 - (GRTTrip *)tripById:(NSNumber *)tripId;
 - (GRTShape *)shapeById:(NSNumber *)shapeId;
