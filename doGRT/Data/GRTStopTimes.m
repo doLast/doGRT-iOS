@@ -14,22 +14,12 @@
 @interface GRTStopTimes ()
 
 @property (nonatomic, strong) GRTStop *stop;
-@property (nonatomic, strong, readonly) NSArray *stopTimes;
 
 @end
 
 @implementation GRTStopTimes
 
 @synthesize stop = _stop;
-@synthesize stopTimes = _stopTimes;
-
-- (NSArray *)stopTimes
-{
-	if (_stopTimes == nil) {
-		_stopTimes = [self fetchStopTimes];
-	}
-	return _stopTimes;
-}
 
 #pragma mark - constructor
 
@@ -46,21 +36,12 @@
 
 - (NSArray *)stopTimesForDate:(NSDate *)date
 {
-	// prepare data for query
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDateComponents *dateComps = [calendar components:NSWeekdayCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:date];
+	NSDate *start = [NSDate date];
+	NSArray *stopTimes = [self fetchStopTimesForDate:date];
+	NSDate *end = [NSDate date];
+	NSLog(@"Time elapsed: %f", end.timeIntervalSince1970 - start.timeIntervalSince1970);
 	
-	NSUInteger dayInWeek = dateComps.weekday;
-	NSString *dayName = [self dayNameForDayInWeek:dayInWeek];
-//	NSNumber *dateAsNumber = [NSNumber numberWithInteger:dateComps.year * 10000 + dateComps.month * 100 + dateComps.day];
-	
-	NSString *keyPath = [NSString stringWithFormat:@"trip.service.%@", dayName];
-	
-	NSPredicate *predicate = [NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForKeyPath:keyPath] rightExpression:[NSExpression expressionForConstantValue:[NSNumber numberWithBool:YES]] modifier:NSDirectPredicateModifier type:NSEqualToPredicateOperatorType options:0];
-	
-	NSArray *filteredTimes = [self.stopTimes filteredArrayUsingPredicate:predicate];
-	
-	return filteredTimes;
+	return stopTimes;
 }
 
 - (NSArray *)stopTimesForDate:(NSDate *)date andRoute:(GRTRoute *)route;
@@ -92,15 +73,24 @@
 	return dayName;
 }
 
-- (NSArray *)fetchStopTimes
-{	
+- (NSArray *)fetchStopTimesForDate:(NSDate *)date
+{
+	// prepare data for query
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *dateComps = [calendar components:NSWeekdayCalendarUnit fromDate:date];
+	
+	NSUInteger dayInWeek = dateComps.weekday;
+	NSString *dayName = [self dayNameForDayInWeek:dayInWeek];
+	NSNumber *stopId = self.stop.stopId;
+	NSString *query = [NSString stringWithFormat:@"SELECT S.* \
+					   FROM Calendar as C, Trip as T, StopTime as S \
+					   WHERE C.%@ AND S.stopId=? AND \
+					   S.tripId=T.tripId AND T.serviceId=C.serviceId \
+					   ORDER BY S.departureTime", dayName];
+	
 	// execute database query
 	FMDatabase *db = [GRTGtfsSystem defaultGtfsSystem].db;
-	
-	FMResultSet *result = [db executeQueryWithFormat:@"SELECT S.tripId, S.arrivalTime, S.departureTime \
-						   FROM StopTime as S \
-						   WHERE S.stopId=%@ \
-						   ORDER BY S.departureTime", self.stop.stopId];
+	FMResultSet *result = [db executeQuery:query, stopId];
 	if (result == nil){
 		NSLog(@"%@", [db lastErrorMessage]);
 		abort();
@@ -116,11 +106,11 @@
 		
 		GRTStopTime *stopTime = [[GRTStopTime alloc] initWithTripId:tripId arrivalTime:arrivalTime departureTime:departureTime];
 		[stopTimes addObject:stopTime];
-		//		NSLog(@"Route %@ %@ leaving at %@", newEntry.routeId, newEntry.tripHeadsign, newEntry.departureTime);
 	}
+	
+	NSLog(@"Obtain %d stopTimes", [stopTimes count]);
 	
 	return stopTimes;
 }
-
 
 @end
