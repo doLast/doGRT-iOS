@@ -102,10 +102,12 @@
 	while ([result next]) {
 		//retrieve values for each record
 		NSNumber *tripId = [NSNumber numberWithInt:[result intForColumn:@"tripId"]];
+		NSNumber *stopSequence = [NSNumber numberWithInt:[result intForColumn:@"stopSequence"]];
+		NSNumber *stopId = [NSNumber numberWithInt:[result intForColumn:@"stopId"]];
 		NSNumber *arrivalTime = [NSNumber numberWithInt:[result intForColumn:@"arrivalTime"]];
 		NSNumber *departureTime = [NSNumber numberWithInt:[result intForColumn:@"departureTime"]];
 		
-		GRTStopTime *stopTime = [[GRTStopTime alloc] initWithTripId:tripId arrivalTime:arrivalTime departureTime:departureTime];
+		GRTStopTime *stopTime = [[GRTStopTime alloc] initWithTripId:tripId stopSequence:stopSequence stopId:stopId arrivalTime:arrivalTime departureTime:departureTime];
 		[stopTimes addObject:stopTime];
 	}
 	
