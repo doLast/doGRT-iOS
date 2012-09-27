@@ -15,6 +15,11 @@
 @dynamic displayName;
 @dynamic displayOrder;
 
+- (CLLocation *)location
+{
+	return self.stop.location;
+}
+
 - (GRTStop *)stop
 {
 	GRTStop *stop = [[GRTGtfsSystem defaultGtfsSystem] stopById:self.stopId];

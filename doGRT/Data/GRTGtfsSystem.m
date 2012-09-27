@@ -115,6 +115,25 @@ static const int kMaxStopsLimit = 30;
 	return busStops;
 }
 
+- (NSArray *)stopsAroundLocation:(CLLocation *)location withinDistance:(CLLocationDistance)distance;
+{
+	MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location.coordinate, distance, distance);
+	NSArray *candidates = [self stopsInRegion:region];
+	NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"location" ascending:YES comparator:^NSComparisonResult(id obj1, id obj2){
+		CLLocationDistance d1 = [location distanceFromLocation:obj1];
+		CLLocationDistance d2 = [location distanceFromLocation:obj2];
+		if (d1 < d2) {
+			return NSOrderedAscending;
+		}
+		else if (d1 > d2) {
+			return NSOrderedDescending;
+		}
+		return NSOrderedSame;
+	}];
+	NSArray *locations = [candidates sortedArrayUsingDescriptors:@[sortDescriptor]];
+	return locations;
+}
+
 - (NSArray *)stopsWithNameLike:(NSString *)str
 {
 	NSArray *components = [str componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];

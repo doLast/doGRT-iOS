@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) NSNumber *stopId;
 @property (nonatomic, strong) NSString *stopName;
-@property (nonatomic) CLLocationCoordinate2D coordinate;
+@property (nonatomic, strong) CLLocation *location;
 
 @end
 
@@ -20,11 +20,16 @@
 
 @synthesize stopId = _stopId;
 @synthesize stopName = _stopName;
-@synthesize coordinate = _coordinate;
+@synthesize location = _location;
 
 - (GRTStop *)stop
 {
 	return self;
+}
+
+- (CLLocationCoordinate2D)coordinate
+{
+	return self.location.coordinate;
 }
 
 - (NSString *) title {
@@ -46,7 +51,7 @@
 - (GRTStop *) initWithStopId:(NSNumber *)stopId stopName:(NSString *)stopName stopLat:(NSNumber *)stopLat stopLon:(NSNumber *)stopLon{
 	self = [super init];
 	if(self != nil){
-		self.coordinate = CLLocationCoordinate2DMake([stopLat doubleValue], [stopLon doubleValue]);
+		self.location = [[CLLocation alloc] initWithLatitude:[stopLat doubleValue] longitude:[stopLon doubleValue]];
 		self.stopId = stopId;
 		self.stopName = stopName;
 	}

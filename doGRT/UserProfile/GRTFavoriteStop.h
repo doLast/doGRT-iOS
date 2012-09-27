@@ -14,6 +14,8 @@
 @property (nonatomic, retain) NSNumber * stopId;
 @property (nonatomic, retain) NSString * displayName;
 @property (nonatomic, retain) NSNumber * displayOrder;
+
+@property (nonatomic, readonly) CLLocation *location;
 @property (nonatomic, readonly) GRTStop *stop;
 
 // Center latitude and longitude of the annotion view.

@@ -13,6 +13,7 @@
 
 @protocol GRTStopAnnotation <MKAnnotation>
 
+@property (nonatomic, readonly) CLLocation *location;
 @property (nonatomic, readonly) GRTStop *stop;
 
 @end
@@ -21,8 +22,8 @@
 
 @property (nonatomic, strong, readonly) NSNumber *stopId;
 @property (nonatomic, strong, readonly) NSString *stopName;
-@property (nonatomic, readonly) NSNumber *stopLat;
-@property (nonatomic, readonly) NSNumber *stopLon;
+@property (nonatomic, strong, readonly) CLLocation *location;
+
 @property (nonatomic, readonly) GRTStop *stop;
 
 // Center latitude and longitude of the annotion view.
