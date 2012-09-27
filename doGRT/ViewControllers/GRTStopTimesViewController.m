@@ -76,12 +76,6 @@
 	return UIInterfaceOrientationMaskAll;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - actions
 
 - (IBAction)toggleStopFavorite:(id)sender
@@ -117,6 +111,8 @@
 	NSUInteger time = [stopTime.departureTime integerValue];
 	
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
+	cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
+	cell.textLabel.textAlignment = NSTextAlignmentCenter;
 	cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", time / 10000, (time / 100) % 100 ];
     
     return cell;
