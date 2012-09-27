@@ -119,6 +119,7 @@
 	cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", time / 10000, (time / 100) % 100 ];
 	cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
 	cell.textLabel.textAlignment = NSTextAlignmentCenter;
+//	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
 }

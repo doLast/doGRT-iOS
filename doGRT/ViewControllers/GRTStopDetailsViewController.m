@@ -15,15 +15,30 @@
 
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) GRTFavoriteStop *favoriteStop;
-@property (nonatomic, strong) GRTStopTimesViewController *stopTimesVC;
-@property (nonatomic, strong) GRTStopRoutesViewController *stopRoutesVC;
+@property (nonatomic, strong) NSArray *candidateViewControllers;
 
 @end
 
 @implementation GRTStopDetailsViewController
 
 @synthesize stopTimes = _stopTimes;
-@synthesize stopTimesVC = _stopTimesVC;
+@synthesize viewsSegmentedControl = _viewsSegmentedControl;
+@synthesize favButton = _favButton;
+
+@synthesize date = _date;
+@synthesize favoriteStop = _favoriteStop;
+@synthesize candidateViewControllers = _candidateViewControllers;
+
+- (void)setFavoriteStop:(GRTFavoriteStop *)favoriteStop
+{
+	_favoriteStop = favoriteStop;
+	if (_favoriteStop != nil) {
+		self.favButton.title = @"Remove Fav";
+	}
+	else {
+		self.favButton.title = @"Add to Fav";
+	}
+}
 
 #pragma mark - view life-cycle
 
@@ -42,21 +57,39 @@
 	
 	NSAssert(self.stopTimes != nil, @"Must have a stopTimes");
 	
-	self.title = self.stopTimes.stop.stopName;
+//	self.title = self.stopTimes.stop.stopName;
 	self.date = [NSDate date];
 	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopTimes.stop];
 	
-	self.stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
-	self.stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date];
+	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
+	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date];
+	stopTimesVC.delegate = self;
 	
-	self.stopRoutesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopRoutesView"];
-	self.stopRoutesVC.routes = [self.stopTimes routes];
-	self.stopRoutesVC.delegate = self;
+	GRTStopRoutesViewController *stopRoutesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopRoutesView"];
+	stopRoutesVC.routes = [self.stopTimes routes];
+	stopRoutesVC.delegate = self;
 	
-	[self setViewControllers:[NSArray arrayWithObjects:self.stopTimesVC, nil] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+	self.candidateViewControllers = [NSArray arrayWithObjects:stopTimesVC, stopRoutesVC, nil];
+	
+	NSInteger index = 0; // TODO: Let user choose
+	[self setViewControllers:@[[self.candidateViewControllers objectAtIndex:index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+	[self.viewsSegmentedControl setSelectedSegmentIndex:index];
 }
 
 #pragma mark - actions
+
+- (IBAction)toggleViews:(id)sender
+{
+	NSInteger old = [self.candidateViewControllers indexOfObject:[self.viewControllers objectAtIndex:0]];
+	NSInteger new = (old + 1) % [self.candidateViewControllers count];
+	
+	UIPageViewControllerNavigationDirection direction = UIPageViewControllerNavigationDirectionForward;
+	if (new < old) {
+		direction = UIPageViewControllerNavigationDirectionReverse;
+	}
+	
+	[self setViewControllers:@[[self.candidateViewControllers objectAtIndex:new]] direction:direction animated:YES completion:nil];
+}
 
 - (IBAction)toggleStopFavorite:(id)sender
 {
@@ -74,18 +107,30 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
-	if (viewController == self.stopTimesVC) {
-		return self.stopRoutesVC;
-	}
-	return self.stopTimesVC;
+	NSInteger index = [self.candidateViewControllers indexOfObject:viewController];
+	index = (index + 1) % [self.candidateViewControllers count];
+		
+	return [self.candidateViewControllers objectAtIndex:index];
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
-	if (viewController == self.stopTimesVC) {
-		return self.stopRoutesVC;
-	}
-	return self.stopTimesVC;
+	return [self pageViewController:pageViewController viewControllerBeforeViewController:viewController];
+}
+
+#pragma mark - page view delegate
+
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
+{
+	NSInteger index = [self.candidateViewControllers indexOfObject:[self.viewControllers objectAtIndex:0]];
+	[self.viewsSegmentedControl setSelectedSegmentIndex:index];
+}
+
+#pragma mark - stop times view controller delegate
+
+- (void)didSelectStopTime:(GRTStopTime *)stopTime
+{
+	// TODO: show stop time's detail
 }
 
 #pragma mark - stop routes view controller delegate

@@ -86,12 +86,28 @@
             <objects>
                 <pageViewController storyboardIdentifier="stopDetailsView" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="GJh-9J-LUE" customClass="GRTStopDetailsViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="Y0o-BL-DEZ">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="bar" selectedSegmentIndex="0" id="Ls4-Zv-c6e">
+                            <rect key="frame" x="74" y="7" width="131" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="MIXED"/>
+                                <segment title="ROUTES"/>
+                            </segments>
+                            <connections>
+                                <action selector="toggleViews:" destination="GJh-9J-LUE" eventType="valueChanged" id="SaD-bJ-xs0"/>
+                            </connections>
+                        </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" title="TOGGLE_FAV" id="Tbf-o1-emc">
                             <connections>
                                 <action selector="toggleStopFavorite:" destination="GJh-9J-LUE" id="8cL-Ia-XOc"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="favButton" destination="Tbf-o1-emc" id="cma-e4-yLl"/>
+                        <outlet property="viewsSegmentedControl" destination="Ls4-Zv-c6e" id="nX6-pM-mwn"/>
+                    </connections>
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X1k-hZ-wE4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -157,6 +173,9 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopDetailsViewController.h"/>
             <relationships>
                 <relationship kind="action" name="toggleStopFavorite:"/>
+                <relationship kind="action" name="toggleViews:"/>
+                <relationship kind="outlet" name="favButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="viewsSegmentedControl" candidateClass="UISegmentedControl"/>
             </relationships>
         </class>
         <class className="GRTStopRoutesViewController" superclassName="UITableViewController">
