@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSArray *currentStopTimes;
+@property (assign, nonatomic) NSInteger comingBusIndex;
 @property (nonatomic, strong) GRTFavoriteStop *favoriteStop;
 
 @end
@@ -27,6 +28,7 @@
 @synthesize stopTimes = _stopTimes;
 @synthesize date = _date;
 @synthesize currentStopTimes = _currentStopTimes;
+@synthesize comingBusIndex = _comingBusIndex;
 @synthesize favoriteStop = _favoriteStop;
 
 - (void)setDate:(NSDate *)date
@@ -45,7 +47,25 @@
 	}
 	_date = date;
 	self.currentStopTimes = [self.stopTimes stopTimesForDate:_date];
-	[self.tableView reloadData];
+}
+
+- (void)setCurrentStopTimes:(NSArray *)currentStopTimes
+{
+	if (_currentStopTimes != currentStopTimes) {
+		_currentStopTimes = currentStopTimes;
+		
+		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];
+		NSInteger curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
+		self.comingBusIndex = [[self.currentStopTimes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"departureTime<=%d", curTime, nil]] count];
+		
+		[self.tableView reloadData];
+		
+		if(self.comingBusIndex > 3){
+			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 3 inSection:0];
+			[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+		}
+	}
 }
 
 - (void)setFavoriteStop:(GRTFavoriteStop *)favoriteStop
@@ -92,14 +112,33 @@
 
 #pragma mark - Table view data source
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	NSString *title;
+	if (section == 0) {
+		title = @"Left Buses";
+	}
+	else if (section == 1) {
+		title = @"Coming Buses";
+	}
+	return title;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return 1; // TODO: Splite left and coming buses
+	return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.currentStopTimes count];
+	NSInteger result;
+	if (section == 0) {
+		result = self.comingBusIndex;
+	}
+	else {
+		result = [self.currentStopTimes count] - self.comingBusIndex;
+	}
+	return result;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -107,55 +146,29 @@
     static NSString *CellIdentifier = @"stopTimesCell";
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
     
-	GRTStopTime *stopTime = [self.currentStopTimes objectAtIndex:indexPath.row];
-	NSUInteger time = [stopTime.departureTime integerValue];
+	GRTStopTime *stopTime = [self.currentStopTimes objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)];
+	NSInteger time = [stopTime.departureTime integerValue];
+	if(time >= 240000){
+		time -= 240000;
+	}
+	else if(time < 0){
+		time += 240000;
+	}
 	
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
+	if (indexPath.section == 0) {
+		cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+	}
+	else {
+		cell.detailTextLabel.textColor = [UIColor darkTextColor];
+	}
+	
+	cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", time / 10000, (time / 100) % 100 ];
 	cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
 	cell.textLabel.textAlignment = NSTextAlignmentCenter;
-	cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", time / 10000, (time / 100) % 100 ];
     
     return cell;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 
