@@ -60,19 +60,15 @@
 {
     [super viewDidLoad];
 	
-//	if (self.stops == nil) {
-//		self.stops = [[GRTUserProfile defaultUserProfile] favoriteStops];
-//	}
-//	if (self.searchResultViewController != nil) {
-//		self.searchResultViewController.stops = nil;
-//	}
-	
 	// Hide SearchBar
 	UISearchBar *searchBar = self.searchDisplayController.searchBar;
 	[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
 	
 	// Center Waterloo on map
 	[self setMapView:self.mapView withRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
+	
+	// Enable user location tracking
+	self.mapView.userTrackingMode = MKUserTrackingModeFollow;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -109,9 +105,9 @@
 			[UIView animateWithDuration:duration animations:^{
 				self.mapView.alpha = 1.0;
 			} completion:^(BOOL finished){
-				[self updateMapView:self.mapView inRegion:self.mapView.region];
+				[self updateMapView:self.mapView];
 //				if (self.mapView.userLocation == nil) {
-					self.mapView.userTrackingMode = MKUserTrackingModeFollow;
+//					self.mapView.userTrackingMode = MKUserTrackingModeFollow;
 //				}
 			}];
 		}
@@ -119,7 +115,7 @@
 			[UIView animateWithDuration:duration animations:^{
 				self.mapView.alpha = 0.0;
 			} completion:^(BOOL finished){
-				self.mapView.userTrackingMode = MKUserTrackingModeNone;
+//				self.mapView.userTrackingMode = MKUserTrackingModeNone;
 			}];
 		}
 	}
@@ -135,7 +131,7 @@
 	if (self.mapView != nil) {
 		[self.mapView removeAnnotations:self.mapView.annotations];
 		[self.mapView addAnnotations:self.stops];
-		[self updateMapView:self.mapView inRegion:self.mapView.region];
+		[self updateMapView:self.mapView];
 	}
 }
 
@@ -150,29 +146,45 @@
 	[mapView setRegion:region animated:animated];
 }
 
-- (void)updateMapView:(MKMapView *)mapView inRegion:(MKCoordinateRegion)region{
+- (void)updateMapView:(MKMapView *)mapView
+{
 	// If invisible, do nothing
 	if (mapView.alpha == 0) {
 		return;
 	}
-	
-	// find out all need to remove annotations
-	NSSet *visibleAnnotations = [mapView annotationsInMapRect:[mapView visibleMapRect]];
-	NSSet *allAnnotations = [NSSet setWithArray:mapView.annotations];
-	NSMutableSet *nonVisibleAnnotations = [NSMutableSet setWithSet:allAnnotations];
-	[nonVisibleAnnotations minusSet:visibleAnnotations];
-	[nonVisibleAnnotations filterUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTStop class]]];
-	[mapView removeAnnotations:[nonVisibleAnnotations allObjects]];
-	
-	// if not too many annotations currently on the map
-	if([[mapView annotations] count] < 50){
-		// get bus stops in current region
-		NSArray *newStops = [[GRTGtfsSystem defaultGtfsSystem] stopsInRegion:region];
 		
-		NSMutableSet *newAnnotations = [NSMutableSet setWithArray:newStops];
-		[newAnnotations minusSet:visibleAnnotations];
+	NSOperation *annotationUpdate = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performAnnotationUpdateOnMapView:) object:mapView];
+	
+	[self.mapUpdateQueue waitUntilAllOperationsAreFinished];
+	[self.mapUpdateQueue addOperation:annotationUpdate];
+}
+
+- (void)performAnnotationUpdateOnMapView:(MKMapView *)mapView
+{
+	@synchronized(self) {
+		MKCoordinateRegion region = mapView.region;
 		
-		[mapView addAnnotations:[newAnnotations allObjects]];
+		// find out all need to remove annotations
+		NSSet *visibleAnnotations = [mapView annotationsInMapRect:[mapView visibleMapRect]];
+		NSSet *allAnnotations = [NSSet setWithArray:mapView.annotations];
+		NSMutableSet *nonVisibleAnnotations = [NSMutableSet setWithSet:allAnnotations];
+		[nonVisibleAnnotations minusSet:visibleAnnotations];
+		[nonVisibleAnnotations filterUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTStop class]]];
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[mapView removeAnnotations:[nonVisibleAnnotations allObjects]];
+			
+			// if not too many annotations currently on the map
+			if([[mapView annotations] count] < 50){
+				// get bus stops in current region
+				NSArray *newStops = [[GRTGtfsSystem defaultGtfsSystem] stopsInRegion:region];
+				
+				NSMutableSet *newAnnotations = [NSMutableSet setWithArray:newStops];
+				[newAnnotations minusSet:visibleAnnotations];
+				
+				[mapView addAnnotations:[newAnnotations allObjects]];
+			}
+		});
 	}
 }
 
@@ -258,7 +270,7 @@
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
-	[self updateMapView:mapView inRegion:mapView.region];
+	[self updateMapView:mapView];
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view

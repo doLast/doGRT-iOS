@@ -10,7 +10,7 @@
 
 #import "FMDatabase.h"
 
-static const int kMaxStopsLimit = 50;
+static const int kMaxStopsLimit = 30;
 
 @interface GRTGtfsSystem ()
 
