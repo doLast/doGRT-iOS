@@ -14,50 +14,24 @@
 
 @interface GRTStopTimesViewController ()
 
-@property (nonatomic, strong) NSDate *date;
-@property (nonatomic, strong) NSArray *currentStopTimes;
-@property (assign, nonatomic) NSInteger comingBusIndex;
-@property (nonatomic, strong) GRTFavoriteStop *favoriteStop;
+@property (nonatomic) NSInteger comingBusIndex;
 
 @end
 
 @implementation GRTStopTimesViewController
 
-@synthesize tableView = _tableView;
-
 @synthesize stopTimes = _stopTimes;
-@synthesize date = _date;
-@synthesize currentStopTimes = _currentStopTimes;
 @synthesize comingBusIndex = _comingBusIndex;
-@synthesize favoriteStop = _favoriteStop;
 
-- (void)setDate:(NSDate *)date
+- (void)setStopTimes:(NSArray *)stopTimes
 {
-	if (_date != nil) {
-		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-		NSDateComponents *newComps = [calendar components:NSWeekdayCalendarUnit fromDate:date];
-		NSDateComponents *oldComps = [calendar components:NSWeekdayCalendarUnit fromDate:self.date];
-		
-		NSUInteger newDay = newComps.weekday;
-		NSUInteger oldDay = oldComps.weekday;
-		
-		if (newDay == oldDay) {
-			return;
-		}
-	}
-	_date = date;
-	self.currentStopTimes = [self.stopTimes stopTimesForDate:_date];
-}
-
-- (void)setCurrentStopTimes:(NSArray *)currentStopTimes
-{
-	if (_currentStopTimes != currentStopTimes) {
-		_currentStopTimes = currentStopTimes;
+	if (_stopTimes != stopTimes) {
+		_stopTimes = stopTimes;
 		
 		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];
 		NSInteger curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
-		self.comingBusIndex = [[self.currentStopTimes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"departureTime<=%d", curTime, nil]] count];
+		self.comingBusIndex = [[self.stopTimes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"departureTime<=%d", curTime, nil]] count];
 		
 		[self.tableView reloadData];
 		
@@ -68,22 +42,11 @@
 	}
 }
 
-- (void)setFavoriteStop:(GRTFavoriteStop *)favoriteStop
-{
-	_favoriteStop = favoriteStop;
-	// TODO: Change fav button state
-	
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     NSAssert(self.stopTimes != nil, @"Must have a stopTimes");
-
-	self.title = self.stopTimes.stop.stopName;
-	self.date = [NSDate date];
-	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopTimes.stop];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -94,20 +57,6 @@
 - (NSUInteger)supportedInterfaceOrientations
 {
 	return UIInterfaceOrientationMaskAll;
-}
-
-#pragma mark - actions
-
-- (IBAction)toggleStopFavorite:(id)sender
-{
-	if (self.favoriteStop != nil){
-		if ([[GRTUserProfile defaultUserProfile] removeFavoriteStop:self.favoriteStop]) {
-			self.favoriteStop = nil;
-		}
-	}
-	else {
-		self.favoriteStop = [[GRTUserProfile defaultUserProfile] addStop:self.stopTimes.stop];
-	}
 }
 
 #pragma mark - Table view data source
@@ -136,7 +85,7 @@
 		result = self.comingBusIndex;
 	}
 	else {
-		result = [self.currentStopTimes count] - self.comingBusIndex;
+		result = [self.stopTimes count] - self.comingBusIndex;
 	}
 	return result;
 }
@@ -146,7 +95,7 @@
     static NSString *CellIdentifier = @"stopTimesCell";
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
     
-	GRTStopTime *stopTime = [self.currentStopTimes objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)];
+	GRTStopTime *stopTime = [self.stopTimes objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)];
 	NSInteger time = [stopTime.departureTime integerValue];
 	if(time >= 240000){
 		time -= 240000;

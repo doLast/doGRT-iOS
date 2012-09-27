@@ -8,8 +8,10 @@
 
 @class GRTStopTimes;
 
-@interface GRTStopDetailsViewController : UIPageViewController
+@interface GRTStopDetailsViewController : UIPageViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 
 @property (nonatomic, strong) GRTStopTimes *stopTimes;
+
+- (IBAction)toggleStopFavorite:(id)sender;
 
 @end

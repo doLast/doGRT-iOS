@@ -8,7 +8,7 @@
 
 #import "GRTStopsViewController.h"
 #import "UINavigationController+Rotation.h"
-#import "GRTStopTimesViewController.h"
+#import "GRTStopDetailsViewController.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -75,11 +75,15 @@
 {
 	[super viewWillAppear:animated];
 	
-	// Reload favorites
-	[self refreshFavoriteStops];
-	
 	[self setNavigationBarHidden:self.searchDisplayController.active animated:animated];
 	[self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+	// Reload favorites
+	[self refreshFavoriteStops];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -130,8 +134,15 @@
 	[self.tableView reloadData];
 	
 	if (self.mapView != nil) {
-		[self.mapView removeAnnotations:self.mapView.annotations];
-		[self.mapView addAnnotations:self.stops];
+		NSMutableArray *toRemove = [[self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTFavoriteStop class]]] mutableCopy];
+		NSMutableArray *toAdd = [self.stops mutableCopy];
+		[toAdd removeObjectsInArray:toRemove];
+		[toRemove removeObjectsInArray:self.stops];
+		
+		NSLog(@"Adding: %@, Removing: %@", toAdd, toRemove);
+		
+		[self.mapView removeAnnotations:toRemove];
+		[self.mapView addAnnotations:toAdd];
 		[self updateMapView:self.mapView];
 	}
 }
@@ -172,6 +183,12 @@
 		[nonVisibleAnnotations minusSet:visibleAnnotations];
 		[nonVisibleAnnotations filterUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTStop class]]];
 		
+		// Also remove stops overlay on fav stops
+		NSSet *visibleFavAnnotations = [visibleAnnotations filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTFavoriteStop class]]];
+		for (GRTFavoriteStop *fav in visibleFavAnnotations) {
+			[nonVisibleAnnotations addObject:fav.stop];
+		}
+		
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[mapView removeAnnotations:[nonVisibleAnnotations allObjects]];
 			
@@ -189,10 +206,10 @@
 	}
 }
 
-- (void)pushStopTimesForStop:(GRTStop *)stop
+- (void)pushStopDetailsForStop:(GRTStop *)stop
 {
 	GRTStopTimes *stopTimes = [[GRTStopTimes alloc] initWithStop:stop];
-	GRTStopTimesViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
+	GRTStopDetailsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"stopDetailsView"];
 	viewController.stopTimes = stopTimes;
 	[self.navigationController pushViewController:viewController animated:YES];
 }
@@ -284,7 +301,7 @@
 		[self setMapView:self.mapView withRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake([stop.stopLat doubleValue], [stop.stopLon doubleValue]), 300, 300) animated:NO];
 	}
 	else {
-		[self pushStopTimesForStop:stop];
+		[self pushStopDetailsForStop:stop];
 	}
 }
 
@@ -334,7 +351,7 @@
 	if ([view.annotation respondsToSelector:@selector(stop)]) {
 		GRTStop *stop = [((id<GRTStopAnnotation>) view.annotation) stop];
 		if (stop != nil) {
-			[self pushStopTimesForStop:stop];
+			[self pushStopDetailsForStop:stop];
 		}
 	}
 }
@@ -369,7 +386,7 @@
 		[self.delegate didSearchedStop:stop.stop];
 	}
 	else {
-		[self pushStopTimesForStop:stop.stop];
+		[self pushStopDetailsForStop:stop.stop];
 	}
 }
 

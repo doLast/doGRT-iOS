@@ -6,13 +6,8 @@
 //
 //
 
-@class GRTStopTimes;
+@interface GRTStopTimesViewController : UITableViewController
 
-@interface GRTStopTimesViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) GRTStopTimes *stopTimes;
-
-- (IBAction)toggleStopFavorite:(id)sender;
+@property (nonatomic, strong) NSArray *stopTimes;
 
 @end
