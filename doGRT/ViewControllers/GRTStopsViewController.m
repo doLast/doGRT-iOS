@@ -16,6 +16,7 @@
 @interface GRTStopsViewController ()
 
 @property (nonatomic, strong) id<GRTStopAnnotation> searchedStop;
+@property (nonatomic, strong, readonly) NSOperationQueue *mapUpdateQueue;
 
 @end
 
@@ -23,18 +24,26 @@
 
 @synthesize stops = _stops;
 @synthesize searchedStop = _searchedStop;
+@synthesize mapUpdateQueue = _mapUpdateQueue;
 
 @synthesize tableView = _tableView;
 @synthesize mapView = _mapView;
 @synthesize searchResultViewController = _searchResultViewController;
 @synthesize delegate = _delegate;
 
-
 - (void)setStops:(NSArray *)stops
 {
 	if (stops != _stops) {
 		_stops = stops;
 	}
+}
+
+- (NSOperationQueue *)mapUpdateQueue
+{
+	if (_mapUpdateQueue == nil) {
+		_mapUpdateQueue = [[NSOperationQueue alloc] init];
+	}
+	return _mapUpdateQueue;
 }
 
 #pragma mark - view life-cycle
@@ -51,12 +60,12 @@
 {
     [super viewDidLoad];
 	
-	if (self.stops == nil) {
-		self.stops = [[GRTUserProfile defaultUserProfile] favoriteStops];
-	}
-	if (self.searchResultViewController != nil) {
-		self.searchResultViewController.stops = nil;
-	}
+//	if (self.stops == nil) {
+//		self.stops = [[GRTUserProfile defaultUserProfile] favoriteStops];
+//	}
+//	if (self.searchResultViewController != nil) {
+//		self.searchResultViewController.stops = nil;
+//	}
 	
 	// Hide SearchBar
 	UISearchBar *searchBar = self.searchDisplayController.searchBar;
@@ -69,6 +78,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+	
+	// Reload favorites
+	[self refreshFavoriteStops];
+	
 	[self setNavigationBarHidden:self.searchDisplayController.active animated:animated];
 	[self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
 }
@@ -114,6 +127,18 @@
 
 #pragma mark - view update
 
+- (void)refreshFavoriteStops
+{
+	self.stops = [[GRTUserProfile defaultUserProfile] allFavoriteStops];
+	[self.tableView reloadData];
+	
+	if (self.mapView != nil) {
+		[self.mapView removeAnnotations:self.mapView.annotations];
+		[self.mapView addAnnotations:self.stops];
+		[self updateMapView:self.mapView inRegion:self.mapView.region];
+	}
+}
+
 - (void)setMapView:(MKMapView *)mapView withRegion:(MKCoordinateRegion)region animated:(BOOL)animated
 {
 	if (self.searchedStop != nil) {
@@ -126,6 +151,10 @@
 }
 
 - (void)updateMapView:(MKMapView *)mapView inRegion:(MKCoordinateRegion)region{
+	// If invisible, do nothing
+	if (mapView.alpha == 0) {
+		return;
+	}
 	
 	// find out all need to remove annotations
 	NSSet *visibleAnnotations = [mapView annotationsInMapRect:[mapView visibleMapRect]];
@@ -252,7 +281,13 @@
 			if ([view.annotation isKindOfClass:[GRTFavoriteStop class]]) {
 				pin.pinColor = MKPinAnnotationColorGreen;
 			}
+			else {
+				pin.pinColor = MKPinAnnotationColorRed;
+			}
 			pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+		}
+		if ([view.annotation isKindOfClass:[GRTStop class]] && [[GRTUserProfile defaultUserProfile] favoriteStopByStop:(GRTStop *)view.annotation] != nil) {
+			[mapView removeAnnotation:view.annotation];
 		}
 	}
 	if (self.searchedStop != nil && [mapView.selectedAnnotations count] == 0) {

@@ -9,10 +9,14 @@
 #import "GRTStopTimesViewController.h"
 #import "UINavigationController+Rotation.h"
 
+#import "GRTGtfsSystem.h"
+#import "GRTUserProfile.h"
+
 @interface GRTStopTimesViewController ()
 
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSArray *currentStopTimes;
+@property (nonatomic, strong) GRTFavoriteStop *favoriteStop;
 
 @end
 
@@ -23,6 +27,7 @@
 @synthesize stopTimes = _stopTimes;
 @synthesize date = _date;
 @synthesize currentStopTimes = _currentStopTimes;
+@synthesize favoriteStop = _favoriteStop;
 
 - (void)setDate:(NSDate *)date
 {
@@ -43,6 +48,13 @@
 	[self.tableView reloadData];
 }
 
+- (void)setFavoriteStop:(GRTFavoriteStop *)favoriteStop
+{
+	_favoriteStop = favoriteStop;
+	// TODO: Change fav button state
+	
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -51,6 +63,7 @@
 
 	self.title = self.stopTimes.stop.stopName;
 	self.date = [NSDate date];
+	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopTimes.stop];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -67,6 +80,20 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - actions
+
+- (IBAction)toggleStopFavorite:(id)sender
+{
+	if (self.favoriteStop != nil){
+		if ([[GRTUserProfile defaultUserProfile] removeFavoriteStop:self.favoriteStop]) {
+			self.favoriteStop = nil;
+		}
+	}
+	else {
+		self.favoriteStop = [[GRTUserProfile defaultUserProfile] addStop:self.stopTimes.stop];
+	}
 }
 
 #pragma mark - Table view data source

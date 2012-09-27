@@ -14,7 +14,11 @@
 
 + (GRTUserProfile *)defaultUserProfile;
 
-- (void)addFavoriteStop:(GRTStop *)stop;
-- (NSArray *)favoriteStops;
+- (NSArray *)allFavoriteStops;
+- (GRTFavoriteStop *)favoriteStopByStop:(GRTStop *)stop;
+
+- (GRTFavoriteStop *)addStop:(GRTStop *)stop;
+- (BOOL)removeFavoriteStop:(GRTFavoriteStop *)favoriteStop;
+- (BOOL)moveFavoriteStop:(GRTFavoriteStop *)favoriteStop toIndex:(NSUInteger)index;
 
 @end
