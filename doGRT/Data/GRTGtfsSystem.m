@@ -62,6 +62,7 @@ static const int kMaxStopsLimit = 30;
 			[newStops setObject:newStop forKey:newStop.stopId];
 		}
 		
+		[result close];
 		_stops = newStops;
 	}
 	return _stops;

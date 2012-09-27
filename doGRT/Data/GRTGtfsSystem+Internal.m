@@ -47,6 +47,8 @@
 			service = [[GRTService alloc] initWithServiceId:serviceId startDate:startDate endDate:endDate serviceDays:serviceDays];
 			[self.services setObject:service forKey:service.serviceId];
 		}
+		
+		[result close];
 	}
 	return service;
 }
@@ -76,6 +78,8 @@
 			route = [[GRTRoute alloc] initWithRouteId:routeId routeShortName:routeShortName routeLongName:routeLongName routeType:[NSNumber numberWithInt:3]];
 			[self.routes setObject:route forKey:route.routeId];
 		}
+		
+		[result close];
 	}
 	return route;
 }
@@ -103,6 +107,8 @@
 			trip = [[GRTTrip alloc] initWithTripId:tripId tripHeadsign:tripHeadsign routeId:routeId serviceId:serviceId shapeId:shapeId];
 			[self.trips	setObject:trip forKey:trip.tripId];
 		}
+		
+		[result close];
 	}
 	return trip;
 }

@@ -15,7 +15,7 @@
 
 - (NSArray *)stopTimesForDate:(NSDate *)date;
 - (NSArray *)stopTimesForDate:(NSDate *)date andRoute:(GRTRoute *)route;
-- (NSArray *)routesForDate:(NSDate *)date;
+- (NSArray *)routes;
 
 - (GRTStopTimes *)initWithStop:(GRTStop *)stop;
 

@@ -36,26 +36,20 @@
 
 - (NSArray *)stopTimesForDate:(NSDate *)date
 {
-	NSDate *start = [NSDate date];
-	NSArray *stopTimes = [self fetchStopTimesForDate:date];
-	NSDate *end = [NSDate date];
-	NSLog(@"Time elapsed: %f", end.timeIntervalSince1970 - start.timeIntervalSince1970);
+	NSArray *stopTimes = [self fetchStopTimesForDate:date andRoute:nil];
 	
 	return stopTimes;
 }
 
 - (NSArray *)stopTimesForDate:(NSDate *)date andRoute:(GRTRoute *)route;
 {
-	NSArray *allTimes = [self stopTimesForDate:date];
-	NSPredicate *predicate = [NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForKeyPath:@"trip.route.routeId"] rightExpression:[NSExpression expressionForConstantValue:route.routeId] modifier:NSDirectPredicateModifier type:NSEqualToPredicateOperatorType options:0];
-	NSArray *filteredTimes = [allTimes filteredArrayUsingPredicate:predicate];
-	return filteredTimes;
+	NSArray *stopTimes = [self fetchStopTimesForDate:date andRoute:route];
+	return stopTimes;
 }
 
-- (NSArray *)routesForDate:(NSDate *)date
+- (NSArray *)routes
 {
-//	NSArray *allTimes = [self stopTimesForDate:date];
-	return nil; // TODO
+	return [self fetchRoutes];
 }
 
 #pragma mark - data fetching logic
@@ -73,7 +67,7 @@
 	return dayName;
 }
 
-- (NSArray *)fetchStopTimesForDate:(NSDate *)date
+- (NSArray *)fetchStopTimesForDate:(NSDate *)date andRoute:(GRTRoute *)route
 {
 	// prepare data for query
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -81,16 +75,23 @@
 	
 	NSUInteger dayInWeek = dateComps.weekday;
 	NSString *dayName = [self dayNameForDayInWeek:dayInWeek];
-	NSNumber *stopId = self.stop.stopId;
+	
+	NSMutableArray *arguments = [NSMutableArray arrayWithObject:self.stop.stopId];
 	NSString *query = [NSString stringWithFormat:@"SELECT S.* \
 					   FROM Calendar as C, Trip as T, StopTime as S \
 					   WHERE C.%@ AND S.stopId=? AND \
-					   S.tripId=T.tripId AND T.serviceId=C.serviceId \
-					   ORDER BY S.departureTime", dayName];
+					   S.tripId=T.tripId AND T.serviceId=C.serviceId ",
+					   dayName];
+	
+	if (route != nil) {
+		query = [query stringByAppendingString:@"AND T.routeId=? "];
+		[arguments addObject:route.routeId];
+	}
+	query = [query stringByAppendingString:@"ORDER BY S.departureTime "];
 	
 	// execute database query
 	FMDatabase *db = [GRTGtfsSystem defaultGtfsSystem].db;
-	FMResultSet *result = [db executeQuery:query, stopId];
+	FMResultSet *result = [db executeQuery:query withArgumentsInArray:arguments];
 	if (result == nil){
 		NSLog(@"%@", [db lastErrorMessage]);
 		abort();
@@ -110,7 +111,39 @@
 	
 	NSLog(@"Obtain %d stopTimes", [stopTimes count]);
 	
+	[result close];
+	
 	return stopTimes;
+}
+
+- (NSArray *)fetchRoutes
+{
+	NSMutableArray *arguments = [NSMutableArray arrayWithObject:self.stop.stopId];
+	NSString *query = [NSString stringWithFormat:@"SELECT DISTINCT T.routeId \
+					   FROM Trip as T, StopTime as S \
+					   WHERE S.stopId=? AND S.tripId=T.tripId \
+					   ORDER BY T.routeId"];
+	
+	// execute database query
+	FMDatabase *db = [GRTGtfsSystem defaultGtfsSystem].db;
+	FMResultSet *result = [db executeQuery:query withArgumentsInArray:arguments];
+	if (result == nil){
+		NSLog(@"%@", [db lastErrorMessage]);
+		abort();
+	}
+	
+	// process the data
+	NSMutableArray *routes = [[NSMutableArray alloc] init];
+	while ([result next]) {
+		NSNumber *routeId = [NSNumber numberWithInt:[result intForColumn:@"routeId"]];
+		GRTRoute *route = [[GRTGtfsSystem defaultGtfsSystem] routeById:routeId];
+		if (route != nil) {
+			[routes addObject:route];
+		}
+	}
+	
+	[result close];
+	return routes;
 }
 
 @end
