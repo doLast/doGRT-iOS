@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) id<GRTStopAnnotation> searchedStop;
 @property (nonatomic, strong, readonly) NSOperationQueue *mapUpdateQueue;
+@property (nonatomic, strong) NSArray *nearbyStops;
 
 @end
 
@@ -25,6 +26,7 @@
 @synthesize stops = _stops;
 @synthesize searchedStop = _searchedStop;
 @synthesize mapUpdateQueue = _mapUpdateQueue;
+@synthesize nearbyStops = _nearbyStops;
 
 @synthesize tableView = _tableView;
 @synthesize mapView = _mapView;
@@ -38,6 +40,14 @@
 	}
 }
 
+- (void)setNearbyStops:(NSArray *)nearbyStops
+{
+	if (nearbyStops != _nearbyStops) {
+		_nearbyStops = nearbyStops;
+		[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:YES];
+	}
+}
+
 - (NSOperationQueue *)mapUpdateQueue
 {
 	if (_mapUpdateQueue == nil) {
@@ -47,18 +57,13 @@
 }
 
 #pragma mark - view life-cycle
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
+	self.title = @"doGRT";
+	self.nearbyStops = nil;
 	
 	// Hide SearchBar
 	UISearchBar *searchBar = self.searchDisplayController.searchBar;
@@ -298,7 +303,7 @@
 	if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
 		self.searchedStop = stop;
 		[self.searchDisplayController setActive:NO animated:YES];
-		[self setMapView:self.mapView withRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake([stop.stopLat doubleValue], [stop.stopLon doubleValue]), 300, 300) animated:NO];
+		[self setMapView:self.mapView withRegion:MKCoordinateRegionMakeWithDistance(stop.coordinate, 300, 300) animated:NO];
 	}
 	else {
 		[self pushStopDetailsForStop:stop];
@@ -317,11 +322,6 @@
 	if (view.annotation == self.searchedStop) {
 		self.searchedStop = nil;
 	}
-}
-
-- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
-{
-	
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
@@ -356,11 +356,40 @@
 	}
 }
 
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+{
+	if (self.isViewLoaded) {
+		self.nearbyStops = [[GRTGtfsSystem defaultGtfsSystem] stopsAroundLocation:userLocation.location withinDistance:500];
+	}
+}
 
-#pragma mark - Table View Delegate
+#pragma mark - Table View Data Source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+//	BOOL locatable = [CLLocationManager locationServicesEnabled];
+	return 2;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	if (section == 0) {
+		return @"Nearby Stops";
+	}
+//	else if (section == 1) {
+		return @"Favorites";
+//	}
+//	return nil;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.stops count];
+	if (section == 0) {
+		return [self.nearbyStops count];
+	}
+//	else if (section == 1) {
+		return [self.stops count];
+//	}
+//	return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -373,7 +402,13 @@
 	}
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
-	id<GRTStopAnnotation> stop = [self.stops objectAtIndex:indexPath.row];
+	id<GRTStopAnnotation> stop = nil;
+	if (indexPath.section == 0) {
+		stop = [self.nearbyStops objectAtIndex:indexPath.row];
+	}
+	else if (indexPath.section == 1) {
+		stop = [self.stops objectAtIndex:indexPath.row];
+	}
 	
     cell.textLabel.text = stop.title;
 	
@@ -381,6 +416,8 @@
 	
     return cell;
 }
+
+#pragma mark - Table View Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

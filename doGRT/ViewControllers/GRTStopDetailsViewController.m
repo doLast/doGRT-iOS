@@ -71,7 +71,7 @@
 	
 	self.candidateViewControllers = [NSArray arrayWithObjects:stopTimesVC, stopRoutesVC, nil];
 	
-	NSInteger index = 0; // TODO: Let user choose
+	NSInteger index = 0; // TODO: Let user choose default view
 	[self setViewControllers:@[[self.candidateViewControllers objectAtIndex:index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 	[self.viewsSegmentedControl setSelectedSegmentIndex:index];
 }
@@ -139,6 +139,7 @@
 {
 	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
 	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date andRoute:route];
+	stopTimesVC.title = [NSString stringWithFormat:@"%@ %@", route.routeId, route.routeLongName];
 	[self.navigationController pushViewController:stopTimesVC animated:YES];
 }
 
