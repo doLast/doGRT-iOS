@@ -16,6 +16,7 @@
 
 @implementation GRTStopRoutesViewController
 
+@synthesize delegate = _delegate;
 @synthesize routes = _routes;
 
 - (void)viewDidLoad

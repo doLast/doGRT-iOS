@@ -16,7 +16,7 @@
 
 @interface GRTStopRoutesViewController : UITableViewController
 
-@property (nonatomic, strong) id<GRTStopRoutesViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<GRTStopRoutesViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSArray *routes;
 
 @end
