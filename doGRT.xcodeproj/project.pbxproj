@@ -47,6 +47,7 @@
 		25900383161166AD00FE051C /* GRTShapePt.m in Sources */ = {isa = PBXBuildFile; fileRef = 25900382161166AC00FE051C /* GRTShapePt.m */; };
 		2590038A161168BA00FE051C /* GRTGtfsSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 25900389161168BA00FE051C /* GRTGtfsSystem.m */; };
 		259003921611691B00FE051C /* GRTStopTimes.m in Sources */ = {isa = PBXBuildFile; fileRef = 259003911611691B00FE051C /* GRTStopTimes.m */; };
+		259143041614971500F0D215 /* GRTStopDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 259143031614971300F0D215 /* GRTStopDetailsViewController.m */; };
 		259FF60B160F7BCD00B50F14 /* Launch.png in Resources */ = {isa = PBXBuildFile; fileRef = 259FF608160F7BCD00B50F14 /* Launch.png */; };
 		259FF60C160F7BCD00B50F14 /* Launch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 259FF609160F7BCD00B50F14 /* Launch@2x.png */; };
 		259FF60D160F7BCD00B50F14 /* Launch-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 259FF60A160F7BCD00B50F14 /* Launch-568h@2x.png */; };
@@ -129,6 +130,8 @@
 		25900389161168BA00FE051C /* GRTGtfsSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTGtfsSystem.m; sourceTree = "<group>"; };
 		259003901611691B00FE051C /* GRTStopTimes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopTimes.h; sourceTree = "<group>"; };
 		259003911611691B00FE051C /* GRTStopTimes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopTimes.m; sourceTree = "<group>"; };
+		259143021614971100F0D215 /* GRTStopDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopDetailsViewController.h; sourceTree = "<group>"; };
+		259143031614971300F0D215 /* GRTStopDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopDetailsViewController.m; sourceTree = "<group>"; };
 		259FF608160F7BCD00B50F14 /* Launch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Launch.png; sourceTree = "<group>"; };
 		259FF609160F7BCD00B50F14 /* Launch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Launch@2x.png"; sourceTree = "<group>"; };
 		259FF60A160F7BCD00B50F14 /* Launch-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Launch-568h@2x.png"; sourceTree = "<group>"; };
@@ -328,6 +331,8 @@
 				2590035E1610E5A100FE051C /* GRTStopsViewController.m */,
 				256464741612AAB2000FC7DC /* GRTStopTimesViewController.h */,
 				256464751612AAB2000FC7DC /* GRTStopTimesViewController.m */,
+				259143021614971100F0D215 /* GRTStopDetailsViewController.h */,
+				259143031614971300F0D215 /* GRTStopDetailsViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -471,6 +476,7 @@
 				2564647016129142000FC7DC /* GRTFavoriteStop.m in Sources */,
 				256464731612916E000FC7DC /* GRTUserProfile.m in Sources */,
 				256464761612AAB3000FC7DC /* GRTStopTimesViewController.m in Sources */,
+				259143041614971500F0D215 /* GRTStopDetailsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
