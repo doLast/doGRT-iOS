@@ -6,9 +6,12 @@
 //
 //
 
+#import "GRTStopTimesViewController.h"
+#import "GRTStopRoutesViewController.h"
+
 @class GRTStopTimes;
 
-@interface GRTStopDetailsViewController : UIPageViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
+@interface GRTStopDetailsViewController : UIPageViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate, GRTStopRoutesViewControllerDelegate>
 
 @property (nonatomic, strong) GRTStopTimes *stopTimes;
 

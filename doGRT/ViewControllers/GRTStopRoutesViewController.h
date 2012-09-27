@@ -6,6 +6,17 @@
 //
 //
 
+@class GRTRoute;
+
+@protocol GRTStopRoutesViewControllerDelegate <NSObject>
+
+- (void)didSelectRoute:(GRTRoute *)route;
+
+@end
+
 @interface GRTStopRoutesViewController : UITableViewController
+
+@property (nonatomic, strong) id<GRTStopRoutesViewControllerDelegate> delegate;
+@property (nonatomic, strong) NSArray *routes;
 
 @end

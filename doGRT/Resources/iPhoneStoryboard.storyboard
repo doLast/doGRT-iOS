@@ -60,7 +60,7 @@
                         <outlet property="searchDisplayController" destination="RGR-NG-JVr" id="Psa-UH-sRd"/>
                         <outlet property="searchResultViewController" destination="u28-Yq-Lso" id="TG2-2X-Ks7"/>
                         <outlet property="tableView" destination="0D2-La-YVf" id="Shv-Yn-Fmt"/>
-                        <segue destination="GJh-9J-LUE" kind="push" id="bZ4-5A-tHJ"/>
+                        <segue destination="GJh-9J-LUE" kind="push" identifier="showStopDetails" id="bZ4-5A-tHJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jeR-kR-laY" userLabel="First Responder" sceneMemberID="firstResponder"/>

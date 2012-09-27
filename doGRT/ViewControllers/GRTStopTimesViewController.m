@@ -35,8 +35,8 @@
 		
 		[self.tableView reloadData];
 		
-		if(self.comingBusIndex > 3){
-			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 3 inSection:0];
+		if(self.comingBusIndex > 2){
+			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 2 inSection:0];
 			[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		}
 	}
@@ -46,7 +46,7 @@
 {
     [super viewDidLoad];
 
-    NSAssert(self.stopTimes != nil, @"Must have a stopTimes");
+    NSAssert(self.stopTimes != nil, @"Must have stopTimes");
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -93,7 +93,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"stopTimesCell";
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
+	}
     
 	GRTStopTime *stopTime = [self.stopTimes objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)];
 	NSInteger time = [stopTime.departureTime integerValue];

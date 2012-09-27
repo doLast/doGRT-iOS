@@ -7,8 +7,6 @@
 //
 
 #import "GRTStopDetailsViewController.h"
-#import "GRTStopTimesViewController.h"
-#import "GRTStopRoutesViewController.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -36,6 +34,11 @@
 	
 	self.delegate = self;
 	self.dataSource = self;
+	for (UIGestureRecognizer *recognizer in self.gestureRecognizers) {
+		if ([recognizer isKindOfClass:[UITapGestureRecognizer class]]) {
+			recognizer.enabled = NO;
+		}
+	}
 	
 	NSAssert(self.stopTimes != nil, @"Must have a stopTimes");
 	
@@ -47,6 +50,8 @@
 	self.stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date];
 	
 	self.stopRoutesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopRoutesView"];
+	self.stopRoutesVC.routes = [self.stopTimes routes];
+	self.stopRoutesVC.delegate = self;
 	
 	[self setViewControllers:[NSArray arrayWithObjects:self.stopTimesVC, nil] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 }
@@ -81,6 +86,15 @@
 		return self.stopRoutesVC;
 	}
 	return self.stopTimesVC;
+}
+
+#pragma mark - stop routes view controller delegate
+
+- (void)didSelectRoute:(GRTRoute *)route
+{
+	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
+	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date andRoute:route];
+	[self.navigationController pushViewController:stopTimesVC animated:YES];
 }
 
 @end
