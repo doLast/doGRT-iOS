@@ -1,5 +1,5 @@
 //
-//  GRTBusStopsViewController.m
+//  GRTStopsViewController.m
 //  doGRT
 //
 //  Created by Greg Wang on 12-9-24.
@@ -68,7 +68,7 @@
 	[self setMapView:self.mapView withRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
 	
 	// Enable user location tracking
-	self.mapView.userTrackingMode = MKUserTrackingModeFollow;
+	[self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -100,6 +100,7 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 			[UIView animateWithDuration:duration animations:^{
@@ -197,6 +198,27 @@
 }
 
 #pragma mark - actions
+
+- (IBAction)showPreferences:(id)sender
+{
+	// TODO: Display Preferences
+	NSLog(@"Showing preferences");
+}
+
+- (IBAction)startTrackingUserLocation:(id)sender
+{
+	[self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+}
+
+- (IBAction)didTapLeftNavButton:(id)sender
+{
+	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+		[self showPreferences:sender];
+	}
+	else {
+		[self startTrackingUserLocation:sender];
+	}
+}
 
 - (IBAction)showSearch:(id)sender
 {

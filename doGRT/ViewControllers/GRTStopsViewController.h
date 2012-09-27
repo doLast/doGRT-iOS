@@ -1,12 +1,11 @@
 //
-//  GRTBusStopsViewController.h
+//  GRTStopsViewController.h
 //  doGRT
 //
 //  Created by Greg Wang on 12-9-24.
 //
 //
 
-#import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
 @class GRTStop;
@@ -26,6 +25,9 @@
 @property (nonatomic, strong) IBOutlet GRTStopsViewController *searchResultViewController;
 @property (nonatomic, weak) IBOutlet id<GRTStopsSearchDelegate> delegate;
 
+- (IBAction)showPreferences:(id)sender;
+- (IBAction)startTrackingUserLocation:(id)sender;
+- (IBAction)didTapLeftNavButton:(id)sender;
 - (IBAction)showSearch:(id)sender;
 
 @end
