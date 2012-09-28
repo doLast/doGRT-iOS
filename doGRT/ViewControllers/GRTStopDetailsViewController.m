@@ -7,6 +7,7 @@
 //
 
 #import "GRTStopDetailsViewController.h"
+#import "UINavigationController+Rotation.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -75,6 +76,17 @@
 	NSInteger index = 0; // TODO: Let user choose default view
 	[self setViewControllers:@[[self.candidateViewControllers objectAtIndex:index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 	[self.viewsSegmentedControl setSelectedSegmentIndex:index];
+}
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+	return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+	return UIInterfaceOrientationMaskAll;
 }
 
 #pragma mark - actions

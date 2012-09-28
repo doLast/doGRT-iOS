@@ -7,7 +7,6 @@
 //
 
 #import "GRTStopTimesViewController.h"
-#import "UINavigationController+Rotation.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -48,16 +47,6 @@
     [super viewDidLoad];
 
     NSAssert(self.stopTimes != nil, @"Must have stopTimes");
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-	return YES;
-}
-
-- (NSUInteger)supportedInterfaceOrientations
-{
-	return UIInterfaceOrientationMaskAll;
 }
 
 #pragma mark - Table view data source

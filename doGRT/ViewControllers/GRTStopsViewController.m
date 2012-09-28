@@ -90,6 +90,7 @@ enum GRTStopsTableSection {
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 	
 	[self setNavigationBarHidden:self.searchDisplayController.active animated:animated];
 	[self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
@@ -116,6 +117,11 @@ enum GRTStopsTableSection {
 - (NSUInteger)supportedInterfaceOrientations
 {
 	return UIInterfaceOrientationMaskAll;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+	return UIInterfaceOrientationPortrait;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -310,6 +316,7 @@ enum GRTStopsTableSection {
 		
 	}];
 	[self setNavigationBarHidden:NO animated:YES];
+	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
@@ -547,8 +554,6 @@ enum GRTStopsTableSection {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-	
 	id<GRTStopAnnotation> stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
     if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSearchedStop:)]) {
 		[self.delegate didSearchedStop:stop.stop];
