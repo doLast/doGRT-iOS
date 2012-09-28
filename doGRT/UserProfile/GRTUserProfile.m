@@ -46,7 +46,9 @@
 
 - (NSArray *)allFavoriteStops
 {
-	return self.favoriteStops;
+	@synchronized(self) {
+		return self.favoriteStops;
+	}
 }
 
 - (GRTFavoriteStop *)favoriteStopByStop:(GRTStop *)stop;
