@@ -60,6 +60,7 @@
 //	self.title = self.stopTimes.stop.stopName;
 	self.date = [NSDate date];
 	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopTimes.stop];
+	self.view.backgroundColor = [UIColor underPageBackgroundColor];
 	
 	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
 	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date];
