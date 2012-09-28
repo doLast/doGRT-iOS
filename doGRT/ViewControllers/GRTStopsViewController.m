@@ -50,26 +50,6 @@ enum GRTStopsViewQueue {
 @synthesize searchResultViewController = _searchResultViewController;
 @synthesize delegate = _delegate;
 
-- (void)setStops:(NSArray *)stops
-{
-	if (stops != _stops) {
-		_stops = stops;
-		if (_stops != nil) {
-			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:GRTStopsTableFavoritesSection] withRowAnimation:UITableViewRowAnimationAutomatic];
-		}
-	}
-}
-
-- (void)setNearbyStops:(NSArray *)nearbyStops
-{
-	if (nearbyStops != _nearbyStops) {
-		_nearbyStops = nearbyStops;
-		if (_nearbyStops != nil) {
-			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:GRTStopsTableNearbySection] withRowAnimation:UITableViewRowAnimationAutomatic];
-		}
-	}
-}
-
 - (NSArray *)operationQueues
 {
 	if (_operationQueues == nil) {
@@ -189,6 +169,7 @@ enum GRTStopsViewQueue {
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
 			self.stops = newStops;
+			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:GRTStopsTableFavoritesSection] withRowAnimation:UITableViewRowAnimationAutomatic];
 		});
 		
 		if (self.mapView != nil) {
@@ -219,8 +200,13 @@ enum GRTStopsViewQueue {
 {
 	@synchronized(self.tableView) {
 		NSArray *nearbyStops = [[GRTGtfsSystem defaultGtfsSystem] stopsAroundLocation:location withinDistance:500];
+		if (nearbyStops == self.nearbyStops) {
+			return;
+		}
+		
 		dispatch_async(dispatch_get_main_queue(), ^{
 			self.nearbyStops = nearbyStops;
+			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:GRTStopsTableNearbySection] withRowAnimation:UITableViewRowAnimationAutomatic];
 		});
 	}
 }
