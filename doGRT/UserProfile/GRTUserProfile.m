@@ -146,8 +146,8 @@
 {
 	@synchronized(self){
 		if ([self.favoriteStops containsObject:favoriteStop]) {
-			[self.favoriteStops insertObject:favoriteStop atIndex:index + 1];
 			[self.favoriteStops removeObjectAtIndex:[favoriteStop.displayOrder integerValue]];
+			[self.favoriteStops insertObject:favoriteStop atIndex:index];
 			
 			// Commit the change after reassignOrder
 			return [self reassignOrder];

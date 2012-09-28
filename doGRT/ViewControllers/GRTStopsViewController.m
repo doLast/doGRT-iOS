@@ -459,13 +459,19 @@ enum GRTStopsTableSection {
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 	
 	id<GRTStopAnnotation> stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
 	
     cell.textLabel.text = stop.title;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", stop.subtitle];
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	if (indexPath.section == GRTStopsTableFavoritesSection) {
+		cell.editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+	}
+	else {
+		cell.editingAccessoryType = UITableViewCellAccessoryNone;
+	}
 	
     return cell;
 }
@@ -494,6 +500,29 @@ enum GRTStopsTableSection {
 				[self refreshFavoriteStops];
 			}
 		}
+	}
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	BOOL canMove = self.delegate == nil && indexPath.section == GRTStopsTableFavoritesSection;
+	return canMove;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+	NSArray *stops = [self stopsArrayForSection:sourceIndexPath.section];
+	if (stops == nil) {
+		return;
+	}
+	id<GRTStopAnnotation> stop = [stops objectAtIndex:sourceIndexPath.row];
+	if (![stop isKindOfClass:[GRTFavoriteStop class]]) {
+		return;
+	}
+	BOOL result = [[GRTUserProfile defaultUserProfile] moveFavoriteStop:stop toIndex:destinationIndexPath.row];
+	if (result) {
+		// Bugging
+		self.stops = [[GRTUserProfile defaultUserProfile] allFavoriteStops];
 	}
 }
 
@@ -530,6 +559,29 @@ enum GRTStopsTableSection {
 	else {
 		[self pushStopDetailsForStop:stop.stop];
 	}
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+	if (self.delegate == nil && indexPath.section == GRTStopsTableFavoritesSection) {
+//		GRTFavoriteStop *stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
+		// TODO: Add rename alert
+	}
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
+{
+	NSArray *array = [self stopsArrayForSection:sourceIndexPath.section];
+	if (proposedDestinationIndexPath.section != sourceIndexPath.section) {
+		NSInteger row = (sourceIndexPath.section > proposedDestinationIndexPath.section) ?
+		0 : [array count] - 1;
+		return [NSIndexPath indexPathForRow:row inSection:sourceIndexPath.section];
+	}
+	else if (proposedDestinationIndexPath.row >= [array count]) {
+		return [NSIndexPath indexPathForRow:[array count] - 1 inSection:sourceIndexPath.section];
+	}
+	
+	return proposedDestinationIndexPath;
 }
 
 @end
