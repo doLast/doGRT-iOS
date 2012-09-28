@@ -14,7 +14,8 @@
 #import "GRTUserProfile.h"
 
 enum GRTStopsTableSection {
-	GRTStopsTableNearbySection = 0,
+	GRTStopsTableHeaderSection = 0,
+	GRTStopsTableNearbySection,
 	GRTStopsTableFavoritesSection,
 	GRTStopsTableSectionTotal, 
 };
@@ -46,8 +47,7 @@ enum GRTStopsTableSection {
 	if (nearbyStops != _nearbyStops) {
 		_nearbyStops = nearbyStops;
 		if (_nearbyStops != nil) {
-			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-//			[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:GRTStopsTableNearbySection] withRowAnimation:UITableViewRowAnimationAutomatic];
 		}
 	}
 }
@@ -151,7 +151,7 @@ enum GRTStopsTableSection {
 		return;
 	}
 	
-	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:GRTStopsTableFavoritesSection] withRowAnimation:UITableViewRowAnimationAutomatic];
 	
 	if (self.mapView != nil) {
 		NSMutableArray *toRemove = [[self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTFavoriteStop class]]] mutableCopy];
@@ -385,6 +385,7 @@ enum GRTStopsTableSection {
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
 	if (self.isViewLoaded) {
+		// TODO: It's slow to search for location on main thread
 		self.nearbyStops = [[GRTGtfsSystem defaultGtfsSystem] stopsAroundLocation:userLocation.location withinDistance:500];
 	}
 }
@@ -393,7 +394,7 @@ enum GRTStopsTableSection {
 
 - (NSArray *)stopsArrayForSection:(NSInteger)section
 {
-	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSearchedStop:)]) {
+	if (self.delegate != nil) {
 		return self.stops;
 	}
 	else if (section == GRTStopsTableFavoritesSection) {
@@ -407,7 +408,7 @@ enum GRTStopsTableSection {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSearchedStop:)]) {
+	if (self.delegate != nil) {
 		return 1;
 	}
 	return GRTStopsTableSectionTotal;
@@ -415,23 +416,43 @@ enum GRTStopsTableSection {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSearchedStop:)]) {
+	if (self.delegate != nil) {
 		return nil;
 	}
 	else if (section == GRTStopsTableNearbySection) {
 		return @"Nearby Stops";
 	}
-//	else if (section == GRTStopsTableFavoritesSection) {
+	else if (section == GRTStopsTableFavoritesSection) {
 		return @"Favorites";
-//	}
-//	return nil;
+	}
+	return nil;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	if (self.delegate != nil) {
+		return [self.stops count];
+	}
+	else if (section == GRTStopsTableHeaderSection) {
+		return 1;
+	}
 	return [[self stopsArrayForSection:section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == GRTStopsTableHeaderSection) {
+		static NSString *CellIdentifier = @"searchButtonCell";
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		if (cell == nil) {
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+			cell.textLabel.text = @"Tap to Search";
+			cell.textLabel.textAlignment = UITextAlignmentCenter;
+			cell.textLabel.textColor = [UIColor lightGrayColor];
+			cell.editing = YES;
+		}
+		return cell;
+	}
+	
 	static NSString *CellIdentifier = @"stopCell";
 	
     // Dequeue or create a new cell.
@@ -449,22 +470,12 @@ enum GRTStopsTableSection {
     return cell;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSearchedStop:)]) {
-		
-	}
-	else if (indexPath.section == GRTStopsTableNearbySection) {
-		return UITableViewCellEditingStyleInsert;
-	}
-	else if (indexPath.section == GRTStopsTableFavoritesSection) {
-		return UITableViewCellEditingStyleDelete;
-	}
-	return UITableViewCellAccessoryNone;
-}
-
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if (indexPath.section == GRTStopsTableHeaderSection) {
+		return [self tableView:tableView didSelectRowAtIndexPath:indexPath];
+	}
+	
 	id<GRTStopAnnotation> stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
 	GRTFavoriteStop *favoriteStop = nil;
 	if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -488,11 +499,33 @@ enum GRTStopsTableSection {
 
 #pragma mark - Table View Delegate
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if (self.delegate != nil) {
+		
+	}
+	else if (indexPath.section == GRTStopsTableHeaderSection) {
+		return UITableViewCellEditingStyleInsert;
+	}
+	else if (indexPath.section == GRTStopsTableNearbySection) {
+		return UITableViewCellEditingStyleInsert;
+	}
+	else if (indexPath.section == GRTStopsTableFavoritesSection) {
+		return UITableViewCellEditingStyleDelete;
+	}
+	return UITableViewCellAccessoryNone;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
 	id<GRTStopAnnotation> stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
     if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSearchedStop:)]) {
 		[self.delegate didSearchedStop:stop.stop];
+	}
+	else if (indexPath.section == GRTStopsTableHeaderSection) {
+		return [self showSearch:tableView];
 	}
 	else {
 		[self pushStopDetailsForStop:stop.stop];
