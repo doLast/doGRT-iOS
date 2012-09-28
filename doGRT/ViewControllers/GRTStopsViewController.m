@@ -20,11 +20,18 @@ enum GRTStopsTableSection {
 	GRTStopsTableSectionTotal, 
 };
 
+enum GRTStopsViewQueue {
+	GRTStopsViewMapUpdateQueue = 0,
+	GRTStopsViewTableUpdateQueue,
+	GRTStopsViewQueueTotal,
+};
+
 @interface GRTStopsViewController ()
 
-@property (nonatomic, strong) id<GRTStopAnnotation> searchedStop;
-@property (nonatomic, strong, readonly) NSOperationQueue *mapUpdateQueue;
 @property (nonatomic, strong) NSArray *nearbyStops;
+@property (nonatomic, strong) id<GRTStopAnnotation> searchedStop;
+
+@property (nonatomic, strong, readonly) NSArray *operationQueues;
 @property (nonatomic, strong) UIBarButtonItem *locateButton;
 
 @end
@@ -32,15 +39,26 @@ enum GRTStopsTableSection {
 @implementation GRTStopsViewController
 
 @synthesize stops = _stops;
-@synthesize searchedStop = _searchedStop;
-@synthesize mapUpdateQueue = _mapUpdateQueue;
 @synthesize nearbyStops = _nearbyStops;
+@synthesize searchedStop = _searchedStop;
+
+@synthesize operationQueues = _operationQueues;
 @synthesize locateButton = _locateButton;
 
 @synthesize tableView = _tableView;
 @synthesize mapView = _mapView;
 @synthesize searchResultViewController = _searchResultViewController;
 @synthesize delegate = _delegate;
+
+- (void)setStops:(NSArray *)stops
+{
+	if (stops != _stops) {
+		_stops = stops;
+		if (_stops != nil) {
+			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:GRTStopsTableFavoritesSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+		}
+	}
+}
 
 - (void)setNearbyStops:(NSArray *)nearbyStops
 {
@@ -52,12 +70,17 @@ enum GRTStopsTableSection {
 	}
 }
 
-- (NSOperationQueue *)mapUpdateQueue
+- (NSArray *)operationQueues
 {
-	if (_mapUpdateQueue == nil) {
-		_mapUpdateQueue = [[NSOperationQueue alloc] init];
+	if (_operationQueues == nil) {
+		int i;
+		NSMutableArray *operationQueues = [NSMutableArray arrayWithCapacity:GRTStopsViewQueueTotal];
+		for (i = 0; i < GRTStopsViewQueueTotal; i++) {
+			[operationQueues addObject:[[NSOperationQueue alloc] init]];
+		}
+		_operationQueues = operationQueues;
 	}
-	return _mapUpdateQueue;
+	return _operationQueues;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -81,7 +104,7 @@ enum GRTStopsTableSection {
 	[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
 	
 	// Center Waterloo on map
-	[self setMapView:self.mapView withRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
+	[self centerMapView:self.mapView toRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
 	
 	// Enable user location tracking
 	[self performSelector:@selector(startTrackingUserLocation:) withObject:self afterDelay:2];
@@ -100,7 +123,7 @@ enum GRTStopsTableSection {
 {
 	[super viewDidAppear:animated];
 	// Reload favorites
-	[self refreshFavoriteStops];
+	[self updateFavoriteStops];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -149,31 +172,60 @@ enum GRTStopsTableSection {
 
 #pragma mark - view update
 
-- (void)refreshFavoriteStops
+- (void)updateFavoriteStops
 {
-	NSArray *oldStops = self.stops;
-	self.stops = [[GRTUserProfile defaultUserProfile] allFavoriteStops];
-	if (oldStops == self.stops) {
-		return;
-	}
+	NSOperation *favUpdate = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performFavoriteStopsUpdate) object:nil];
 	
-	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:GRTStopsTableFavoritesSection] withRowAnimation:UITableViewRowAnimationAutomatic];
-	
-	if (self.mapView != nil) {
-		NSMutableArray *toRemove = [[self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTFavoriteStop class]]] mutableCopy];
-		NSMutableArray *toAdd = [self.stops mutableCopy];
-		[toAdd removeObjectsInArray:toRemove];
-		[toRemove removeObjectsInArray:self.stops];
+	[[self.operationQueues objectAtIndex:GRTStopsViewTableUpdateQueue] addOperation:favUpdate];
+}
+
+- (void)performFavoriteStopsUpdate
+{
+	@synchronized(self.tableView) {
+		NSArray *newStops = [[GRTUserProfile defaultUserProfile] allFavoriteStops];
+		if (newStops == self.stops) {
+			return;
+		}
 		
-		NSLog(@"Adding: %@, Removing: %@", toAdd, toRemove);
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.stops = newStops;
+		});
 		
-		[self.mapView removeAnnotations:toRemove];
-		[self.mapView addAnnotations:toAdd];
-		[self updateMapView:self.mapView];
+		if (self.mapView != nil) {
+			NSMutableArray *toRemove = [[self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTFavoriteStop class]]] mutableCopy];
+			NSMutableArray *toAdd = [newStops mutableCopy];
+			[toAdd removeObjectsInArray:toRemove];
+			[toRemove removeObjectsInArray:newStops];
+			
+			NSLog(@"Adding: %@, Removing: %@", toAdd, toRemove);
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self.mapView removeAnnotations:toRemove];
+				[self.mapView addAnnotations:toAdd];
+				[self updateMapView:self.mapView];
+			});
+		}
 	}
 }
 
-- (void)setMapView:(MKMapView *)mapView withRegion:(MKCoordinateRegion)region animated:(BOOL)animated
+- (void)updateNearbyStopsForLocation:(CLLocation *)location
+{
+	NSOperation *nearbyUpdate = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performNearbyStopsUpdateWithLocation:) object:location];
+	
+	[[self.operationQueues objectAtIndex:GRTStopsViewTableUpdateQueue] addOperation:nearbyUpdate];
+}
+
+- (void)performNearbyStopsUpdateWithLocation:(CLLocation *)location
+{
+	@synchronized(self.tableView) {
+		NSArray *nearbyStops = [[GRTGtfsSystem defaultGtfsSystem] stopsAroundLocation:location withinDistance:500];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			self.nearbyStops = nearbyStops;
+		});
+	}
+}
+
+- (void)centerMapView:(MKMapView *)mapView toRegion:(MKCoordinateRegion)region animated:(BOOL)animated
 {
 	if (self.searchedStop != nil) {
 		for (id<MKAnnotation> annotationView in mapView.selectedAnnotations) {
@@ -193,13 +245,12 @@ enum GRTStopsTableSection {
 		
 	NSOperation *annotationUpdate = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performAnnotationUpdateOnMapView:) object:mapView];
 	
-	[self.mapUpdateQueue waitUntilAllOperationsAreFinished];
-	[self.mapUpdateQueue addOperation:annotationUpdate];
+	[[self.operationQueues objectAtIndex:GRTStopsViewMapUpdateQueue] addOperation:annotationUpdate];
 }
 
 - (void)performAnnotationUpdateOnMapView:(MKMapView *)mapView
 {
-	@synchronized(self) {
+	@synchronized(mapView) {
 		MKCoordinateRegion region = mapView.region;
 		
 		// find out all need to remove annotations
@@ -336,7 +387,7 @@ enum GRTStopsTableSection {
 	if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
 		self.searchedStop = stop;
 		[self.searchDisplayController setActive:NO animated:YES];
-		[self setMapView:self.mapView withRegion:MKCoordinateRegionMakeWithDistance(stop.coordinate, 300, 300) animated:NO];
+		[self centerMapView:self.mapView toRegion:MKCoordinateRegionMakeWithDistance(stop.coordinate, 300, 300) animated:NO];
 	}
 	else {
 		[self pushStopDetailsForStop:stop];
@@ -392,8 +443,7 @@ enum GRTStopsTableSection {
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
 	if (self.isViewLoaded) {
-		// TODO: It's slow to search for location on main thread
-		self.nearbyStops = [[GRTGtfsSystem defaultGtfsSystem] stopsAroundLocation:userLocation.location withinDistance:500];
+		[self updateNearbyStopsForLocation:userLocation.location];
 	}
 }
 
@@ -494,7 +544,7 @@ enum GRTStopsTableSection {
 	if (editingStyle == UITableViewCellEditingStyleInsert) {
 		favoriteStop = [[GRTUserProfile defaultUserProfile] addStop:stop.stop];
 		if (favoriteStop != nil) {
-			[self refreshFavoriteStops];
+			[self updateFavoriteStops];
 		}
 		else {
 			// highlight the stop that already in favorites
@@ -504,7 +554,7 @@ enum GRTStopsTableSection {
 		if ([stop isKindOfClass:[GRTFavoriteStop class]]) {
 			favoriteStop = stop;
 			if ([[GRTUserProfile defaultUserProfile] removeFavoriteStop:favoriteStop]) {
-				[self refreshFavoriteStops];
+				[self updateFavoriteStops];
 			}
 		}
 	}
