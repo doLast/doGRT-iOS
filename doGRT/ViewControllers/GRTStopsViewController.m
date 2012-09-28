@@ -13,11 +13,18 @@
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
 
+enum GRTStopsTableSection {
+	GRTStopsTableNearbySection = 0,
+	GRTStopsTableFavoritesSection,
+	GRTStopsTableSectionTotal, 
+};
+
 @interface GRTStopsViewController ()
 
 @property (nonatomic, strong) id<GRTStopAnnotation> searchedStop;
 @property (nonatomic, strong, readonly) NSOperationQueue *mapUpdateQueue;
 @property (nonatomic, strong) NSArray *nearbyStops;
+@property (nonatomic, strong) UIBarButtonItem *locateButton;
 
 @end
 
@@ -27,24 +34,21 @@
 @synthesize searchedStop = _searchedStop;
 @synthesize mapUpdateQueue = _mapUpdateQueue;
 @synthesize nearbyStops = _nearbyStops;
+@synthesize locateButton = _locateButton;
 
 @synthesize tableView = _tableView;
 @synthesize mapView = _mapView;
 @synthesize searchResultViewController = _searchResultViewController;
 @synthesize delegate = _delegate;
 
-- (void)setStops:(NSArray *)stops
-{
-	if (stops != _stops) {
-		_stops = stops;
-	}
-}
-
 - (void)setNearbyStops:(NSArray *)nearbyStops
 {
 	if (nearbyStops != _nearbyStops) {
 		_nearbyStops = nearbyStops;
-		[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:YES];
+		if (_nearbyStops != nil) {
+			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+//			[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		}
 	}
 }
 
@@ -56,6 +60,12 @@
 	return _mapUpdateQueue;
 }
 
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+	[super setEditing:editing animated:animated];
+	[self.tableView setEditing:editing animated:animated];
+}
+
 #pragma mark - view life-cycle
 
 - (void)viewDidLoad
@@ -64,6 +74,7 @@
 	
 	self.title = @"doGRT";
 	self.nearbyStops = nil;
+	self.locateButton = self.navigationItem.leftBarButtonItem;
 	
 	// Hide SearchBar
 	UISearchBar *searchBar = self.searchDisplayController.searchBar;
@@ -73,7 +84,7 @@
 	[self setMapView:self.mapView withRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
 	
 	// Enable user location tracking
-	[self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+	[self performSelector:@selector(startTrackingUserLocation:) withObject:self afterDelay:2];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -112,20 +123,19 @@
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+			self.navigationItem.leftBarButtonItem = self.locateButton;
 			[UIView animateWithDuration:duration animations:^{
 				self.mapView.alpha = 1.0;
 			} completion:^(BOOL finished){
 				[self updateMapView:self.mapView];
-//				if (self.mapView.userLocation == nil) {
-//					self.mapView.userTrackingMode = MKUserTrackingModeFollow;
-//				}
 			}];
 		}
 		else {
+			self.navigationItem.leftBarButtonItem = self.editButtonItem;
 			[UIView animateWithDuration:duration animations:^{
 				self.mapView.alpha = 0.0;
 			} completion:^(BOOL finished){
-//				self.mapView.userTrackingMode = MKUserTrackingModeNone;
+				
 			}];
 		}
 	}
@@ -135,8 +145,13 @@
 
 - (void)refreshFavoriteStops
 {
+	NSArray *oldStops = self.stops;
 	self.stops = [[GRTUserProfile defaultUserProfile] allFavoriteStops];
-	[self.tableView reloadData];
+	if (oldStops == self.stops) {
+		return;
+	}
+	
+	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
 	
 	if (self.mapView != nil) {
 		NSMutableArray *toRemove = [[self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTFavoriteStop class]]] mutableCopy];
@@ -255,6 +270,16 @@
 	[self setNavigationBarHidden:YES animated:YES];
 }
 
+- (IBAction)didTapRightNavButton:(id)sender
+{
+	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+		[self showPreferences:sender];
+	}
+	else {
+		[self showSearch:sender];
+	}
+}
+
 #pragma mark - search delegate
 
 - (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
@@ -289,10 +314,11 @@
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
-	if (controller.active && [searchString length] > 1) {
+	if (controller.active && [searchString length] > 0) {
 		self.searchResultViewController.stops = [[GRTGtfsSystem defaultGtfsSystem] stopsWithNameLike:searchString];
 		return YES;
 	}
+	self.searchResultViewController.stops = nil;
 	return NO;
 }
 
@@ -365,31 +391,44 @@
 
 #pragma mark - Table View Data Source
 
+- (NSArray *)stopsArrayForSection:(NSInteger)section
+{
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSearchedStop:)]) {
+		return self.stops;
+	}
+	else if (section == GRTStopsTableFavoritesSection) {
+		return self.stops;
+	}
+	else if (section == GRTStopsTableNearbySection){
+		return self.nearbyStops;
+	}
+	return nil;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-//	BOOL locatable = [CLLocationManager locationServicesEnabled];
-	return 2;
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSearchedStop:)]) {
+		return 1;
+	}
+	return GRTStopsTableSectionTotal;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	if (section == 0) {
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSearchedStop:)]) {
+		return nil;
+	}
+	else if (section == GRTStopsTableNearbySection) {
 		return @"Nearby Stops";
 	}
-//	else if (section == 1) {
+//	else if (section == GRTStopsTableFavoritesSection) {
 		return @"Favorites";
 //	}
 //	return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (section == 0) {
-		return [self.nearbyStops count];
-	}
-//	else if (section == 1) {
-		return [self.stops count];
-//	}
-//	return nil;
+	return [[self stopsArrayForSection:section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -400,28 +439,58 @@
 	if (cell == nil) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
 	}
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
-	id<GRTStopAnnotation> stop = nil;
-	if (indexPath.section == 0) {
-		stop = [self.nearbyStops objectAtIndex:indexPath.row];
-	}
-	else if (indexPath.section == 1) {
-		stop = [self.stops objectAtIndex:indexPath.row];
-	}
+	id<GRTStopAnnotation> stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
 	
     cell.textLabel.text = stop.title;
-	
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", stop.subtitle];
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
     return cell;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSearchedStop:)]) {
+		
+	}
+	else if (indexPath.section == GRTStopsTableNearbySection) {
+		return UITableViewCellEditingStyleInsert;
+	}
+	else if (indexPath.section == GRTStopsTableFavoritesSection) {
+		return UITableViewCellEditingStyleDelete;
+	}
+	return UITableViewCellAccessoryNone;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	id<GRTStopAnnotation> stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
+	GRTFavoriteStop *favoriteStop = nil;
+	if (editingStyle == UITableViewCellEditingStyleInsert) {
+		favoriteStop = [[GRTUserProfile defaultUserProfile] addStop:stop.stop];
+		if (favoriteStop != nil) {
+			[self refreshFavoriteStops];
+		}
+		else {
+			// highlight the stop that already in favorites
+		}
+	}
+	else if (editingStyle == UITableViewCellEditingStyleDelete) {
+		if ([stop isKindOfClass:[GRTFavoriteStop class]]) {
+			favoriteStop = stop;
+			if ([[GRTUserProfile defaultUserProfile] removeFavoriteStop:favoriteStop]) {
+				[self refreshFavoriteStops];
+			}
+		}
+	}
 }
 
 #pragma mark - Table View Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	id<GRTStopAnnotation> stop = [self.stops objectAtIndex:indexPath.row];
+	id<GRTStopAnnotation> stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
     if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSearchedStop:)]) {
 		[self.delegate didSearchedStop:stop.stop];
 	}

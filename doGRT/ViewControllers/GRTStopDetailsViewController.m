@@ -105,17 +105,26 @@
 
 #pragma mark - page view data source
 
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
 	NSInteger index = [self.candidateViewControllers indexOfObject:viewController];
+	if (index == 1) {
+		return nil;
+	}
 	index = (index + 1) % [self.candidateViewControllers count];
-		
+	
 	return [self.candidateViewControllers objectAtIndex:index];
 }
 
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
-	return [self pageViewController:pageViewController viewControllerBeforeViewController:viewController];
+	NSInteger index = [self.candidateViewControllers indexOfObject:viewController];
+	if (index == 0) {
+		return nil;
+	}
+	index = (index - 1) % [self.candidateViewControllers count];
+	
+	return [self.candidateViewControllers objectAtIndex:index];
 }
 
 #pragma mark - page view delegate

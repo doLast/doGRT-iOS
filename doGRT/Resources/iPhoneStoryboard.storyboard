@@ -16,6 +16,28 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <view key="tableHeaderView" contentMode="scaleToFill" id="hvd-gL-X30">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ndp-nb-VTq">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                            <state key="normal" title="SEARCH_FOR_STOPS">
+                                                <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <state key="highlighted">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="showSearch:" destination="1Mx-hj-Dgb" eventType="touchUpInside" id="qZ6-JE-leS"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                </view>
                                 <connections>
                                     <outlet property="dataSource" destination="1Mx-hj-Dgb" id="Go3-dd-Zp9"/>
                                     <outlet property="delegate" destination="1Mx-hj-Dgb" id="6yL-go-g5I"/>
@@ -48,9 +70,9 @@
                                 <action selector="didTapLeftNavButton:" destination="1Mx-hj-Dgb" id="ce3-gD-Fxd"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="SEARCH" id="6ic-3L-Ptr">
+                        <barButtonItem key="rightBarButtonItem" title="RIGHT" id="6ic-3L-Ptr">
                             <connections>
-                                <action selector="showSearch:" destination="1Mx-hj-Dgb" id="CsD-mV-HxC"/>
+                                <action selector="didTapRightNavButton:" destination="1Mx-hj-Dgb" id="NVM-l9-OK8"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -88,7 +110,7 @@
                         <nil key="title"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="bar" selectedSegmentIndex="0" id="Ls4-Zv-c6e">
                             <rect key="frame" x="74" y="7" width="131" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="MIXED"/>
                                 <segment title="ROUTES"/>
@@ -156,6 +178,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Flr-aD-b2h">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.21568629149999999" green="0.59215688710000003" blue="0.81176477670000002" alpha="1" colorSpace="deviceRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -188,6 +211,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsViewController.h"/>
             <relationships>
                 <relationship kind="action" name="didTapLeftNavButton:"/>
+                <relationship kind="action" name="didTapRightNavButton:"/>
                 <relationship kind="action" name="showPreferences:"/>
                 <relationship kind="action" name="showSearch:"/>
                 <relationship kind="action" name="startTrackingUserLocation:"/>

@@ -46,7 +46,7 @@
 
 - (NSArray *)allFavoriteStops
 {
-	return [self.favoriteStops copy];
+	return self.favoriteStops;
 }
 
 - (GRTFavoriteStop *)favoriteStopByStop:(GRTStop *)stop;
@@ -104,7 +104,12 @@
 - (GRTFavoriteStop *)addStop:(GRTStop *)stop
 {
 	@synchronized(self) {
-		GRTFavoriteStop *favoriteStop = [NSEntityDescription insertNewObjectForEntityForName:@"GRTFavoriteStop" inManagedObjectContext:self.managedObjectContext];
+		GRTFavoriteStop *favoriteStop = [self favoriteStopByStop:stop];
+		if (favoriteStop != nil) {
+			return nil;
+		}
+		
+		favoriteStop = [NSEntityDescription insertNewObjectForEntityForName:@"GRTFavoriteStop" inManagedObjectContext:self.managedObjectContext];
 		favoriteStop.stopId = stop.stopId;
 		favoriteStop.displayName = stop.stopName;
 		favoriteStop.displayOrder = [NSNumber numberWithInteger:[self.favoriteStops count]];

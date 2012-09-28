@@ -30,5 +30,6 @@
 - (IBAction)startTrackingUserLocation:(id)sender;
 - (IBAction)didTapLeftNavButton:(id)sender;
 - (IBAction)showSearch:(id)sender;
+- (IBAction)didTapRightNavButton:(id)sender;
 
 @end
