@@ -217,7 +217,7 @@ enum GRTStopsViewQueue {
 		for (id<MKAnnotation> annotationView in mapView.selectedAnnotations) {
 			[mapView deselectAnnotation:annotationView animated:NO];
 		}
-		[self.mapView selectAnnotation:self.searchedStop animated:YES];
+		[self.mapView selectAnnotation:self.searchedStop animated:NO];
 	}
 	[mapView setRegion:region animated:animated];
 }
@@ -372,6 +372,10 @@ enum GRTStopsViewQueue {
 {
 	if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
 		self.searchedStop = stop;
+		GRTFavoriteStop *favStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.searchedStop];
+		if (favStop != nil) {
+			self.searchedStop = favStop;
+		}
 		[self.searchDisplayController setActive:NO animated:YES];
 		[self centerMapView:self.mapView toRegion:MKCoordinateRegionMakeWithDistance(stop.coordinate, 300, 300) animated:NO];
 	}
