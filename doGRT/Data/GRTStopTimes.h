@@ -6,6 +6,8 @@
 //
 //
 
+#import "GRTStopTime.h"
+
 @class GRTStop;
 @class GRTRoute;
 

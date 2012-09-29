@@ -6,8 +6,6 @@
 //
 //
 
-#import <Foundation/Foundation.h>
-
 @interface GRTService : NSObject
 
 @property (nonatomic, strong, readonly) NSString *serviceId;

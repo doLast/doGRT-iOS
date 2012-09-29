@@ -116,7 +116,28 @@
 {
 	GRTShape *shape = [self.shapes objectForKey:shapeId];
 	if (shape == nil) {
-		// FETCH
+		FMResultSet *result = [self.db executeQueryWithFormat:@"SELECT * \
+							   FROM shapes \
+							   WHERE shape_id=%@ \
+							   ORDER BY shape_pt_sequence", shapeId];
+		if (result == nil){
+			NSLog(@"%@", [self.db lastErrorMessage]);
+			abort();
+		}
+		
+		NSMutableArray *shapePts = [NSMutableArray array];
+		while ([result next]) {
+			NSNumber *shapePtLat = [NSNumber numberWithDouble:[result doubleForColumn:@"shape_pt_lat"]];
+			NSNumber *shapePtLon = [NSNumber numberWithDouble:[result doubleForColumn:@"shape_pt_lon"]];
+//			NSNumber *shapeDistTraveled = [NSNumber numberWithDouble:[result doubleForColumn:@"shape_dist_traveled"]];
+			
+			GRTShapePt *shapePt = [[GRTShapePt alloc] initWithLat:shapePtLat lon:shapePtLon];
+			[shapePts addObject:shapePt];
+		}
+		[result close];
+		
+		shape = [[GRTShape alloc] initWithShapeId:shapeId shapePts:shapePts];
+		[self.shapes setObject:shape forKey:shapeId];
 	}
 	return shape;
 }

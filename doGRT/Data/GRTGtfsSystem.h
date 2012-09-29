@@ -7,11 +7,10 @@
 //
 
 #import <MapKit/MapKit.h>
-#import "GRTStopTime.h"
 #import "GRTStop.h"
 #import "GRTTrip.h"
 #import "GRTRoute.h"
-#import "GRTShapePt.h"
+#import "GRTShape.h"
 #import "GRTService.h"
 #import "GRTStopTimes.h"
 
