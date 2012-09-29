@@ -483,7 +483,30 @@ enum GRTStopsViewQueue {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == GRTStopsTableHeaderSection) {
+	if (self.delegate != nil || indexPath.section != GRTStopsTableHeaderSection) {
+		static NSString *CellIdentifier = @"stopCell";
+		
+		// Dequeue or create a new cell.
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		if (cell == nil) {
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		}
+		
+		id<GRTStopAnnotation> stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
+		
+		cell.textLabel.text = stop.title;
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", stop.subtitle];
+		if (indexPath.section == GRTStopsTableFavoritesSection) {
+			cell.editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+		}
+		else {
+			cell.editingAccessoryType = UITableViewCellAccessoryNone;
+		}
+		
+		return cell;
+	}
+	else /* if (indexPath.section == GRTStopsTableHeaderSection) */ {
 		static NSString *CellIdentifier = @"searchButtonCell";
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (cell == nil) {
@@ -495,33 +518,14 @@ enum GRTStopsViewQueue {
 		}
 		return cell;
 	}
-	
-	static NSString *CellIdentifier = @"stopCell";
-	
-    // Dequeue or create a new cell.
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	if (cell == nil) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	}
-	
-	id<GRTStopAnnotation> stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
-	
-    cell.textLabel.text = stop.title;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", stop.subtitle];
-	if (indexPath.section == GRTStopsTableFavoritesSection) {
-		cell.editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-	}
-	else {
-		cell.editingAccessoryType = UITableViewCellAccessoryNone;
-	}
-	
-    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (indexPath.section == GRTStopsTableHeaderSection) {
+	if (self.delegate != nil) {
+		return;
+	}
+	else if (indexPath.section == GRTStopsTableHeaderSection) {
 		return [self tableView:tableView didSelectRowAtIndexPath:indexPath];
 	}
 	
