@@ -20,5 +20,6 @@
 - (GRTFavoriteStop *)addStop:(GRTStop *)stop;
 - (BOOL)removeFavoriteStop:(GRTFavoriteStop *)favoriteStop;
 - (BOOL)moveFavoriteStop:(GRTFavoriteStop *)favoriteStop toIndex:(NSUInteger)index;
+- (BOOL)renameFavoriteStop:(GRTFavoriteStop *)favoriteStop withName:(NSString *)name;
 
 @end

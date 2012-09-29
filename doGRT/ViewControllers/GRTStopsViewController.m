@@ -30,6 +30,7 @@ enum GRTStopsViewQueue {
 
 @property (nonatomic, strong) NSArray *nearbyStops;
 @property (nonatomic, strong) id<GRTStopAnnotation> searchedStop;
+@property (nonatomic, strong) NSIndexPath *editingFavIndexPath;
 
 @property (nonatomic, strong, readonly) NSArray *operationQueues;
 @property (nonatomic, strong) UIBarButtonItem *locateButton;
@@ -41,6 +42,7 @@ enum GRTStopsViewQueue {
 @synthesize stops = _stops;
 @synthesize nearbyStops = _nearbyStops;
 @synthesize searchedStop = _searchedStop;
+@synthesize editingFavIndexPath = _editingFavIndexPath;
 
 @synthesize operationQueues = _operationQueues;
 @synthesize locateButton = _locateButton;
@@ -77,6 +79,8 @@ enum GRTStopsViewQueue {
 	
 	self.title = @"doGRT";
 	self.nearbyStops = nil;
+	self.searchedStop = nil;
+	self.editingFavIndexPath = nil;
 	self.locateButton = self.navigationItem.leftBarButtonItem;
 	
 	// Hide SearchBar
@@ -467,6 +471,9 @@ enum GRTStopsViewQueue {
 		return nil;
 	}
 	else if (section == GRTStopsTableNearbySection) {
+		if (self.nearbyStops == nil) {
+			return @"Locating...";
+		}
 		return @"Nearby Stops";
 	}
 	else if (section == GRTStopsTableFavoritesSection) {
@@ -613,8 +620,15 @@ enum GRTStopsViewQueue {
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
 	if (self.delegate == nil && indexPath.section == GRTStopsTableFavoritesSection) {
-//		GRTFavoriteStop *stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
-		// TODO: Add rename alert
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Edit Favorite Stop Name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
+		alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+		UITextField *textField = [alert textFieldAtIndex:0];
+		
+		GRTFavoriteStop *stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
+		self.editingFavIndexPath = indexPath;
+		textField.text = stop.displayName;
+		
+		[alert show];
 	}
 }
 
@@ -631,6 +645,27 @@ enum GRTStopsViewQueue {
 	}
 	
 	return proposedDestinationIndexPath;
+}
+
+#pragma mark - Alert View Delegate
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+		UITextField *textField = [alertView textFieldAtIndex:0];
+		if(textField.text.length > 0) {
+			GRTFavoriteStop *favStop = [[self stopsArrayForSection:self.editingFavIndexPath.section] objectAtIndex:self.editingFavIndexPath.row];
+			BOOL result = [[GRTUserProfile defaultUserProfile] renameFavoriteStop:favStop withName:textField.text];
+			if (result) {
+				[self.tableView reloadRowsAtIndexPaths:@[self.editingFavIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+			}
+		}
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+		[self.tableView reloadData];
+    }
 }
 
 @end

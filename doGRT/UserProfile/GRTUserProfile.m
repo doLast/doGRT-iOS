@@ -158,4 +158,22 @@
 	}
 }
 
+- (BOOL)renameFavoriteStop:(GRTFavoriteStop *)favoriteStop withName:(NSString *)name
+{
+	@synchronized(self) {
+		if ([self.favoriteStops containsObject:favoriteStop]) {
+			favoriteStop.displayName = name;
+			
+			NSError *error = nil;
+			if ([self.managedObjectContext save:&error]) {
+				return YES;
+			}
+			
+			NSLog(@"Failed to rename stop: %@", error);
+			[self.managedObjectContext rollback];
+		}
+		return NO;
+	}
+}
+
 @end
