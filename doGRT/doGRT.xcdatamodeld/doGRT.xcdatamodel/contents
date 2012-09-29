@@ -5,13 +5,7 @@
         <attribute name="displayOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="stopId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
-    <entity name="UserChosenBusStop" syncable="YES">
-        <attribute name="addTime" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="stopId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="stopName" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
     <elements>
         <element name="GRTFavoriteStop" positionX="160" positionY="192" width="128" height="90"/>
-        <element name="UserChosenBusStop" positionX="160" positionY="192" width="128" height="90"/>
     </elements>
 </model>
