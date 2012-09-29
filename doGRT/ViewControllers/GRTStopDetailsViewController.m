@@ -58,7 +58,7 @@
 	
 	NSAssert(self.stopTimes != nil, @"Must have a stopTimes");
 	
-//	self.title = self.stopTimes.stop.stopName;
+	self.title = self.stopTimes.stop.stopName;
 	self.date = [NSDate date];
 	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopTimes.stop];
 	self.view.backgroundColor = [UIColor underPageBackgroundColor];
@@ -95,13 +95,13 @@
 {
 	NSInteger old = [self.candidateViewControllers indexOfObject:[self.viewControllers objectAtIndex:0]];
 	NSInteger new = (old + 1) % [self.candidateViewControllers count];
+	NSLog(@"Transmiting from #%d to #%d", old, new);
 	
-	UIPageViewControllerNavigationDirection direction = UIPageViewControllerNavigationDirectionForward;
-	if (new < old) {
-		direction = UIPageViewControllerNavigationDirectionReverse;
-	}
+	UIPageViewControllerNavigationDirection direction = new < old ? UIPageViewControllerNavigationDirectionReverse : UIPageViewControllerNavigationDirectionForward;
 	
 	[self setViewControllers:@[[self.candidateViewControllers objectAtIndex:new]] direction:direction animated:YES completion:nil];
+	
+	// TODO: Toggling the view too fast will cause crash
 }
 
 - (IBAction)toggleStopFavorite:(id)sender

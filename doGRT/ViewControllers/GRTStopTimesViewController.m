@@ -86,6 +86,9 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:21];
+		cell.textLabel.textAlignment = NSTextAlignmentCenter;
+		//	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
     
 	GRTStopTime *stopTime = [self.stopTimes objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)];
@@ -98,17 +101,9 @@
 	}
 	
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
-	if (indexPath.section == 0) {
-		cell.detailTextLabel.textColor = [UIColor lightGrayColor];
-	}
-	else {
-		cell.detailTextLabel.textColor = [UIColor darkTextColor];
-	}
+	cell.detailTextLabel.textColor = indexPath.section == 0 ? [UIColor lightGrayColor] : [UIColor darkTextColor];
 	
 	cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", time / 10000, (time / 100) % 100 ];
-	cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
-	cell.textLabel.textAlignment = NSTextAlignmentCenter;
-//	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
 }
