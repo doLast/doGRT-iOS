@@ -101,7 +101,7 @@
 			NSString *tripHeadsign = [result stringForColumn:@"trip_headsign"];
 			NSNumber *routeId = [NSNumber numberWithInt:[result intForColumn:@"route_id"]];
 			NSString *serviceId = [result stringForColumn:@"service_id"];
-			NSNumber *shapeId = [NSNumber numberWithInt:[result intForColumn:@"shapeId"]];
+			NSNumber *shapeId = [NSNumber numberWithInt:[result intForColumn:@"shape_id"]];
 			
 			trip = [[GRTTrip alloc] initWithTripId:tripId tripHeadsign:tripHeadsign routeId:routeId serviceId:serviceId shapeId:shapeId];
 			[self.trips	setObject:trip forKey:trip.tripId];
