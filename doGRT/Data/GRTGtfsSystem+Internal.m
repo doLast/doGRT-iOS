@@ -24,17 +24,17 @@
 	GRTService *service = [self.services objectForKey:serviceId];
 	if (service == nil) {
 		FMResultSet *result = [self.db executeQueryWithFormat:@"SELECT * \
-							   FROM Calendar \
-							   WHERE serviceId=%@", serviceId];
+							   FROM calendar \
+							   WHERE service_id=%@", serviceId];
 		if (result == nil){
 			NSLog(@"%@", [self.db lastErrorMessage]);
 			abort();
 		}
 		
 		if ([result next]) {
-			NSString *serviceId = [result stringForColumn:@"serviceId"];
-			NSNumber *startDate = [NSNumber numberWithInt:[result intForColumn:@"startDate"]];
-			NSNumber *endDate = [NSNumber numberWithInt:[result intForColumn:@"endDate"]];
+			NSString *serviceId = [result stringForColumn:@"service_id"];
+			NSNumber *startDate = [NSNumber numberWithInt:[result intForColumn:@"start_date"]];
+			NSNumber *endDate = [NSNumber numberWithInt:[result intForColumn:@"end_date"]];
 			NSMutableSet *serviceDays = [NSMutableSet set];
 			if ([result boolForColumn:@"sunday"]) [serviceDays addObject:@"sunday"];
 			if ([result boolForColumn:@"monday"]) [serviceDays addObject:@"monday"];
@@ -63,17 +63,17 @@
 	GRTRoute *route = [self.routes objectForKey:routeId];
 	if (route == nil) {
 		FMResultSet *result = [self.db executeQueryWithFormat:@"SELECT * \
-							   FROM Route \
-							   WHERE routeId=%@", routeId];
+							   FROM routes \
+							   WHERE route_id=%@", routeId];
 		if (result == nil){
 			NSLog(@"%@", [self.db lastErrorMessage]);
 			abort();
 		}
 		
 		if ([result next]) {
-			NSNumber *routeId = [NSNumber numberWithInt:[result intForColumn:@"routeId"]];
-			NSString *routeLongName = [result stringForColumn:@"routeLongName"];
-			NSString *routeShortName = [result stringForColumn:@"routeShortName"];
+			NSNumber *routeId = [NSNumber numberWithInt:[result intForColumn:@"route_id"]];
+			NSString *routeLongName = [result stringForColumn:@"route_long_name"];
+			NSString *routeShortName = [result stringForColumn:@"route_short_name"];
 			
 			route = [[GRTRoute alloc] initWithRouteId:routeId routeShortName:routeShortName routeLongName:routeLongName routeType:[NSNumber numberWithInt:3]];
 			[self.routes setObject:route forKey:route.routeId];
@@ -89,20 +89,19 @@
 	GRTTrip *trip = [self.trips objectForKey:tripId];
 	if (trip == nil) {
 		FMResultSet *result = [self.db executeQueryWithFormat:@"SELECT * \
-							   FROM Trip \
-							   WHERE tripId=%@", tripId];
+							   FROM trips \
+							   WHERE trip_id=%@", tripId];
 		if (result == nil){
 			NSLog(@"%@", [self.db lastErrorMessage]);
 			abort();
 		}
 		
 		if ([result next]) {
-			NSNumber *tripId = [NSNumber numberWithInt:[result intForColumn:@"tripId"]];
-			NSString *tripHeadsign = [result stringForColumn:@"tripHeadsign"];
-			NSNumber *routeId = [NSNumber numberWithInt:[result intForColumn:@"routeId"]];
-			NSString *serviceId = [result stringForColumn:@"serviceId"];
-			NSNumber *shapeId = nil;
-//			NSNumber *shapeId = [NSNumber numberWithInt:[result intForColumn:@"shapeId"]];
+			NSNumber *tripId = [NSNumber numberWithInt:[result intForColumn:@"trip_id"]];
+			NSString *tripHeadsign = [result stringForColumn:@"trip_headsign"];
+			NSNumber *routeId = [NSNumber numberWithInt:[result intForColumn:@"route_id"]];
+			NSString *serviceId = [result stringForColumn:@"service_id"];
+			NSNumber *shapeId = [NSNumber numberWithInt:[result intForColumn:@"shapeId"]];
 			
 			trip = [[GRTTrip alloc] initWithTripId:tripId tripHeadsign:tripHeadsign routeId:routeId serviceId:serviceId shapeId:shapeId];
 			[self.trips	setObject:trip forKey:trip.tripId];

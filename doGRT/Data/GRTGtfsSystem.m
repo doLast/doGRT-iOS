@@ -50,12 +50,12 @@ static const int kMaxStopsLimit = 30;
 	if (_stops == nil) {
 		NSMutableDictionary *newStops = [[NSMutableDictionary alloc] init];
 		
-		FMResultSet *result = [self.db executeQuery:@"SELECT * FROM BusStop"];
+		FMResultSet *result = [self.db executeQuery:@"SELECT * FROM stops"];
 		while ([result next]){
-			NSNumber *stopId = [NSNumber numberWithInt:[result intForColumn:@"stopId"]];
-			NSString *stopName = [result stringForColumn:@"stopName"];
-			NSNumber *stopLat = [NSNumber numberWithDouble:[result doubleForColumn:@"stopLat"]];
-			NSNumber *stopLon = [NSNumber numberWithDouble:[result doubleForColumn:@"stopLon"]];
+			NSNumber *stopId = [NSNumber numberWithInt:[result intForColumn:@"stop_id"]];
+			NSString *stopName = [result stringForColumn:@"stop_name"];
+			NSNumber *stopLat = [NSNumber numberWithDouble:[result doubleForColumn:@"stop_lat"]];
+			NSNumber *stopLon = [NSNumber numberWithDouble:[result doubleForColumn:@"stop_lon"]];
 			
 			GRTStop *newStop = [[GRTStop alloc] initWithStopId:stopId stopName:stopName stopLat:stopLat stopLon:stopLon];
 			

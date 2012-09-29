@@ -78,16 +78,16 @@
 	
 	NSMutableArray *arguments = [NSMutableArray arrayWithObject:self.stop.stopId];
 	NSString *query = [NSString stringWithFormat:@"SELECT S.* \
-					   FROM Calendar as C, Trip as T, StopTime as S \
-					   WHERE C.%@ AND S.stopId=? AND \
-					   S.tripId=T.tripId AND T.serviceId=C.serviceId ",
+					   FROM calendar as C, trips as T, stop_times as S \
+					   WHERE C.%@ AND S.stop_id=? AND \
+					   S.trip_id=T.trip_id AND T.service_id=C.service_id ",
 					   dayName];
 	
 	if (route != nil) {
-		query = [query stringByAppendingString:@"AND T.routeId=? "];
+		query = [query stringByAppendingString:@"AND T.route_id=? "];
 		[arguments addObject:route.routeId];
 	}
-	query = [query stringByAppendingString:@"ORDER BY S.departureTime "];
+	query = [query stringByAppendingString:@"ORDER BY S.departure_time "];
 	
 	// execute database query
 	FMDatabase *db = [GRTGtfsSystem defaultGtfsSystem].db;
@@ -101,11 +101,11 @@
 	NSMutableArray *stopTimes = [[NSMutableArray alloc] init];
 	while ([result next]) {
 		//retrieve values for each record
-		NSNumber *tripId = [NSNumber numberWithInt:[result intForColumn:@"tripId"]];
-		NSNumber *stopSequence = [NSNumber numberWithInt:[result intForColumn:@"stopSequence"]];
-		NSNumber *stopId = [NSNumber numberWithInt:[result intForColumn:@"stopId"]];
-		NSNumber *arrivalTime = [NSNumber numberWithInt:[result intForColumn:@"arrivalTime"]];
-		NSNumber *departureTime = [NSNumber numberWithInt:[result intForColumn:@"departureTime"]];
+		NSNumber *tripId = [NSNumber numberWithInt:[result intForColumn:@"trip_id"]];
+		NSNumber *stopSequence = [NSNumber numberWithInt:[result intForColumn:@"stop_sequence"]];
+		NSNumber *stopId = [NSNumber numberWithInt:[result intForColumn:@"stop_id"]];
+		NSNumber *arrivalTime = [NSNumber numberWithInt:[result intForColumn:@"arrival_time"]];
+		NSNumber *departureTime = [NSNumber numberWithInt:[result intForColumn:@"departure_time"]];
 		
 		GRTStopTime *stopTime = [[GRTStopTime alloc] initWithTripId:tripId stopSequence:stopSequence stopId:stopId arrivalTime:arrivalTime departureTime:departureTime];
 		[stopTimes addObject:stopTime];
@@ -121,10 +121,10 @@
 - (NSArray *)fetchRoutes
 {
 	NSMutableArray *arguments = [NSMutableArray arrayWithObject:self.stop.stopId];
-	NSString *query = [NSString stringWithFormat:@"SELECT DISTINCT T.routeId \
-					   FROM Trip as T, StopTime as S \
-					   WHERE S.stopId=? AND S.tripId=T.tripId \
-					   ORDER BY T.routeId"];
+	NSString *query = [NSString stringWithFormat:@"SELECT DISTINCT T.route_id \
+					   FROM trips as T, stop_times as S \
+					   WHERE S.stop_id=? AND S.trip_id=T.trip_id \
+					   ORDER BY T.route_id"];
 	
 	// execute database query
 	FMDatabase *db = [GRTGtfsSystem defaultGtfsSystem].db;
@@ -137,7 +137,7 @@
 	// process the data
 	NSMutableArray *routes = [[NSMutableArray alloc] init];
 	while ([result next]) {
-		NSNumber *routeId = [NSNumber numberWithInt:[result intForColumn:@"routeId"]];
+		NSNumber *routeId = [NSNumber numberWithInt:[result intForColumn:@"route_id"]];
 		GRTRoute *route = [[GRTGtfsSystem defaultGtfsSystem] routeById:routeId];
 		if (route != nil) {
 			[routes addObject:route];
