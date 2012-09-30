@@ -29,7 +29,7 @@ enum GRTStopsViewQueue {
 @interface GRTStopsViewController ()
 
 @property (nonatomic, strong) NSArray *nearbyStops;
-@property (nonatomic, strong) id<GRTStopAnnotation> searchedStop;
+@property (nonatomic, strong) id<GRTStopAnnotation> willBePresentedStop;
 @property (nonatomic, strong) NSIndexPath *editingFavIndexPath;
 
 @property (nonatomic, strong, readonly) NSArray *operationQueues;
@@ -41,7 +41,7 @@ enum GRTStopsViewQueue {
 
 @synthesize stops = _stops;
 @synthesize nearbyStops = _nearbyStops;
-@synthesize searchedStop = _searchedStop;
+@synthesize willBePresentedStop = _willBePresentedStop;
 @synthesize editingFavIndexPath = _editingFavIndexPath;
 
 @synthesize operationQueues = _operationQueues;
@@ -79,7 +79,7 @@ enum GRTStopsViewQueue {
 	
 	self.title = @"doGRT";
 	self.nearbyStops = nil;
-	self.searchedStop = nil;
+	self.willBePresentedStop = nil;
 	self.editingFavIndexPath = nil;
 	self.locateButton = self.navigationItem.leftBarButtonItem;
 	
@@ -217,11 +217,11 @@ enum GRTStopsViewQueue {
 
 - (void)centerMapView:(MKMapView *)mapView toRegion:(MKCoordinateRegion)region animated:(BOOL)animated
 {
-	if (self.searchedStop != nil) {
+	if (self.willBePresentedStop != nil) {
 		for (id<MKAnnotation> annotationView in mapView.selectedAnnotations) {
 			[mapView deselectAnnotation:annotationView animated:NO];
 		}
-		[self.mapView selectAnnotation:self.searchedStop animated:NO];
+		[self.mapView selectAnnotation:self.willBePresentedStop animated:NO];
 	}
 	[mapView setRegion:region animated:animated];
 }
@@ -372,13 +372,13 @@ enum GRTStopsViewQueue {
 
 #pragma mark - stops search delegate
 
-- (void)didSearchedStop:(GRTStop *)stop
+- (void)presentStop:(GRTStop *)stop
 {
-	if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-		self.searchedStop = stop;
-		GRTFavoriteStop *favStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.searchedStop];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+		self.willBePresentedStop = stop;
+		GRTFavoriteStop *favStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.willBePresentedStop];
 		if (favStop != nil) {
-			self.searchedStop = favStop;
+			self.willBePresentedStop = favStop;
 		}
 		[self.searchDisplayController setActive:NO animated:YES];
 		[self centerMapView:self.mapView toRegion:MKCoordinateRegionMakeWithDistance(stop.coordinate, 300, 300) animated:NO];
@@ -397,8 +397,8 @@ enum GRTStopsViewQueue {
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-	if (view.annotation == self.searchedStop) {
-		self.searchedStop = nil;
+	if (view.annotation == self.willBePresentedStop) {
+		self.willBePresentedStop = nil;
 	}
 }
 
@@ -419,8 +419,8 @@ enum GRTStopsViewQueue {
 			[mapView removeAnnotation:view.annotation];
 		}
 	}
-	if (self.searchedStop != nil && [mapView.selectedAnnotations count] == 0) {
-		[mapView selectAnnotation:self.searchedStop animated:NO];
+	if (self.willBePresentedStop != nil && [mapView.selectedAnnotations count] == 0) {
+		[mapView selectAnnotation:self.willBePresentedStop animated:NO];
 	}
 }
 
@@ -606,8 +606,8 @@ enum GRTStopsViewQueue {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	id<GRTStopAnnotation> stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
-    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSearchedStop:)]) {
-		[self.delegate didSearchedStop:stop.stop];
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(presentStop:)]) {
+		[self.delegate presentStop:stop.stop];
 	}
 	else if (indexPath.section == GRTStopsTableHeaderSection) {
 		return [self showSearch:tableView];

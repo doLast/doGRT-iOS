@@ -13,7 +13,7 @@
 
 @protocol GRTStopsSearchDelegate <NSObject>
 
-- (void)didSearchedStop:(GRTStop *)stop;
+- (void)presentStop:(GRTStop *)stop;
 
 @end
 
