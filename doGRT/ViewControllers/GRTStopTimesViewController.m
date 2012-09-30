@@ -35,9 +35,9 @@
 		
 		[self.tableView reloadData];
 		
-		if(self.comingBusIndex > 0){
-			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-			[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+		if(self.comingBusIndex > 2){
+			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 2 inSection:0];
+			[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		}
 	}
 }
