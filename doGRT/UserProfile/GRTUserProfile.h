@@ -10,6 +10,8 @@
 
 @class GRTStop;
 
+extern NSString *GRTUserProfileUpdateNotification;
+
 @interface GRTUserProfile : NSObject
 
 + (GRTUserProfile *)defaultUserProfile;

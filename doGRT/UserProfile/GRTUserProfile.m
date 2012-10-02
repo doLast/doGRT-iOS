@@ -9,6 +9,8 @@
 #import "GRTUserProfile.h"
 #import "GRTGtfsSystem+Internal.h"
 
+NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification";
+
 @interface GRTUserProfile ()
 
 @property (nonatomic, weak) NSManagedObjectContext *managedObjectContext;
@@ -28,7 +30,7 @@
 	self = [super init];
 	if (self != nil) {
 		self.managedObjectContext = [(id) [[UIApplication sharedApplication] delegate]managedObjectContext];
-		[self updateFavoriteStops];
+		[self refreshFavoriteStops];
 	}
 	return self;
 }
@@ -63,7 +65,7 @@
 	}
 }
 
-- (void)updateFavoriteStops
+- (void)refreshFavoriteStops
 {
 	@synchronized(self) {
 		NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GRTFavoriteStop"];
@@ -83,7 +85,12 @@
 
 #pragma mark - data manipulation
 
-- (BOOL)reassignOrder
+- (void)postNotification
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:GRTUserProfileUpdateNotification object:self];
+}
+
+- (void)reassignOrder
 {
 	@synchronized(self) {
 		NSUInteger i = 0;
@@ -91,15 +98,6 @@
 			favoriteStop.displayOrder = [NSNumber numberWithInteger:i];
 			i++;
 		}
-		
-		NSError *error = nil;
-		if (![self.managedObjectContext save:&error]) {
-			NSLog(@"Failed to reassign order: %@", error);
-			[self.managedObjectContext rollback];
-		}
-		
-		[self updateFavoriteStops];
-		return error == nil;
 	}
 }
 
@@ -117,15 +115,16 @@
 		favoriteStop.displayOrder = [NSNumber numberWithInteger:[self.favoriteStops count]];
 		
 		NSError *error = nil;
-		if (![self.managedObjectContext save:&error]) {
-			NSLog(@"Failed to add stop: %@", error);
-			[self.managedObjectContext rollback];
-
-			return nil;
+		if ([self.managedObjectContext save:&error]) {
+			[self refreshFavoriteStops];
+			[self postNotification];
+			return favoriteStop;
 		}
 		
-		[self updateFavoriteStops];
-		return favoriteStop;
+		NSLog(@"Failed to add stop: %@", error);
+		[self.managedObjectContext rollback];
+		
+		return nil;
 	}
 }
 
@@ -138,7 +137,18 @@
 			[self.managedObjectContext deleteObject:favoriteStop];
 			
 			// Commit the change after reassignOrder
-			return [self reassignOrder];
+			[self reassignOrder];
+			
+			NSError *error = nil;
+			if ([self.managedObjectContext save:&error]) {
+				[self refreshFavoriteStops];
+				[self postNotification];
+				return YES;
+			}
+			
+			NSLog(@"Failed to reassign order: %@", error);
+			[self.managedObjectContext rollback];
+			[self refreshFavoriteStops];
 		}
 		return NO;
 	}
@@ -152,7 +162,17 @@
 			[self.favoriteStops insertObject:favoriteStop atIndex:index];
 			
 			// Commit the change after reassignOrder
-			return [self reassignOrder];
+			[self reassignOrder];
+			
+			NSError *error = nil;
+			if ([self.managedObjectContext save:&error]) {
+				[self refreshFavoriteStops];
+				return YES;
+			}
+			
+			NSLog(@"Failed to reassign order: %@", error);
+			[self.managedObjectContext rollback];
+			[self refreshFavoriteStops];
 		}
 		return NO;
 	}
@@ -166,11 +186,14 @@
 			
 			NSError *error = nil;
 			if ([self.managedObjectContext save:&error]) {
+				[self refreshFavoriteStops];
+				[self postNotification];
 				return YES;
 			}
 			
 			NSLog(@"Failed to rename stop: %@", error);
 			[self.managedObjectContext rollback];
+			[self refreshFavoriteStops];
 		}
 		return NO;
 	}
