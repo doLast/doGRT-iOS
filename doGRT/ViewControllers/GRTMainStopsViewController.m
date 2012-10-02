@@ -20,7 +20,7 @@ enum GRTStopsTableSection {
 	GRTStopsTableFavoritesSection,
 	GRTStopsTableSectionTotal, 
 };
-static const NSString *GRTStopsTableSectionName[GRTStopsTableSectionTotal] = { @"", @"Nearby", @"Favorites" };
+static const NSString *GRTStopsTableSectionName[GRTStopsTableSectionTotal] = { @"", @"Locating...", @"Favorites" };
 
 enum GRTStopsViewQueue {
 	GRTStopsViewMapUpdateQueue = 0,
@@ -230,6 +230,7 @@ enum GRTStopsViewQueue {
 		}
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
+			[self stopsTableViewControllerForSection:GRTStopsTableNearbySection].title = @"Nearby Stops";
 			nearbyTableVC.stops = nearbyStops;
 			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:GRTStopsTableNearbySection] withRowAnimation:UITableViewRowAnimationAutomatic];
 		});
