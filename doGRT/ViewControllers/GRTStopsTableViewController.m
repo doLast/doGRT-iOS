@@ -32,8 +32,6 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	
-	NSArray *newStops = [[GRTUserProfile defaultUserProfile] allFavoriteStops];
-	self.stops = newStops;
 	[self.tableView reloadData];
 }
 
@@ -53,15 +51,12 @@
 	return UIInterfaceOrientationMaskAll;
 }
 
-- (void)pushStopDetailsForStop:(GRTStop *)stop
-{
-	GRTStopTimes *stopTimes = [[GRTStopTimes alloc] initWithStop:stop];
-	GRTStopDetailsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"stopDetailsView"];
-	viewController.stopTimes = stopTimes;
-	[self.navigationController pushViewController:viewController animated:YES];
-}
-
 #pragma mark - Table view data source
+
+- (id<GRTStopAnnotation>)stopAtIndex:(NSUInteger)index
+{
+	return [self.stops objectAtIndex:index];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -75,15 +70,18 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	id<GRTStopAnnotation> stop = [self stopAtIndex:indexPath.row];
+	
     static NSString *CellIdentifier = @"stopCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		if ([stop isKindOfClass:[GRTFavoriteStop class]]) {
+			cell.editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+		}
 	}
-	
-	id<GRTStopAnnotation> stop = [self.stops objectAtIndex:indexPath.row];
 	
 	cell.textLabel.text = stop.title;
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", stop.subtitle];
@@ -91,12 +89,90 @@
 	return cell;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return YES;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return [[self stopAtIndex:indexPath.row] isKindOfClass:[GRTFavoriteStop class]];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	id<GRTStopAnnotation> stop = [self stopAtIndex:indexPath.row];
+	GRTFavoriteStop *favoriteStop = nil;
+	if (editingStyle == UITableViewCellEditingStyleInsert) {
+		favoriteStop = [[GRTUserProfile defaultUserProfile] addStop:stop.stop];
+	}
+	else if (editingStyle == UITableViewCellEditingStyleDelete) {
+		if ([stop isKindOfClass:[GRTFavoriteStop class]]) {
+			favoriteStop = stop;
+			[[GRTUserProfile defaultUserProfile] removeFavoriteStop:favoriteStop];
+		}
+	}
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+	id<GRTStopAnnotation> stop = [self stopAtIndex:sourceIndexPath.row];
+	if (![stop isKindOfClass:[GRTFavoriteStop class]]) {
+		return;
+	}
+	[[GRTUserProfile defaultUserProfile] moveFavoriteStop:stop toIndex:destinationIndexPath.row];
+}
+
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+//{
+//	GRTFavoriteStop *stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
+//	
+//	if (self.delegate == nil && indexPath.section == GRTStopsTableFavoritesSection) {
+//		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Edit Favorite Stop Name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
+//		alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+//		UITextField *textField = [alert textFieldAtIndex:0];
+//
+//		GRTFavoriteStop *stop = [[self stopsArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
+//		self.editingFavIndexPath = indexPath;
+//		textField.text = stop.displayName;
+//
+//		[alert show];
+//	}
+//}
+
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//	if (self.navigationController != nil) {
+//		id<GRTStopAnnotation> stop = [self.stops objectAtIndex:indexPath.row];
+//		[GRTStopDetailsViewController pushStopDetailsViewControllerForStop:stop.stop inNavigationController:self.navigationController];
+//	}
+//}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<GRTStopAnnotation> stop = [self.stops objectAtIndex:indexPath.row];
-	[self pushStopDetailsForStop:stop.stop];
+	if ([[self stopAtIndex:indexPath.row] isKindOfClass:[GRTFavoriteStop class]]) {
+		return UITableViewCellEditingStyleDelete;
+	}
+	else if ([[self stopAtIndex:indexPath.row] isKindOfClass:[GRTStop class]]) {
+		return UITableViewCellEditingStyleInsert;
+	}
+	return UITableViewCellAccessoryNone;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
+{
+	if (proposedDestinationIndexPath.section != sourceIndexPath.section) {
+		NSInteger row = (sourceIndexPath.section > proposedDestinationIndexPath.section) ?
+		0 : [self.stops count] - 1;
+		return [NSIndexPath indexPathForRow:row inSection:sourceIndexPath.section];
+	}
+	else if (proposedDestinationIndexPath.row >= [self.stops count]) {
+		return [NSIndexPath indexPathForRow:[self.stops count] - 1 inSection:sourceIndexPath.section];
+	}
+
+	return proposedDestinationIndexPath;
 }
 
 @end

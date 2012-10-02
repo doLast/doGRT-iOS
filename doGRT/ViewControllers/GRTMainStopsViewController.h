@@ -10,6 +10,7 @@
 #import <MapKit/MapKit.h>
 
 @class GRTStop;
+@class GRTStopsTableViewController;
 
 @protocol GRTStopsSearchDelegate <NSObject>
 
@@ -18,8 +19,6 @@
 @end
 
 @interface GRTMainStopsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchDisplayDelegate, GRTStopsSearchDelegate>
-
-//@property (nonatomic, strong) NSArray *stops;
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;

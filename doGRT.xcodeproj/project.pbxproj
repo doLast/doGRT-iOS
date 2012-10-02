@@ -23,7 +23,6 @@
 		2515EDAA14C5838700FDCD6D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515EDA914C5838700FDCD6D /* MapKit.framework */; };
 		2515EDAC14C5839300FDCD6D /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515EDAB14C5839300FDCD6D /* MessageUI.framework */; };
 		251D26D2161A8FCC0068CDC1 /* GRTStopsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 251D26D1161A8FCC0068CDC1 /* GRTStopsTableViewController.m */; };
-		251D26D5161B227F0068CDC1 /* UITableViewController+AccessDataSourceDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 251D26D4161B227F0068CDC1 /* UITableViewController+AccessDataSourceDelegate.m */; };
 		252C3DE21617520000C5A933 /* GRTShape.m in Sources */ = {isa = PBXBuildFile; fileRef = 252C3DE1161751FF00C5A933 /* GRTShape.m */; };
 		253519D8160E52C40042BEA4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 253519D7160E52C40042BEA4 /* Default-568h@2x.png */; };
 		25419FBB1617A2E600B276C7 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 25419FB21617A2E600B276C7 /* FMDatabase.m */; };
@@ -80,8 +79,6 @@
 		2515EDAB14C5839300FDCD6D /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		251D26D0161A8FCC0068CDC1 /* GRTStopsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopsTableViewController.h; sourceTree = "<group>"; };
 		251D26D1161A8FCC0068CDC1 /* GRTStopsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopsTableViewController.m; sourceTree = "<group>"; };
-		251D26D3161B227F0068CDC1 /* UITableViewController+AccessDataSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewController+AccessDataSourceDelegate.h"; sourceTree = "<group>"; };
-		251D26D4161B227F0068CDC1 /* UITableViewController+AccessDataSourceDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewController+AccessDataSourceDelegate.m"; sourceTree = "<group>"; };
 		252C3DE0161751FF00C5A933 /* GRTShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTShape.h; sourceTree = "<group>"; };
 		252C3DE1161751FF00C5A933 /* GRTShape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTShape.m; sourceTree = "<group>"; };
 		253519D7160E52C40042BEA4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -282,8 +279,6 @@
 			children = (
 				259003631610EB4A00FE051C /* UINavigationController+Rotation.h */,
 				259003641610EB4A00FE051C /* UINavigationController+Rotation.m */,
-				251D26D3161B227F0068CDC1 /* UITableViewController+AccessDataSourceDelegate.h */,
-				251D26D4161B227F0068CDC1 /* UITableViewController+AccessDataSourceDelegate.m */,
 				251D26D0161A8FCC0068CDC1 /* GRTStopsTableViewController.h */,
 				251D26D1161A8FCC0068CDC1 /* GRTStopsTableViewController.m */,
 				2590035D1610E5A100FE051C /* GRTMainStopsViewController.h */,
@@ -416,7 +411,6 @@
 				25419FBE1617A2E600B276C7 /* FMDatabaseQueue.m in Sources */,
 				25419FBF1617A2E600B276C7 /* FMResultSet.m in Sources */,
 				251D26D2161A8FCC0068CDC1 /* GRTStopsTableViewController.m in Sources */,
-				251D26D5161B227F0068CDC1 /* UITableViewController+AccessDataSourceDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
