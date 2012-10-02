@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1926"/>
     </dependencies>
     <scenes>
-        <!--Stops View Controller-->
+        <!--Main Stops View Controller-->
         <scene sceneID="q0A-ru-mfH">
             <objects>
-                <viewController id="1Mx-hj-Dgb" customClass="GRTStopsViewController" sceneMemberID="viewController">
+                <viewController id="1Mx-hj-Dgb" customClass="GRTMainStopsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="49Y-kj-GiT">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -63,7 +63,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jeR-kR-laY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="u28-Yq-Lso" customClass="GRTStopsViewController">
+                <customObject id="u28-Yq-Lso" customClass="GRTMainStopsViewController">
                     <connections>
                         <outlet property="delegate" destination="1Mx-hj-Dgb" id="hTc-ff-fkl"/>
                     </connections>
@@ -169,6 +169,20 @@
         </scene>
     </scenes>
     <classes>
+        <class className="GRTMainStopsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTMainStopsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="didTapLeftNavButton:"/>
+                <relationship kind="action" name="didTapRightNavButton:"/>
+                <relationship kind="action" name="showPreferences:"/>
+                <relationship kind="action" name="showSearch:"/>
+                <relationship kind="action" name="startTrackingUserLocation:"/>
+                <relationship kind="outlet" name="delegate"/>
+                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
+                <relationship kind="outlet" name="searchResultViewController" candidateClass="GRTMainStopsViewController"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
         <class className="GRTStopDetailsViewController" superclassName="UIPageViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopDetailsViewController.h"/>
             <relationships>
@@ -183,20 +197,6 @@
         </class>
         <class className="GRTStopTimesViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopTimesViewController.h"/>
-        </class>
-        <class className="GRTStopsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="didTapLeftNavButton:"/>
-                <relationship kind="action" name="didTapRightNavButton:"/>
-                <relationship kind="action" name="showPreferences:"/>
-                <relationship kind="action" name="showSearch:"/>
-                <relationship kind="action" name="startTrackingUserLocation:"/>
-                <relationship kind="outlet" name="delegate"/>
-                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
-                <relationship kind="outlet" name="searchResultViewController" candidateClass="GRTStopsViewController"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

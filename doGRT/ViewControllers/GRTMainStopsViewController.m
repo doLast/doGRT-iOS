@@ -1,12 +1,12 @@
 //
-//  GRTStopsViewController.m
+//  GRTMainStopsViewController.m
 //  doGRT
 //
 //  Created by Greg Wang on 12-9-24.
 //
 //
 
-#import "GRTStopsViewController.h"
+#import "GRTMainStopsViewController.h"
 #import "UINavigationController+Rotation.h"
 #import "GRTStopDetailsViewController.h"
 
@@ -26,7 +26,7 @@ enum GRTStopsViewQueue {
 	GRTStopsViewQueueTotal,
 };
 
-@interface GRTStopsViewController ()
+@interface GRTMainStopsViewController ()
 
 @property (nonatomic, strong) NSArray *nearbyStops;
 @property (nonatomic, strong) id<GRTStopAnnotation> willBePresentedStop;
@@ -37,7 +37,7 @@ enum GRTStopsViewQueue {
 
 @end
 
-@implementation GRTStopsViewController
+@implementation GRTMainStopsViewController
 
 @synthesize stops = _stops;
 @synthesize nearbyStops = _nearbyStops;

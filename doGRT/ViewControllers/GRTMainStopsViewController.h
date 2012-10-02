@@ -1,5 +1,5 @@
 //
-//  GRTStopsViewController.h
+//  GRTMainStopsViewController.h
 //  doGRT
 //
 //  Created by Greg Wang on 12-9-24.
@@ -17,13 +17,13 @@
 
 @end
 
-@interface GRTStopsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchDisplayDelegate, GRTStopsSearchDelegate>
+@interface GRTMainStopsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchDisplayDelegate, GRTStopsSearchDelegate>
 
 @property (nonatomic, strong) NSArray *stops;
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;
-@property (nonatomic, strong) IBOutlet GRTStopsViewController *searchResultViewController;
+@property (nonatomic, strong) IBOutlet GRTMainStopsViewController *searchResultViewController;
 @property (nonatomic, weak) IBOutlet id<GRTStopsSearchDelegate> delegate;
 
 - (IBAction)showPreferences:(id)sender;
