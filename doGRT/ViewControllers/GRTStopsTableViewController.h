@@ -6,14 +6,17 @@
 //
 //
 
-//@protocol GRTStopsSearchDelegate <NSObject>
-//
-//- (void)didSelectStop:(GRTStop *)stop;
-//
-//@end
+@class GRTStop;
+
+@protocol GRTStopsTableViewControllerDelegate <NSObject>
+
+- (void)didSelectStop:(GRTStop *)stop;
+
+@end
 
 @interface GRTStopsTableViewController : UITableViewController
 
+@property (nonatomic, weak) id<GRTStopsTableViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSArray *stops;
 
 #pragma mark - data source

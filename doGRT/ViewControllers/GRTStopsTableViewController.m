@@ -18,6 +18,7 @@
 
 @implementation GRTStopsTableViewController
 
+@synthesize delegate = _delegate;
 @synthesize stops = _stops;
 
 #pragma mark - view life-cycle
@@ -144,12 +145,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (self.navigationController != nil) {
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSelectStop:)]) {
 		id<GRTStopAnnotation> stop = [self.stops objectAtIndex:indexPath.row];
-		GRTStopTimes *stopTimes = [[GRTStopTimes alloc] initWithStop:stop.stop];
-		GRTStopDetailsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"stopDetailsView"];
-		viewController.stopTimes = stopTimes;
-		[self.navigationController pushViewController:viewController animated:YES];
+		[self.delegate didSelectStop:stop.stop];
 	}
 }
 

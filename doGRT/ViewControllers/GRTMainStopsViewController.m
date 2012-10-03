@@ -109,6 +109,9 @@ enum GRTStopsViewQueue {
 	
 	// Enable user location tracking
 	[self performSelector:@selector(startTrackingUserLocation:) withObject:self afterDelay:2];
+	
+	// Set search table view controller delegate
+	self.searchResultViewController.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -394,7 +397,7 @@ enum GRTStopsViewQueue {
 
 #pragma mark - stops search delegate
 
-- (void)presentStop:(GRTStop *)stop
+- (void)didSelectStop:(GRTStop *)stop
 {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
 		self.willBePresentedStop = stop;
