@@ -63,11 +63,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jeR-kR-laY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="u28-Yq-Lso" customClass="GRTMainStopsViewController">
-                    <connections>
-                        <outlet property="delegate" destination="1Mx-hj-Dgb" id="hTc-ff-fkl"/>
-                    </connections>
-                </customObject>
+                <customObject id="u28-Yq-Lso" customClass="GRTStopsTableViewController"/>
                 <searchDisplayController id="RGR-NG-JVr">
                     <connections>
                         <outlet property="delegate" destination="1Mx-hj-Dgb" id="DnU-Bl-5ke"/>
@@ -177,9 +173,8 @@
                 <relationship kind="action" name="showPreferences:"/>
                 <relationship kind="action" name="showSearch:"/>
                 <relationship kind="action" name="startTrackingUserLocation:"/>
-                <relationship kind="outlet" name="delegate"/>
                 <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
-                <relationship kind="outlet" name="searchResultViewController" candidateClass="GRTMainStopsViewController"/>
+                <relationship kind="outlet" name="searchResultViewController" candidateClass="GRTStopsTableViewController"/>
                 <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
             </relationships>
         </class>
@@ -197,6 +192,9 @@
         </class>
         <class className="GRTStopTimesViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopTimesViewController.h"/>
+        </class>
+        <class className="GRTStopsTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsTableViewController.h"/>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

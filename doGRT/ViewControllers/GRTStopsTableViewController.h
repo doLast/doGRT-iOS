@@ -6,6 +6,12 @@
 //
 //
 
+//@protocol GRTStopsSearchDelegate <NSObject>
+//
+//- (void)didSelectStop:(GRTStop *)stop;
+//
+//@end
+
 @interface GRTStopsTableViewController : UITableViewController
 
 @property (nonatomic, strong) NSArray *stops;

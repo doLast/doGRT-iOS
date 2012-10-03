@@ -53,7 +53,7 @@ enum GRTStopsViewQueue {
 @synthesize tableView = _tableView;
 @synthesize mapView = _mapView;
 @synthesize searchResultViewController = _searchResultViewController;
-@synthesize delegate = _delegate;
+//@synthesize delegate = _delegate;
 
 - (NSArray *)tableViewControllers
 {
@@ -385,10 +385,10 @@ enum GRTStopsViewQueue {
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
 	if (controller.active && [searchString length] > 0) {
-//		self.searchResultViewController.stops = [[GRTGtfsSystem defaultGtfsSystem] stopsWithNameLike:searchString];
+		self.searchResultViewController.stops = [[GRTGtfsSystem defaultGtfsSystem] stopsWithNameLike:searchString];
 		return YES;
 	}
-//	self.searchResultViewController.stops = nil;
+	self.searchResultViewController.stops = nil;
 	return NO;
 }
 
@@ -472,9 +472,6 @@ enum GRTStopsViewQueue {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if (self.delegate != nil) {
-		return 1;
-	}
 	return GRTStopsTableSectionTotal;
 }
 

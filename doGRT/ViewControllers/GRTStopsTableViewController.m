@@ -142,13 +142,16 @@
 //	}
 //}
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//	if (self.navigationController != nil) {
-//		id<GRTStopAnnotation> stop = [self.stops objectAtIndex:indexPath.row];
-//		[GRTStopDetailsViewController pushStopDetailsViewControllerForStop:stop.stop inNavigationController:self.navigationController];
-//	}
-//}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if (self.navigationController != nil) {
+		id<GRTStopAnnotation> stop = [self.stops objectAtIndex:indexPath.row];
+		GRTStopTimes *stopTimes = [[GRTStopTimes alloc] initWithStop:stop.stop];
+		GRTStopDetailsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"stopDetailsView"];
+		viewController.stopTimes = stopTimes;
+		[self.navigationController pushViewController:viewController animated:YES];
+	}
+}
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {

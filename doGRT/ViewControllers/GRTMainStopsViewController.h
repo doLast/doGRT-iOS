@@ -12,18 +12,12 @@
 @class GRTStop;
 @class GRTStopsTableViewController;
 
-@protocol GRTStopsSearchDelegate <NSObject>
-
-- (void)presentStop:(GRTStop *)stop;
-
-@end
-
-@interface GRTMainStopsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchDisplayDelegate, GRTStopsSearchDelegate>
+@interface GRTMainStopsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchDisplayDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;
-@property (nonatomic, strong) IBOutlet GRTMainStopsViewController *searchResultViewController;
-@property (nonatomic, weak) IBOutlet id<GRTStopsSearchDelegate> delegate;
+@property (nonatomic, strong) IBOutlet GRTStopsTableViewController *searchResultViewController;
+//@property (nonatomic, weak) IBOutlet id<GRTStopsSearchDelegate> delegate;
 
 - (IBAction)showPreferences:(id)sender;
 - (IBAction)startTrackingUserLocation:(id)sender;
