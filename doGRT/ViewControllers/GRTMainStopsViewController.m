@@ -398,6 +398,9 @@ enum GRTStopsViewQueue {
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if (indexPath.section == GRTStopsTableHeaderSection) {
+		return UITableViewCellEditingStyleInsert;
+	}
 	return [[self stopsTableViewControllerForSection:indexPath.section] tableView:tableView editingStyleForRowAtIndexPath:indexPath];
 }
 

@@ -73,7 +73,9 @@
 {
 	id<GRTStopAnnotation> stop = [self stopAtIndex:indexPath.row];
 	
-    static NSString *CellIdentifier = @"stopCell";
+    static NSString *stopCellIdentifier = @"stopCell";
+	static NSString *favStopCellIdentifier = @"favStopCell";
+	NSString *CellIdentifier = [stop isKindOfClass:[GRTFavoriteStop class]] ? favStopCellIdentifier : stopCellIdentifier;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil) {
