@@ -56,6 +56,8 @@
 	
 	// Center Waterloo on map
 	[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
+	
+	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:1.0];
 }
 
 #pragma mark - view update
@@ -140,7 +142,8 @@
 {
 	self.willBePresentedStop = annotation;
 	CLLocationDistance distance = self.mapView.frame.size.width;
-	[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(annotation.coordinate, distance, distance) animated:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad];
+	BOOL animated = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+	[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(annotation.coordinate, distance, distance) animated:animated];
 }
 
 #pragma mark - Map View Delegate
