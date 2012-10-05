@@ -107,6 +107,8 @@ enum GRTStopsViewQueue {
 	// Set search table view controller delegate
 	self.searchResultViewController.delegate = self;
 	self.stopsMapViewController.delegate = self;
+	
+	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:1.0];
 }
 
 - (void)viewWillAppear:(BOOL)animated
