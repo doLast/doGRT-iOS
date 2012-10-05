@@ -1,157 +1,188 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2549" systemVersion="11E53" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="GAJ-ki-y1e">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2840" systemVersion="11G56" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="GAJ-ki-y1e">
     <dependencies>
-        <deployment defaultVersion="1296" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1498"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1926"/>
     </dependencies>
     <scenes>
-        <!--Stop List View Controller - Root View Controller-->
-        <scene sceneID="ZEI-J8-vhy">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DhD-mr-G2L" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController clearsSelectionOnViewWillAppear="NO" id="YYo-x8-R9c" customClass="GRTStopListViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="1FE-AB-SsB">
-                        <rect key="frame" x="0.0" y="64" width="320" height="788"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="busStopCell" textLabel="LP6-dA-XRH" detailTextLabel="eBR-bi-BX1" style="IBUITableViewCellStyleValue1" id="clY-g7-gfi">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LP6-dA-XRH">
-                                            <rect key="frame" x="10" y="11" width="35" height="21"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eBR-bi-BX1">
-                                            <rect key="frame" x="266" y="11" width="44" height="21"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.2196078431372549" green="0.32941176470588235" blue="0.52941176470588236" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </label>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="YYo-x8-R9c" id="YYj-Ec-9aC"/>
-                            <outlet property="delegate" destination="YYo-x8-R9c" id="WFw-gt-otx"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="YEX-cv-Sq8"/>
-                </tableViewController>
-            </objects>
-            <point key="canvasLocation" x="80" y="-1361"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Jqp-oe-vHD">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jUy-kK-KAC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController id="qxz-6S-snh" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="AcE-hn-1IE">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="YYo-x8-R9c" kind="relationship" relationship="rootViewController" id="azl-7q-tmn"/>
-                    </connections>
-                </navigationController>
-            </objects>
-            <point key="canvasLocation" x="-454" y="-1361"/>
-        </scene>
         <!--Split View Controller-->
         <scene sceneID="PlV-Dj-kXe">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Vb8-Ji-FUO" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <splitViewController id="GAJ-ki-y1e" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <connections>
-                        <segue destination="qxz-6S-snh" kind="relationship" relationship="masterViewController" id="jxA-kD-GDf"/>
-                        <segue destination="b1J-TN-90h" kind="relationship" relationship="detailViewController" id="fAJ-He-Mgu"/>
-                    </connections>
                 </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vb8-Ji-FUO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1436" y="-892"/>
         </scene>
-        <!--Main View Controller - Root View Controller-->
-        <scene sceneID="E0B-Qg-4oi">
+        <!--Stop Details View Controller-->
+        <scene sceneID="khV-0K-3yp">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xYH-7F-JTd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController id="w76-oD-W6x" customClass="GRTMainViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="vce-aL-TXb">
-                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                <pageViewController storyboardIdentifier="stopDetailsView" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="p51-iS-z1u" customClass="GRTStopDetailsViewController" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="9Ah-GY-6JJ"/>
+                </pageViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5FH-ng-U9E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1360" y="-1513"/>
+        </scene>
+        <!--Stop Times View Controller-->
+        <scene sceneID="HHc-la-yLy">
+            <objects>
+                <tableViewController storyboardIdentifier="stopTimesView" id="WJ5-lS-u2C" customClass="GRTStopTimesViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="pnB-hs-Ht2">
+                        <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="timeTableCell" textLabel="T0Z-Y8-VsO" detailTextLabel="310-Rm-Bhu" style="IBUITableViewCellStyleValue2" id="5IT-67-WCj">
-                                <rect key="frame" x="0.0" y="22" width="768" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="T0Z-Y8-VsO">
-                                            <rect key="frame" x="10" y="15" width="91" height="15"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                            <color key="textColor" red="0.32156862745098042" green="0.40000000000000002" blue="0.56862745098039214" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="310-Rm-Bhu">
-                                            <rect key="frame" x="107" y="12" width="41" height="19"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </label>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                            </tableViewCell>
-                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="WJ5-lS-u2C" id="Egp-oD-DVa"/>
+                            <outlet property="delegate" destination="WJ5-lS-u2C" id="DWA-Va-ZZw"/>
+                        </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="dZa-QO-OZH"/>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0z6-YE-thQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="537" y="-364"/>
+            <point key="canvasLocation" x="2223" y="-1513"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="sl7-oA-xVq">
+        <!--Stop Routes View Controller-->
+        <scene sceneID="J6E-SQ-yXv">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="B0l-5u-SUJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController definesPresentationContext="YES" id="b1J-TN-90h" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PvV-SW-y6h">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="w76-oD-W6x" kind="relationship" relationship="rootViewController" id="3gQ-tP-3El"/>
-                    </connections>
-                </navigationController>
+                <tableViewController storyboardIdentifier="stopRoutesView" id="IRc-cL-yxk" customClass="GRTStopRoutesViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Xby-UQ-M9a">
+                        <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="IRc-cL-yxk" id="Sbt-ov-w7y"/>
+                            <outlet property="delegate" destination="IRc-cL-yxk" id="yi9-75-uKy"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hBR-k8-0aX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-445" y="-364"/>
+            <point key="canvasLocation" x="2223" y="-364"/>
+        </scene>
+        <!--Main Stops View Controller-->
+        <scene sceneID="PFo-DY-xgG">
+            <objects>
+                <viewController storyboardIdentifier="mainStopsView" id="rdx-iT-Rdk" customClass="GRTMainStopsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZoW-Fp-zsm">
+                        <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dia-SW-H6U">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1004"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="rdx-iT-Rdk" id="L9E-Ft-1Oo"/>
+                                    <outlet property="delegate" destination="rdx-iT-Rdk" id="Q10-OO-zQO"/>
+                                </connections>
+                            </tableView>
+                            <searchBar contentMode="redraw" id="3L3-d3-eiL">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="rdx-iT-Rdk" id="JVq-ya-ay6"/>
+                                </connections>
+                            </searchBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="pnc-nf-Iud"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="LyH-fV-Ccb" id="JHP-OL-5HO"/>
+                        <outlet property="searchResultViewController" destination="2vm-SG-cdz" id="SfE-dH-96p"/>
+                        <outlet property="tableView" destination="dia-SW-H6U" id="yOh-Kx-Jjb"/>
+                        <segue destination="p51-iS-z1u" kind="push" id="lh4-JG-vlN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lYO-wO-ROY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="2vm-SG-cdz" customClass="GRTStopsTableViewController">
+                    <connections>
+                        <outlet property="delegate" destination="rdx-iT-Rdk" id="hSe-O8-26f"/>
+                    </connections>
+                </customObject>
+                <searchDisplayController id="LyH-fV-Ccb">
+                    <connections>
+                        <outlet property="delegate" destination="rdx-iT-Rdk" id="8m1-7o-c14"/>
+                        <outlet property="searchBar" destination="3L3-d3-eiL" id="LcP-y5-oZK"/>
+                        <outlet property="searchContentsController" destination="rdx-iT-Rdk" id="uVh-DH-Sbn"/>
+                        <outlet property="searchResultsDataSource" destination="2vm-SG-cdz" id="VJ8-84-eZS"/>
+                        <outlet property="searchResultsDelegate" destination="2vm-SG-cdz" id="XgC-fv-hgx"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="448" y="-1513"/>
+        </scene>
+        <!--Stops Map View Controller-->
+        <scene sceneID="PaL-DU-Ilm">
+            <objects>
+                <viewController storyboardIdentifier="stopsMapView" id="tHJ-Mx-d2m" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="i0Y-Tf-hSJ">
+                        <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="FH9-j4-ThK">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1004"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="tHJ-Mx-d2m" id="SoI-Z2-LEj"/>
+                                </connections>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="3F5-mc-ENt"/>
+                    <connections>
+                        <outlet property="mapView" destination="FH9-j4-ThK" id="MNp-NR-y8K"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pcg-rY-Abe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="448" y="-364"/>
         </scene>
     </scenes>
     <classes>
-        <class className="GRTMainViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTMainViewController.h"/>
+        <class className="GRTMainStopsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTMainStopsViewController.h"/>
             <relationships>
-                <relationship kind="action" name="sendTextToGrtWhenClick:" candidateClass="UIBarButtonItem"/>
-                <relationship kind="action" name="toggleDisplay:" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="sendTextButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="action" name="didTapLeftNavButton:"/>
+                <relationship kind="action" name="didTapRightNavButton:"/>
+                <relationship kind="action" name="showPreferences:"/>
+                <relationship kind="action" name="showSearch:"/>
+                <relationship kind="action" name="startTrackingUserLocation:"/>
+                <relationship kind="outlet" name="searchResultViewController" candidateClass="GRTStopsTableViewController"/>
+                <relationship kind="outlet" name="stopsMapViewController" candidateClass="GRTStopsMapViewController"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
             </relationships>
         </class>
-        <class className="GRTStopListViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopListViewController.h"/>
+        <class className="GRTStopDetailsViewController" superclassName="UIPageViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopDetailsViewController.h"/>
             <relationships>
-                <relationship kind="outlet" name="busStopCell" candidateClass="UITableViewCell"/>
-                <relationship kind="outlet" name="helpMessage" candidateClass="UILabel"/>
+                <relationship kind="action" name="toggleStopFavorite:"/>
+                <relationship kind="action" name="toggleViews:"/>
+                <relationship kind="outlet" name="favButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="viewsSegmentedControl" candidateClass="UISegmentedControl"/>
+            </relationships>
+        </class>
+        <class className="GRTStopRoutesViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopRoutesViewController.h"/>
+        </class>
+        <class className="GRTStopTimesViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopTimesViewController.h"/>
+        </class>
+        <class className="GRTStopsMapViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsMapViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="delegate"/>
+                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
+            </relationships>
+        </class>
+        <class className="GRTStopsTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsTableViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="delegate"/>
             </relationships>
         </class>
     </classes>

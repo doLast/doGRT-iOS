@@ -8,6 +8,9 @@
 
 #import "GRTAppDelegate.h"
 
+#import "GRTMainStopsViewController.h"
+#import "GRTStopsMapViewController.h"
+
 @implementation GRTAppDelegate
 
 @synthesize window = _window;
@@ -28,6 +31,17 @@
 	NSLog(@"App finish launching with firstLaunch: %d, dataVersion: %d", 
 		  [[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"], 
 		  [[NSUserDefaults standardUserDefaults] integerForKey:@"dataVersion"]);
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		UISplitViewController *splitViewController = (id) self.window.rootViewController;
+		
+		GRTMainStopsViewController *mainStopsViewController = [splitViewController.storyboard instantiateViewControllerWithIdentifier:@"mainStopsView"];
+		GRTStopsMapViewController *stopsMapViewController = [splitViewController.storyboard instantiateViewControllerWithIdentifier:@"stopsMapView"];
+		stopsMapViewController.delegate = mainStopsViewController;
+		mainStopsViewController.stopsMapViewController = stopsMapViewController;
+		
+		[splitViewController setViewControllers:@[[[UINavigationController alloc] initWithRootViewController:mainStopsViewController], [[UINavigationController alloc] initWithRootViewController:stopsMapViewController]]];
+	}
 	
     return YES;
 }

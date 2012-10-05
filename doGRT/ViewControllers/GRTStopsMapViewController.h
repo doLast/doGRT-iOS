@@ -20,7 +20,7 @@
 
 @interface GRTStopsMapViewController : UIViewController <MKMapViewDelegate>
 
-@property (nonatomic, weak) id<GRTStopsMapViewControllerDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<GRTStopsMapViewControllerDelegate> delegate;
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) NSArray *stops;
 

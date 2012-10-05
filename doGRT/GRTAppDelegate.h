@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GRTAppDelegate : UIResponder <UIApplicationDelegate>
+@interface GRTAppDelegate : UIResponder <UIApplicationDelegate, UISplitViewControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

@@ -16,7 +16,7 @@
 
 @interface GRTStopsTableViewController : UITableViewController
 
-@property (nonatomic, weak) id<GRTStopsTableViewControllerDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<GRTStopsTableViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSArray *stops;
 
 #pragma mark - data source

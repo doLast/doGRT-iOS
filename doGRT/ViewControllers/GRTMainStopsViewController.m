@@ -161,6 +161,9 @@ enum GRTStopsViewQueue {
 			[self.stopsMapViewController setMapAlpha:0.0 animationDuration:duration];
 		}
 	}
+	else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		self.navigationItem.leftBarButtonItem = self.editButtonItem;
+	}
 }
 
 #pragma mark - view update
@@ -407,7 +410,7 @@ enum GRTStopsViewQueue {
 		return [self showSearch:tableView];
 	}
 	else {
-		[self pushStopDetailsForStop:stop.stop];
+		[self didSelectStop:stop.stop];
 	}
 }
 

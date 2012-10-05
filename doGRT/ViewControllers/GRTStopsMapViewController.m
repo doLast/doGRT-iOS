@@ -139,7 +139,8 @@
 - (void)selectStop:(id<GRTStopAnnotation>)annotation
 {
 	self.willBePresentedStop = annotation;
-	[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(annotation.coordinate, 300, 300) animated:NO];
+	CLLocationDistance distance = self.mapView.frame.size.width;
+	[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(annotation.coordinate, distance, distance) animated:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad];
 }
 
 #pragma mark - Map View Delegate
