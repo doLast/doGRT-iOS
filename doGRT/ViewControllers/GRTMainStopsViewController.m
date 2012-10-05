@@ -23,7 +23,7 @@ enum GRTStopsTableSection {
 static const NSString *GRTStopsTableSectionName[GRTStopsTableSectionTotal] = { @"", @"Locating...", @"Favorites" };
 
 enum GRTStopsViewQueue {
-	GRTStopsViewMapUpdateQueue = 0,
+	GRTStopsViewMapUpdateQueue = -1,
 	GRTStopsViewTableUpdateQueue,
 	GRTStopsViewQueueTotal,
 };
@@ -31,8 +31,6 @@ enum GRTStopsViewQueue {
 @interface GRTMainStopsViewController ()
 
 @property (nonatomic, strong, readonly) NSArray *tableViewControllers;
-
-@property (nonatomic, strong) id<GRTStopAnnotation> willBePresentedStop;
 @property (nonatomic, strong) NSIndexPath *editingFavIndexPath;
 
 @property (nonatomic, strong, readonly) NSArray *operationQueues;
@@ -43,24 +41,21 @@ enum GRTStopsViewQueue {
 @implementation GRTMainStopsViewController
 
 @synthesize tableViewControllers = _tableViewControllers;
-
-@synthesize willBePresentedStop = _willBePresentedStop;
 @synthesize editingFavIndexPath = _editingFavIndexPath;
 
 @synthesize operationQueues = _operationQueues;
 @synthesize locateButton = _locateButton;
 
 @synthesize tableView = _tableView;
-@synthesize mapView = _mapView;
 @synthesize searchResultViewController = _searchResultViewController;
-//@synthesize delegate = _delegate;
+@synthesize stopsMapViewController = _stopsMapViewController;
 
 - (NSArray *)tableViewControllers
 {
 	if (_tableViewControllers == nil) {
 		int i;
 		NSMutableArray *tableViewControllers = [NSMutableArray arrayWithCapacity:GRTStopsTableSectionTotal];
-		for (i = 0; i < GRTStopsTableSectionTotal; i++) {
+		for (i = GRTStopsTableHeaderSection; i < GRTStopsTableSectionTotal; i++) {
 			GRTStopsTableViewController *vc = [[GRTStopsTableViewController alloc] init];
 			vc.title = [GRTStopsTableSectionName[i] copy];
 			[tableViewControllers addObject:vc];
@@ -96,7 +91,6 @@ enum GRTStopsViewQueue {
     [super viewDidLoad];
 	
 	self.title = @"doGRT";
-	self.willBePresentedStop = nil;
 	self.editingFavIndexPath = nil;
 	self.locateButton = self.navigationItem.leftBarButtonItem;
 	
@@ -105,13 +99,14 @@ enum GRTStopsViewQueue {
 	[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
 	
 	// Center Waterloo on map
-	[self centerMapView:self.mapView toRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
+	[self.stopsMapViewController centerMapToRegion: MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
 	
 	// Enable user location tracking
 	[self performSelector:@selector(startTrackingUserLocation:) withObject:self afterDelay:2];
 	
 	// Set search table view controller delegate
 	self.searchResultViewController.delegate = self;
+	self.stopsMapViewController.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -159,19 +154,11 @@ enum GRTStopsViewQueue {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 			self.navigationItem.leftBarButtonItem = self.locateButton;
-			[UIView animateWithDuration:duration animations:^{
-				self.mapView.alpha = 1.0;
-			} completion:^(BOOL finished){
-				[self updateMapView:self.mapView];
-			}];
+			[self.stopsMapViewController setMapAlpha:1.0 animationDuration:duration];
 		}
 		else {
 			self.navigationItem.leftBarButtonItem = self.editButtonItem;
-			[UIView animateWithDuration:duration animations:^{
-				self.mapView.alpha = 0.0;
-			} completion:^(BOOL finished){
-				
-			}];
+			[self.stopsMapViewController setMapAlpha:0.0 animationDuration:duration];
 		}
 	}
 }
@@ -199,19 +186,8 @@ enum GRTStopsViewQueue {
 			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:GRTStopsTableFavoritesSection] withRowAnimation:UITableViewRowAnimationAutomatic];
 		});
 		
-		if (self.mapView != nil) {
-			NSMutableArray *toRemove = [[self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTFavoriteStop class]]] mutableCopy];
-			NSMutableArray *toAdd = [newStops mutableCopy];
-			[toAdd removeObjectsInArray:toRemove];
-			[toRemove removeObjectsInArray:newStops];
-			
-			NSLog(@"Adding: %@, Removing: %@", toAdd, toRemove);
-			
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[self.mapView removeAnnotations:toRemove];
-				[self.mapView addAnnotations:toAdd];
-				[self updateMapView:self.mapView];
-			});
+		if (self.stopsMapViewController != nil) {
+			self.stopsMapViewController.stops = newStops;
 		}
 	}
 }
@@ -240,64 +216,6 @@ enum GRTStopsViewQueue {
 	}
 }
 
-- (void)centerMapView:(MKMapView *)mapView toRegion:(MKCoordinateRegion)region animated:(BOOL)animated
-{
-	if (self.willBePresentedStop != nil) {
-		for (id<MKAnnotation> annotationView in mapView.selectedAnnotations) {
-			[mapView deselectAnnotation:annotationView animated:NO];
-		}
-		[self.mapView selectAnnotation:self.willBePresentedStop animated:NO];
-	}
-	[mapView setRegion:region animated:animated];
-}
-
-- (void)updateMapView:(MKMapView *)mapView
-{
-	// If invisible, do nothing
-	if (mapView.alpha == 0) {
-		return;
-	}
-		
-	NSOperation *annotationUpdate = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performAnnotationUpdateOnMapView:) object:mapView];
-	
-	[[self.operationQueues objectAtIndex:GRTStopsViewMapUpdateQueue] addOperation:annotationUpdate];
-}
-
-- (void)performAnnotationUpdateOnMapView:(MKMapView *)mapView
-{
-	@synchronized(mapView) {
-		MKCoordinateRegion region = mapView.region;
-		
-		// find out all need to remove annotations
-		NSSet *visibleAnnotations = [mapView annotationsInMapRect:[mapView visibleMapRect]];
-		NSSet *allAnnotations = [NSSet setWithArray:mapView.annotations];
-		NSMutableSet *nonVisibleAnnotations = [NSMutableSet setWithSet:allAnnotations];
-		[nonVisibleAnnotations minusSet:visibleAnnotations];
-		[nonVisibleAnnotations filterUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTStop class]]];
-		
-		// Also remove stops overlay on fav stops
-		NSSet *visibleFavAnnotations = [visibleAnnotations filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTFavoriteStop class]]];
-		for (GRTFavoriteStop *fav in visibleFavAnnotations) {
-			[nonVisibleAnnotations addObject:fav.stop];
-		}
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[mapView removeAnnotations:[nonVisibleAnnotations allObjects]];
-			
-			// if not too many annotations currently on the map
-			if([[mapView annotations] count] < 50){
-				// get bus stops in current region
-				NSArray *newStops = [[GRTGtfsSystem defaultGtfsSystem] stopsInRegion:region];
-				
-				NSMutableSet *newAnnotations = [NSMutableSet setWithArray:newStops];
-				[newAnnotations minusSet:visibleAnnotations];
-				
-				[mapView addAnnotations:[newAnnotations allObjects]];
-			}
-		});
-	}
-}
-
 - (void)pushStopDetailsForStop:(GRTStop *)stop
 {
 	GRTStopTimes *stopTimes = [[GRTStopTimes alloc] initWithStop:stop];
@@ -316,7 +234,7 @@ enum GRTStopsViewQueue {
 
 - (IBAction)startTrackingUserLocation:(id)sender
 {
-	[self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+	[self.stopsMapViewController setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
 }
 
 - (IBAction)didTapLeftNavButton:(id)sender
@@ -361,12 +279,6 @@ enum GRTStopsViewQueue {
 	}
 }
 
-//- (UINavigationController *)navigationController
-//{
-//	// Prevent the search display controller to manipulate the navigation bar
-//	return nil;
-//}
-
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
 {
 	[self setNavigationBarHidden:YES animated:YES];
@@ -400,70 +312,26 @@ enum GRTStopsViewQueue {
 - (void)didSelectStop:(GRTStop *)stop
 {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-		self.willBePresentedStop = stop;
-		GRTFavoriteStop *favStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.willBePresentedStop];
-		if (favStop != nil) {
-			self.willBePresentedStop = favStop;
-		}
+		GRTFavoriteStop *favStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:stop];
+		[self.stopsMapViewController selectStop: favStop != nil ? favStop : stop];
+		
 		[self.searchDisplayController setActive:NO animated:YES];
-		[self centerMapView:self.mapView toRegion:MKCoordinateRegionMakeWithDistance(stop.coordinate, 300, 300) animated:NO];
 	}
 	else {
 		[self pushStopDetailsForStop:stop];
 	}
 }
 
-#pragma mark - Map View Delegate
+#pragma mark - stops map delegate
 
-- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+- (void)mapViewController:(GRTStopsMapViewController *)mapViewController didSelectStop:(GRTStop *)stop
 {
-	[self updateMapView:mapView];
+	[self pushStopDetailsForStop:stop];
 }
 
-- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+- (void)mapViewController:(GRTStopsMapViewController *)mapViewController didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-	if (view.annotation == self.willBePresentedStop) {
-		self.willBePresentedStop = nil;
-	}
-}
-
-- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
-{
-	for (MKAnnotationView *view in views) {
-		if ([view isKindOfClass:[MKPinAnnotationView class]]) {
-			MKPinAnnotationView *pin = (MKPinAnnotationView *) view;
-			if ([view.annotation isKindOfClass:[GRTFavoriteStop class]]) {
-				pin.pinColor = MKPinAnnotationColorGreen;
-			}
-			else {
-				pin.pinColor = MKPinAnnotationColorRed;
-			}
-			pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-		}
-		if ([view.annotation isKindOfClass:[GRTStop class]] && [[GRTUserProfile defaultUserProfile] favoriteStopByStop:(GRTStop *)view.annotation] != nil) {
-			[mapView removeAnnotation:view.annotation];
-		}
-	}
-	if (self.willBePresentedStop != nil && [mapView.selectedAnnotations count] == 0) {
-		[mapView selectAnnotation:self.willBePresentedStop animated:NO];
-	}
-}
-
-- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
-{
-	if ([view.annotation respondsToSelector:@selector(stop)]) {
-		GRTStop *stop = [((id<GRTStopAnnotation>) view.annotation) stop];
-		if (stop != nil) {
-			[self pushStopDetailsForStop:stop];
-		}
-	}
-}
-
-- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
-{
-	if (self.isViewLoaded) {
-		[self updateNearbyStopsForLocation:userLocation.location];
-	}
+	[self updateNearbyStopsForLocation:userLocation.location];
 }
 
 #pragma mark - Table View Data Source
@@ -533,9 +401,7 @@ enum GRTStopsViewQueue {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-//	[[self stopsTableViewControllerForSection:indexPath.section] tableView:tableView didSelectRowAtIndexPath:indexPath];
-	
+{	
 	id<GRTStopAnnotation> stop = [[self stopsTableViewControllerForSection:indexPath.section].stops objectAtIndex:indexPath.row];
 	if (indexPath.section == GRTStopsTableHeaderSection) {
 		return [self showSearch:tableView];
@@ -547,8 +413,6 @@ enum GRTStopsViewQueue {
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-//	return [[self stopsTableViewControllerForSection:indexPath.section] tableView:tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
-	
 	id<GRTStopAnnotation> stop = [[self stopsTableViewControllerForSection:indexPath.section].stops objectAtIndex:indexPath.row];
 	if ([stop isKindOfClass:[GRTFavoriteStop class]]) {
 		GRTFavoriteStop *favStop = stop;

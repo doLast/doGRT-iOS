@@ -9,15 +9,15 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 #import "GRTStopsTableViewController.h"
+#import "GRTStopsMapViewController.h"
 
 @class GRTStop;
 
-@interface GRTMainStopsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate, UISearchDisplayDelegate, GRTStopsTableViewControllerDelegate>
+@interface GRTMainStopsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate, GRTStopsTableViewControllerDelegate, GRTStopsMapViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, weak) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) IBOutlet GRTStopsTableViewController *searchResultViewController;
-//@property (nonatomic, weak) IBOutlet id<GRTStopsSearchDelegate> delegate;
+@property (nonatomic, strong) IBOutlet GRTStopsMapViewController *stopsMapViewController;
 
 - (IBAction)showPreferences:(id)sender;
 - (IBAction)startTrackingUserLocation:(id)sender;

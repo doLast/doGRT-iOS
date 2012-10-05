@@ -25,7 +25,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
-                                    <outlet property="delegate" destination="1Mx-hj-Dgb" id="R8U-FQ-dOb"/>
+                                    <outlet property="delegate" destination="6JJ-VQ-37h" id="791-4U-65Z"/>
                                 </connections>
                             </mapView>
                             <searchBar contentMode="redraw" id="1hd-tm-iyX">
@@ -55,15 +55,20 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="mapView" destination="kEk-4b-I4Q" id="6Ce-lg-fmR"/>
                         <outlet property="searchDisplayController" destination="RGR-NG-JVr" id="Psa-UH-sRd"/>
                         <outlet property="searchResultViewController" destination="u28-Yq-Lso" id="TG2-2X-Ks7"/>
+                        <outlet property="stopsMapViewController" destination="6JJ-VQ-37h" id="1xo-V4-ORM"/>
                         <outlet property="tableView" destination="0D2-La-YVf" id="Shv-Yn-Fmt"/>
                         <segue destination="GJh-9J-LUE" kind="push" identifier="showStopDetails" id="bZ4-5A-tHJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jeR-kR-laY" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="u28-Yq-Lso" customClass="GRTStopsTableViewController"/>
+                <customObject id="6JJ-VQ-37h" customClass="GRTStopsMapViewController">
+                    <connections>
+                        <outlet property="mapView" destination="kEk-4b-I4Q" id="D0x-WE-hIP"/>
+                    </connections>
+                </customObject>
                 <searchDisplayController id="RGR-NG-JVr">
                     <connections>
                         <outlet property="delegate" destination="1Mx-hj-Dgb" id="DnU-Bl-5ke"/>
@@ -173,8 +178,8 @@
                 <relationship kind="action" name="showPreferences:"/>
                 <relationship kind="action" name="showSearch:"/>
                 <relationship kind="action" name="startTrackingUserLocation:"/>
-                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
                 <relationship kind="outlet" name="searchResultViewController" candidateClass="GRTStopsTableViewController"/>
+                <relationship kind="outlet" name="stopsMapViewController" candidateClass="GRTStopsMapViewController"/>
                 <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
             </relationships>
         </class>
@@ -192,6 +197,12 @@
         </class>
         <class className="GRTStopTimesViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopTimesViewController.h"/>
+        </class>
+        <class className="GRTStopsMapViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsMapViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
+            </relationships>
         </class>
         <class className="GRTStopsTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsTableViewController.h"/>
