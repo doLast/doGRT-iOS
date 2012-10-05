@@ -102,7 +102,7 @@ enum GRTStopsViewQueue {
 	[self.stopsMapViewController centerMapToRegion: MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
 	
 	// Enable user location tracking
-	[self performSelector:@selector(startTrackingUserLocation:) withObject:self afterDelay:2];
+	[self.stopsMapViewController performSelector:@selector(startTrackingUserLocation:) withObject:self afterDelay:2];
 	
 	// Set search table view controller delegate
 	self.searchResultViewController.delegate = self;
@@ -226,6 +226,7 @@ enum GRTStopsViewQueue {
 	GRTStopTimes *stopTimes = [[GRTStopTimes alloc] initWithStop:stop];
 	GRTStopDetailsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"stopDetailsView"];
 	viewController.stopTimes = stopTimes;
+	[self.navigationController popToRootViewControllerAnimated:NO];
 	[self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -237,18 +238,13 @@ enum GRTStopsViewQueue {
 	NSLog(@"Showing preferences");
 }
 
-- (IBAction)startTrackingUserLocation:(id)sender
-{
-	[self.stopsMapViewController setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
-}
-
 - (IBAction)didTapLeftNavButton:(id)sender
 {
 	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
 		[self showPreferences:sender];
 	}
 	else {
-		[self startTrackingUserLocation:sender];
+		[self.stopsMapViewController startTrackingUserLocation:sender];
 	}
 }
 
@@ -322,7 +318,7 @@ enum GRTStopsViewQueue {
 		
 		[self.searchDisplayController setActive:NO animated:YES];
 	}
-	else {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
 		[self pushStopDetailsForStop:stop];
 	}
 }

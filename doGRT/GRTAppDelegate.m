@@ -34,6 +34,7 @@
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UISplitViewController *splitViewController = (id) self.window.rootViewController;
+		splitViewController.delegate = self;
 		
 		GRTMainStopsViewController *mainStopsViewController = [splitViewController.storyboard instantiateViewControllerWithIdentifier:@"mainStopsView"];
 		GRTStopsMapViewController *stopsMapViewController = [splitViewController.storyboard instantiateViewControllerWithIdentifier:@"stopsMapView"];
@@ -216,6 +217,13 @@
 - (NSURL *)applicationDocumentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+#pragma mark - Split View Controller
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+	return NO;
 }
 
 @end

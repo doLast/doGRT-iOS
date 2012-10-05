@@ -24,7 +24,7 @@
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) NSArray *stops;
 
-- (void)setUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated;
+- (IBAction)startTrackingUserLocation:(id)sender;
 - (void)centerMapToRegion:(MKCoordinateRegion)region animated:(BOOL)animated;
 - (void)setMapAlpha:(CGFloat)alpha animationDuration:(NSTimeInterval)duration;
 - (void)selectStop:(id<GRTStopAnnotation>)annotation;

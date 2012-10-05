@@ -111,6 +111,11 @@
 
 #pragma mark - actions
 
+- (IBAction)startTrackingUserLocation:(id)sender
+{
+	[self setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
+}
+
 - (void)setUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated
 {
 	[self.mapView setUserTrackingMode:mode animated:animated];
