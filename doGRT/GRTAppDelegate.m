@@ -32,6 +32,7 @@
 		  [[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"], 
 		  [[NSUserDefaults standardUserDefaults] integerForKey:@"dataVersion"]);
 	
+	// If is iPad, setup the split view
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UISplitViewController *splitViewController = (id) self.window.rootViewController;
 		splitViewController.delegate = self;
