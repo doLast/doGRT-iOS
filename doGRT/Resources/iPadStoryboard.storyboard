@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2840" systemVersion="11G56" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="GAJ-ki-y1e">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2840" systemVersion="11G63" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="GAJ-ki-y1e">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1926"/>
@@ -8,12 +8,12 @@
         <!--Split View Controller-->
         <scene sceneID="PlV-Dj-kXe">
             <objects>
-                <splitViewController id="GAJ-ki-y1e" sceneMemberID="viewController">
+                <splitViewController storyboardIdentifier="splitView" id="GAJ-ki-y1e" sceneMemberID="viewController">
                     <toolbarItems/>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vb8-Ji-FUO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1436" y="-892"/>
+            <point key="canvasLocation" x="-532" y="-852"/>
         </scene>
         <!--Stop Details View Controller-->
         <scene sceneID="khV-0K-3yp">
@@ -103,7 +103,7 @@
                         <outlet property="searchDisplayController" destination="LyH-fV-Ccb" id="JHP-OL-5HO"/>
                         <outlet property="searchResultViewController" destination="2vm-SG-cdz" id="SfE-dH-96p"/>
                         <outlet property="tableView" destination="dia-SW-H6U" id="yOh-Kx-Jjb"/>
-                        <segue destination="p51-iS-z1u" kind="push" id="lh4-JG-vlN"/>
+                        <segue destination="p51-iS-z1u" kind="push" identifier="showStopDetails" id="lh4-JG-vlN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lYO-wO-ROY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -160,7 +160,7 @@
         <!--Navigation Controller-->
         <scene sceneID="pYJ-im-EGw">
             <objects>
-                <navigationController id="Gc9-Y1-g1L" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="splitMasterView" id="Gc9-Y1-g1L" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="vSj-X4-ps8">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
@@ -178,7 +178,7 @@
         <!--Navigation Controller-->
         <scene sceneID="xzE-JO-eek">
             <objects>
-                <navigationController id="Fx9-bZ-1dL" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="splitDetailView" id="Fx9-bZ-1dL" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="coQ-0t-qsb">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
