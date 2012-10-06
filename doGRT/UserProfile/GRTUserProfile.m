@@ -104,6 +104,9 @@ NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification"
 - (GRTFavoriteStop *)addStop:(GRTStop *)stop
 {
 	@synchronized(self) {
+		if (stop == nil) {
+			return nil;
+		}
 		GRTFavoriteStop *favoriteStop = [self favoriteStopByStop:stop];
 		if (favoriteStop != nil) {
 			return nil;
