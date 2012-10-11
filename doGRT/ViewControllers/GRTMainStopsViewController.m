@@ -310,7 +310,7 @@ enum GRTStopsViewQueue {
 
 #pragma mark - stops search delegate
 
-- (void)didSelectStop:(GRTStop *)stop
+- (void)presentStop:(GRTStop *)stop
 {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
 		GRTFavoriteStop *favStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:stop];
@@ -323,9 +323,14 @@ enum GRTStopsViewQueue {
 	}
 }
 
+- (void)tableViewController:(GRTStopsTableViewController *)tableViewController wantToPresentStop:(GRTStop *)stop
+{
+	[self presentStop:stop];
+}
+
 #pragma mark - stops map delegate
 
-- (void)mapViewController:(GRTStopsMapViewController *)mapViewController didSelectStop:(GRTStop *)stop
+- (void)mapViewController:(GRTStopsMapViewController *)mapViewController wantToPresentStop:(GRTStop *)stop
 {
 	[self pushStopDetailsForStop:stop];
 }
@@ -414,7 +419,7 @@ enum GRTStopsViewQueue {
 		return [self showSearch:tableView];
 	}
 	else {
-		[self didSelectStop:stop.stop];
+		[self presentStop:stop.stop];
 	}
 }
 

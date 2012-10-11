@@ -6,11 +6,13 @@
 //
 //
 
-@class GRTStop;
+#include "GRTGtfsSystem.h"
+
+@class GRTStopsTableViewController;
 
 @protocol GRTStopsTableViewControllerDelegate <NSObject>
 
-- (void)didSelectStop:(GRTStop *)stop;
+- (void)tableViewController:(GRTStopsTableViewController *)tableViewController wantToPresentStop:(GRTStop *)stop;
 
 @end
 

@@ -13,7 +13,7 @@
 
 @protocol GRTStopsMapViewControllerDelegate <NSObject>
 
-- (void)mapViewController:(GRTStopsMapViewController *)mapViewController didSelectStop:(GRTStop *)stop;
+- (void)mapViewController:(GRTStopsMapViewController *)mapViewController wantToPresentStop:(GRTStop *)stop;
 - (void)mapViewController:(GRTStopsMapViewController *)mapViewController didUpdateUserLocation:(MKUserLocation *)userLocation;
 
 @end

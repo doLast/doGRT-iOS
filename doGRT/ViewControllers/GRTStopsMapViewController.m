@@ -191,8 +191,8 @@
 {
 	if (self.delegate != nil && [view.annotation respondsToSelector:@selector(stop)]) {
 		GRTStop *stop = [((id<GRTStopAnnotation>) view.annotation) stop];
-		if (stop != nil && [self.delegate respondsToSelector:@selector(mapViewController:didSelectStop:)]) {
-			[self.delegate mapViewController:self didSelectStop:stop];
+		if (stop != nil && [self.delegate respondsToSelector:@selector(mapViewController:wantToPresentStop:)]) {
+			[self.delegate mapViewController:self wantToPresentStop:stop];
 		}
 	}
 }

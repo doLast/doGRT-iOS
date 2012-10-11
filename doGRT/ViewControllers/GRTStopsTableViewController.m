@@ -7,7 +7,7 @@
 //
 
 #import "GRTStopsTableViewController.h"
-#import "GRTStopDetailsViewController.h"
+//#import "GRTStopDetailsViewController.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -147,9 +147,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSelectStop:)]) {
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(tableViewController:wantToPresentStop:)]) {
 		id<GRTStopAnnotation> stop = [self.stops objectAtIndex:indexPath.row];
-		[self.delegate didSelectStop:stop.stop];
+		[self.delegate tableViewController:self wantToPresentStop:stop];
 	}
 }
 
