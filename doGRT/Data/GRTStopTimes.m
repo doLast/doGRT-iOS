@@ -37,16 +37,16 @@
 - (NSArray *)stopTimesForDate:(NSDate *)date
 {
 	
-	NSArray *stopTimes = [self fetchDawnStopTimesForDate:date andRoute:nil];
-	stopTimes = [stopTimes arrayByAddingObjectsFromArray:[self fetchStopTimesForDate:date andRoute:nil]];
+	NSArray *stopTimes = [self fetchStopTimesForDate:[NSDate dateWithTimeInterval:-86400 sinceDate:date] andRoute:nil drawOnly:YES];
+	stopTimes = [stopTimes arrayByAddingObjectsFromArray:[self fetchStopTimesForDate:date andRoute:nil drawOnly:NO]];
 	
 	return stopTimes;
 }
 
 - (NSArray *)stopTimesForDate:(NSDate *)date andRoute:(GRTRoute *)route
 {
-	NSArray *stopTimes = [self fetchDawnStopTimesForDate:date andRoute:route];
-	stopTimes = [stopTimes arrayByAddingObjectsFromArray:[self fetchStopTimesForDate:date andRoute:route]];
+	NSArray *stopTimes = [self fetchStopTimesForDate:[NSDate dateWithTimeInterval:-86400 sinceDate:date] andRoute:route drawOnly:YES];
+	stopTimes = [stopTimes arrayByAddingObjectsFromArray:[self fetchStopTimesForDate:date andRoute:route drawOnly:NO]];
 	return stopTimes;
 }
 
@@ -70,59 +70,7 @@
 	return dayName;
 }
 
-- (NSArray *)fetchDawnStopTimesForDate:(NSDate *)date andRoute:(GRTRoute *)route
-{
-	// prepare data for query
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDateComponents *dateComps = [calendar components:NSWeekdayCalendarUnit fromDate:[NSDate dateWithTimeInterval:-86400 sinceDate:date]];
-	
-	NSUInteger dayInWeek = dateComps.weekday;
-	NSString *dayName = [self dayNameForDayInWeek:dayInWeek];
-	
-	NSString *query = [NSString stringWithFormat:@"SELECT S.* \
-					   FROM calendar as C, trips as T, stop_times as S \
-					   WHERE C.%@ AND S.stop_id=? AND \
-					   S.departure_time>=? AND \
-					   S.trip_id=T.trip_id AND T.service_id=C.service_id ",
-					   dayName];
-	NSMutableArray *arguments = [NSMutableArray arrayWithObjects:self.stop.stopId, [NSNumber numberWithInt:240000], nil];
-	
-	if (route != nil) {
-		query = [query stringByAppendingString:@"AND T.route_id=? "];
-		[arguments addObject:route.routeId];
-	}
-	query = [query stringByAppendingString:@"ORDER BY S.departure_time "];
-	
-	// execute database query
-	FMDatabase *db = [GRTGtfsSystem defaultGtfsSystem].db;
-	FMResultSet *result = [db executeQuery:query withArgumentsInArray:arguments];
-	if (result == nil){
-		NSLog(@"%@", [db lastErrorMessage]);
-		abort();
-	}
-	
-	// process the data
-	NSMutableArray *stopTimes = [[NSMutableArray alloc] init];
-	while ([result next]) {
-		//retrieve values for each record
-		NSNumber *tripId = [NSNumber numberWithInt:[result intForColumn:@"trip_id"]];
-		NSNumber *stopSequence = [NSNumber numberWithInt:[result intForColumn:@"stop_sequence"]];
-		NSNumber *stopId = [NSNumber numberWithInt:[result intForColumn:@"stop_id"]];
-		NSNumber *arrivalTime = [NSNumber numberWithInt:[result intForColumn:@"arrival_time"]];
-		NSNumber *departureTime = [NSNumber numberWithInt:[result intForColumn:@"departure_time"]];
-		
-		GRTStopTime *stopTime = [[GRTStopTime alloc] initWithTripId:tripId stopSequence:stopSequence stopId:stopId arrivalTime:arrivalTime departureTime:departureTime];
-		[stopTimes addObject:stopTime];
-	}
-	
-	NSLog(@"Obtain %d stopTimes", [stopTimes count]);
-	
-	[result close];
-	
-	return stopTimes;
-}
-
-- (NSArray *)fetchStopTimesForDate:(NSDate *)date andRoute:(GRTRoute *)route
+- (NSArray *)fetchStopTimesForDate:(NSDate *)date andRoute:(GRTRoute *)route drawOnly:(BOOL)drawOnly
 {
 	// prepare data for query
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -137,6 +85,10 @@
 					   WHERE C.%@ AND S.stop_id=? AND \
 					   S.trip_id=T.trip_id AND T.service_id=C.service_id ",
 					   dayName];
+	if (drawOnly) {
+		query = [query stringByAppendingFormat:@"AND S.departure_time>=? "];
+		[arguments addObject:[NSNumber numberWithInt:240000]];
+	}
 	
 	if (route != nil) {
 		query = [query stringByAppendingString:@"AND T.route_id=? "];
