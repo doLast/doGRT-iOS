@@ -109,6 +109,11 @@ enum GRTStopsViewQueue {
 	self.stopsMapViewController.delegate = self;
 	
 	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:1.0];
+	
+	// Reload favorites
+	[self updateFavoriteStops];
+	// Subscribe to user profile update
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFavoriteStops) name:GRTUserProfileUpdateNotification object:[GRTUserProfile defaultUserProfile]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -118,15 +123,6 @@ enum GRTStopsViewQueue {
 	
 	[self setNavigationBarHidden:self.searchDisplayController.active animated:animated];
 	[self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-	[super viewDidAppear:animated];
-	// Reload favorites
-	[self updateFavoriteStops];
-	// Subscribe to user profile update
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFavoriteStops) name:GRTUserProfileUpdateNotification object:[GRTUserProfile defaultUserProfile]];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
