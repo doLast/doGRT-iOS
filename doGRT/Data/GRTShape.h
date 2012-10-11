@@ -7,11 +7,13 @@
 //
 
 #import "GRTShapePt.h"
+#import <MapKit/MapKit.h>
 
 @interface GRTShape : NSObject
 
 @property (nonatomic, strong, readonly) NSNumber *shapeId;
 @property (nonatomic, strong, readonly) NSArray *shapePts;
+@property (nonatomic, strong, readonly) MKPolyline *polyline;
 
 - (GRTShape *)initWithShapeId:(NSNumber *)shapeId shapePts:(NSArray *)shapePts;
 

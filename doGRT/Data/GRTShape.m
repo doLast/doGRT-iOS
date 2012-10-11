@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSNumber *shapeId;
 @property (nonatomic, strong) NSArray *shapePts;
+@property (nonatomic, strong) MKPolyline *polyline;
 
 @end
 
@@ -19,6 +20,7 @@
 
 @synthesize shapeId = _shapeId;
 @synthesize shapePts = _shapePts;
+@synthesize polyline = _polyline;
 
 - (GRTShape *)initWithShapeId:(NSNumber *)shapeId shapePts:(NSArray *)shapePts
 {
@@ -26,6 +28,14 @@
 	if (self != nil) {
 		self.shapeId = shapeId;
 		self.shapePts = shapePts;
+		
+		int i = 0;
+		CLLocationCoordinate2D coordinates[[shapePts count]];
+		for (GRTShapePt *shapePt in shapePts) {
+			coordinates[i] = shapePt.coordinate;
+			i++;
+		}
+		self.polyline = [MKPolyline polylineWithCoordinates:coordinates count:[shapePts count]];
 	}
 	return self;
 }
