@@ -111,8 +111,14 @@
 		NSNumber *tripId = [NSNumber numberWithInt:[result intForColumn:@"trip_id"]];
 		NSNumber *stopSequence = [NSNumber numberWithInt:[result intForColumn:@"stop_sequence"]];
 		NSNumber *stopId = [NSNumber numberWithInt:[result intForColumn:@"stop_id"]];
-		NSNumber *arrivalTime = [NSNumber numberWithInt:[result intForColumn:@"arrival_time"]];
-		NSNumber *departureTime = [NSNumber numberWithInt:[result intForColumn:@"departure_time"]];
+		NSInteger arrivalInt = [result intForColumn:@"arrival_time"];
+		NSInteger departureInt = [result intForColumn:@"departure_time"];
+		if (drawOnly) {
+			arrivalInt -= 240000;
+			departureInt -= 240000;
+		}
+		NSNumber *arrivalTime = [NSNumber numberWithInt:arrivalInt];
+		NSNumber *departureTime = [NSNumber numberWithInt:departureInt];
 		
 		GRTStopTime *stopTime = [[GRTStopTime alloc] initWithTripId:tripId stopSequence:stopSequence stopId:stopId arrivalTime:arrivalTime departureTime:departureTime];
 		[stopTimes addObject:stopTime];

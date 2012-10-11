@@ -31,14 +31,21 @@
 		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];
 		NSInteger curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
-		self.comingBusIndex = [[self.stopTimes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"departureTime<=%d", curTime, nil]] count];
+		self.comingBusIndex = [self.stopTimes indexesOfObjectsPassingTest:^BOOL(GRTStopTime *obj, NSUInteger idx, BOOL *stop){
+			if (obj.departureTime.integerValue >= curTime) {
+				*stop = YES;
+				return YES;
+			}
+			return NO;
+		}].firstIndex;
 		
 		[self.tableView reloadData];
 		
-		if(self.comingBusIndex > 2){
-			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 2 inSection:0];
-			[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+		NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:[self.stopTimes count] inSection:0];
+		if(self.comingBusIndex != NSNotFound && self.comingBusIndex > 2){
+			scrollIndexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 2 inSection:0];
 		}
+		[self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
 	}
 }
 
