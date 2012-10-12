@@ -98,20 +98,21 @@ enum GRTStopsViewQueue {
 	UISearchBar *searchBar = self.searchDisplayController.searchBar;
 	[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
 	
+	// Set search table view controller delegate
+	self.searchResultViewController.delegate = self;
+	self.stopsMapViewController.delegate = self;
+	
 	// Center Waterloo on map
 	[self.stopsMapViewController centerMapToRegion: MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
 	
 	// Enable user location tracking
 	[self.stopsMapViewController performSelector:@selector(startTrackingUserLocation:) withObject:self afterDelay:2];
 	
-	// Set search table view controller delegate
-	self.searchResultViewController.delegate = self;
-	self.stopsMapViewController.delegate = self;
-	
 	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:1.0];
 	
 	// Reload favorites
 	[self updateFavoriteStops];
+	
 	// Subscribe to user profile update
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFavoriteStops) name:GRTUserProfileUpdateNotification object:[GRTUserProfile defaultUserProfile]];
 }
