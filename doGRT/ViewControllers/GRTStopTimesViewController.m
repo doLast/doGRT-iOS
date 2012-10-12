@@ -42,7 +42,10 @@
 		[self.tableView reloadData];
 		
 		NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:[self.stopTimes count] inSection:0];
-		if(self.comingBusIndex != NSNotFound && self.comingBusIndex > 2){
+		if (self.comingBusIndex != NSNotFound){
+			scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+		}
+		if (self.comingBusIndex >= 2){
 			scrollIndexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 2 inSection:0];
 		}
 		[self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
