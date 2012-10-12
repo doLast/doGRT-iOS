@@ -15,6 +15,7 @@
 @interface GRTStopTimesViewController ()
 
 @property (nonatomic) NSInteger comingBusIndex;
+@property (nonatomic, strong) NSTimer *comingBusIndexUpdateTimer;
 
 @end
 
@@ -23,41 +24,64 @@
 @synthesize delegate = _delegate;
 @synthesize stopTimes = _stopTimes;
 @synthesize comingBusIndex = _comingBusIndex;
+@synthesize comingBusIndexUpdateTimer = _comingBusIndexUpdateTimer;
 
 - (void)setStopTimes:(NSArray *)stopTimes
 {
 	if (_stopTimes != stopTimes) {
 		_stopTimes = stopTimes;
 		
-		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-		NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];
-		NSInteger curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
-		self.comingBusIndex = [self.stopTimes indexesOfObjectsPassingTest:^BOOL(GRTStopTime *obj, NSUInteger idx, BOOL *stop){
-			if (obj.departureTime.integerValue >= curTime) {
-				*stop = YES;
-				return YES;
-			}
-			return NO;
-		}].firstIndex;
+		[self updateComingBusIndex];
 		
-		[self.tableView reloadData];
-		
-		NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:[self.stopTimes count] inSection:0];
-		if (self.comingBusIndex != NSNotFound){
+		NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:[self.stopTimes count] - 1 inSection:0];
+		if (self.comingBusIndex != [self.stopTimes count]){
 			scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
 		}
 		if (self.comingBusIndex >= 2){
 			scrollIndexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 2 inSection:0];
 		}
 		[self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+		
+		self.comingBusIndexUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateComingBusIndex) userInfo:nil repeats:YES];
 	}
+	else {
+		[self.comingBusIndexUpdateTimer invalidate];
+		self.comingBusIndexUpdateTimer = nil;
+	}
+}
+
+- (void)setComingBusIndex:(NSInteger)comingBusIndex
+{
+	if (comingBusIndex > [self.stopTimes count]) {
+		comingBusIndex = [self.stopTimes count];
+	}
+	_comingBusIndex = comingBusIndex;
+	
+	[self.tableView reloadData];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
 
-    NSAssert(self.stopTimes != nil, @"Must have stopTimes");
+#pragma mark - view updates
+
+- (void)updateComingBusIndex
+{
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];
+	NSInteger curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
+	NSInteger comingBusIndex = [self.stopTimes indexesOfObjectsPassingTest:^BOOL(GRTStopTime *obj, NSUInteger idx, BOOL *stop){
+		if (obj.departureTime.integerValue >= curTime) {
+			*stop = YES;
+			return YES;
+		}
+		return NO;
+	}].firstIndex;
+	if (comingBusIndex != self.comingBusIndex) {
+		self.comingBusIndex = comingBusIndex;
+	}
 }
 
 - (void)showTripDetailsForStopTime:(GRTStopTime *)stopTime inNavigationController:(UINavigationController *)navigationController
@@ -148,7 +172,7 @@
     if (self.delegate != nil && [self.delegate respondsToSelector:@selector(stopTimesViewController:didSelectStopTime:)]) {
 		[self.delegate stopTimesViewController:self didSelectStopTime:stopTime];
 	}
-	else if (self.navigationController != nil) {
+	else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		[self showTripDetailsForStopTime:stopTime inNavigationController:self.navigationController];
 	}
 }

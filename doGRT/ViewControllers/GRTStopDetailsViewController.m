@@ -162,9 +162,10 @@
 - (void)stopRoutesViewController:(GRTStopRoutesViewController *)stopRoutesViewController didSelectRoute:(GRTRoute *)route
 {
 	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
-	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date andRoute:route];
 	stopTimesVC.title = [NSString stringWithFormat:@"%@ %@", route.routeId, route.routeLongName];
 	[self.navigationController pushViewController:stopTimesVC animated:YES];
+
+	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date andRoute:route];
 }
 
 @end
