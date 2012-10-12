@@ -41,7 +41,6 @@ NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification"
 		static GRTUserProfile *userProfile = nil;
 		if (userProfile == nil) {
 			userProfile = [[GRTUserProfile alloc] init];
-			NSLog(@"Creating user profile instance %@", userProfile);
 		}
 		return userProfile;
 	}
@@ -90,7 +89,6 @@ NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification"
 
 - (void)postNotification
 {
-	NSLog(@"Posting notification from: %@", self);
 	[[NSNotificationCenter defaultCenter] postNotificationName:GRTUserProfileUpdateNotification object:self];
 }
 
