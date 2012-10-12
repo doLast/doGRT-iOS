@@ -24,6 +24,7 @@
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) NSArray *stops;
 @property (nonatomic, strong) GRTShape *shape;
+@property (nonatomic) CLLocationDegrees inRegionStopsDisplayThreshold;
 
 - (IBAction)startTrackingUserLocation:(id)sender;
 - (void)centerMapToRegion:(MKCoordinateRegion)region animated:(BOOL)animated;

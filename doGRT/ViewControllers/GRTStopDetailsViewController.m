@@ -154,10 +154,12 @@
 - (void)stopTimesViewController:(GRTStopTimesViewController *)stopTimesViewController didSelectStopTime:(GRTStopTime *)stopTime
 {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		// TODO: show stop time's detail
+		
 		GRTStopsMapViewController *tripDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"tripDetailsView"];
 		tripDetailsVC.title = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
+		tripDetailsVC.inRegionStopsDisplayThreshold = 0.03;
 		[self.navigationController pushViewController:tripDetailsVC animated:YES];
+		
 		tripDetailsVC.shape = stopTime.trip.shape;
 		tripDetailsVC.stops = [[GRTGtfsSystem defaultGtfsSystem] stopTimesForTrip:stopTime.trip];
 		

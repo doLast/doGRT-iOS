@@ -25,6 +25,7 @@
 @synthesize mapView = _mapView;
 @synthesize stops = _stops;
 @synthesize shape = _shape;
+@synthesize inRegionStopsDisplayThreshold = _inRegionStopsDisplayThreshold;
 @synthesize willBePresentedStop = _willBePresentedStop;
 @synthesize annotationUpdateQueue = _annotationUpdateQueue;
 
@@ -60,6 +61,12 @@
 	}
 }
 
+- (void)setInRegionStopsDisplayThreshold:(CLLocationDegrees)inRegionStopsDisplayThreshold
+{
+	_inRegionStopsDisplayThreshold = inRegionStopsDisplayThreshold;
+	[self updateMapView];
+}
+
 - (NSOperationQueue *)annotationUpdateQueue
 {
 	if (_annotationUpdateQueue == nil) {
@@ -89,6 +96,18 @@
 	// If invisible, do nothing
 	if (self.mapView.alpha == 0) {
 		return;
+	}
+	
+	MKCoordinateRegion region = self.mapView.region;
+	
+	if (self.inRegionStopsDisplayThreshold != 0) {
+		CLLocationDegrees deltaSum =  region.span.latitudeDelta + region.span.longitudeDelta;
+		if (self.inRegionStopsDisplayThreshold < deltaSum) {
+			NSMutableArray *visibleAnnotations = [[[self.mapView annotationsInMapRect:[self.mapView visibleMapRect]] allObjects] mutableCopy];
+			[visibleAnnotations filterUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTStop class]]];
+			[self.mapView removeAnnotations:visibleAnnotations];
+			return;
+		}
 	}
 	
 	NSOperation *annotationUpdate = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performAnnotationUpdate) object:nil];
