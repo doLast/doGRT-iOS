@@ -7,7 +7,6 @@
 //
 
 #import "GRTStopsTableViewController.h"
-//#import "GRTStopDetailsViewController.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -40,16 +39,6 @@
 {
 	[super viewWillAppear:animated];
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-	return YES;
-}
-
-- (NSUInteger)supportedInterfaceOrientations
-{
-	return UIInterfaceOrientationMaskAll;
 }
 
 #pragma mark - Table view data source

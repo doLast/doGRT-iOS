@@ -14,16 +14,21 @@
 
 - (BOOL)shouldAutorotate {
 	
-    BOOL result = self.topViewController.shouldAutorotate;
+    BOOL result = YES; // self.topViewController.shouldAutorotate;
 	
     return result;
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
 	
-    NSUInteger result = self.topViewController.supportedInterfaceOrientations;
+    NSUInteger result = UIInterfaceOrientationMaskAll; // self.topViewController.supportedInterfaceOrientations;
 	
     return result;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+	return UIInterfaceOrientationPortrait;
 }
 
 @end

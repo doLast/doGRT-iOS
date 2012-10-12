@@ -7,7 +7,6 @@
 //
 
 #import "GRTMainStopsViewController.h"
-#import "UINavigationController+Rotation.h"
 #import "GRTStopDetailsViewController.h"
 #import "GRTStopsTableViewController.h"
 
@@ -130,21 +129,6 @@ enum GRTStopsViewQueue {
 {
 	[self setNavigationBarHidden:NO animated:animated];
 	[super viewDidDisappear:animated];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-	return YES;
-}
-
-- (NSUInteger)supportedInterfaceOrientations
-{
-	return UIInterfaceOrientationMaskAll;
-}
-
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-	return UIInterfaceOrientationPortrait;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
