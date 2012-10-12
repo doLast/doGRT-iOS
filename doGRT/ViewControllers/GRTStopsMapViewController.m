@@ -22,23 +22,40 @@
 @synthesize delegate = _delegate;
 @synthesize mapView = _mapView;
 @synthesize stops = _stops;
+@synthesize shape = _shape;
 @synthesize willBePresentedStop = _willBePresentedStop;
 @synthesize annotationUpdateQueue = _annotationUpdateQueue;
 
 - (void)setStops:(NSArray *)stops
 {
-	NSMutableArray *toRemove = [[self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTFavoriteStop class]]] mutableCopy];
-	NSMutableArray *toAdd = [stops mutableCopy];
-	[toAdd removeObjectsInArray:toRemove];
-	[toRemove removeObjectsInArray:stops];
-	
-	NSLog(@"Adding: %@, Removing: %@", toAdd, toRemove);
+	NSMutableArray *toRemove = [NSMutableArray arrayWithArray:_stops];
+	NSMutableArray *toAdd = [NSMutableArray arrayWithArray:stops];
+	_stops = [stops copy];
 	
 	dispatch_async(dispatch_get_main_queue(), ^{
+		for (id<GRTStopAnnotation> stop in _stops) {
+			[toRemove addObject:stop.stop];
+		}
+		
+		NSLog(@"Adding: %@, Removing: %@", toAdd, toRemove);
+		
 		[self.mapView removeAnnotations:toRemove];
 		[self.mapView addAnnotations:toAdd];
 		[self updateMapView];
 	});
+}
+
+- (void)setShape:(GRTShape *)shape
+{
+	if (_shape != nil) {
+		[self.mapView removeOverlay:_shape.polyline];
+	}
+	if (shape != nil) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			_shape = shape;
+			[self.mapView addOverlay:_shape.polyline];
+		});
+	}
 }
 
 - (NSOperationQueue *)annotationUpdateQueue
@@ -56,6 +73,9 @@
 	
 	// Center Waterloo on map
 	[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
+	
+	self.stops = self.stops;
+	self.shape = self.shape;
 	
 	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:1.0];
 }
@@ -86,23 +106,21 @@
 		[nonVisibleAnnotations minusSet:visibleAnnotations];
 		[nonVisibleAnnotations filterUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTStop class]]];
 		
-		// Also remove stops overlay on fav stops
-		NSSet *visibleFavAnnotations = [visibleAnnotations filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTFavoriteStop class]]];
-		for (GRTFavoriteStop *fav in visibleFavAnnotations) {
-			[nonVisibleAnnotations addObject:fav.stop];
-		}
+		// get bus stops in current region
+		NSArray *newStops = [[GRTGtfsSystem defaultGtfsSystem] stopsInRegion:region];
+		NSMutableSet *newAnnotations = [NSMutableSet setWithArray:newStops];
+		[newAnnotations minusSet:visibleAnnotations];
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
 			[self.mapView removeAnnotations:[nonVisibleAnnotations allObjects]];
 			
+			// Prevent adding stops which are overlaying on fav stops
+			for (GRTFavoriteStop *fav in self.stops) {
+				[newAnnotations removeObject:fav.stop];
+			}
+			
 			// if not too many annotations currently on the map
 			if([[self.mapView annotations] count] < 50){
-				// get bus stops in current region
-				NSArray *newStops = [[GRTGtfsSystem defaultGtfsSystem] stopsInRegion:region];
-				
-				NSMutableSet *newAnnotations = [NSMutableSet setWithArray:newStops];
-				[newAnnotations minusSet:visibleAnnotations];
-				
 				[self.mapView addAnnotations:[newAnnotations allObjects]];
 			}
 		});
@@ -178,9 +196,9 @@
 			}
 			pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 		}
-		if ([view.annotation isKindOfClass:[GRTStop class]] && [[GRTUserProfile defaultUserProfile] favoriteStopByStop:(GRTStop *)view.annotation] != nil) {
-			[mapView removeAnnotation:view.annotation];
-		}
+//		if ([view.annotation isKindOfClass:[GRTStop class]] && [[GRTUserProfile defaultUserProfile] favoriteStopByStop:(GRTStop *)view.annotation] != nil) {
+//			[mapView removeAnnotation:view.annotation];
+//		}
 	}
 	if (self.willBePresentedStop != nil && [mapView.selectedAnnotations count] == 0) {
 		[mapView selectAnnotation:self.willBePresentedStop animated:NO];
@@ -195,6 +213,17 @@
 			[self.delegate mapViewController:self wantToPresentStop:stop];
 		}
 	}
+}
+
+- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
+{
+	if ([overlay isKindOfClass:[MKPolyline class]]) {
+		MKPolylineView *polylineView = [[MKPolylineView alloc] initWithPolyline:overlay];
+		polylineView.strokeColor = [[UIColor blueColor] colorWithAlphaComponent:0.5];
+		polylineView.lineWidth = 8;
+		return polylineView;
+	}
+	return nil;
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation

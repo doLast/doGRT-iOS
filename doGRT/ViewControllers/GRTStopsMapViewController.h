@@ -23,6 +23,7 @@
 @property (nonatomic, weak) IBOutlet id<GRTStopsMapViewControllerDelegate> delegate;
 @property (nonatomic, weak) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) NSArray *stops;
+@property (nonatomic, strong) GRTShape *shape;
 
 - (IBAction)startTrackingUserLocation:(id)sender;
 - (void)centerMapToRegion:(MKCoordinateRegion)region animated:(BOOL)animated;
