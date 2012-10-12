@@ -8,7 +8,6 @@
 
 #import "GRTStopDetailsViewController.h"
 #import "UINavigationController+Rotation.h"
-#import "GRTStopsMapViewController.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -154,24 +153,7 @@
 - (void)stopTimesViewController:(GRTStopTimesViewController *)stopTimesViewController didSelectStopTime:(GRTStopTime *)stopTime
 {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		
-		GRTStopsMapViewController *tripDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"tripDetailsView"];
-		tripDetailsVC.title = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
-		tripDetailsVC.inRegionStopsDisplayThreshold = 0.03;
-		[self.navigationController pushViewController:tripDetailsVC animated:YES];
-		
-		tripDetailsVC.shape = stopTime.trip.shape;
-		tripDetailsVC.stops = [[GRTGtfsSystem defaultGtfsSystem] stopTimesForTrip:stopTime.trip];
-		
-		NSUInteger stopTimeIndex = [tripDetailsVC.stops indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop){
-			GRTStopTime *stopTimeObj = obj;
-			if (stopTimeObj.stopSequence.integerValue == stopTime.stopSequence.integerValue) {
-				*stop = YES;
-				return YES;
-			}
-			return NO;
-		}].firstIndex;
-		[tripDetailsVC selectStop:[tripDetailsVC.stops objectAtIndex:stopTimeIndex]];
+		[stopTimesViewController showTripDetailsForStopTime:stopTime inNavigationController:self.navigationController];
 	}
 }
 

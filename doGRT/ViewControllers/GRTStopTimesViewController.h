@@ -20,4 +20,6 @@
 @property (nonatomic, weak) id<GRTStopTimesViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSArray *stopTimes;
 
+- (void)showTripDetailsForStopTime:(GRTStopTime *)stopTime inNavigationController:(UINavigationController *)navigationController;
+
 @end

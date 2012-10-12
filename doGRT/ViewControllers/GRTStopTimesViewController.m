@@ -7,6 +7,7 @@
 //
 
 #import "GRTStopTimesViewController.h"
+#import "GRTStopsMapViewController.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -57,6 +58,27 @@
     [super viewDidLoad];
 
     NSAssert(self.stopTimes != nil, @"Must have stopTimes");
+}
+
+- (void)showTripDetailsForStopTime:(GRTStopTime *)stopTime inNavigationController:(UINavigationController *)navigationController
+{
+	GRTStopsMapViewController *tripDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"tripDetailsView"];
+	tripDetailsVC.title = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
+	tripDetailsVC.inRegionStopsDisplayThreshold = 0.03;
+	[navigationController pushViewController:tripDetailsVC animated:YES];
+	
+	tripDetailsVC.shape = stopTime.trip.shape;
+	tripDetailsVC.stops = [[GRTGtfsSystem defaultGtfsSystem] stopTimesForTrip:stopTime.trip];
+	
+	NSUInteger stopTimeIndex = [tripDetailsVC.stops indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop){
+		GRTStopTime *stopTimeObj = obj;
+		if (stopTimeObj.stopSequence.integerValue == stopTime.stopSequence.integerValue) {
+			*stop = YES;
+			return YES;
+		}
+		return NO;
+	}].firstIndex;
+	[tripDetailsVC selectStop:[tripDetailsVC.stops objectAtIndex:stopTimeIndex]];
 }
 
 #pragma mark - Table view data source
@@ -122,8 +144,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	GRTStopTime *stopTime = [self.stopTimes objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)];
     if (self.delegate != nil && [self.delegate respondsToSelector:@selector(stopTimesViewController:didSelectStopTime:)]) {
-		[self.delegate stopTimesViewController:self didSelectStopTime:[self.stopTimes objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)]];
+		[self.delegate stopTimesViewController:self didSelectStopTime:stopTime];
+	}
+	else if (self.navigationController != nil) {
+		[self showTripDetailsForStopTime:stopTime inNavigationController:self.navigationController];
 	}
 }
 

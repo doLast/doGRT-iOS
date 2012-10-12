@@ -91,16 +91,16 @@
 		252C3DE0161751FF00C5A933 /* GRTShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTShape.h; sourceTree = "<group>"; };
 		252C3DE1161751FF00C5A933 /* GRTShape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTShape.m; sourceTree = "<group>"; };
 		253519D7160E52C40042BEA4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		25419FB11617A2E600B276C7 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = fmdb/src/FMDatabase.h; sourceTree = SOURCE_ROOT; };
-		25419FB21617A2E600B276C7 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = fmdb/src/FMDatabase.m; sourceTree = SOURCE_ROOT; };
-		25419FB31617A2E600B276C7 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = fmdb/src/FMDatabaseAdditions.h; sourceTree = SOURCE_ROOT; };
-		25419FB41617A2E600B276C7 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = fmdb/src/FMDatabaseAdditions.m; sourceTree = SOURCE_ROOT; };
-		25419FB51617A2E600B276C7 /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabasePool.h; path = fmdb/src/FMDatabasePool.h; sourceTree = SOURCE_ROOT; };
-		25419FB61617A2E600B276C7 /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabasePool.m; path = fmdb/src/FMDatabasePool.m; sourceTree = SOURCE_ROOT; };
-		25419FB71617A2E600B276C7 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseQueue.h; path = fmdb/src/FMDatabaseQueue.h; sourceTree = SOURCE_ROOT; };
-		25419FB81617A2E600B276C7 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseQueue.m; path = fmdb/src/FMDatabaseQueue.m; sourceTree = SOURCE_ROOT; };
-		25419FB91617A2E600B276C7 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = fmdb/src/FMResultSet.h; sourceTree = SOURCE_ROOT; };
-		25419FBA1617A2E600B276C7 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = fmdb/src/FMResultSet.m; sourceTree = SOURCE_ROOT; };
+		25419FB11617A2E600B276C7 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		25419FB21617A2E600B276C7 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		25419FB31617A2E600B276C7 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		25419FB41617A2E600B276C7 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		25419FB51617A2E600B276C7 /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		25419FB61617A2E600B276C7 /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		25419FB71617A2E600B276C7 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		25419FB81617A2E600B276C7 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		25419FB91617A2E600B276C7 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		25419FBA1617A2E600B276C7 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		2564645216121561000FC7DC /* GRTGtfsSystem+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GRTGtfsSystem+Internal.h"; sourceTree = "<group>"; };
 		2564645316121561000FC7DC /* GRTGtfsSystem+Internal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GRTGtfsSystem+Internal.m"; sourceTree = "<group>"; };
 		2564645916122863000FC7DC /* GRTService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTService.h; sourceTree = "<group>"; };
@@ -169,6 +169,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		250DE3CB16285A58002B9344 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				2515ED6814C5828700FDCD6D /* Default.png */,
+				2515ED6914C5828700FDCD6D /* Default@2x.png */,
+				253519D7160E52C40042BEA4 /* Default-568h@2x.png */,
+				259FF608160F7BCD00B50F14 /* Launch.png */,
+				259FF609160F7BCD00B50F14 /* Launch@2x.png */,
+				259FF60A160F7BCD00B50F14 /* Launch-568h@2x.png */,
+				257B1C841620A96F00176083 /* Icon-72.png */,
+				257B1C851620A96F00176083 /* Icon-72@2x.png */,
+				257B1C861620A96F00176083 /* Icon-Small-50.png */,
+				257B1C871620A96F00176083 /* Icon-Small-50@2x.png */,
+				257B1C881620A96F00176083 /* Icon-Small.png */,
+				257B1C891620A96F00176083 /* Icon-Small@2x.png */,
+				257B1C8A1620A96F00176083 /* Icon.png */,
+				257B1C8B1620A96F00176083 /* Icon@2x.png */,
+				257B1C8C1620A96F00176083 /* iTunesArtwork.png */,
+				257B1C8D1620A96F00176083 /* iTunesArtwork@2x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		2515ED2414C5817500FDCD6D = {
 			isa = PBXGroup;
 			children = (
@@ -189,6 +212,7 @@
 		2515ED3214C5817600FDCD6D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				25419FB01617A2AF00B276C7 /* FMDB */,
 				25EAB19514CD783F004A9DEC /* libsqlite3.dylib */,
 				2515EDAB14C5839300FDCD6D /* MessageUI.framework */,
 				2515EDA914C5838700FDCD6D /* MapKit.framework */,
@@ -209,7 +233,6 @@
 				2590035B1610E53C00FE051C /* ViewControllers */,
 				2515ED7C14C5830300FDCD6D /* Data */,
 				2564646D161290B4000FC7DC /* UserProfile */,
-				25419FB01617A2AF00B276C7 /* FMDB */,
 				2515ED6714C5828700FDCD6D /* Resources */,
 				2515ED3C14C5817600FDCD6D /* Supporting Files */,
 			);
@@ -231,25 +254,10 @@
 		2515ED6714C5828700FDCD6D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				250DE3CB16285A58002B9344 /* Images */,
 				25C7493B15E09173003AB331 /* iPhoneStoryboard.storyboard */,
 				25C7493D15E09190003AB331 /* iPadStoryboard.storyboard */,
 				25900366161101BD00FE051C /* GRT_GTFS.sqlite */,
-				2515ED6814C5828700FDCD6D /* Default.png */,
-				2515ED6914C5828700FDCD6D /* Default@2x.png */,
-				253519D7160E52C40042BEA4 /* Default-568h@2x.png */,
-				259FF608160F7BCD00B50F14 /* Launch.png */,
-				259FF609160F7BCD00B50F14 /* Launch@2x.png */,
-				259FF60A160F7BCD00B50F14 /* Launch-568h@2x.png */,
-				257B1C841620A96F00176083 /* Icon-72.png */,
-				257B1C851620A96F00176083 /* Icon-72@2x.png */,
-				257B1C861620A96F00176083 /* Icon-Small-50.png */,
-				257B1C871620A96F00176083 /* Icon-Small-50@2x.png */,
-				257B1C881620A96F00176083 /* Icon-Small.png */,
-				257B1C891620A96F00176083 /* Icon-Small@2x.png */,
-				257B1C8A1620A96F00176083 /* Icon.png */,
-				257B1C8B1620A96F00176083 /* Icon@2x.png */,
-				257B1C8C1620A96F00176083 /* iTunesArtwork.png */,
-				257B1C8D1620A96F00176083 /* iTunesArtwork@2x.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -285,7 +293,8 @@
 				25419FBA1617A2E600B276C7 /* FMResultSet.m */,
 			);
 			name = FMDB;
-			sourceTree = "<group>";
+			path = fmdb/src;
+			sourceTree = SOURCE_ROOT;
 		};
 		2564646D161290B4000FC7DC /* UserProfile */ = {
 			isa = PBXGroup;
