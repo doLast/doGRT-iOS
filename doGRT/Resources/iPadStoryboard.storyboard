@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2840" systemVersion="11G63" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="GAJ-ki-y1e">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2843" systemVersion="11G63" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="GAJ-ki-y1e">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1926"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1929"/>
     </dependencies>
     <scenes>
         <!--Split View Controller-->
@@ -51,6 +51,39 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0z6-YE-thQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3197" y="-1513"/>
+        </scene>
+        <!--Stops Map View Controller-->
+        <scene sceneID="BR3-lH-JBE">
+            <objects>
+                <viewController storyboardIdentifier="tripDetailsView" id="72Y-dW-iZ5" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Dox-x2-iCp">
+                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="CV6-TA-sBe">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="960"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="72Y-dW-iZ5" id="m2V-k0-s52"/>
+                                </connections>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="4AB-Fn-A96">
+                        <barButtonItem key="rightBarButtonItem" title="START_TRACKING" id="K5b-8W-rdR">
+                            <connections>
+                                <action selector="startTrackingUserLocation:" destination="72Y-dW-iZ5" id="JkR-3o-VoN"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="mapView" destination="CV6-TA-sBe" id="FUy-Xi-Bs6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pyR-al-SLI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2334" y="-364"/>
         </scene>
         <!--Stop Routes View Controller-->
         <scene sceneID="J6E-SQ-yXv">
@@ -143,7 +176,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="3F5-mc-ENt">
-                        <barButtonItem key="rightBarButtonItem" title="SHOW_LOCATION" id="pmX-EQ-Z6V">
+                        <barButtonItem key="rightBarButtonItem" title="START_TRACKING" id="pmX-EQ-Z6V">
                             <connections>
                                 <action selector="startTrackingUserLocation:" destination="tHJ-Mx-d2m" id="PF1-1N-v8w"/>
                             </connections>
@@ -151,6 +184,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="FH9-j4-ThK" id="MNp-NR-y8K"/>
+                        <segue destination="72Y-dW-iZ5" kind="push" identifier="showTripDetails" id="4lv-xX-gcR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pcg-rY-Abe" userLabel="First Responder" sceneMemberID="firstResponder"/>

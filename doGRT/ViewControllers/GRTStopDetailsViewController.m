@@ -155,6 +155,11 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		[stopTimesViewController showTripDetailsForStopTime:stopTime inNavigationController:self.navigationController];
 	}
+	else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		UINavigationController *detailNav = (id)[self.splitViewController.viewControllers objectAtIndex:1];
+		[detailNav popToRootViewControllerAnimated:NO];
+		[stopTimesViewController showTripDetailsForStopTime:stopTime inNavigationController:detailNav];
+	}
 }
 
 #pragma mark - stop routes view controller delegate
@@ -163,6 +168,7 @@
 {
 	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
 	stopTimesVC.title = [NSString stringWithFormat:@"%@ %@", route.routeId, route.routeLongName];
+	stopTimesVC.delegate = self;
 	[self.navigationController pushViewController:stopTimesVC animated:YES];
 
 	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date andRoute:route];

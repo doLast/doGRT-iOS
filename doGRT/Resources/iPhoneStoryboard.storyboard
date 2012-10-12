@@ -132,7 +132,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="uik-u2-UH5"/>
+                    <navigationItem key="navigationItem" id="uik-u2-UH5">
+                        <barButtonItem key="rightBarButtonItem" title="START_TRACKING" id="m3s-Nl-eTa">
+                            <connections>
+                                <action selector="startTrackingUserLocation:" destination="hB1-oF-SDn" id="z9i-ux-9uX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="OgO-Da-6Xh" id="erp-xr-noH"/>
                     </connections>
