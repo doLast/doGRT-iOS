@@ -84,11 +84,13 @@ static const int kMaxStopsLimit = 30;
 
 + (GRTGtfsSystem *)defaultGtfsSystem
 {
-	static GRTGtfsSystem *system = nil;
-	if (system == nil) {
-		system = [[GRTGtfsSystem alloc] init];
+	@synchronized([UIApplication sharedApplication]) {
+		static GRTGtfsSystem *system = nil;
+		if (system == nil) {
+			system = [[GRTGtfsSystem alloc] init];
+		}
+		return system;
 	}
-	return system;
 }
 
 #pragma mark - stops

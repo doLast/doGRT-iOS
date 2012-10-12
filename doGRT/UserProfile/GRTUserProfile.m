@@ -37,11 +37,14 @@ NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification"
 
 + (GRTUserProfile *)defaultUserProfile
 {
-	static GRTUserProfile *userProfile = nil;
-	if (userProfile == nil) {
-		userProfile = [[GRTUserProfile alloc] init];
+	@synchronized([UIApplication sharedApplication]) {
+		static GRTUserProfile *userProfile = nil;
+		if (userProfile == nil) {
+			userProfile = [[GRTUserProfile alloc] init];
+			NSLog(@"Creating user profile instance %@", userProfile);
+		}
+		return userProfile;
 	}
-	return userProfile;
 }
 
 #pragma mark - data access
@@ -87,6 +90,7 @@ NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification"
 
 - (void)postNotification
 {
+	NSLog(@"Posting notification from: %@", self);
 	[[NSNotificationCenter defaultCenter] postNotificationName:GRTUserProfileUpdateNotification object:self];
 }
 
