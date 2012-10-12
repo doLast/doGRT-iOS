@@ -37,13 +37,40 @@
 	return [[GRTGtfsSystem defaultGtfsSystem] stopById:self.stopId];
 }
 
+- (CLLocation *)location
+{
+	return self.stop.location;
+}
+
+- (CLLocationCoordinate2D)coordinate
+{
+	return self.stop.coordinate;
+}
+
+- (NSString *)title
+{
+	return self.stop.stopName;
+}
+
+- (NSString *)subtitle
+{
+	NSInteger time = [self.departureTime integerValue];
+	if(time >= 240000){
+		time -= 240000;
+	}
+	else if(time < 0){
+		time += 240000;
+	}
+	return [NSString stringWithFormat:@"%@ Leave at: %02d:%02d", self.trip.route.routeId, time / 10000, (time / 100) % 100 ];
+}
+
 - (GRTStopTime *)initWithTripId:(NSNumber *)tripId stopSequence:(NSNumber *)stopSequence stopId:(NSNumber *)stopId arrivalTime:(NSNumber *)arrivalTime departureTime:(NSNumber *)departureTime
 {
 	self = [super init];
 	if (self != nil) {
 		self.tripId = tripId;
 		self.stopSequence = stopSequence;
-		self.stopId = self.stopId;
+		self.stopId = stopId;
 		self.arrivalTime = arrivalTime;
 		self.departureTime = departureTime;
 	}

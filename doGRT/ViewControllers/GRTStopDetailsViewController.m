@@ -156,9 +156,20 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		// TODO: show stop time's detail
 		GRTStopsMapViewController *tripDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"tripDetailsView"];
-		tripDetailsVC.shape = stopTime.trip.shape;
-		tripDetailsVC.title = stopTime.trip.tripHeadsign;
+		tripDetailsVC.title = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
 		[self.navigationController pushViewController:tripDetailsVC animated:YES];
+		tripDetailsVC.shape = stopTime.trip.shape;
+		tripDetailsVC.stops = [[GRTGtfsSystem defaultGtfsSystem] stopTimesForTrip:stopTime.trip];
+		
+		NSUInteger stopTimeIndex = [tripDetailsVC.stops indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop){
+			GRTStopTime *stopTimeObj = obj;
+			if (stopTimeObj.stopSequence.integerValue == stopTime.stopSequence.integerValue) {
+				*stop = YES;
+				return YES;
+			}
+			return NO;
+		}].firstIndex;
+		[tripDetailsVC selectStop:[tripDetailsVC.stops objectAtIndex:stopTimeIndex]];
 	}
 }
 
