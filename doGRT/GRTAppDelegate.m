@@ -155,12 +155,12 @@
     // code to be processed in an ordered manner on the main thread.  The first
     // one will initialize the data, and the rest will just return with that
     // data.  However, it ensures the creation is not attempted multiple times.
-    if (![NSThread currentThread].isMainThread) {
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            (void)[self persistentStoreCoordinator];
-        });
-        return __persistentStoreCoordinator;
-    }
+//    if (![NSThread currentThread].isMainThread) {
+//        dispatch_sync(dispatch_get_main_queue(), ^{
+//            (void)[self persistentStoreCoordinator];
+//        });
+//        return __persistentStoreCoordinator;
+//    }
     
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"doGRT.sqlite"];
 	
