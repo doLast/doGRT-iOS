@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2840" systemVersion="11G56" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="BOE-U3-4y0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2843" systemVersion="11G63" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="BOE-U3-4y0">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1926"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1929"/>
     </dependencies>
     <scenes>
         <!--Main Stops View Controller-->
@@ -21,7 +21,7 @@
                                     <outlet property="delegate" destination="1Mx-hj-Dgb" id="6yL-go-g5I"/>
                                 </connections>
                             </tableView>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="kEk-4b-I4Q">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.0" contentMode="scaleToFill" mapType="standard" id="kEk-4b-I4Q">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
@@ -107,11 +107,39 @@
                     <connections>
                         <outlet property="favButton" destination="Tbf-o1-emc" id="cma-e4-yLl"/>
                         <outlet property="viewsSegmentedControl" destination="Ls4-Zv-c6e" id="nX6-pM-mwn"/>
+                        <segue destination="hB1-oF-SDn" kind="push" identifier="showTripDetails" id="cE1-Pr-at0"/>
                     </connections>
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X1k-hZ-wE4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="499" y="800"/>
+        </scene>
+        <!--Stops Map View Controller-->
+        <scene sceneID="upB-qW-Thd">
+            <objects>
+                <viewController storyboardIdentifier="tripDetailsView" id="hB1-oF-SDn" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rVz-yu-EDs">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="OgO-Da-6Xh">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="hB1-oF-SDn" id="uM9-QJ-jbG"/>
+                                </connections>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="uik-u2-UH5"/>
+                    <connections>
+                        <outlet property="mapView" destination="OgO-Da-6Xh" id="erp-xr-noH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yjT-cA-BPE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="944" y="800"/>
         </scene>
         <!--Stop Times View Controller-->
         <scene sceneID="hAg-4S-HON">
@@ -176,7 +204,6 @@
                 <relationship kind="action" name="didTapRightNavButton:"/>
                 <relationship kind="action" name="showPreferences:"/>
                 <relationship kind="action" name="showSearch:"/>
-                <relationship kind="action" name="startTrackingUserLocation:"/>
                 <relationship kind="outlet" name="searchResultViewController" candidateClass="GRTStopsTableViewController"/>
                 <relationship kind="outlet" name="stopsMapViewController" candidateClass="GRTStopsMapViewController"/>
                 <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
@@ -200,6 +227,7 @@
         <class className="GRTStopsMapViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsMapViewController.h"/>
             <relationships>
+                <relationship kind="action" name="startTrackingUserLocation:"/>
                 <relationship kind="outlet" name="delegate"/>
                 <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
             </relationships>

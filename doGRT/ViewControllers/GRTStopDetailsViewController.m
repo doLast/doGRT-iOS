@@ -8,6 +8,7 @@
 
 #import "GRTStopDetailsViewController.h"
 #import "UINavigationController+Rotation.h"
+#import "GRTStopsMapViewController.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -152,7 +153,13 @@
 
 - (void)stopTimesViewController:(GRTStopTimesViewController *)stopTimesViewController didSelectStopTime:(GRTStopTime *)stopTime
 {
-	// TODO: show stop time's detail
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		// TODO: show stop time's detail
+		GRTStopsMapViewController *tripDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"tripDetailsView"];
+		tripDetailsVC.shape = stopTime.trip.shape;
+		tripDetailsVC.title = stopTime.trip.tripHeadsign;
+		[self.navigationController pushViewController:tripDetailsVC animated:YES];
+	}
 }
 
 #pragma mark - stop routes view controller delegate
