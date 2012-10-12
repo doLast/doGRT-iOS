@@ -7,10 +7,11 @@
 //
 
 @class GRTRoute;
+@class GRTStopRoutesViewController;
 
 @protocol GRTStopRoutesViewControllerDelegate <NSObject>
 
-- (void)didSelectRoute:(GRTRoute *)route;
+- (void)stopRoutesViewController:(GRTStopRoutesViewController *)stopRoutesViewController didSelectRoute:(GRTRoute *)route;
 
 @end
 

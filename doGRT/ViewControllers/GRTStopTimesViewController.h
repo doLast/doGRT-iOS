@@ -7,10 +7,11 @@
 //
 
 @class GRTStopTime;
+@class GRTStopTimesViewController;
 
 @protocol GRTStopTimesViewControllerDelegate <NSObject>
 
-- (void)didSelectStopTime:(GRTStopTime *)stopTime;
+- (void)stopTimesViewController:(GRTStopTimesViewController *)stopTimesViewController didSelectStopTime:(GRTStopTime *)stopTime;
 
 @end
 

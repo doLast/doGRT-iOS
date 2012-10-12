@@ -95,7 +95,7 @@
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:21];
 		cell.textLabel.textAlignment = NSTextAlignmentCenter;
-		//	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
     
 	GRTStopTime *stopTime = [self.stopTimes objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)];
@@ -119,8 +119,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSelectStopTime:)]) {
-		[self.delegate didSelectStopTime:[self.stopTimes objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)]];
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(stopTimesViewController:didSelectStopTime:)]) {
+		[self.delegate stopTimesViewController:self didSelectStopTime:[self.stopTimes objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)]];
 	}
 }
 

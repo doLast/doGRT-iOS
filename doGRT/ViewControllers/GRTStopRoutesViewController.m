@@ -60,8 +60,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(didSelectRoute:)]) {
-		[self.delegate didSelectRoute:[self.routes objectAtIndex:indexPath.row]];
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(stopRoutesViewController:didSelectRoute:)]) {
+		[self.delegate stopRoutesViewController:self didSelectRoute:[self.routes objectAtIndex:indexPath.row]];
 	}
 }
 

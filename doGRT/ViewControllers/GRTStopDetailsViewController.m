@@ -150,14 +150,14 @@
 
 #pragma mark - stop times view controller delegate
 
-- (void)didSelectStopTime:(GRTStopTime *)stopTime
+- (void)stopTimesViewController:(GRTStopTimesViewController *)stopTimesViewController didSelectStopTime:(GRTStopTime *)stopTime
 {
 	// TODO: show stop time's detail
 }
 
 #pragma mark - stop routes view controller delegate
 
-- (void)didSelectRoute:(GRTRoute *)route
+- (void)stopRoutesViewController:(GRTStopRoutesViewController *)stopRoutesViewController didSelectRoute:(GRTRoute *)route
 {
 	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
 	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date andRoute:route];
