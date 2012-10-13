@@ -48,7 +48,6 @@ static const int kMaxStopsLimit = 30;
 		_db = [FMDatabase databaseWithPath:dbURL.path];
 		if (![_db open]) {
 			NSLog(@"Could not open db.");
-			abort();
 		}
 	}
 	return _db;
@@ -132,6 +131,8 @@ static const int kMaxStopsLimit = 30;
 		[self addSkipBackupAttributeToItemAtURL:libraryURL];
 		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20121223] forKey:@"dataVersion"];
 	}
+	
+	NSAssert([self.db goodConnection], @"Whether the db is having good connection");
 }
 
 #pragma mark - stops
