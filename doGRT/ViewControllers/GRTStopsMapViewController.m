@@ -40,7 +40,7 @@
 			[toRemove addObject:stop.stop];
 		}
 		
-		NSLog(@"Adding: %@, Removing: %@", toAdd, toRemove);
+//		NSLog(@"Adding: %@, Removing: %@", toAdd, toRemove);
 		
 		[self.mapView removeAnnotations:toRemove];
 		[self.mapView addAnnotations:toAdd];
@@ -82,9 +82,6 @@
 	
 	// Center Waterloo on map
 	[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
-	
-//	self.stops = self.stops;
-//	self.shape = self.shape;
 	
 	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:1.0];
 }
