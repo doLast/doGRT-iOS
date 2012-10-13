@@ -32,11 +32,20 @@ static const int kMaxStopsLimit = 30;
 @synthesize trips = _trips;
 @synthesize shapes = _shapes;
 
+- (NSURL *)dbURL
+{
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSURL *libraryDirectory = [[fileManager URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask] lastObject];
+	NSURL *libraryDb = [libraryDirectory URLByAppendingPathComponent:@"GRT_GTFS.sqlite" isDirectory:NO];
+	return libraryDb;
+}
+
 - (FMDatabase *)db
 {
 	if (_db == nil) {
-		NSString *dbURL = [[NSBundle mainBundle] pathForResource:@"GRT_GTFS" ofType:@"sqlite"];
-		_db = [FMDatabase databaseWithPath:dbURL];
+		NSURL *dbURL = [self dbURL];
+		
+		_db = [FMDatabase databaseWithPath:dbURL.path];
 		if (![_db open]) {
 			NSLog(@"Could not open db.");
 			abort();
@@ -77,7 +86,7 @@ static const int kMaxStopsLimit = 30;
 		self.routes = [[NSCache alloc] init];
 		self.trips = [[NSCache alloc] init];
 		self.shapes = [[NSCache alloc] init];
-		NSAssert([self.db goodConnection], @"Whether the db is having good connection");
+		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:20121223], @"dataVersion", nil]];
 	}
 	return self;
 }
@@ -90,6 +99,38 @@ static const int kMaxStopsLimit = 30;
 			system = [[GRTGtfsSystem alloc] init];
 		}
 		return system;
+	}
+}
+
+- (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL
+{
+    assert([[NSFileManager defaultManager] fileExistsAtPath: [URL path]]);
+	
+    NSError *error = nil;
+    BOOL success = [URL setResourceValue: [NSNumber numberWithBool: YES]
+                                  forKey: NSURLIsExcludedFromBackupKey error: &error];
+    if(!success){
+        NSLog(@"Error excluding %@ from backup %@", [URL lastPathComponent], error);
+    }
+    return success;
+}
+
+- (void)bootstrap
+{
+	// Copy database to documents directory if does not exists
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSURL *libraryURL = [self dbURL];
+	
+	if (![fileManager fileExistsAtPath:libraryURL.path]) {
+		NSURL *dbURL = [[NSBundle mainBundle] URLForResource:@"GRT_GTFS" withExtension:@"sqlite"];
+		NSError *error = nil;
+		if (![fileManager copyItemAtURL:dbURL toURL:libraryURL error:&error]) {
+			NSLog(@"Fail to copy db with error %@", error.localizedDescription);
+			abort();
+		}
+		NSLog(@"db copied");
+		[self addSkipBackupAttributeToItemAtURL:libraryURL];
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20121223] forKey:@"dataVersion"];
 	}
 }
 

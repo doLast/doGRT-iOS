@@ -25,9 +25,12 @@
 	[[NSUserDefaults standardUserDefaults] 
 	 registerDefaults:[NSDictionary 
 					   dictionaryWithObjectsAndKeys:
-						[NSNumber numberWithBool:YES], @"firstLaunch", 
-						[NSNumber numberWithInteger:20120903], @"dataVersion", nil]];
+						[NSNumber numberWithBool:YES], @"firstLaunch", nil]];
 	
+	// Boots up the GTFS System
+	[[GRTGtfsSystem defaultGtfsSystem] bootstrap];
+	
+	//Check launching status
 	NSLog(@"App finish launching with firstLaunch: %d, dataVersion: %d", 
 		  [[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"], 
 		  [[NSUserDefaults standardUserDefaults] integerForKey:@"dataVersion"]);
