@@ -33,7 +33,7 @@
 	//Check launching status
 	NSLog(@"App finish launching with firstLaunch: %d, dataVersion: %d", 
 		  [[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"], 
-		  [[NSUserDefaults standardUserDefaults] integerForKey:@"dataVersion"]);
+		  [[NSUserDefaults standardUserDefaults] integerForKey:kGRTGtfsDataVersionKey]);
 	
 	// If is iPad, setup the split view
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

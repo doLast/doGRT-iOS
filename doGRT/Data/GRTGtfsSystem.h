@@ -17,6 +17,8 @@
 @class GRTStop;
 @class GRTStopTimes;
 
+extern NSString * const kGRTGtfsDataVersionKey;
+
 @interface GRTGtfsSystem : NSObject
 
 + (GRTGtfsSystem *)defaultGtfsSystem;

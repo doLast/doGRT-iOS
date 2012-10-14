@@ -11,6 +11,7 @@
 #import "FMDatabase.h"
 
 static const int kMaxStopsLimit = 30;
+NSString * const kGRTGtfsDataVersionKey = @"dataVersion";
 
 @interface GRTGtfsSystem ()
 
@@ -85,7 +86,7 @@ static const int kMaxStopsLimit = 30;
 		self.routes = [[NSCache alloc] init];
 		self.trips = [[NSCache alloc] init];
 		self.shapes = [[NSCache alloc] init];
-		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:20121223], @"dataVersion", nil]];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:20121223], kGRTGtfsDataVersionKey, nil]];
 	}
 	return self;
 }
@@ -129,8 +130,20 @@ static const int kMaxStopsLimit = 30;
 		}
 		NSLog(@"db copied");
 		[self addSkipBackupAttributeToItemAtURL:libraryURL];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20121223] forKey:@"dataVersion"];
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20121223] forKey:kGRTGtfsDataVersionKey];
 	}
+	
+	// Whether need to update
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *comps = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]];
+	NSInteger curDate = comps.year * 10000 + comps.month * 100 + comps.day;
+	NSInteger dataVersion = [(NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:kGRTGtfsDataVersionKey] integerValue];
+	NSLog(@"Current date: %d, dataVersion: %d", curDate, dataVersion);
+	
+	if (curDate >= dataVersion) {
+		// TODO: Look for schedule update
+	}
+	
 	
 	NSAssert([self.db goodConnection], @"Whether the db is having good connection");
 }
