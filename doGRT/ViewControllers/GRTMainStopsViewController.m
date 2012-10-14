@@ -107,8 +107,6 @@ enum GRTStopsViewQueue {
 	// Enable user location tracking
 	[self.stopsMapViewController performSelector:@selector(startTrackingUserLocation:) withObject:self afterDelay:2];
 	
-	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:1.0];
-	
 	// Reload favorites
 	[self updateFavoriteStops];
 	

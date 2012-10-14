@@ -48,6 +48,9 @@
 		[splitViewController setViewControllers:@[[[UINavigationController alloc] initWithRootViewController:mainStopsViewController], [[UINavigationController alloc] initWithRootViewController:stopsMapViewController]]];
 	}
 	
+	[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:1.0]];
+	[[UIToolbar appearance] setTintColor:[UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:1.0]];
+	
     return YES;
 }
 							
