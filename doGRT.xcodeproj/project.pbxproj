@@ -45,6 +45,7 @@
 		257B1C951620A96F00176083 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 257B1C8B1620A96F00176083 /* Icon@2x.png */; };
 		257B1C961620A96F00176083 /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 257B1C8C1620A96F00176083 /* iTunesArtwork.png */; };
 		257B1C971620A96F00176083 /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 257B1C8D1620A96F00176083 /* iTunesArtwork@2x.png */; };
+		25831FA4162B168500EDD65D /* libInformaticToolbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25831FA0162B166C00EDD65D /* libInformaticToolbar.a */; };
 		2590035F1610E5A100FE051C /* GRTMainStopsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2590035E1610E5A100FE051C /* GRTMainStopsViewController.m */; };
 		259003651610EB4A00FE051C /* UINavigationController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 259003641610EB4A00FE051C /* UINavigationController+Rotation.m */; };
 		25900367161101BD00FE051C /* GRT_GTFS.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 25900366161101BD00FE051C /* GRT_GTFS.sqlite */; };
@@ -63,6 +64,30 @@
 		25EAB19D14CD82B1004A9DEC /* GRTStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EAB19C14CD82B1004A9DEC /* GRTStop.m */; };
 		25F18A9C14DBDC2E008B1A31 /* GRTTrip.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F18A9B14DBDC2E008B1A31 /* GRTTrip.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		25831F9D162B166C00EDD65D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 25831F94162B166C00EDD65D /* InformaticToolbar.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 253929711629CBC300D20F6B;
+			remoteInfo = InformaticToolbarDemo;
+		};
+		25831F9F162B166C00EDD65D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 25831F94162B166C00EDD65D /* InformaticToolbar.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 258F9D5E162A8C6C00C7B824;
+			remoteInfo = InformaticToolbar;
+		};
+		25831FA2162B168000EDD65D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 25831F94162B166C00EDD65D /* InformaticToolbar.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 258F9D5D162A8C6C00C7B824;
+			remoteInfo = InformaticToolbar;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2515ED2F14C5817600FDCD6D /* doGRT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = doGRT.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,6 +146,7 @@
 		257B1C8B1620A96F00176083 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		257B1C8C1620A96F00176083 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
 		257B1C8D1620A96F00176083 /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
+		25831F94162B166C00EDD65D /* InformaticToolbar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = InformaticToolbar.xcodeproj; path = InformaticToolbar/InformaticToolbar.xcodeproj; sourceTree = "<group>"; };
 		2590035D1610E5A100FE051C /* GRTMainStopsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GRTMainStopsViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2590035E1610E5A100FE051C /* GRTMainStopsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GRTMainStopsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		259003631610EB4A00FE051C /* UINavigationController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Rotation.h"; sourceTree = "<group>"; };
@@ -155,6 +181,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25831FA4162B168500EDD65D /* libInformaticToolbar.a in Frameworks */,
 				25EAB19614CD783F004A9DEC /* libsqlite3.dylib in Frameworks */,
 				2515EDAC14C5839300FDCD6D /* MessageUI.framework in Frameworks */,
 				2515EDAA14C5838700FDCD6D /* MapKit.framework in Frameworks */,
@@ -212,6 +239,7 @@
 		2515ED3214C5817600FDCD6D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				25831F94162B166C00EDD65D /* InformaticToolbar.xcodeproj */,
 				25419FB01617A2AF00B276C7 /* FMDB */,
 				25EAB19514CD783F004A9DEC /* libsqlite3.dylib */,
 				2515EDAB14C5839300FDCD6D /* MessageUI.framework */,
@@ -307,6 +335,15 @@
 			path = UserProfile;
 			sourceTree = "<group>";
 		};
+		25831F95162B166C00EDD65D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				25831F9E162B166C00EDD65D /* InformaticToolbarDemo.app */,
+				25831FA0162B166C00EDD65D /* libInformaticToolbar.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		2590035B1610E53C00FE051C /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -361,6 +398,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				25831FA3162B168000EDD65D /* PBXTargetDependency */,
 			);
 			name = doGRT;
 			productName = doGRT;
@@ -385,12 +423,35 @@
 			mainGroup = 2515ED2414C5817500FDCD6D;
 			productRefGroup = 2515ED3014C5817600FDCD6D /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 25831F95162B166C00EDD65D /* Products */;
+					ProjectRef = 25831F94162B166C00EDD65D /* InformaticToolbar.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				2515ED2E14C5817600FDCD6D /* doGRT */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		25831F9E162B166C00EDD65D /* InformaticToolbarDemo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = InformaticToolbarDemo.app;
+			remoteRef = 25831F9D162B166C00EDD65D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		25831FA0162B166C00EDD65D /* libInformaticToolbar.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libInformaticToolbar.a;
+			remoteRef = 25831F9F162B166C00EDD65D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		2515ED2D14C5817600FDCD6D /* Resources */ = {
@@ -459,6 +520,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		25831FA3162B168000EDD65D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = InformaticToolbar;
+			targetProxy = 25831FA2162B168000EDD65D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		2515ED3E14C5817600FDCD6D /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -523,16 +592,18 @@
 		2515ED4D14C5817600FDCD6D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "doGRT/doGRT-Prefix.pch";
 				INFOPLIST_FILE = "doGRT/doGRT-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/InformaticToolbar/\"/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -540,16 +611,18 @@
 		2515ED4E14C5817600FDCD6D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COMPRESS_PNG_FILES = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "doGRT/doGRT-Prefix.pch";
 				INFOPLIST_FILE = "doGRT/doGRT-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/InformaticToolbar/\"/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

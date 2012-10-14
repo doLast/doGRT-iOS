@@ -18,7 +18,7 @@
         <!--Stop Details View Controller-->
         <scene sceneID="khV-0K-3yp">
             <objects>
-                <pageViewController storyboardIdentifier="stopDetailsView" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="p51-iS-z1u" customClass="GRTStopDetailsViewController" sceneMemberID="viewController">
+                <pageViewController storyboardIdentifier="stopDetailsView" autoresizesArchivedViewToFullSize="NO" hidesBottomBarWhenPushed="YES" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="p51-iS-z1u" customClass="GRTStopDetailsViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="9Ah-GY-6JJ">
                         <barButtonItem key="rightBarButtonItem" title="TOGGLE_FAV" id="qDF-5P-bmM">
                             <connections>
@@ -37,7 +37,7 @@
         <!--Stop Times View Controller-->
         <scene sceneID="HHc-la-yLy">
             <objects>
-                <tableViewController storyboardIdentifier="stopTimesView" id="WJ5-lS-u2C" customClass="GRTStopTimesViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="stopTimesView" hidesBottomBarWhenPushed="YES" id="WJ5-lS-u2C" customClass="GRTStopTimesViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="pnB-hs-Ht2">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -88,7 +88,7 @@
         <!--Stop Routes View Controller-->
         <scene sceneID="J6E-SQ-yXv">
             <objects>
-                <tableViewController storyboardIdentifier="stopRoutesView" id="IRc-cL-yxk" customClass="GRTStopRoutesViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="stopRoutesView" hidesBottomBarWhenPushed="YES" id="IRc-cL-yxk" customClass="GRTStopRoutesViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Xby-UQ-M9a">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
