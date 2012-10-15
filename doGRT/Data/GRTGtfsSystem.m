@@ -9,9 +9,13 @@
 #import "GRTGtfsSystem.h"
 
 #import "FMDatabase.h"
+#import "ASIHTTPRequest.h"
 
 static const int kMaxStopsLimit = 30;
 NSString * const kGRTGtfsDataVersionKey = @"dataVersion";
+NSString * const kGRTGtfsDataUpdateAvailable = @"GRTGtfsDataUpdateAvailable";
+NSString * const kGRTGtfsDataUpdateInProgress = @"GRTGtfsDataUpdateInProgress";
+NSString * const kGRTGtfsDataUpdateDidFinish = @"GRTGtfsDataUpdateDidFinish";
 
 @interface GRTGtfsSystem ()
 
@@ -21,6 +25,9 @@ NSString * const kGRTGtfsDataVersionKey = @"dataVersion";
 @property (nonatomic, strong) NSCache *routes;
 @property (nonatomic, strong) NSCache *trips;
 @property (nonatomic, strong) NSCache *shapes;
+
+@property (nonatomic, copy) NSDictionary *updateInfo;
+@property (nonatomic, weak) ASIHTTPRequest *updateRequest;
 
 @end
 
@@ -32,6 +39,8 @@ NSString * const kGRTGtfsDataVersionKey = @"dataVersion";
 @synthesize routes = _routes;
 @synthesize trips = _trips;
 @synthesize shapes = _shapes;
+
+@synthesize updateInfo = _updateInfo;
 
 - (NSURL *)dbURL
 {
@@ -77,7 +86,7 @@ NSString * const kGRTGtfsDataVersionKey = @"dataVersion";
 	return _stops;
 }
 
-#pragma mark - constructor
+#pragma mark - initialization
 
 - (GRTGtfsSystem *)init
 {
@@ -101,6 +110,8 @@ NSString * const kGRTGtfsDataVersionKey = @"dataVersion";
 		return system;
 	}
 }
+
+#pragma mark - data preparation and update
 
 - (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL
 {
@@ -133,22 +144,82 @@ NSString * const kGRTGtfsDataVersionKey = @"dataVersion";
 		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20121223] forKey:kGRTGtfsDataVersionKey];
 	}
 	
+	NSAssert([self.db goodConnection], @"Whether the db is having good connection");
+}
+
+- (void)checkForUpdate
+{	
 	// Whether need to update
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *comps = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]];
 	NSInteger curDate = comps.year * 10000 + comps.month * 100 + comps.day;
-	NSInteger dataVersion = [(NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:kGRTGtfsDataVersionKey] integerValue];
-	NSLog(@"Current date: %d, dataVersion: %d", curDate, dataVersion);
+	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kGRTGtfsDataVersionKey];
+	NSLog(@"Current date: %d, dataVersion: %@", curDate, dataVersion);
 	
-	if (curDate >= dataVersion) {
-		// TODO: Look for schedule update
-	}
+//	if (curDate < dataVersion) {
+//		return;
+//	}
 	
+	// Check github data referencing
+	NSURL *url = [NSURL URLWithString:@"https://github.com/downloads/doLast/doGRT/grt_gtfs.json"];
+	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+	[request setDelegate:self];
+	[request setDidFinishSelector:@selector(didFinishCheckingUpdate:)];
+	[request startAsynchronous];
 	
-	NSAssert([self.db goodConnection], @"Whether the db is having good connection");
+	return;
 }
 
-#pragma mark - stops
+- (void)startUpdate
+{
+	NSLog(@"Should start update");
+	NSURL *localURL = [self dbURL];
+	NSURL *remoteURL = [NSURL URLWithString:(id) [self.updateInfo objectForKey:@"url"]];
+	localURL = [localURL URLByDeletingLastPathComponent];
+	localURL = [localURL URLByAppendingPathComponent:remoteURL.lastPathComponent];
+	
+	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:remoteURL];
+	[request setDownloadDestinationPath:localURL.path];
+	[request setDownloadProgressDelegate:self];
+	
+	self.updateRequest = request;
+	[request startAsynchronous];
+}
+
+- (void)abortUpdate
+{
+	ASIHTTPRequest *request = self.updateRequest;
+	self.updateRequest = nil;
+	[request clearDelegatesAndCancel];
+	NSLog(@"Update abort");
+}
+
+#pragma mark - ASI HTTP Request delegate
+
+- (void)didFinishCheckingUpdate:(ASIHTTPRequest *)request
+{
+	NSData *response = [request responseData];
+	NSDictionary *json = [NSJSONSerialization JSONObjectWithData:response options:0 error:nil];
+	if (json == nil) {
+		return;
+	}
+	
+	NSLog(@"Json: %@", json);
+//	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kGRTGtfsDataVersionKey];
+//	NSNumber *endDate = [json objectForKey:@"endDate"];
+//	if (endDate.integerValue > dataVersion.integerValue) {
+		self.updateInfo = json;
+		[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:kGRTGtfsDataUpdateAvailable object:self]];
+//	}
+}
+
+- (void)setProgress:(float)progress
+{
+	NSNumber *p = [NSNumber numberWithFloat:progress];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kGRTGtfsDataUpdateInProgress object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:p, @"progress", nil]];
+}
+
+#pragma mark - data access
 
 - (NSArray *)stopsInRegion:(MKCoordinateRegion)region;
 {

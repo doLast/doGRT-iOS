@@ -10,6 +10,8 @@
 #import "GRTStopDetailsViewController.h"
 #import "GRTStopsTableViewController.h"
 
+#import "UIViewController+GRTGtfsUpdater.h"
+
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
 
@@ -112,6 +114,8 @@ enum GRTStopsViewQueue {
 	
 	// Subscribe to user profile update
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFavoriteStops) name:GRTUserProfileUpdateNotification object:[GRTUserProfile defaultUserProfile]];
+	
+	[self becomeGtfsUpdater];
 }
 
 - (void)viewWillAppear:(BOOL)animated

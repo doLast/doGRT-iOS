@@ -4,3 +4,6 @@
 [submodule "InformaticToolbar"]
 	path = InformaticToolbar
 	url = git@github.com:gregwym/InformaticToolbar.git
+[submodule "asi-http-request"]
+	path = asi-http-request
+	url = git://github.com/pokeb/asi-http-request.git

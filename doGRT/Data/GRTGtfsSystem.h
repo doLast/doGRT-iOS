@@ -14,17 +14,26 @@
 #import "GRTService.h"
 #import "GRTStopTimes.h"
 
+extern NSString * const kGRTGtfsDataVersionKey;
+extern NSString * const kGRTGtfsDataUpdateAvailable;
+extern NSString * const kGRTGtfsDataUpdateInProgress;
+extern NSString * const kGRTGtfsDataUpdateDidFinish;
+
 @class GRTStop;
 @class GRTStopTimes;
-
-extern NSString * const kGRTGtfsDataVersionKey;
+@class GRTGtfsSystem;
 
 @interface GRTGtfsSystem : NSObject
 
 + (GRTGtfsSystem *)defaultGtfsSystem;
 
+#pragma mark - data preparation and update
 - (void)bootstrap;
+- (void)checkForUpdate;
+- (void)startUpdate;
+- (void)abortUpdate;
 
+#pragma mark - data access
 - (NSArray *)stopsInRegion:(MKCoordinateRegion)region;
 - (NSArray *)stopsAroundLocation:(CLLocation *)location withinDistance:(CLLocationDistance)distance;
 - (NSArray *)stopsWithNameLike:(NSString *)str;
