@@ -33,7 +33,7 @@
 		
 		[self updateComingBusIndex];
 		
-		if (stopTimes == nil || [stopTimes count] == 0) {
+		if (stopTimes == nil || [stopTimes count] == 0 || self.comingBusIndex < 2) {
 			return;
 		}
 		
@@ -44,6 +44,8 @@
 		if (self.comingBusIndex >= 2){
 			scrollIndexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 2 inSection:0];
 		}
+		
+		NSLog(@"Scrolling to indexPath: %@, comingBusIndex: %d", scrollIndexPath, self.comingBusIndex);
 		[self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		
 		self.comingBusIndexUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateComingBusIndex) userInfo:nil repeats:YES];
@@ -125,7 +127,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return self.stopTimes == nil ? 0 : 2;
+	return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
