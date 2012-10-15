@@ -20,20 +20,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-		
-	[[NSUserDefaults standardUserDefaults] 
-	 registerDefaults:[NSDictionary 
-					   dictionaryWithObjectsAndKeys:
-						[NSNumber numberWithBool:YES], @"firstLaunch", nil]];
-	
 	// Boots up the GTFS System
 	[[GRTGtfsSystem defaultGtfsSystem] bootstrap];
 	
 	//Check launching status
-	NSLog(@"App finish launching with firstLaunch: %d, dataVersion: %d", 
-		  [[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"], 
-		  [[NSUserDefaults standardUserDefaults] integerForKey:kGRTGtfsDataVersionKey]);
+	NSLog(@"App finish launching with launchCount: %@, dataVersion: %@",
+		  [[NSUserDefaults standardUserDefaults] objectForKey:kGRTGtfsLaunchCountKey],
+		  [[NSUserDefaults standardUserDefaults] objectForKey:kGRTGtfsDataVersionKey]);
 	
 	// If is iPad, setup the split view
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

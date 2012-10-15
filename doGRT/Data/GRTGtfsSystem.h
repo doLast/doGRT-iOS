@@ -14,6 +14,7 @@
 #import "GRTService.h"
 #import "GRTStopTimes.h"
 
+extern NSString * const kGRTGtfsLaunchCountKey;
 extern NSString * const kGRTGtfsDataVersionKey;
 extern NSString * const kGRTGtfsDataUpdateAvailable;
 extern NSString * const kGRTGtfsDataUpdateInProgress;

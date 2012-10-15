@@ -438,6 +438,8 @@
 			children = (
 				259003631610EB4A00FE051C /* UINavigationController+Rotation.h */,
 				259003641610EB4A00FE051C /* UINavigationController+Rotation.m */,
+				2572166D162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.h */,
+				2572166E162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.m */,
 				251D26D0161A8FCC0068CDC1 /* GRTStopsTableViewController.h */,
 				251D26D1161A8FCC0068CDC1 /* GRTStopsTableViewController.m */,
 				251A9F4B161E603000D72F3E /* GRTStopsMapViewController.h */,
@@ -450,8 +452,6 @@
 				256464751612AAB2000FC7DC /* GRTStopTimesViewController.m */,
 				259143091614ACE500F0D215 /* GRTStopRoutesViewController.h */,
 				2591430A1614ACE600F0D215 /* GRTStopRoutesViewController.m */,
-				2572166D162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.h */,
-				2572166E162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
