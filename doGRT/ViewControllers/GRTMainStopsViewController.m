@@ -94,6 +94,7 @@ enum GRTStopsViewQueue {
 	self.title = @"doGRT";
 	self.editingFavIndexPath = nil;
 	self.locateButton = self.navigationItem.leftBarButtonItem;
+	self.locateButton.title = @"Locate";
 	
 	// Hide SearchBar
 	UISearchBar *searchBar = self.searchDisplayController.searchBar;
@@ -140,10 +141,12 @@ enum GRTStopsViewQueue {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 			self.navigationItem.leftBarButtonItem = self.locateButton;
+			self.navigationItem.rightBarButtonItem.title = @"Search";
 			[self.stopsMapViewController setMapAlpha:1.0 animationDuration:duration];
 		}
 		else {
 			self.navigationItem.leftBarButtonItem = self.editButtonItem;
+			self.navigationItem.rightBarButtonItem.title = @"Preferences";
 			[self.stopsMapViewController setMapAlpha:0.0 animationDuration:duration];
 		}
 	}

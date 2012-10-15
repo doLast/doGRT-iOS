@@ -33,10 +33,10 @@
 {
 	_favoriteStop = favoriteStop;
 	if (_favoriteStop != nil) {
-		self.favButton.title = @"Remove Fav";
+		self.favButton.title = @"★";
 	}
 	else {
-		self.favButton.title = @"Add to Fav";
+		self.favButton.title = @"☆";
 	}
 }
 
@@ -61,6 +61,7 @@
 	self.date = [NSDate date];
 	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopTimes.stop];
 	self.view.backgroundColor = [UIColor underPageBackgroundColor];
+	[self.favButton setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIFont boldSystemFontOfSize:17.0] forKey:UITextAttributeFont] forState:UIControlStateNormal];
 	
 	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
 	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date];
