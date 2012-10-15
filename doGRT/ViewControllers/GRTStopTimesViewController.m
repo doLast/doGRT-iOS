@@ -33,6 +33,10 @@
 		
 		[self updateComingBusIndex];
 		
+		if (stopTimes == nil || [stopTimes count] == 0) {
+			return;
+		}
+		
 		NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:[self.stopTimes count] - 1 inSection:0];
 		if (self.comingBusIndex != [self.stopTimes count]){
 			scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
@@ -121,7 +125,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return 2;
+	return self.stopTimes == nil ? 0 : 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
