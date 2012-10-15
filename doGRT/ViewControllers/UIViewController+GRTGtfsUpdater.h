@@ -6,10 +6,9 @@
 //
 //
 
-#import <UIKit/UIKit.h>
-
 @interface UIViewController (GRTGtfsUpdater)
 
 - (void)becomeGtfsUpdater;
+- (void)updateGtfsUpdaterStatus;
 
 @end

@@ -125,6 +125,7 @@ enum GRTStopsViewQueue {
 	
 	[self setNavigationBarHidden:self.searchDisplayController.active animated:animated];
 	[self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
+	[self updateGtfsUpdaterStatus];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -320,6 +321,7 @@ enum GRTStopsViewQueue {
 
 - (void)mapViewController:(GRTStopsMapViewController *)mapViewController didUpdateUserLocation:(MKUserLocation *)userLocation
 {
+	NSLog(@"Did update user location to: %@", userLocation.location);
 	[self updateNearbyStopsForLocation:userLocation.location];
 }
 

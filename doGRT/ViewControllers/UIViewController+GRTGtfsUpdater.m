@@ -25,6 +25,11 @@ static ITProgressBarItemSet *updateProgressBarItemSet = nil;
 	[[GRTGtfsSystem defaultGtfsSystem] checkForUpdate];
 }
 
+- (void)updateGtfsUpdaterStatus
+{
+	[self updateToolbarToLatestStateAnimated:YES];
+}
+
 - (void)showUpdateNotification
 {
 	ITConfirmationBarItemSet *confirmationBarItemSet = [ITConfirmationBarItemSet confirmationBarItemSetWithTarget:self andConfirmAction:@selector(startUpdate:) andDismissAction:@selector(hideBarItemSet:)];
@@ -76,7 +81,7 @@ static ITProgressBarItemSet *updateProgressBarItemSet = nil;
 
 - (IBAction)startUpdate:(ITBarItemSet *)sender
 {
-	[self removeBarItemSet:sender animated:YES];
+	[self hideBarItemSet:sender];
 	[[GRTGtfsSystem defaultGtfsSystem] startUpdate];
 }
 
