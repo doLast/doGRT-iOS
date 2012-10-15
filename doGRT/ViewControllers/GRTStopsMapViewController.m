@@ -12,6 +12,8 @@
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 @interface GRTStopsMapViewController ()
 
 @property (nonatomic, weak) id<GRTStopAnnotation> willBePresentedStop;
@@ -80,10 +82,21 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 	
+	self.title = @"All Stops";
+	
 	// Center Waterloo on map
 	[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
 	
-	self.navigationItem.rightBarButtonItem.title = @"Locate";
+	UIImage *location = [UIImage imageNamed:@"location"];
+	UIButton *locateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	[locateButton setImage:location forState:UIControlStateNormal];
+	[locateButton addTarget:self action:@selector(startTrackingUserLocation:) forControlEvents:UIControlEventTouchUpInside];
+	locateButton.layer.shadowColor = [UIColor blackColor].CGColor;
+	locateButton.layer.shadowOpacity = 0.5;
+	locateButton.layer.shadowRadius = 0;
+	locateButton.layer.shadowOffset = CGSizeMake(0.0f, -1.0f);
+	locateButton.frame = CGRectMake(0.0, 0.0, 28.0, 28.0);
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:locateButton];
 }
 
 #pragma mark - view update
@@ -197,8 +210,14 @@
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
 	if (view.annotation == self.willBePresentedStop) {
+		self.title = self.willBePresentedStop.title;
 		self.willBePresentedStop = nil;
 	}
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
+{
+	self.title = @"All Stops";
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views

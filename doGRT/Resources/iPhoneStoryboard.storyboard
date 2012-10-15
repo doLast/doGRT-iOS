@@ -39,21 +39,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <toolbarItems>
-                        <barButtonItem title="Item" id="7be-3f-X7h"/>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" id="TFG-e5-Oqx">
-                        <barButtonItem key="leftBarButtonItem" title="LEFT" id="YT3-81-Y1A">
-                            <connections>
-                                <action selector="didTapLeftNavButton:" destination="1Mx-hj-Dgb" id="ce3-gD-Fxd"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="RIGHT" id="6ic-3L-Ptr">
-                            <connections>
-                                <action selector="didTapRightNavButton:" destination="1Mx-hj-Dgb" id="NVM-l9-OK8"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="TFG-e5-Oqx"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="RGR-NG-JVr" id="Psa-UH-sRd"/>
                         <outlet property="searchResultViewController" destination="u28-Yq-Lso" id="TG2-2X-Ks7"/>

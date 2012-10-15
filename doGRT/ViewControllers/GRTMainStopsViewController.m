@@ -15,6 +15,8 @@
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 enum GRTStopsTableSection {
 	GRTStopsTableHeaderSection = 0,
 	GRTStopsTableNearbySection,
@@ -36,6 +38,8 @@ enum GRTStopsViewQueue {
 
 @property (nonatomic, strong, readonly) NSArray *operationQueues;
 @property (nonatomic, strong) UIBarButtonItem *locateButton;
+@property (nonatomic, strong) UIBarButtonItem *searchButton;
+@property (nonatomic, strong) UIBarButtonItem *preferencesButton;
 
 @end
 
@@ -46,6 +50,8 @@ enum GRTStopsViewQueue {
 
 @synthesize operationQueues = _operationQueues;
 @synthesize locateButton = _locateButton;
+@synthesize searchButton = _searchButton;
+@synthesize preferencesButton = _preferencesButton;
 
 @synthesize tableView = _tableView;
 @synthesize searchResultViewController = _searchResultViewController;
@@ -93,8 +99,30 @@ enum GRTStopsViewQueue {
 	
 	self.title = @"doGRT";
 	self.editingFavIndexPath = nil;
-	self.locateButton = self.navigationItem.leftBarButtonItem;
-	self.locateButton.title = @"Locate";
+	
+	UIImage *location = [UIImage imageNamed:@"location"];
+	UIButton *locateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	[locateButton setImage:location forState:UIControlStateNormal];
+	[locateButton addTarget:self.stopsMapViewController action:@selector(startTrackingUserLocation:) forControlEvents:UIControlEventTouchUpInside];
+	locateButton.layer.shadowColor = [UIColor blackColor].CGColor;
+	locateButton.layer.shadowOpacity = 0.5;
+	locateButton.layer.shadowRadius = 0;
+	locateButton.layer.shadowOffset = CGSizeMake(0.0f, -1.0f);
+	locateButton.frame = CGRectMake(0.0, 0.0, 28.0, 28.0);
+	self.locateButton = [[UIBarButtonItem alloc] initWithCustomView:locateButton];
+	
+	UIImage *search = [UIImage imageNamed:@"magnifier"];
+	UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	[searchButton addTarget:self action:@selector(showSearch:) forControlEvents:UIControlEventTouchUpInside];
+	[searchButton setImage:search forState:UIControlStateNormal];
+	searchButton.layer.shadowColor = [UIColor blackColor].CGColor;
+	searchButton.layer.shadowOpacity = 0.5;
+	searchButton.layer.shadowRadius = 0;
+	searchButton.layer.shadowOffset = CGSizeMake(0.0f, -1.0f);
+	searchButton.frame = CGRectMake(0.0, 0.0, 28.0, 28.0);
+	self.searchButton = [[UIBarButtonItem alloc] initWithCustomView:searchButton];
+	
+	self.preferencesButton = [[UIBarButtonItem alloc] initWithTitle:@"Setting" style:UIBarButtonItemStyleBordered target:self action:@selector(showPreferences:)];
 	
 	// Hide SearchBar
 	UISearchBar *searchBar = self.searchDisplayController.searchBar;
@@ -141,17 +169,18 @@ enum GRTStopsViewQueue {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 			self.navigationItem.leftBarButtonItem = self.locateButton;
-			self.navigationItem.rightBarButtonItem.title = @"Search";
+			self.navigationItem.rightBarButtonItem = self.searchButton;
 			[self.stopsMapViewController setMapAlpha:1.0 animationDuration:duration];
 		}
 		else {
 			self.navigationItem.leftBarButtonItem = self.editButtonItem;
-			self.navigationItem.rightBarButtonItem.title = @"Preferences";
+			self.navigationItem.rightBarButtonItem = self.preferencesButton;
 			[self.stopsMapViewController setMapAlpha:0.0 animationDuration:duration];
 		}
 	}
 	else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.navigationItem.leftBarButtonItem = self.editButtonItem;
+		self.navigationItem.rightBarButtonItem = self.preferencesButton;
 	}
 }
 
