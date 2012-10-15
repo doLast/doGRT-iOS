@@ -83,7 +83,7 @@
 	// Center Waterloo on map
 	[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
 	
-	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:1.0];
+	self.navigationItem.rightBarButtonItem.title = @"Locate";
 }
 
 #pragma mark - view update
