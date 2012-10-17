@@ -239,6 +239,9 @@ NSString * const kGRTGtfsDataUpdateDidFinish = @"GRTGtfsDataUpdateDidFinish";
 
 - (void)didFinishDownloadUpdate:(ASIHTTPRequest *)request
 {
+	NSURL *localURL = [NSURL URLWithString:request.downloadDestinationPath];
+	[self addSkipBackupAttributeToItemAtURL:localURL];
+	
 	// Update data version
 	[[NSUserDefaults standardUserDefaults] setObject:[self.updateInfo objectForKey:@"endDate"] forKey:kGRTGtfsDataVersionKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
@@ -258,6 +261,8 @@ NSString * const kGRTGtfsDataUpdateDidFinish = @"GRTGtfsDataUpdateDidFinish";
 - (void)didFailDownloadUpdate:(ASIHTTPRequest *)request
 {
 	self.updateRequest = nil;
+	NSURL *tempURL = [NSURL URLWithString:request.temporaryFileDownloadPath];
+	[self addSkipBackupAttributeToItemAtURL:tempURL];
 	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:kGRTGtfsDataUpdateDidFinish object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO], @"result", nil]]];
 }
 
