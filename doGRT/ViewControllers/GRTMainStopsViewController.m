@@ -19,11 +19,11 @@
 
 enum GRTStopsTableSection {
 	GRTStopsTableHeaderSection = 0,
-	GRTStopsTableNearbySection,
 	GRTStopsTableFavoritesSection,
+	GRTStopsTableNearbySection,
 	GRTStopsTableSectionTotal, 
 };
-static const NSString *GRTStopsTableSectionName[GRTStopsTableSectionTotal] = { @"", @"Locating...", @"Favorites" };
+static const NSString *GRTStopsTableSectionName[GRTStopsTableSectionTotal] = { @"",  @"Favorites", @"Locating..."};
 
 enum GRTStopsViewQueue {
 	GRTStopsViewMapUpdateQueue = -1,
