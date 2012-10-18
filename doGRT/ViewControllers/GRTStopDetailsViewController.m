@@ -7,6 +7,7 @@
 //
 
 #import "GRTStopDetailsViewController.h"
+#import "InformaticToolbar.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -72,6 +73,19 @@
 	stopRoutesVC.delegate = self;
 	
 	self.candidateViewControllers = [NSArray arrayWithObjects:stopTimesVC, stopRoutesVC, nil];
+	
+	if (self.viewsSegmentedControl == nil) {
+		UISegmentedControl *viewsSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Mixed", @"Routes"]];
+		viewsSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+		[viewsSegmentedControl addTarget:self action:@selector(toggleViews:) forControlEvents:UIControlEventValueChanged];
+		UIBarButtonItem *segmentedControlItem = [[UIBarButtonItem alloc] initWithCustomView:viewsSegmentedControl];
+		
+		ITBarItemSet *barItemSet = [[ITBarItemSet alloc] initWithItems:@[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], segmentedControlItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]]];
+		
+		[self pushBarItemSet:barItemSet animated:YES];
+		
+		self.viewsSegmentedControl = viewsSegmentedControl;
+	}
 	
 	NSInteger index = 0; // TODO: Let user choose default view
 	[self setViewControllers:@[[self.candidateViewControllers objectAtIndex:index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
