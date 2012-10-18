@@ -92,6 +92,18 @@
 	[self.viewsSegmentedControl setSelectedSegmentIndex:index];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+	
+	[self updateToolbarToLatestStateAnimated:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[self.navigationController setToolbarHidden:YES animated:YES];
+}
+
 #pragma mark - actions
 
 - (IBAction)toggleViews:(id)sender
