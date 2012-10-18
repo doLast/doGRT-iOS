@@ -55,7 +55,7 @@
         <!--Stops Map View Controller-->
         <scene sceneID="BR3-lH-JBE">
             <objects>
-                <viewController storyboardIdentifier="tripDetailsView" id="72Y-dW-iZ5" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="tripDetailsView" hidesBottomBarWhenPushed="YES" id="72Y-dW-iZ5" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Dox-x2-iCp">
                         <rect key="frame" x="0.0" y="64" width="768" height="960"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -160,7 +160,7 @@
         <!--Stops Map View Controller-->
         <scene sceneID="PaL-DU-Ilm">
             <objects>
-                <viewController storyboardIdentifier="stopsMapView" id="tHJ-Mx-d2m" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="stopsMapView" hidesBottomBarWhenPushed="YES" id="tHJ-Mx-d2m" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="i0Y-Tf-hSJ">
                         <rect key="frame" x="0.0" y="64" width="768" height="960"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
