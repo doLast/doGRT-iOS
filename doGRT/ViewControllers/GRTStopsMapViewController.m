@@ -209,8 +209,8 @@
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
+	self.title = view.annotation.title;
 	if (view.annotation == self.willBePresentedStop) {
-		self.title = self.willBePresentedStop.title;
 		self.willBePresentedStop = nil;
 	}
 }
