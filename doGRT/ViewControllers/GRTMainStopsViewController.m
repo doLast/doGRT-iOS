@@ -9,7 +9,7 @@
 #import "GRTMainStopsViewController.h"
 #import "GRTStopDetailsViewController.h"
 #import "GRTStopsTableViewController.h"
-
+#import "GRTPreferencesViewController.h"
 #import "UIViewController+GRTGtfsUpdater.h"
 
 #import "GRTGtfsSystem.h"
@@ -253,8 +253,12 @@ enum GRTStopsViewQueue {
 
 - (IBAction)showPreferences:(id)sender
 {
-	// TODO: Display Preferences
-	NSLog(@"Showing preferences");
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		[GRTPreferencesViewController showPreferencesInViewController:self];
+	}
+	else if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+		[GRTPreferencesViewController showPreferencesFromBarButtonItem:sender];
+	}
 }
 
 - (IBAction)didTapLeftNavButton:(id)sender
