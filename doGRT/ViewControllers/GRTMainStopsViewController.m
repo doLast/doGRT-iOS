@@ -223,11 +223,11 @@ enum GRTStopsViewQueue {
 - (void)performNearbyStopsUpdateWithLocation:(CLLocation *)location
 {
 	@synchronized(self.tableView) {
-		double nearbyDistance = [[NSUserDefaults standardUserDefaults] doubleForKey:GRTUserNearbyDistancePreference];
-		NSLog(@"Updating nearby stops within %f meters, center at location: %@", nearbyDistance, location);
+		NSNumber *nearbyDistance = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserNearbyDistancePreference];
+		NSLog(@"Updating nearby stops within %@ meters, center at location: %@", nearbyDistance, location);
 		
 		GRTStopsTableViewController *nearbyTableVC = [self stopsTableViewControllerForSection:GRTStopsTableNearbySection];
-		NSArray *nearbyStops = [[GRTGtfsSystem defaultGtfsSystem] stopsAroundLocation:location withinDistance:nearbyDistance];
+		NSArray *nearbyStops = [[GRTGtfsSystem defaultGtfsSystem] stopsAroundLocation:location withinDistance:nearbyDistance.doubleValue];
 		if (nearbyStops == nearbyTableVC.stops) {
 			return;
 		}

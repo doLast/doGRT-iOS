@@ -59,6 +59,19 @@ NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification"
 	}
 }
 
+#pragma mark - preferences
+
+- (id)preferenceForKey:(NSString *)key
+{
+	return [[NSUserDefaults standardUserDefaults] objectForKey:key];
+}
+
+- (void)setPreference:(id)value forKey:(NSString *)key
+{
+	[[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
+	[[NSNotificationCenter defaultCenter] postNotificationName:key object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:value, @"value", nil]];
+}
+
 #pragma mark - data access
 
 - (NSArray *)allFavoriteStops

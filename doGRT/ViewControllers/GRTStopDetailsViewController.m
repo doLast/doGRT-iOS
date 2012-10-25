@@ -87,9 +87,9 @@
 		self.viewsSegmentedControl = viewsSegmentedControl;
 	}
 	
-	NSInteger index = [[NSUserDefaults standardUserDefaults] integerForKey:GRTUserDefaultScheduleViewPreference];
-	[self setViewControllers:@[[self.candidateViewControllers objectAtIndex:index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-	[self.viewsSegmentedControl setSelectedSegmentIndex:index];
+	NSNumber *index = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDefaultScheduleViewPreference];
+	[self setViewControllers:@[[self.candidateViewControllers objectAtIndex:index.integerValue]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+	[self.viewsSegmentedControl setSelectedSegmentIndex:index.integerValue];
 }
 
 - (void)viewDidAppear:(BOOL)animated

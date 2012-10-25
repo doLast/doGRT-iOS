@@ -72,7 +72,7 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	double nearbyDistance = slider.floatValue * (GRTPreferencesMaxNearbyDistance - GRTPreferencesMinNearbyDistance) + GRTPreferencesMinNearbyDistance;
 	label.value = [NSString stringWithFormat:@"%0.f", nearbyDistance];
 	
-	[[NSUserDefaults standardUserDefaults] setDouble:nearbyDistance forKey:GRTUserNearbyDistancePreference];
+	[[GRTUserProfile defaultUserProfile] setPreference:[NSNumber numberWithDouble:nearbyDistance] forKey:GRTUserNearbyDistancePreference];
 	
 	[self.quickDialogTableView reloadCellForElements:label, nil];
 }
@@ -155,8 +155,8 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	QFloatElement *nearbyDistanceSlider = [[QFloatElement alloc] init];
 	nearbyDistanceSlider.key = @"nearbyDistanceSlider";
 	
-	double nearbyDistance = [[NSUserDefaults standardUserDefaults] doubleForKey:GRTUserNearbyDistancePreference];
-	nearbyDistanceSlider.floatValue = (nearbyDistance - GRTPreferencesMinNearbyDistance) / (GRTPreferencesMaxNearbyDistance - GRTPreferencesMinNearbyDistance);
+	NSNumber *nearbyDistance = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserNearbyDistancePreference];
+	nearbyDistanceSlider.floatValue = (nearbyDistance.doubleValue - GRTPreferencesMinNearbyDistance) / (GRTPreferencesMaxNearbyDistance - GRTPreferencesMinNearbyDistance);
 	
 	[settings addElement:nearbyDistanceLabel];
 	[settings addElement:nearbyDistanceSlider];

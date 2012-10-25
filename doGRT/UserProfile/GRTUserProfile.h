@@ -20,6 +20,8 @@ extern NSString *GRTUserProfileUpdateNotification;
 + (GRTUserProfile *)defaultUserProfile;
 
 - (void)bootstrap;
+- (id)preferenceForKey:(NSString *)key;
+- (void)setPreference:(id)value forKey:(NSString *)key;
 
 - (NSArray *)allFavoriteStops;
 - (GRTFavoriteStop *)favoriteStopByStop:(GRTStop *)stop;
