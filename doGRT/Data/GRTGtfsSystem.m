@@ -13,7 +13,7 @@
 
 static const int kMaxStopsLimit = 30;
 NSString * const GRTGtfsDataVersionKey = @"GRTGtfsDataVersionKey";
-NSString * const GRTGtfsDataUpdateAvailableNotification = @"GRTGtfsDataUpdateAvailableNotification";
+NSString * const GRTGtfsDataUpdateCheckNotification = @"GRTGtfsDataUpdateCheckNotification";
 NSString * const GRTGtfsDataUpdateInProgressNotification = @"GRTGtfsDataUpdateInProgressNotification";
 NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDidFinishNotification";
 
@@ -160,17 +160,6 @@ NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDid
 		return;
 	}
 	
-	// Whether need to update
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDateComponents *comps = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]];
-	NSInteger curDate = comps.year * 10000 + comps.month * 100 + comps.day;
-	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
-	NSLog(@"Current date: %d, dataVersion: %@", curDate, dataVersion);
-	
-	if (curDate < dataVersion.integerValue) {
-		return;
-	}
-	
 	// Check github data referencing
 	NSURL *url = [NSURL URLWithString:@"https://github.com/downloads/doLast/doGRT/grt_gtfs.json"];
 	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
@@ -232,7 +221,10 @@ NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDid
 	NSNumber *endDate = [json objectForKey:@"endDate"];
 	if (endDate.integerValue > dataVersion.integerValue) {
 		self.updateInfo = json;
-		[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateAvailableNotification object:self]];
+		[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateCheckNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:endDate, GRTGtfsDataVersionKey, nil]]];
+	}
+	else {
+		[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateCheckNotification object:self userInfo:[NSDictionary dictionary]]];
 	}
 }
 
