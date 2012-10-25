@@ -150,11 +150,16 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	title.font = [UIFont boldSystemFontOfSize:24];
 	
     QTextElement *intro = [[QTextElement alloc] initWithText:
-						   @"This is an unofficial GRT Schedule app, built by Greg Wang. \nBlog: http://blog.gregwym.info\n"];
+						   @"This is an unofficial GRT Schedule app. \nGreg@doLast.com ©"];
+	QTextElement *webs = [[QTextElement alloc] initWithText:@"Web: http://dolast.com\nBlog: http://blog.gregwym.info"];
+	QTextElement *thanks = [[QTextElement alloc] initWithText:
+						   @"You are the one who motivate me to make this app better and better, thanks. "];
 	
     QSection *info = [[QSection alloc] init];
     [info addElement:title];
     [info addElement:intro];
+	[info addElement:webs];
+	[info addElement:thanks];
 	[root addSection:info];
 	
 	QTextElement *fmdb = [[QTextElement alloc] initWithText:@"fmdb: \nhttps://github.com/ccgus/fmdb"];
