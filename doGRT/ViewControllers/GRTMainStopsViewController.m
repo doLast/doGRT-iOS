@@ -159,16 +159,19 @@ enum GRTStopsViewQueue {
 	[self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
 	
 	// Gtfs update
-	[self quitGtfsUpdater];
-	[self becomeGtfsUpdater];
 	[self updateGtfsUpdaterStatus];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[self setNavigationBarHidden:NO animated:animated];
-	[self quitGtfsUpdater];
 	[super viewDidDisappear:animated];
+}
+
+- (void)viewDidUnload
+{
+	[self quitGtfsUpdater];
+	[super viewDidUnload];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
