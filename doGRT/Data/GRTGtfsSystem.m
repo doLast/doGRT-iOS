@@ -141,11 +141,11 @@ NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDid
 			NSLog(@"Fail to copy db with error %@", error.localizedDescription);
 			abort();
 		}
-		NSLog(@"db copied");
-		[self addSkipBackupAttributeToItemAtURL:libraryURL];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20121223] forKey:GRTGtfsDataVersionKey];
+		NSLog(@"DB copied from %@ to %@", dbURL, libraryURL);
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20120901] forKey:GRTGtfsDataVersionKey];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
+	[self addSkipBackupAttributeToItemAtURL:libraryURL];
 	
 	NSAssert([self.db goodConnection], @"Whether the db is having good connection");
 	
@@ -172,14 +172,14 @@ NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDid
 
 - (void)startUpdate
 {
+	if (self.updateRequest != nil) {
+		return;
+	}
 	NSURL *localURL = [self dbURL];
 	NSURL *remoteURL = [NSURL URLWithString:(id) [self.updateInfo objectForKey:@"url"]];
 	NSLog(@"Starting update, local: %@, remote: %@", localURL, remoteURL);
 	
 	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:remoteURL];
-	if (self.updateRequest != nil) {
-		return;
-	}
 	self.updateRequest = request;
 	
 	[request setDownloadDestinationPath:[localURL.path copy]];
@@ -197,6 +197,10 @@ NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDid
 
 - (void)abortUpdate
 {
+	if (self.updateRequest == nil) {
+		return;
+	}
+	
 	ASIHTTPRequest *request = self.updateRequest;
 	self.updateRequest = nil;
 	[request clearDelegatesAndCancel];
@@ -204,6 +208,8 @@ NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDid
 	localURL = [localURL URLByAppendingPathExtension:@"download"];
 	[[NSFileManager defaultManager] removeItemAtURL:localURL error:nil];
 	NSLog(@"Update abort, local deleted %@", localURL);
+	
+	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateDidFinishNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"cancelled", nil]]];
 }
 
 #pragma mark - ASI HTTP Request delegate
