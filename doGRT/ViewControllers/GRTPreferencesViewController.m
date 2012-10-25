@@ -7,7 +7,10 @@
 //
 
 #import "GRTPreferencesViewController.h"
+#import "UIViewController+GRTGtfsUpdater.h"
+
 #import "GRTUserProfile.h"
+#import "GRTGtfsSystem.h"
 
 static UIPopoverController *popoverController = nil;
 static double GRTPreferencesMinNearbyDistance = 200.0;
@@ -25,6 +28,8 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	
 	UIBarButtonItem *hideButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)];
 	self.navigationItem.rightBarButtonItem = hideButton;
+	
+	[self becomeGtfsUpdater];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -33,22 +38,28 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	
 	QFloatElement *slider = (QFloatElement *) [self.root elementWithKey:@"nearbyDistanceSlider"];
 	[slider addObserver:self forKeyPath:@"floatValue" options:NSKeyValueObservingOptionNew context:nil];
-	[self updateNearbyDistanceLabel];
+	[self updateNearbyDistanceLabel:self];
+	
+	[self updateGtfsUpdaterStatus];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
 	QFloatElement *slider = (QFloatElement *) [self.root elementWithKey:@"nearbyDistanceSlider"];
+	double nearbyDistance = slider.floatValue * (GRTPreferencesMaxNearbyDistance - GRTPreferencesMinNearbyDistance) + GRTPreferencesMinNearbyDistance;
+	[[GRTUserProfile defaultUserProfile] setPreference:[NSNumber numberWithDouble:nearbyDistance] forKey:GRTUserNearbyDistancePreference];
 	[slider removeObserver:self forKeyPath:@"floatValue"];
+	
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	[super viewDidDisappear:animated];
 }
 
-//- (void)setQuickDialogTableView:(QuickDialogTableView *)quickDialogTableView
-//{
-//	[super setQuickDialogTableView:quickDialogTableView];
-//}
+- (void)viewDidUnload
+{
+	[self quitGtfsUpdater];
+	[super viewDidUnload];
+}
 
 - (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath
 {
@@ -65,22 +76,64 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	}
 }
 
-- (void)updateNearbyDistanceLabel
+- (IBAction)redirectToRatingPage:(id)sender
+{
+	// added work arround for wrong URL Scheme & iOS 6
+	NSString *reviewURL;
+	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
+		reviewURL = @"itms-apps://itunes.apple.com/en/app/id495688038";
+		//			reviewURL = [reviewURL stringByReplacingOccurrencesOfString:@"LANGUAGE" withString:[NSString stringWithFormat:@"%@", [[NSLocale preferredLanguages] objectAtIndex:0]]];
+	} else {
+		reviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=495688038";
+	}
+	[[UIApplication sharedApplication] openURL: [NSURL URLWithString:reviewURL]];
+}
+
+- (IBAction)updateNearbyDistanceLabel:(id)sender
 {
 	QFloatElement *slider = (QFloatElement *) [self.root elementWithKey:@"nearbyDistanceSlider"];
 	QLabelElement *label  = (QLabelElement *) [self.root elementWithKey:@"nearbyDistanceLabel"];
 	double nearbyDistance = slider.floatValue * (GRTPreferencesMaxNearbyDistance - GRTPreferencesMinNearbyDistance) + GRTPreferencesMinNearbyDistance;
 	label.value = [NSString stringWithFormat:@"%0.f", nearbyDistance];
 	
-	[[GRTUserProfile defaultUserProfile] setPreference:[NSNumber numberWithDouble:nearbyDistance] forKey:GRTUserNearbyDistancePreference];
-	
 	[self.quickDialogTableView reloadCellForElements:label, nil];
 }
 
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context {
     if ([keyPath isEqual:@"floatValue"]) {
-		[self updateNearbyDistanceLabel];
+		[self updateNearbyDistanceLabel:object];
     }
+}
+
+#pragma mark - feedback mail composer
+
+-(IBAction)displayComposerSheet:(id)sender
+{
+    MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+    picker.mailComposeDelegate = self;
+	
+	NSString *appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    [picker setSubject:[NSString stringWithFormat:@"doGRT %@ User Feedback", appVersion]];
+	
+    // Set up the recipients.
+    NSArray *toRecipients = [NSArray arrayWithObjects:@"dogrt@dolast.com",
+							 nil];
+    [picker setToRecipients:toRecipients];
+	
+    // Fill out the email body text.
+    NSString *emailBody = @"If it is a bug, please attached a screenshot. Thank you. ";
+    [picker setMessageBody:emailBody isHTML:NO];
+	
+    // Present the mail composition interface.
+    [self presentModalViewController:picker animated:YES];
+}
+
+// The mail compose view controller delegate method
+- (void)mailComposeController:(MFMailComposeViewController *)controller
+		  didFinishWithResult:(MFMailComposeResult)result
+						error:(NSError *)error
+{
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - element builder
@@ -124,16 +177,9 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	QSection *section = [[QSection alloc] init];
 	
 	QElement *rating = [[QLabelElement alloc] initWithTitle:@"If you like this app, rate for it ^^" Value:nil];
-	[rating setOnSelected:^{
-		NSString* url = [NSString stringWithFormat: @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=495688038"];
-		[[UIApplication sharedApplication] openURL: [NSURL URLWithString:url]];
-	}];
+	[rating setControllerAction:@"redirectToRatingPage:"];
 	QElement *feedback = [[QLabelElement alloc] initWithTitle:@"Or send me some feedback" Value:nil];
-	[feedback setOnSelected:^{
-		NSString *appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-		NSString* url = [NSString stringWithFormat: @"mailto:dogrt@dolast.com?subject=UserFeedback&body=dogrt%@", appVersion];
-		[[UIApplication sharedApplication] openURL: [NSURL URLWithString:url]];
-	}];
+	[feedback setControllerAction:@"displayComposerSheet:"];
 	
 	[section addElement:rating];
 	[section addElement:feedback];
@@ -149,19 +195,38 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	root.controllerName = @"GRTPreferencesViewController";
 	root.grouped = YES;
 	
-	QSection *settings = [[QSection alloc] init];
+	// Nearby distance section
 	QLabelElement *nearbyDistanceLabel = [[QLabelElement alloc] initWithTitle:@"Nearby Stops Distance (m)" Value:@"0.0"];
 	nearbyDistanceLabel.key = @"nearbyDistanceLabel";
 	QFloatElement *nearbyDistanceSlider = [[QFloatElement alloc] init];
 	nearbyDistanceSlider.key = @"nearbyDistanceSlider";
-	
 	NSNumber *nearbyDistance = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserNearbyDistancePreference];
 	nearbyDistanceSlider.floatValue = (nearbyDistance.doubleValue - GRTPreferencesMinNearbyDistance) / (GRTPreferencesMaxNearbyDistance - GRTPreferencesMinNearbyDistance);
 	
-	[settings addElement:nearbyDistanceLabel];
-	[settings addElement:nearbyDistanceSlider];
-	[root addSection:settings];
+	QSection *nearbyDistanceSection = [[QSection alloc] init];
+	[nearbyDistanceSection addElement:nearbyDistanceLabel];
+	[nearbyDistanceSection addElement:nearbyDistanceSlider];
+	[root addSection:nearbyDistanceSection];
 	
+	// Default schedule view section
+	NSNumber *defaultScheduleView = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDefaultScheduleViewPreference];
+	QRadioSection *defaultScheduleViewSection = [[QRadioSection alloc] initWithItems:@[@"Mixed Schedule", @"Routes List"] selected:defaultScheduleView.integerValue title:@"Default Schedule View"];
+	[defaultScheduleViewSection setOnSelected:^{
+		[[GRTUserProfile defaultUserProfile] setPreference:[defaultScheduleViewSection.selectedIndexes objectAtIndex:0] forKey:GRTUserDefaultScheduleViewPreference];
+	}];
+	[root addSection:defaultScheduleViewSection];
+	
+	// Data update
+	QSection *dataUpdateSection = [[QSection alloc] initWithTitle:@"Schedule Data Update"];
+	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
+	NSInteger date = dataVersion.integerValue;
+	dataUpdateSection.footer = [NSString stringWithFormat:@"Current schedule valid until %d/%d/%d", (date / 100) % 100, date % 100, date / 10000];
+	QButtonElement *checkUpdate = [[QButtonElement alloc] initWithTitle:@"Check for update now"];
+	[checkUpdate setControllerAction:@"checkForUpdate:"];
+	[dataUpdateSection addElement:checkUpdate];
+	[root addSection:dataUpdateSection];
+	
+	// About Section
 	[root addSection:[GRTPreferencesViewController createAboutSection]];
 	
 	return root;

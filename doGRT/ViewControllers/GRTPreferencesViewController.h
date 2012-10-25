@@ -7,8 +7,9 @@
 //
 
 #import <QuickDialog/QuickDialog.h>
+#import <MessageUI/MessageUI.h>
 
-@interface GRTPreferencesViewController : QuickDialogController <QuickDialogStyleProvider>
+@interface GRTPreferencesViewController : QuickDialogController <QuickDialogStyleProvider, MFMailComposeViewControllerDelegate>
 
 + (void)showPreferencesInViewController:(UIViewController *)viewController;
 + (void)showPreferencesFromBarButtonItem:(UIBarButtonItem *)barButtonItem;

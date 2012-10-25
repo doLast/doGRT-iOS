@@ -143,8 +143,11 @@ enum GRTStopsViewQueue {
 	
 	// Subscribe to user profile update
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFavoriteStops) name:GRTUserProfileUpdateNotification object:[GRTUserProfile defaultUserProfile]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNearbyStopsDistanceNotification:) name:GRTUserNearbyDistancePreference object:[GRTUserProfile defaultUserProfile]];
 	
+	// Check for update
 	[self becomeGtfsUpdater];
+	[self checkForUpdate:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -154,12 +157,17 @@ enum GRTStopsViewQueue {
 	
 	[self setNavigationBarHidden:self.searchDisplayController.active animated:animated];
 	[self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
+	
+	// Gtfs update
+	[self quitGtfsUpdater];
+	[self becomeGtfsUpdater];
 	[self updateGtfsUpdaterStatus];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[self setNavigationBarHidden:NO animated:animated];
+	[self quitGtfsUpdater];
 	[super viewDidDisappear:animated];
 }
 
@@ -238,6 +246,11 @@ enum GRTStopsViewQueue {
 			[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:GRTStopsTableNearbySection] withRowAnimation:UITableViewRowAnimationAutomatic];
 		});
 	}
+}
+
+- (void)handleNearbyStopsDistanceNotification:(NSNotification *)notification
+{
+	[self updateNearbyStopsForLocation:self.stopsMapViewController.mapView.userLocation.location];
 }
 
 - (void)pushStopDetailsForStop:(GRTStop *)stop
