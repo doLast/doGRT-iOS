@@ -57,7 +57,7 @@ static id theOneRequestUpdate = nil;
 	if (dataVersion != nil) {
 		ITConfirmationBarItemSet *confirmationBarItemSet = [ITConfirmationBarItemSet confirmationBarItemSetWithTarget:self andConfirmAction:@selector(startUpdate:) andDismissAction:@selector(hideBarItemSet:)];
 		confirmationBarItemSet.textLabel.text = @"Schedule Update Available";
-		confirmationBarItemSet.detailTextLabel.text = @"It's about 20 MB. Want to update now?";
+		confirmationBarItemSet.detailTextLabel.text = @"It's about 20 MB. Download now?";
 		[self pushBarItemSet:confirmationBarItemSet animated:YES];
 	}
 	else if (!silent) {
