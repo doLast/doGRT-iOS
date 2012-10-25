@@ -8,6 +8,9 @@
 
 #import "GRTAppDelegate.h"
 
+#import "GRTGtfsSystem.h"
+#import "GRTUserProfile.h"
+
 #import "GRTMainStopsViewController.h"
 #import "GRTStopsMapViewController.h"
 
@@ -20,13 +23,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	// Boots up the GTFS System
+	// Boots up the Systems
 	[[GRTGtfsSystem defaultGtfsSystem] bootstrap];
-	
-	//Check launching status
-	NSLog(@"App finish launching with launchCount: %@, dataVersion: %@",
-		  [[NSUserDefaults standardUserDefaults] objectForKey:kGRTGtfsLaunchCountKey],
-		  [[NSUserDefaults standardUserDefaults] objectForKey:kGRTGtfsDataVersionKey]);
+	[[GRTUserProfile defaultUserProfile] bootstrap];
 	
 	// If is iPad, setup the split view
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {

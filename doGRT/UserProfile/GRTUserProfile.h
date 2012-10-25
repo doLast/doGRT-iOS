@@ -10,11 +10,16 @@
 
 @class GRTStop;
 
+extern NSString *GRTUserLaunchCountKey;
+extern NSString *GRTUserNearbyDistancePreference;
+extern NSString *GRTUserDefaultScheduleViewPreference;
 extern NSString *GRTUserProfileUpdateNotification;
 
 @interface GRTUserProfile : NSObject
 
 + (GRTUserProfile *)defaultUserProfile;
+
+- (void)bootstrap;
 
 - (NSArray *)allFavoriteStops;
 - (GRTFavoriteStop *)favoriteStopByStop:(GRTStop *)stop;

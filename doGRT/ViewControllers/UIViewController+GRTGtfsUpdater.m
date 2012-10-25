@@ -17,9 +17,9 @@ static ITProgressBarItemSet *updateProgressBarItemSet = nil;
 - (void)becomeGtfsUpdater
 {
 	// Subscribe to all notifications
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUpdateNotification) name:kGRTGtfsDataUpdateAvailable object:[GRTGtfsSystem defaultGtfsSystem]];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateProgressNotification:) name:kGRTGtfsDataUpdateInProgress object:[GRTGtfsSystem defaultGtfsSystem]];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handelUpdateFinishNotification:) name:kGRTGtfsDataUpdateDidFinish object:[GRTGtfsSystem defaultGtfsSystem]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUpdateNotification) name:GRTGtfsDataUpdateAvailableNotification object:[GRTGtfsSystem defaultGtfsSystem]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateProgressNotification:) name:GRTGtfsDataUpdateInProgressNotification object:[GRTGtfsSystem defaultGtfsSystem]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handelUpdateFinishNotification:) name:GRTGtfsDataUpdateDidFinishNotification object:[GRTGtfsSystem defaultGtfsSystem]];
 	
 	// Check for update
 	[[GRTGtfsSystem defaultGtfsSystem] checkForUpdate];
@@ -58,7 +58,7 @@ static ITProgressBarItemSet *updateProgressBarItemSet = nil;
 	ITLabelBarItemSet *labelBarItemSet = nil;
 	NSNumber *result = [notification.userInfo objectForKey:@"result"];
 	if (result.boolValue) {
-		NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kGRTGtfsDataVersionKey];
+		NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
 		NSInteger date = dataVersion.integerValue;
 		labelBarItemSet = [ITLabelBarItemSet labelBarItemSetWithDismissTarget:self andAction:@selector(hideBarItemSet:)];
 		labelBarItemSet.textLabel.text = @"Update Succeed!";

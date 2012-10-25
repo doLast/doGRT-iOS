@@ -12,11 +12,10 @@
 #import "ASIHTTPRequest.h"
 
 static const int kMaxStopsLimit = 30;
-NSString * const kGRTGtfsLaunchCountKey = @"GRTGtfsLaunchCountKey";
-NSString * const kGRTGtfsDataVersionKey = @"GRTGtfsDataVersionKey";
-NSString * const kGRTGtfsDataUpdateAvailable = @"GRTGtfsDataUpdateAvailable";
-NSString * const kGRTGtfsDataUpdateInProgress = @"GRTGtfsDataUpdateInProgress";
-NSString * const kGRTGtfsDataUpdateDidFinish = @"GRTGtfsDataUpdateDidFinish";
+NSString * const GRTGtfsDataVersionKey = @"GRTGtfsDataVersionKey";
+NSString * const GRTGtfsDataUpdateAvailableNotification = @"GRTGtfsDataUpdateAvailableNotification";
+NSString * const GRTGtfsDataUpdateInProgressNotification = @"GRTGtfsDataUpdateInProgressNotification";
+NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDidFinishNotification";
 
 @interface GRTGtfsSystem ()
 
@@ -98,7 +97,7 @@ NSString * const kGRTGtfsDataUpdateDidFinish = @"GRTGtfsDataUpdateDidFinish";
 		self.routes = [[NSCache alloc] init];
 		self.trips = [[NSCache alloc] init];
 		self.shapes = [[NSCache alloc] init];
-		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:0], kGRTGtfsLaunchCountKey, [NSNumber numberWithInteger:20121223], kGRTGtfsDataVersionKey, nil]];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:20121223], GRTGtfsDataVersionKey, nil]];
 	}
 	return self;
 }
@@ -144,15 +143,15 @@ NSString * const kGRTGtfsDataUpdateDidFinish = @"GRTGtfsDataUpdateDidFinish";
 		}
 		NSLog(@"db copied");
 		[self addSkipBackupAttributeToItemAtURL:libraryURL];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20120903] forKey:kGRTGtfsDataVersionKey];
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20121223] forKey:GRTGtfsDataVersionKey];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	
 	NSAssert([self.db goodConnection], @"Whether the db is having good connection");
 	
-	NSNumber *launchCount = [[NSUserDefaults standardUserDefaults] objectForKey:kGRTGtfsLaunchCountKey];
-	launchCount = [NSNumber numberWithInteger:launchCount.integerValue + 1];
-	[[NSUserDefaults standardUserDefaults] setObject:launchCount forKey:kGRTGtfsLaunchCountKey];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	// Check launching status
+	NSLog(@"GtfsSystem boot with dataVersion: %@",
+		  [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey]);
 }
 
 - (void)checkForUpdate
@@ -165,7 +164,7 @@ NSString * const kGRTGtfsDataUpdateDidFinish = @"GRTGtfsDataUpdateDidFinish";
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *comps = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]];
 	NSInteger curDate = comps.year * 10000 + comps.month * 100 + comps.day;
-	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kGRTGtfsDataVersionKey];
+	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
 	NSLog(@"Current date: %d, dataVersion: %@", curDate, dataVersion);
 	
 	if (curDate < dataVersion.integerValue) {
@@ -229,11 +228,11 @@ NSString * const kGRTGtfsDataUpdateDidFinish = @"GRTGtfsDataUpdateDidFinish";
 	}
 	
 	NSLog(@"Update Info: %@", json);
-	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kGRTGtfsDataVersionKey];
+	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
 	NSNumber *endDate = [json objectForKey:@"endDate"];
 	if (endDate.integerValue > dataVersion.integerValue) {
 		self.updateInfo = json;
-		[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:kGRTGtfsDataUpdateAvailable object:self]];
+		[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateAvailableNotification object:self]];
 	}
 }
 
@@ -243,7 +242,7 @@ NSString * const kGRTGtfsDataUpdateDidFinish = @"GRTGtfsDataUpdateDidFinish";
 	[self addSkipBackupAttributeToItemAtURL:localURL];
 	
 	// Update data version
-	[[NSUserDefaults standardUserDefaults] setObject:[self.updateInfo objectForKey:@"endDate"] forKey:kGRTGtfsDataVersionKey];
+	[[NSUserDefaults standardUserDefaults] setObject:[self.updateInfo objectForKey:@"endDate"] forKey:GRTGtfsDataVersionKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	self.stops = nil;
 	[self.services removeAllObjects];
@@ -255,7 +254,7 @@ NSString * const kGRTGtfsDataUpdateDidFinish = @"GRTGtfsDataUpdateDidFinish";
 	self.updateRequest = nil;
 	self.updateInfo = nil;
 	
-	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:kGRTGtfsDataUpdateDidFinish object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"result", nil]]];
+	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateDidFinishNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"result", nil]]];
 }
 
 - (void)didFailDownloadUpdate:(ASIHTTPRequest *)request
@@ -263,13 +262,13 @@ NSString * const kGRTGtfsDataUpdateDidFinish = @"GRTGtfsDataUpdateDidFinish";
 	self.updateRequest = nil;
 	NSURL *tempURL = [NSURL URLWithString:request.temporaryFileDownloadPath];
 	[self addSkipBackupAttributeToItemAtURL:tempURL];
-	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:kGRTGtfsDataUpdateDidFinish object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO], @"result", nil]]];
+	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateDidFinishNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO], @"result", nil]]];
 }
 
 - (void)setProgress:(float)progress
 {
 	NSNumber *p = [NSNumber numberWithFloat:progress];
-	[[NSNotificationCenter defaultCenter] postNotificationName:kGRTGtfsDataUpdateInProgress object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:p, @"progress", nil]];
+	[[NSNotificationCenter defaultCenter] postNotificationName:GRTGtfsDataUpdateInProgressNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:p, @"progress", nil]];
 }
 
 #pragma mark - data access

@@ -7,3 +7,6 @@
 [submodule "asi-http-request"]
 	path = asi-http-request
 	url = git://github.com/pokeb/asi-http-request.git
+[submodule "QuickDialog"]
+	path = QuickDialog
+	url = git@github.com:escoz/QuickDialog.git

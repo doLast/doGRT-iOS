@@ -87,7 +87,7 @@
 		self.viewsSegmentedControl = viewsSegmentedControl;
 	}
 	
-	NSInteger index = 0; // TODO: Let user choose default view
+	NSInteger index = [[NSUserDefaults standardUserDefaults] integerForKey:GRTUserDefaultScheduleViewPreference];
 	[self setViewControllers:@[[self.candidateViewControllers objectAtIndex:index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 	[self.viewsSegmentedControl setSelectedSegmentIndex:index];
 }
@@ -110,7 +110,6 @@
 {
 	NSInteger old = [self.candidateViewControllers indexOfObject:[self.viewControllers objectAtIndex:0]];
 	NSInteger new = (old + 1) % [self.candidateViewControllers count];
-	NSLog(@"Transmiting from #%d to #%d", old, new);
 	
 	UIPageViewControllerNavigationDirection direction = new < old ? UIPageViewControllerNavigationDirectionReverse : UIPageViewControllerNavigationDirectionForward;
 	

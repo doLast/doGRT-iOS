@@ -223,8 +223,11 @@ enum GRTStopsViewQueue {
 - (void)performNearbyStopsUpdateWithLocation:(CLLocation *)location
 {
 	@synchronized(self.tableView) {
+		double nearbyDistance = [[NSUserDefaults standardUserDefaults] doubleForKey:GRTUserNearbyDistancePreference];
+		NSLog(@"Updating nearby stops within %f meters, center at location: %@", nearbyDistance, location);
+		
 		GRTStopsTableViewController *nearbyTableVC = [self stopsTableViewControllerForSection:GRTStopsTableNearbySection];
-		NSArray *nearbyStops = [[GRTGtfsSystem defaultGtfsSystem] stopsAroundLocation:location withinDistance:500];
+		NSArray *nearbyStops = [[GRTGtfsSystem defaultGtfsSystem] stopsAroundLocation:location withinDistance:nearbyDistance];
 		if (nearbyStops == nearbyTableVC.stops) {
 			return;
 		}
@@ -353,7 +356,6 @@ enum GRTStopsViewQueue {
 
 - (void)mapViewController:(GRTStopsMapViewController *)mapViewController didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-	NSLog(@"Did update user location to: %@", userLocation.location);
 	[self updateNearbyStopsForLocation:userLocation.location];
 }
 

@@ -9,6 +9,9 @@
 #import "GRTUserProfile.h"
 #import "GRTGtfsSystem+Internal.h"
 
+NSString *GRTUserLaunchCountKey = @"GRTUserLaunchCountKey";
+NSString *GRTUserNearbyDistancePreference = @"GRTUserNearbyDistancePreference";
+NSString *GRTUserDefaultScheduleViewPreference = @"GRTUserDefaultScheduleViewPreference";
 NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification";
 
 @interface GRTUserProfile ()
@@ -30,9 +33,19 @@ NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification"
 	self = [super init];
 	if (self != nil) {
 		self.managedObjectContext = [(id) [[UIApplication sharedApplication] delegate]managedObjectContext];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:0], GRTUserLaunchCountKey, [NSNumber numberWithDouble:500.0], GRTUserNearbyDistancePreference, [NSNumber numberWithInteger:0], GRTUserDefaultScheduleViewPreference, nil]];
 		[self refreshFavoriteStops];
 	}
 	return self;
+}
+
+- (void)bootstrap
+{
+	NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:GRTUserLaunchCountKey];
+	launchCount++;
+	[[NSUserDefaults standardUserDefaults] setInteger:launchCount forKey:GRTUserLaunchCountKey];
+	
+	NSLog(@"UserProfile boot with launchCount: %d", launchCount);
 }
 
 + (GRTUserProfile *)defaultUserProfile
