@@ -9,20 +9,38 @@
 #import "UIViewController+GRTGtfsUpdater.h"
 #import "InformaticToolbar.h"
 #import "GRTGtfsSystem.h"
+#import "objc/runtime.h"
 
-static ITProgressBarItemSet *updateProgressBarItemSet = nil;
+static NSString * const GRTUpdateProgressBarItemSet = @"GRTUpdateProgressBarItemSet";
+static BOOL silent = YES;
+static id theOneRequestUpdate = nil;
 
 @implementation UIViewController (GRTGtfsUpdater)
+
+- (ITProgressBarItemSet *)updateProgressBarItemSet
+{
+	return objc_getAssociatedObject(self, (__bridge const void *)(GRTUpdateProgressBarItemSet));
+}
+
+- (void)setUpdateProgressBarItemSet:(ITProgressBarItemSet *)updateProgressBarItemSet
+{
+	objc_setAssociatedObject(self, (__bridge const void *)(GRTUpdateProgressBarItemSet), nil, OBJC_ASSOCIATION_RETAIN);
+	objc_setAssociatedObject(self, (__bridge const void *)(GRTUpdateProgressBarItemSet), updateProgressBarItemSet, OBJC_ASSOCIATION_RETAIN);
+}
 
 - (void)becomeGtfsUpdater
 {
 	// Subscribe to all notifications
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showUpdateNotification) name:GRTGtfsDataUpdateAvailableNotification object:[GRTGtfsSystem defaultGtfsSystem]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateNotification:) name:GRTGtfsDataUpdateCheckNotification object:[GRTGtfsSystem defaultGtfsSystem]];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateProgressNotification:) name:GRTGtfsDataUpdateInProgressNotification object:[GRTGtfsSystem defaultGtfsSystem]];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handelUpdateFinishNotification:) name:GRTGtfsDataUpdateDidFinishNotification object:[GRTGtfsSystem defaultGtfsSystem]];
-	
-	// Check for update
-	[[GRTGtfsSystem defaultGtfsSystem] checkForUpdate];
+}
+
+- (void)quitGtfsUpdater
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:GRTGtfsDataUpdateCheckNotification object:[GRTGtfsSystem defaultGtfsSystem]];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:GRTGtfsDataUpdateInProgressNotification object:[GRTGtfsSystem defaultGtfsSystem]];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:GRTGtfsDataUpdateDidFinishNotification object:[GRTGtfsSystem defaultGtfsSystem]];
 }
 
 - (void)updateGtfsUpdaterStatus
@@ -30,34 +48,54 @@ static ITProgressBarItemSet *updateProgressBarItemSet = nil;
 	[self updateToolbarToLatestStateAnimated:YES];
 }
 
-- (void)showUpdateNotification
+- (void)handleUpdateNotification:(NSNotification *)notification
 {
-	ITConfirmationBarItemSet *confirmationBarItemSet = [ITConfirmationBarItemSet confirmationBarItemSetWithTarget:self andConfirmAction:@selector(startUpdate:) andDismissAction:@selector(hideBarItemSet:)];
-	confirmationBarItemSet.textLabel.text = @"Schedule Update Available";
-	confirmationBarItemSet.detailTextLabel.text = @"Do you want to update now?";
-	[self pushBarItemSet:confirmationBarItemSet animated:YES];
+	if (theOneRequestUpdate != self) {
+		return;
+	}
+	NSNumber *dataVersion = [notification.userInfo objectForKey:GRTGtfsDataVersionKey];
+	if (dataVersion != nil) {
+		ITConfirmationBarItemSet *confirmationBarItemSet = [ITConfirmationBarItemSet confirmationBarItemSetWithTarget:self andConfirmAction:@selector(startUpdate:) andDismissAction:@selector(hideBarItemSet:)];
+		confirmationBarItemSet.textLabel.text = @"Schedule Update Available";
+		confirmationBarItemSet.detailTextLabel.text = @"It's about 20 MB. Want to update now?";
+		[self pushBarItemSet:confirmationBarItemSet animated:YES];
+	}
+	else if (!silent) {
+		NSLog(@"No update, but it is not silent");
+		ITLabelBarItemSet *noUpdateBarItemSet = [ITLabelBarItemSet labelBarItemSetWithDismissTarget:self andAction:@selector(hideBarItemSet:)];
+		noUpdateBarItemSet.textLabel.text = @"No Update Available for Now";
+		noUpdateBarItemSet.detailTextLabel.text = @"Come back later.";
+		[self pushBarItemSet:noUpdateBarItemSet animated:YES];
+	}
 }
 
 - (void)handleUpdateProgressNotification:(NSNotification *)notification
 {
 	NSNumber *p = [notification.userInfo objectForKey:@"progress"];
-	if (updateProgressBarItemSet == nil) {
-		updateProgressBarItemSet = [ITProgressBarItemSet progressBarItemSetWithTitle:@"Downloading New Schedule..." dismissTarget:self andAction:@selector(tryAbortUpdate:)];
+	if (self.updateProgressBarItemSet == nil) {
+		self.updateProgressBarItemSet = [ITProgressBarItemSet progressBarItemSetWithTitle:@"Downloading New Schedule..." dismissTarget:self andAction:@selector(abortUpdate:)];
 	}
-	if (![self.barItemSets containsObject:updateProgressBarItemSet]) {
-		[self pushBarItemSet:updateProgressBarItemSet animated:YES];
+	if (![self.barItemSets containsObject:self.updateProgressBarItemSet]) {
+		[self pushBarItemSet:self.updateProgressBarItemSet animated:YES];
 	}
-	[updateProgressBarItemSet setProgress:p.floatValue animated:YES];
+	[self.updateProgressBarItemSet setProgress:p.floatValue animated:YES];
 }
 
 - (void)handelUpdateFinishNotification:(NSNotification *)notification
 {
-	updateProgressBarItemSet = nil;
-	[self removeAllBarItemSetsAnimated:YES];
+	ITBarItemSet *updateProgressBarItemSet = self.updateProgressBarItemSet;
+	self.updateProgressBarItemSet = nil;
+	[self hideBarItemSet:updateProgressBarItemSet];
+	theOneRequestUpdate = nil;
+	
+	NSNumber *cancelled = [notification.userInfo objectForKey:@"cancelled"];
+	if (cancelled != nil && cancelled.boolValue) {
+		return;
+	}
 	
 	ITLabelBarItemSet *labelBarItemSet = nil;
 	NSNumber *result = [notification.userInfo objectForKey:@"result"];
-	if (result.boolValue) {
+	if (result != nil && result.boolValue) {
 		NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
 		NSInteger date = dataVersion.integerValue;
 		labelBarItemSet = [ITLabelBarItemSet labelBarItemSetWithDismissTarget:self andAction:@selector(hideBarItemSet:)];
@@ -74,31 +112,27 @@ static ITProgressBarItemSet *updateProgressBarItemSet = nil;
 
 #pragma mark - actions
 
-- (IBAction)hideBarItemSet:(ITBarItemSet *)sender
+- (IBAction)checkForUpdate:(id)sender
+{
+	silent = sender == self;
+	theOneRequestUpdate = self;
+	[[GRTGtfsSystem defaultGtfsSystem] checkForUpdate];
+}
+
+- (IBAction)hideBarItemSet:(id)sender
 {
 	[self removeBarItemSet:sender animated:YES];
 }
 
-- (IBAction)startUpdate:(ITBarItemSet *)sender
+- (IBAction)startUpdate:(id)sender
 {
 	[self hideBarItemSet:sender];
 	[[GRTGtfsSystem defaultGtfsSystem] startUpdate];
 }
 
-- (IBAction)tryAbortUpdate:(id)sender
+- (IBAction)abortUpdate:(id)sender
 {
-	ITConfirmationBarItemSet *confirmAbort = [ITConfirmationBarItemSet confirmationBarItemSetWithTarget:self andConfirmAction:@selector(confirmAbortUpdate:) andDismissAction:@selector(hideBarItemSet:)];
-	confirmAbort.textLabel.text = @"Cancel Schedule Update";
-	confirmAbort.detailTextLabel.text = @"You sure you want to cancel?";
-	[self pushBarItemSet:confirmAbort animated:YES];
-}
-
-- (IBAction)confirmAbortUpdate:(id)sender
-{
-	updateProgressBarItemSet = nil;
-	
 	[[GRTGtfsSystem defaultGtfsSystem] abortUpdate];
-	[self removeAllBarItemSetsAnimated:YES];
 }
 
 @end

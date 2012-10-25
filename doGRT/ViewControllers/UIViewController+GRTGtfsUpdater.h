@@ -6,9 +6,15 @@
 //
 //
 
+@class ITProgressBarItemSet;
+
 @interface UIViewController (GRTGtfsUpdater)
 
+@property (nonatomic, strong, readonly) ITProgressBarItemSet *updateProgressBarItemSet;
+
 - (void)becomeGtfsUpdater;
+- (void)quitGtfsUpdater;
 - (void)updateGtfsUpdaterStatus;
+- (IBAction)checkForUpdate:(id)sender;
 
 @end
