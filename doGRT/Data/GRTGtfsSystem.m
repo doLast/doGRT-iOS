@@ -132,20 +132,20 @@ NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDid
 {
 	// Copy database to documents directory if does not exists
 	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSURL *libraryURL = [self dbURL];
+	NSURL *localURL = [self dbURL];
 	
-	if (![fileManager fileExistsAtPath:libraryURL.path]) {
+	if (![fileManager fileExistsAtPath:localURL.path]) {
 		NSURL *dbURL = [[NSBundle mainBundle] URLForResource:@"GRT_GTFS" withExtension:@"sqlite"];
 		NSError *error = nil;
-		if (![fileManager copyItemAtURL:dbURL toURL:libraryURL error:&error]) {
+		if (![fileManager copyItemAtURL:dbURL toURL:localURL error:&error]) {
 			NSLog(@"Fail to copy db with error %@", error.localizedDescription);
 			abort();
 		}
-		NSLog(@"DB copied from %@ to %@", dbURL, libraryURL);
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20120901] forKey:GRTGtfsDataVersionKey];
+		NSLog(@"DB copied from %@ to %@", dbURL, localURL);
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20121223] forKey:GRTGtfsDataVersionKey];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
-	[self addSkipBackupAttributeToItemAtURL:libraryURL];
+	[self addSkipBackupAttributeToItemAtURL:localURL];
 	
 	NSAssert([self.db goodConnection], @"Whether the db is having good connection");
 	
@@ -236,7 +236,7 @@ NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDid
 
 - (void)didFinishDownloadUpdate:(ASIHTTPRequest *)request
 {
-	NSURL *localURL = [NSURL URLWithString:request.downloadDestinationPath];
+	NSURL *localURL = [self dbURL];
 	[self addSkipBackupAttributeToItemAtURL:localURL];
 	
 	// Update data version
