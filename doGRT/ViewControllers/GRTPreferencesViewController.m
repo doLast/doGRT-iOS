@@ -223,8 +223,8 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	
 	// Data update
 	QSection *dataUpdateSection = [[QSection alloc] initWithTitle:@"Schedule Data Update"];
-	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
-	NSInteger date = dataVersion.integerValue;
+	NSNumber *endDate = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataEndDateKey];
+	NSInteger date = endDate.integerValue;
 	dataUpdateSection.footer = [NSString stringWithFormat:@"Current schedule valid until %d/%d/%d", (date / 100) % 100, date % 100, date / 10000];
 	QButtonElement *checkUpdate = [[QButtonElement alloc] initWithTitle:@"Check for update now"];
 	[checkUpdate setControllerAction:@"checkForUpdate:"];

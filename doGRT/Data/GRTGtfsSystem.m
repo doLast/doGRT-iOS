@@ -12,10 +12,16 @@
 #import "ASIHTTPRequest.h"
 
 static const int kMaxStopsLimit = 30;
+
 NSString * const GRTGtfsDataVersionKey = @"GRTGtfsDataVersionKey";
+NSString * const GRTGtfsDataEndDateKey = @"GRTGtfsDataEndDateKey";
+NSString * const GRTGtfsDataReleaseNameKey = @"GRTGtfsDataReleaseNameKey";
+
 NSString * const GRTGtfsDataUpdateCheckNotification = @"GRTGtfsDataUpdateCheckNotification";
 NSString * const GRTGtfsDataUpdateInProgressNotification = @"GRTGtfsDataUpdateInProgressNotification";
 NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDidFinishNotification";
+
+NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/grt_gtfs_data/grt_gtfs.json";
 
 @interface GRTGtfsSystem ()
 
@@ -97,7 +103,7 @@ NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDid
 		self.routes = [[NSCache alloc] init];
 		self.trips = [[NSCache alloc] init];
 		self.shapes = [[NSCache alloc] init];
-		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:20121223], GRTGtfsDataVersionKey, nil]];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:20120901], GRTGtfsDataVersionKey, [NSNumber numberWithInteger:20121223], GRTGtfsDataEndDateKey, nil]];
 	}
 	return self;
 }
@@ -137,16 +143,18 @@ NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDid
 	if (![fileManager fileExistsAtPath:localURL.path]) {
 		NSURL *dbURL = [[NSBundle mainBundle] URLForResource:@"GRT_GTFS" withExtension:@"sqlite"];
 		NSError *error = nil;
+//		[fileManager removeItemAtURL:localURL error:nil];
 		if (![fileManager copyItemAtURL:dbURL toURL:localURL error:&error]) {
 			NSLog(@"Fail to copy db with error %@", error.localizedDescription);
 			abort();
 		}
 		NSLog(@"DB copied from %@ to %@", dbURL, localURL);
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20121223] forKey:GRTGtfsDataVersionKey];
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20120901] forKey:GRTGtfsDataVersionKey];
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20121223] forKey:GRTGtfsDataEndDateKey];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	[self addSkipBackupAttributeToItemAtURL:localURL];
-	
+		
 	NSAssert([self.db goodConnection], @"Whether the db is having good connection");
 	
 	// Check launching status
@@ -160,8 +168,8 @@ NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDid
 		return;
 	}
 	
-	// Check github data referencing
-	NSURL *url = [NSURL URLWithString:@"https://github.com/downloads/doLast/doGRT/grt_gtfs.json"];
+	// Check Update Json source
+	NSURL *url = [NSURL URLWithString:kGRTGtfsDataUpdateJsonUrl];
 	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
 	[request setDelegate:self];
 	[request setDidFinishSelector:@selector(didFinishCheckingUpdate:)];
@@ -224,10 +232,11 @@ NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDid
 	
 	NSLog(@"Update Info: %@", json);
 	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
-	NSNumber *endDate = [json objectForKey:@"endDate"];
-	if (endDate.integerValue > dataVersion.integerValue) {
+	NSNumber *releaseDate = [json objectForKey:@"releaseDate"];
+	NSString *releaseName = [json objectForKey:@"releaseName"];
+	if (releaseDate.integerValue > dataVersion.integerValue) {
 		self.updateInfo = json;
-		[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateCheckNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:endDate, GRTGtfsDataVersionKey, nil]]];
+		[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateCheckNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:releaseDate, GRTGtfsDataVersionKey, releaseName, GRTGtfsDataReleaseNameKey, nil]]];
 	}
 	else {
 		[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateCheckNotification object:self userInfo:[NSDictionary dictionary]]];
@@ -240,7 +249,8 @@ NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDid
 	[self addSkipBackupAttributeToItemAtURL:localURL];
 	
 	// Update data version
-	[[NSUserDefaults standardUserDefaults] setObject:[self.updateInfo objectForKey:@"endDate"] forKey:GRTGtfsDataVersionKey];
+	[[NSUserDefaults standardUserDefaults] setObject:[self.updateInfo objectForKey:@"releaseDate"] forKey:GRTGtfsDataVersionKey];
+	[[NSUserDefaults standardUserDefaults] setObject:[self.updateInfo objectForKey:@"endDate"] forKey:GRTGtfsDataEndDateKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	self.stops = nil;
 	[self.services removeAllObjects];

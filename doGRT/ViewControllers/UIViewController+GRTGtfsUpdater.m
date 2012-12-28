@@ -53,10 +53,11 @@ static id theOneRequestUpdate = nil;
 	if (theOneRequestUpdate != self) {
 		return;
 	}
-	NSNumber *dataVersion = [notification.userInfo objectForKey:GRTGtfsDataVersionKey];
-	if (dataVersion != nil) {
+	NSNumber *releaseDate = [notification.userInfo objectForKey:GRTGtfsDataVersionKey];
+	NSString *releaseName = [notification.userInfo objectForKey:GRTGtfsDataReleaseNameKey];
+	if (releaseDate != nil) {
 		ITConfirmationBarItemSet *confirmationBarItemSet = [ITConfirmationBarItemSet confirmationBarItemSetWithTarget:self andConfirmAction:@selector(startUpdate:) andDismissAction:@selector(hideBarItemSet:)];
-		confirmationBarItemSet.textLabel.text = @"Schedule Update Available";
+		confirmationBarItemSet.textLabel.text = [NSString stringWithFormat:@"%@ Schedule Available", releaseName];
 		confirmationBarItemSet.detailTextLabel.text = @"It's about 20 MB. Download now?";
 		[self pushBarItemSet:confirmationBarItemSet animated:YES];
 	}
@@ -64,7 +65,7 @@ static id theOneRequestUpdate = nil;
 		NSLog(@"No update, but it is not silent");
 		ITLabelBarItemSet *noUpdateBarItemSet = [ITLabelBarItemSet labelBarItemSetWithDismissTarget:self andAction:@selector(hideBarItemSet:)];
 		noUpdateBarItemSet.textLabel.text = @"No Update Available for Now";
-		noUpdateBarItemSet.detailTextLabel.text = @"Come back later.";
+		noUpdateBarItemSet.detailTextLabel.text = @"Please come back later.";
 		[self pushBarItemSet:noUpdateBarItemSet animated:YES];
 	}
 }
@@ -96,8 +97,8 @@ static id theOneRequestUpdate = nil;
 	ITLabelBarItemSet *labelBarItemSet = nil;
 	NSNumber *result = [notification.userInfo objectForKey:@"result"];
 	if (result != nil && result.boolValue) {
-		NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
-		NSInteger date = dataVersion.integerValue;
+		NSNumber *endDate = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataEndDateKey];
+		NSInteger date = endDate.integerValue;
 		labelBarItemSet = [ITLabelBarItemSet labelBarItemSetWithDismissTarget:self andAction:@selector(hideBarItemSet:)];
 		labelBarItemSet.textLabel.text = @"Update Succeed!";
 		labelBarItemSet.detailTextLabel.text = [NSString stringWithFormat:@"New schedule valie until %d/%d/%d", (date / 100) % 100, date % 100, date / 10000];

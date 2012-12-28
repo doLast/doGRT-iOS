@@ -15,6 +15,9 @@
 #import "GRTStopTimes.h"
 
 extern NSString * const GRTGtfsDataVersionKey;
+extern NSString * const GRTGtfsDataReleaseNameKey;
+extern NSString * const GRTGtfsDataEndDateKey;
+
 extern NSString * const GRTGtfsDataUpdateCheckNotification;
 extern NSString * const GRTGtfsDataUpdateInProgressNotification;
 extern NSString * const GRTGtfsDataUpdateDidFinishNotification;
