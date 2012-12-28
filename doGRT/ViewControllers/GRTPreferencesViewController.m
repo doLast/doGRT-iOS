@@ -150,8 +150,8 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	title.font = [UIFont boldSystemFontOfSize:24];
 	
     QTextElement *intro = [[QTextElement alloc] initWithText:
-						   @"This is an unofficial GRT Schedule app. \nGreg@doLast.com ©"];
-	QTextElement *webs = [[QTextElement alloc] initWithText:@"Web: http://dolast.com\nBlog: http://blog.gregwym.info"];
+						   @"This is an unofficial GRT Schedule app. \n© Greg@doLast.com"];
+	QTextElement *webs = [[QTextElement alloc] initWithText:@"Web: http://dolast.com\nBlog: http://blog.gregwym.info\nTwitter: @gregwym"];
 	QTextElement *thanks = [[QTextElement alloc] initWithText:
 						   @"You are the one who motivate me to make this app better and better, thanks. "];
 	
