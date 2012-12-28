@@ -103,7 +103,7 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/grt_gtfs_data/g
 		self.routes = [[NSCache alloc] init];
 		self.trips = [[NSCache alloc] init];
 		self.shapes = [[NSCache alloc] init];
-		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:20120901], GRTGtfsDataVersionKey, [NSNumber numberWithInteger:20121223], GRTGtfsDataEndDateKey, nil]];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:20121227], GRTGtfsDataVersionKey, [NSNumber numberWithInteger:20130428], GRTGtfsDataEndDateKey, nil]];
 	}
 	return self;
 }
@@ -149,8 +149,8 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/grt_gtfs_data/g
 			abort();
 		}
 		NSLog(@"DB copied from %@ to %@", dbURL, localURL);
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20120901] forKey:GRTGtfsDataVersionKey];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20121223] forKey:GRTGtfsDataEndDateKey];
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20121227] forKey:GRTGtfsDataVersionKey];
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20130428] forKey:GRTGtfsDataEndDateKey];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	[self addSkipBackupAttributeToItemAtURL:localURL];
