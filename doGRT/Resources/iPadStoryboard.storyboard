@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2843" systemVersion="11G63" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="GAJ-ki-y1e">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="11G63" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="GAJ-ki-y1e">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1929"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
     </dependencies>
     <scenes>
         <!--Split View Controller-->
@@ -18,7 +18,7 @@
         <!--Stop Details View Controller-->
         <scene sceneID="khV-0K-3yp">
             <objects>
-                <pageViewController storyboardIdentifier="stopDetailsView" autoresizesArchivedViewToFullSize="NO" hidesBottomBarWhenPushed="YES" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="p51-iS-z1u" customClass="GRTStopDetailsViewController" sceneMemberID="viewController">
+                <pageViewController storyboardIdentifier="stopDetailsView" autoresizesArchivedViewToFullSize="NO" hidesBottomBarWhenPushed="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="p51-iS-z1u" customClass="GRTStopDetailsViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="9Ah-GY-6JJ">
                         <barButtonItem key="rightBarButtonItem" title="TOGGLE_FAV" id="qDF-5P-bmM">
                             <connections>
@@ -228,6 +228,55 @@
             <point key="canvasLocation" x="448" y="-364"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="GRTMainStopsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTMainStopsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="didTapLeftNavButton:"/>
+                <relationship kind="action" name="didTapRightNavButton:"/>
+                <relationship kind="action" name="showPreferences:"/>
+                <relationship kind="action" name="showSearch:"/>
+                <relationship kind="outlet" name="searchResultViewController" candidateClass="GRTStopsTableViewController"/>
+                <relationship kind="outlet" name="stopsMapViewController" candidateClass="GRTStopsMapViewController"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="GRTStopDetailsViewController" superclassName="UIPageViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopDetailsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="toggleStopFavorite:"/>
+                <relationship kind="action" name="toggleViews:"/>
+                <relationship kind="outlet" name="favButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="viewsSegmentedControl" candidateClass="UISegmentedControl"/>
+            </relationships>
+        </class>
+        <class className="GRTStopRoutesViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopRoutesViewController.h"/>
+        </class>
+        <class className="GRTStopTimesViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopTimesViewController.h"/>
+        </class>
+        <class className="GRTStopsMapViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsMapViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="startTrackingUserLocation:"/>
+                <relationship kind="outlet" name="delegate"/>
+                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
+            </relationships>
+        </class>
+        <class className="GRTStopsTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsTableViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="delegate"/>
+            </relationships>
+        </class>
+        <class className="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UIViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="checkForUpdate:"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
