@@ -8,6 +8,7 @@
 
 #import "GRTStopDetailsViewController.h"
 #import "InformaticToolbar.h"
+#import "GRTDetailedTitleButtonView.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -90,6 +91,11 @@
 	NSNumber *index = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDefaultScheduleViewPreference];
 	[self setViewControllers:@[[self.candidateViewControllers objectAtIndex:index.integerValue]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 	[self.viewsSegmentedControl setSelectedSegmentIndex:index.integerValue];
+	
+	GRTDetailedTitleButtonView *titleView = [[GRTDetailedTitleButtonView alloc] initWithText:self.title detailText:@"Today ▾"];
+	[titleView addTarget:self action:@selector(showModePicker:) forControlEvents:UIControlEventTouchUpInside];
+	
+	[self.navigationItem setTitleView:titleView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -128,6 +134,27 @@
 	else {
 		self.favoriteStop = [[GRTUserProfile defaultUserProfile] addStop:self.stopTimes.stop];
 	}
+}
+
+- (IBAction)showModePicker:(id)sender
+{
+	CGPoint point = CGPointMake(self.view.frame.size.width / 2.0, 0.0f);
+	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.view withStringArray:[NSArray arrayWithObjects:@"Today", @"Day in a week", @"Certain Date", nil] delegate:self];
+	popoverView.tag = 0;
+}
+
+- (IBAction)showDayPicker:(id)sender
+{
+	CGPoint point = CGPointMake(self.view.frame.size.width / 2.0, 0.0f);
+	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.view withTitle:@"Pick a day" withStringArray:[NSArray arrayWithObjects:@"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", @"Sunday/Holiday", nil] delegate:self];
+	popoverView.tag = 1;
+}
+
+- (IBAction)showDatePicker:(id)sender
+{
+	CGPoint point = CGPointMake(self.view.frame.size.width / 2.0, 0.0f);
+	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.view withTitle:@"Pick a date" withStringArray:[NSArray arrayWithObjects:@"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", @"Sunday/Holiday", nil] delegate:self];
+	popoverView.tag = 2;
 }
 
 #pragma mark - page view data source
@@ -186,6 +213,27 @@
 	[self.navigationController pushViewController:stopTimesVC animated:YES];
 
 	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date andRoute:route];
+}
+
+#pragma mark - popover view delegate
+
+- (void)popoverView:(PopoverView *)popoverView didSelectItemAtIndex:(NSInteger)index
+{
+	NSUInteger tag = popoverView.tag;
+	[popoverView dismiss];
+	if (tag == 0) {
+		switch (index) {
+			case 1:
+				[self showDayPicker:self];
+				break;
+			case 2:
+				[self showDatePicker:self];
+				break;
+			default:
+				break;
+		}
+	}
+	// TODO: Handle other type of popovers
 }
 
 @end

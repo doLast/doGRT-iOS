@@ -8,10 +8,11 @@
 
 #import "GRTStopTimesViewController.h"
 #import "GRTStopRoutesViewController.h"
+#import "PopoverView.h"
 
 @class GRTStopTimes;
 
-@interface GRTStopDetailsViewController : UIPageViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate, GRTStopTimesViewControllerDelegate, GRTStopRoutesViewControllerDelegate>
+@interface GRTStopDetailsViewController : UIPageViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate, GRTStopTimesViewControllerDelegate, GRTStopRoutesViewControllerDelegate, PopoverViewDelegate>
 
 @property (nonatomic, strong) GRTStopTimes *stopTimes;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *viewsSegmentedControl;
