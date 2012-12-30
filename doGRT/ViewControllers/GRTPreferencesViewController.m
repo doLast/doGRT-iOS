@@ -46,7 +46,7 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 - (void)viewDidDisappear:(BOOL)animated
 {
 	QFloatElement *slider = (QFloatElement *) [self.root elementWithKey:@"nearbyDistanceSlider"];
-	double nearbyDistance = slider.floatValue * (GRTPreferencesMaxNearbyDistance - GRTPreferencesMinNearbyDistance) + GRTPreferencesMinNearbyDistance;
+	double nearbyDistance = slider.floatValue;
 	[[GRTUserProfile defaultUserProfile] setPreference:[NSNumber numberWithDouble:nearbyDistance] forKey:GRTUserNearbyDistancePreference];
 	[slider removeObserver:self forKeyPath:@"floatValue"];
 	
@@ -93,7 +93,7 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 {
 	QFloatElement *slider = (QFloatElement *) [self.root elementWithKey:@"nearbyDistanceSlider"];
 	QLabelElement *label  = (QLabelElement *) [self.root elementWithKey:@"nearbyDistanceLabel"];
-	double nearbyDistance = slider.floatValue * (GRTPreferencesMaxNearbyDistance - GRTPreferencesMinNearbyDistance) + GRTPreferencesMinNearbyDistance;
+	double nearbyDistance = slider.floatValue;
 	label.value = [NSString stringWithFormat:@"%0.f", nearbyDistance];
 	
 	[self.quickDialogTableView reloadCellForElements:label, nil];
@@ -201,12 +201,14 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	root.grouped = YES;
 	
 	// Nearby distance section
-	QLabelElement *nearbyDistanceLabel = [[QLabelElement alloc] initWithTitle:@"Nearby Stops Distance (m)" Value:@"0.0"];
+	NSNumber *nearbyDistance = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserNearbyDistancePreference];
+	QLabelElement *nearbyDistanceLabel = [[QLabelElement alloc] initWithTitle:@"Nearby Stops Distance (m)" Value:nearbyDistance.stringValue];
 	nearbyDistanceLabel.key = @"nearbyDistanceLabel";
 	QFloatElement *nearbyDistanceSlider = [[QFloatElement alloc] init];
 	nearbyDistanceSlider.key = @"nearbyDistanceSlider";
-	NSNumber *nearbyDistance = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserNearbyDistancePreference];
-	nearbyDistanceSlider.floatValue = (nearbyDistance.doubleValue - GRTPreferencesMinNearbyDistance) / (GRTPreferencesMaxNearbyDistance - GRTPreferencesMinNearbyDistance);
+	nearbyDistanceSlider.floatValue = nearbyDistance.doubleValue;
+	nearbyDistanceSlider.maximumValue = GRTPreferencesMaxNearbyDistance;
+	nearbyDistanceSlider.minimumValue = GRTPreferencesMinNearbyDistance;
 	
 	QSection *nearbyDistanceSection = [[QSection alloc] init];
 	[nearbyDistanceSection addElement:nearbyDistanceLabel];
