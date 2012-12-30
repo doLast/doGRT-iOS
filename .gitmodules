@@ -10,3 +10,6 @@
 [submodule "QuickDialog"]
 	path = QuickDialog
 	url = git://github.com/escoz/QuickDialog.git
+[submodule "PopoverView"]
+	path = PopoverView
+	url = git://github.com/runway20/PopoverView.git
