@@ -15,7 +15,6 @@
 
 @interface GRTStopDetailsViewController ()
 
-@property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) GRTFavoriteStop *favoriteStop;
 @property (nonatomic, strong) GRTStopTimesViewController *stopTimesViewController;
 @property (nonatomic, strong) GRTStopRoutesViewController *stopRoutesViewController;
@@ -29,7 +28,6 @@
 @synthesize viewsSegmentedControl = _viewsSegmentedControl;
 @synthesize favButton = _favButton;
 
-@synthesize date = _date;
 @synthesize favoriteStop = _favoriteStop;
 @synthesize stopTimesViewController = _stopTimesViewController;
 @synthesize stopRoutesViewController = _stopRoutesViewController;
@@ -51,8 +49,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
 	
+	// Config page view
 	self.delegate = self;
 	self.dataSource = self;
 	for (UIGestureRecognizer *recognizer in self.gestureRecognizers) {
@@ -61,28 +59,31 @@
 		}
 	}
 	
+	// Prepare data for views construction
 	NSAssert(self.stopTimes != nil, @"Must have a stopTimes");
 	
 	self.title = self.stopTimes.stop.stopName;
-	self.date = [NSDate date];
 	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopTimes.stop];
 	self.view.backgroundColor = [UIColor underPageBackgroundColor];
 	[self.favButton setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIFont boldSystemFontOfSize:17.0] forKey:UITextAttributeFont] forState:UIControlStateNormal];
 	
+	// Construct view controllers
 	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
-	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date];
+	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:[NSDate date]];
 	stopTimesVC.delegate = self;
 	
 	GRTStopRoutesViewController *stopRoutesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopRoutesView"];
 	stopRoutesVC.routes = [self.stopTimes routes];
 	stopRoutesVC.delegate = self;
 	
-	self.candidateViewControllers = [NSArray arrayWithObjects:stopTimesVC, stopRoutesVC, nil];
+	// Assign view controllers
+	self.candidateViewControllers = @[stopTimesVC, stopRoutesVC];
 	self.stopTimesViewController = stopTimesVC;
 	self.stopRoutesViewController = stopRoutesVC;
 	
+	// Construct Segmented Control
 	if (self.viewsSegmentedControl == nil) {
-		UISegmentedControl *viewsSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Mixed", @"Routes"]];
+		UISegmentedControl *viewsSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Mixed Schedule", @"Routes List"]];
 		viewsSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
 		[viewsSegmentedControl addTarget:self action:@selector(toggleViews:) forControlEvents:UIControlEventValueChanged];
 		UIBarButtonItem *segmentedControlItem = [[UIBarButtonItem alloc] initWithCustomView:viewsSegmentedControl];
@@ -98,10 +99,11 @@
 	[self setViewControllers:@[[self.candidateViewControllers objectAtIndex:index.integerValue]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
 	[self.viewsSegmentedControl setSelectedSegmentIndex:index.integerValue];
 	
+	// Config navigation bar
 	GRTDetailedTitleButtonView *titleView = [[GRTDetailedTitleButtonView alloc] initWithText:self.title detailText:@"Today ▾"];
 	[titleView addTarget:self action:@selector(showModePicker:) forControlEvents:UIControlEventTouchUpInside];
-	
 	[self.navigationItem setTitleView:titleView];
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -220,7 +222,7 @@
 	stopTimesVC.delegate = self;
 	[self.navigationController pushViewController:stopTimesVC animated:YES];
 
-	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:self.date andRoute:route];
+	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:[NSDate date] andRoute:route];
 }
 
 #pragma mark - popover view delegate
