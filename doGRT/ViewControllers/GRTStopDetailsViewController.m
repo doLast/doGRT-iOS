@@ -103,6 +103,7 @@
 	[super viewDidAppear:animated];
 	
 	[self updateToolbarToLatestStateAnimated:animated];
+	// TODO: fix scroll to coming bus index
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -139,7 +140,7 @@
 - (IBAction)showModePicker:(id)sender
 {
 	CGPoint point = CGPointMake(self.view.frame.size.width / 2.0, 0.0f);
-	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.view withStringArray:[NSArray arrayWithObjects:@"Today", @"Day in a week", @"Certain Date", nil] delegate:self];
+	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.view withStringArray:[NSArray arrayWithObjects:@"Today", @"Day in a week", /*@"Certain Date", */nil] delegate:self];
 	popoverView.tag = 0;
 }
 
@@ -153,6 +154,7 @@
 - (IBAction)showDatePicker:(id)sender
 {
 	CGPoint point = CGPointMake(self.view.frame.size.width / 2.0, 0.0f);
+	// TODO: Use Calendar Instead
 	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.view withTitle:@"Pick a date" withStringArray:[NSArray arrayWithObjects:@"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", @"Sunday/Holiday", nil] delegate:self];
 	popoverView.tag = 2;
 }
