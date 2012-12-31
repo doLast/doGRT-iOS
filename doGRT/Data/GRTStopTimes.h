@@ -15,6 +15,8 @@
 
 @property (nonatomic, strong, readonly) GRTStop *stop;
 
+- (NSArray *)stopTimesForDayInWeek:(NSUInteger)dayInWeek;
+- (NSArray *)stopTimesForDayInWeek:(NSUInteger)dayInWeek andRoute:(GRTRoute *)route;
 - (NSArray *)stopTimesForDate:(NSDate *)date;
 - (NSArray *)stopTimesForDate:(NSDate *)date andRoute:(GRTRoute *)route;
 - (NSArray *)routes;
