@@ -17,6 +17,8 @@
 
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) GRTFavoriteStop *favoriteStop;
+@property (nonatomic, strong) GRTStopTimesViewController *stopTimesViewController;
+@property (nonatomic, strong) GRTStopRoutesViewController *stopRoutesViewController;
 @property (nonatomic, strong) NSArray *candidateViewControllers;
 
 @end
@@ -29,6 +31,8 @@
 
 @synthesize date = _date;
 @synthesize favoriteStop = _favoriteStop;
+@synthesize stopTimesViewController = _stopTimesViewController;
+@synthesize stopRoutesViewController = _stopRoutesViewController;
 @synthesize candidateViewControllers = _candidateViewControllers;
 
 - (void)setFavoriteStop:(GRTFavoriteStop *)favoriteStop
@@ -74,6 +78,8 @@
 	stopRoutesVC.delegate = self;
 	
 	self.candidateViewControllers = [NSArray arrayWithObjects:stopTimesVC, stopRoutesVC, nil];
+	self.stopTimesViewController = stopTimesVC;
+	self.stopRoutesViewController = stopRoutesVC;
 	
 	if (self.viewsSegmentedControl == nil) {
 		UISegmentedControl *viewsSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Mixed", @"Routes"]];
@@ -147,7 +153,7 @@
 - (IBAction)showDayPicker:(id)sender
 {
 	CGPoint point = CGPointMake(self.view.frame.size.width / 2.0, 0.0f);
-	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.view withTitle:@"Pick a day" withStringArray:[NSArray arrayWithObjects:@"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", @"Sunday/Holiday", nil] delegate:self];
+	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.view withTitle:@"Pick a date" withStringArray:[NSArray arrayWithObjects: @"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", nil] delegate:self];
 	popoverView.tag = 1;
 }
 
@@ -155,7 +161,7 @@
 {
 	CGPoint point = CGPointMake(self.view.frame.size.width / 2.0, 0.0f);
 	// TODO: Use Calendar Instead
-	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.view withTitle:@"Pick a date" withStringArray:[NSArray arrayWithObjects:@"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", @"Sunday/Holiday", nil] delegate:self];
+	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.view withTitle:@"Pick a date" withStringArray:[NSArray arrayWithObjects: @"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", nil] delegate:self];
 	popoverView.tag = 2;
 }
 
@@ -232,8 +238,12 @@
 				[self showDatePicker:self];
 				break;
 			default:
+				self.stopTimesViewController.stopTimes = [self.stopTimes stopTimesForDate:[NSDate date]];
 				break;
 		}
+	}
+	else if (tag == 1) {
+		self.stopTimesViewController.stopTimes = [self.stopTimes stopTimesForDayInWeek:index + 1];
 	}
 	// TODO: Handle other type of popovers
 }
