@@ -31,24 +31,12 @@
 	if (_stopTimes != stopTimes) {
 		_stopTimes = stopTimes;
 		
+		[self.comingBusIndexUpdateTimer invalidate];
+		self.comingBusIndexUpdateTimer = nil;
 		[self updateComingBusIndex];
-		
-		if (stopTimes == nil || [stopTimes count] == 0 || self.comingBusIndex < 2) {
-			return;
-		}
-		
-		NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:[self.stopTimes count] - 1 inSection:0];
-		if (self.comingBusIndex != [self.stopTimes count]){
-			scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-		}
-		if (self.comingBusIndex >= 2){
-			scrollIndexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 2 inSection:0];
-		}
-		
-		NSLog(@"Scrolling to indexPath: %@, comingBusIndex: %d", scrollIndexPath, self.comingBusIndex);
-		[self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-		
 		self.comingBusIndexUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateComingBusIndex) userInfo:nil repeats:YES];
+		
+		[self scrollToComingBusIndexAnimated:NO];
 	}
 	else {
 		[self.comingBusIndexUpdateTimer invalidate];
@@ -88,6 +76,24 @@
 	if (comingBusIndex != self.comingBusIndex) {
 		self.comingBusIndex = comingBusIndex;
 	}
+}
+
+- (void)scrollToComingBusIndexAnimated:(BOOL)animated
+{
+	if (self.stopTimes == nil || [self.stopTimes count] == 0 || self.comingBusIndex < 2) {
+		return;
+	}
+	
+	NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:[self.stopTimes count] - 1 inSection:0];
+	if (self.comingBusIndex != [self.stopTimes count]){
+		scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+	}
+	if (self.comingBusIndex >= 2){
+		scrollIndexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 2 inSection:0];
+	}
+	
+	NSLog(@"Scrolling to indexPath: %@, comingBusIndex: %d", scrollIndexPath, self.comingBusIndex);
+	[self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:animated];
 }
 
 - (void)showTripDetailsForStopTime:(GRTStopTime *)stopTime inNavigationController:(UINavigationController *)navigationController

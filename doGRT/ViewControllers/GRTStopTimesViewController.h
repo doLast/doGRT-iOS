@@ -21,5 +21,6 @@
 @property (nonatomic, strong) NSArray *stopTimes;
 
 - (void)showTripDetailsForStopTime:(GRTStopTime *)stopTime inNavigationController:(UINavigationController *)navigationController;
+- (void)scrollToComingBusIndexAnimated:(BOOL)animated;
 
 @end
