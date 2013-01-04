@@ -258,9 +258,9 @@ enum GRTStopsViewQueue {
 
 - (void)pushStopDetailsForStop:(GRTStop *)stop
 {
-	GRTStopTimes *stopTimes = [[GRTStopTimes alloc] initWithStop:stop];
+	GRTStopDetails *stopDetails = [[GRTStopDetails alloc] initWithStop:stop];
 	GRTStopDetailsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"stopDetailsView"];
-	viewController.stopTimes = stopTimes;
+	viewController.stopDetails = stopDetails;
 	[self.navigationController popToRootViewControllerAnimated:NO];
 	[self.navigationController pushViewController:viewController animated:YES];
 }

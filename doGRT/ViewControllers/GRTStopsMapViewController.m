@@ -97,6 +97,7 @@
 	locateButton.layer.shadowOffset = CGSizeMake(0.0f, -1.0f);
 	locateButton.frame = CGRectMake(0.0, 0.0, 28.0, 28.0);
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:locateButton];
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 #pragma mark - view update
@@ -252,9 +253,9 @@
 	}
 	else {
 		GRTStop *stop = [((id<GRTStopAnnotation>) view.annotation) stop];
-		GRTStopTimes *stopTimes = [[GRTStopTimes alloc] initWithStop:stop];
+		GRTStopDetails *stopDetails = [[GRTStopDetails alloc] initWithStop:stop];
 		GRTStopDetailsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"stopDetailsView"];
-		viewController.stopTimes = stopTimes;
+		viewController.stopDetails = stopDetails;
 		[self.navigationController pushViewController:viewController animated:YES];
 	}
 }

@@ -69,7 +69,7 @@
 		2590037D1611639000FE051C /* GRTRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = 2590037C1611639000FE051C /* GRTRoute.m */; };
 		25900383161166AD00FE051C /* GRTShapePt.m in Sources */ = {isa = PBXBuildFile; fileRef = 25900382161166AC00FE051C /* GRTShapePt.m */; };
 		2590038A161168BA00FE051C /* GRTGtfsSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 25900389161168BA00FE051C /* GRTGtfsSystem.m */; };
-		259003921611691B00FE051C /* GRTStopTimes.m in Sources */ = {isa = PBXBuildFile; fileRef = 259003911611691B00FE051C /* GRTStopTimes.m */; };
+		259003921611691B00FE051C /* GRTStopDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 259003911611691B00FE051C /* GRTStopDetails.m */; };
 		259143041614971500F0D215 /* GRTStopDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 259143031614971300F0D215 /* GRTStopDetailsViewController.m */; };
 		2591430B1614ACE700F0D215 /* GRTStopRoutesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2591430A1614ACE600F0D215 /* GRTStopRoutesViewController.m */; };
 		25C7493C15E09173003AB331 /* iPhoneStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25C7493B15E09173003AB331 /* iPhoneStoryboard.storyboard */; };
@@ -235,8 +235,8 @@
 		25900382161166AC00FE051C /* GRTShapePt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTShapePt.m; sourceTree = "<group>"; };
 		25900388161168BA00FE051C /* GRTGtfsSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTGtfsSystem.h; sourceTree = "<group>"; };
 		25900389161168BA00FE051C /* GRTGtfsSystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTGtfsSystem.m; sourceTree = "<group>"; };
-		259003901611691B00FE051C /* GRTStopTimes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopTimes.h; sourceTree = "<group>"; };
-		259003911611691B00FE051C /* GRTStopTimes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopTimes.m; sourceTree = "<group>"; };
+		259003901611691B00FE051C /* GRTStopDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopDetails.h; sourceTree = "<group>"; };
+		259003911611691B00FE051C /* GRTStopDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopDetails.m; sourceTree = "<group>"; };
 		259143021614971100F0D215 /* GRTStopDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopDetailsViewController.h; sourceTree = "<group>"; };
 		259143031614971300F0D215 /* GRTStopDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopDetailsViewController.m; sourceTree = "<group>"; };
 		259143091614ACE500F0D215 /* GRTStopRoutesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopRoutesViewController.h; sourceTree = "<group>"; };
@@ -401,8 +401,8 @@
 				25900389161168BA00FE051C /* GRTGtfsSystem.m */,
 				2564645216121561000FC7DC /* GRTGtfsSystem+Internal.h */,
 				2564645316121561000FC7DC /* GRTGtfsSystem+Internal.m */,
-				259003901611691B00FE051C /* GRTStopTimes.h */,
-				259003911611691B00FE051C /* GRTStopTimes.m */,
+				259003901611691B00FE051C /* GRTStopDetails.h */,
+				259003911611691B00FE051C /* GRTStopDetails.m */,
 				252C3DE0161751FF00C5A933 /* GRTShape.h */,
 				252C3DE1161751FF00C5A933 /* GRTShape.m */,
 			);
@@ -697,7 +697,7 @@
 				2590037D1611639000FE051C /* GRTRoute.m in Sources */,
 				25900383161166AD00FE051C /* GRTShapePt.m in Sources */,
 				2590038A161168BA00FE051C /* GRTGtfsSystem.m in Sources */,
-				259003921611691B00FE051C /* GRTStopTimes.m in Sources */,
+				259003921611691B00FE051C /* GRTStopDetails.m in Sources */,
 				2564645416121561000FC7DC /* GRTGtfsSystem+Internal.m in Sources */,
 				2564645B16122864000FC7DC /* GRTService.m in Sources */,
 				2564647016129142000FC7DC /* GRTFavoriteStop.m in Sources */,

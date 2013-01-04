@@ -12,7 +12,7 @@
 #import "GRTRoute.h"
 #import "GRTShape.h"
 #import "GRTService.h"
-#import "GRTStopTimes.h"
+#import "GRTStopDetails.h"
 
 extern NSString * const GRTGtfsDataVersionKey;
 extern NSString * const GRTGtfsDataReleaseNameKey;

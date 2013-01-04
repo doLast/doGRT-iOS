@@ -24,7 +24,7 @@
 
 @implementation GRTStopDetailsViewController
 
-@synthesize stopTimes = _stopTimes;
+@synthesize stopDetails = _stopDetails;
 @synthesize viewsSegmentedControl = _viewsSegmentedControl;
 @synthesize favButton = _favButton;
 
@@ -60,20 +60,20 @@
 	}
 	
 	// Prepare data for views construction
-	NSAssert(self.stopTimes != nil, @"Must have a stopTimes");
+	NSAssert(self.stopDetails != nil, @"Must have a stopTimes");
 	
-	self.title = self.stopTimes.stop.stopName;
-	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopTimes.stop];
+	self.title = self.stopDetails.stop.stopName;
+	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopDetails.stop];
 	self.view.backgroundColor = [UIColor underPageBackgroundColor];
 	[self.favButton setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIFont boldSystemFontOfSize:17.0] forKey:UITextAttributeFont] forState:UIControlStateNormal];
 	
 	// Construct view controllers
 	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
-	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:[NSDate date]];
+	stopTimesVC.stopTimes = [self.stopDetails stopTimesForDate:[NSDate date]];
 	stopTimesVC.delegate = self;
 	
 	GRTStopRoutesViewController *stopRoutesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopRoutesView"];
-	stopRoutesVC.routes = [self.stopTimes routes];
+	stopRoutesVC.routes = [self.stopDetails routes];
 	stopRoutesVC.delegate = self;
 	
 	// Assign view controllers
@@ -141,7 +141,7 @@
 		}
 	}
 	else {
-		self.favoriteStop = [[GRTUserProfile defaultUserProfile] addStop:self.stopTimes.stop];
+		self.favoriteStop = [[GRTUserProfile defaultUserProfile] addStop:self.stopDetails.stop];
 	}
 }
 
@@ -222,7 +222,7 @@
 	stopTimesVC.delegate = self;
 	[self.navigationController pushViewController:stopTimesVC animated:YES];
 
-	stopTimesVC.stopTimes = [self.stopTimes stopTimesForDate:[NSDate date] andRoute:route];
+	stopTimesVC.stopTimes = [self.stopDetails stopTimesForDate:[NSDate date] andRoute:route];
 }
 
 #pragma mark - popover view delegate
@@ -240,12 +240,12 @@
 				[self showDatePicker:self];
 				break;
 			default:
-				self.stopTimesViewController.stopTimes = [self.stopTimes stopTimesForDate:[NSDate date]];
+				self.stopTimesViewController.stopTimes = [self.stopDetails stopTimesForDate:[NSDate date]];
 				break;
 		}
 	}
 	else if (tag == 1) {
-		self.stopTimesViewController.stopTimes = [self.stopTimes stopTimesForDayInWeek:index + 1];
+		self.stopTimesViewController.stopTimes = [self.stopDetails stopTimesForDayInWeek:index + 1];
 	}
 	// TODO: Handle other type of popovers
 }

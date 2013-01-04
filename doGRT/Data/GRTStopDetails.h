@@ -1,5 +1,5 @@
 //
-//  GRTStopTimes.h
+//  GRTStopDetails.h
 //  doGRT
 //
 //  Created by Greg Wang on 12-9-25.
@@ -11,7 +11,7 @@
 @class GRTStop;
 @class GRTRoute;
 
-@interface GRTStopTimes : NSObject
+@interface GRTStopDetails : NSObject
 
 @property (nonatomic, strong, readonly) GRTStop *stop;
 
@@ -21,6 +21,6 @@
 - (NSArray *)stopTimesForDate:(NSDate *)date andRoute:(GRTRoute *)route;
 - (NSArray *)routes;
 
-- (GRTStopTimes *)initWithStop:(GRTStop *)stop;
+- (GRTStopDetails *)initWithStop:(GRTStop *)stop;
 
 @end

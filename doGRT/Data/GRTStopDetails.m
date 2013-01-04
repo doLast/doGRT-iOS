@@ -6,24 +6,24 @@
 //
 //
 
-#import "GRTStopTimes.h"
+#import "GRTStopDetails.h"
 #import "GRTGtfsSystem+Internal.h"
 
 #import "FMDatabase.h"
 
-@interface GRTStopTimes ()
+@interface GRTStopDetails ()
 
 @property (nonatomic, strong) GRTStop *stop;
 
 @end
 
-@implementation GRTStopTimes
+@implementation GRTStopDetails
 
 @synthesize stop = _stop;
 
 #pragma mark - constructor
 
-- (GRTStopTimes *)initWithStop:(GRTStop *)stop
+- (GRTStopDetails *)initWithStop:(GRTStop *)stop
 {
 	self = [super init];
 	if (self != nil) {
