@@ -12,7 +12,7 @@
 
 @protocol GRTStopDetailsManagerDelegate <NSObject>
 
-@property (readwrite) NSArray *stopTimes;
+@property (nonatomic, readwrite) NSArray *stopTimes;
 - (UIView *)view;
 - (UINavigationItem *)navigationItem;
 
