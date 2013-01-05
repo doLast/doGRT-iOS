@@ -202,9 +202,10 @@
 - (void)stopRoutesViewController:(GRTStopRoutesViewController *)stopRoutesViewController didSelectRoute:(GRTRoute *)route
 {
 	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
-//	stopTimesVC.title = [NSString stringWithFormat:@"%@ %@", route.routeId, route.routeLongName];
 	stopTimesVC.delegate = self;
 	stopTimesVC.stopDetailsManager = [[GRTStopDetailsManager alloc] initWithStopDetails:self.stopDetailsManager.stopDetails route:route];
+	stopTimesVC.stopDetailsManager.dayInWeek = self.stopDetailsManager.dayInWeek;
+	stopTimesVC.stopDetailsManager.date = self.stopDetailsManager.date;
 	[self.navigationController pushViewController:stopTimesVC animated:YES];
 
 //	stopTimesVC.stopTimes = [self.stopDetailsManager.stopDetails stopTimesForDate:[NSDate date] andRoute:route];

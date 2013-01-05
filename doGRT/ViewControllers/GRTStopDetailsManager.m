@@ -42,6 +42,20 @@
 	self.delegate.navigationItem.titleView = stopDetailsTitleView;
 }
 
+#pragma mark - general helpers
+
+- (BOOL)isSameDayWithDate1:(NSDate*)date1 date2:(NSDate*)date2 {
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+	
+	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+	NSDateComponents *comp1 = [calendar components:unitFlags fromDate:date1];
+	NSDateComponents *comp2 = [calendar components:unitFlags fromDate:date2];
+	
+	return [comp1 day] == [comp2 day] &&
+	[comp1 month] == [comp2 month] &&
+	[comp1 year] == [comp2 year];
+}
+
 #pragma mark - constructors
 
 - (GRTStopDetailsManager *)initWithStopDetails:(GRTStopDetails *)stopDetails
@@ -72,23 +86,19 @@
 		title = [title stringByAppendingFormat:@" - %d", self.route.routeId.integerValue];
 	}
 	GRTDetailedTitleButtonView *titleView = [[GRTDetailedTitleButtonView alloc] initWithText:title detailText:@"Today ▾"];
+	if (self.date == nil) {
+		NSArray *days = @[@"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday"];
+		titleView.detailTextLabel.text = [NSString stringWithFormat:@"%@ ▾", [days objectAtIndex:self.dayInWeek - 1]];
+	}
+	else if (![self isSameDayWithDate1:self.date date2:[NSDate date]]) {
+		// TODO: It's not today, display the Date
+	}
+	
 	[titleView addTarget:self action:@selector(showModePicker:) forControlEvents:UIControlEventTouchUpInside];
 	return titleView;
 }
 
 #pragma mark - actions
-
-- (BOOL)isSameDayWithDate1:(NSDate*)date1 date2:(NSDate*)date2 {
-	NSCalendar *calendar = [NSCalendar currentCalendar];
-
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
-	NSDateComponents *comp1 = [calendar components:unitFlags fromDate:date1];
-	NSDateComponents *comp2 = [calendar components:unitFlags fromDate:date2];
-
-	return [comp1 day] == [comp2 day] &&
-	[comp1 month] == [comp2 month] &&
-	[comp1 year] == [comp2 year];
-}
 
 - (void)updateStopTimes
 {
