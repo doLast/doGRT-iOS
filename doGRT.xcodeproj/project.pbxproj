@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2504F0701698812700D3D1A3 /* GRTStopDetailsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2504F06F1698812700D3D1A3 /* GRTStopDetailsManager.m */; };
 		2515ED3414C5817600FDCD6D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515ED3314C5817600FDCD6D /* UIKit.framework */; };
 		2515ED3614C5817600FDCD6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515ED3514C5817600FDCD6D /* Foundation.framework */; };
 		2515ED3814C5817600FDCD6D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2515ED3714C5817600FDCD6D /* CoreGraphics.framework */; };
@@ -134,6 +135,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2504F06E1698812700D3D1A3 /* GRTStopDetailsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopDetailsManager.h; sourceTree = "<group>"; };
+		2504F06F1698812700D3D1A3 /* GRTStopDetailsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopDetailsManager.m; sourceTree = "<group>"; };
 		2515ED2F14C5817600FDCD6D /* doGRT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = doGRT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2515ED3314C5817600FDCD6D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2515ED3514C5817600FDCD6D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -308,6 +311,8 @@
 				256464751612AAB2000FC7DC /* GRTStopTimesViewController.m */,
 				259143091614ACE500F0D215 /* GRTStopRoutesViewController.h */,
 				2591430A1614ACE600F0D215 /* GRTStopRoutesViewController.m */,
+				2504F06E1698812700D3D1A3 /* GRTStopDetailsManager.h */,
+				2504F06F1698812700D3D1A3 /* GRTStopDetailsManager.m */,
 			);
 			name = StopDetailsViewController;
 			sourceTree = "<group>";
@@ -742,6 +747,7 @@
 				255F60B91638CC96001F3B4C /* GRTPreferencesViewController.m in Sources */,
 				256858AF1690D6A100860ED9 /* PopoverView.m in Sources */,
 				25D1C7141690FA6F004C984A /* GRTDetailedTitleButtonView.m in Sources */,
+				2504F0701698812700D3D1A3 /* GRTStopDetailsManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
