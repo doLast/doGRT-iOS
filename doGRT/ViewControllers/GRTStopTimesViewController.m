@@ -192,7 +192,6 @@
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
     
-	NSLog(@"IndexPath: %@", indexPath);
 	GRTStopTime *stopTime = [self.stopTimes objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)];
 	NSInteger time = [stopTime.departureTime integerValue];
 	if(time >= 240000){
