@@ -9,6 +9,7 @@
 #import "GRTStopsMapViewController.h"
 #import "GRTStopDetailsViewController.h"
 
+#import "GRTStopDetailsManager.h"
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
 
@@ -254,8 +255,9 @@
 	else {
 		GRTStop *stop = [((id<GRTStopAnnotation>) view.annotation) stop];
 		GRTStopDetails *stopDetails = [[GRTStopDetails alloc] initWithStop:stop];
+		GRTStopDetailsManager *stopDetailsManager = [[GRTStopDetailsManager alloc] initWithStopDetails:stopDetails];
 		GRTStopDetailsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"stopDetailsView"];
-		viewController.stopDetails = stopDetails;
+		viewController.stopDetailsManager = stopDetailsManager;
 		[self.navigationController pushViewController:viewController animated:YES];
 	}
 }

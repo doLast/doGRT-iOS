@@ -9,6 +9,7 @@
 #import "GRTStopDetailsViewController.h"
 #import "InformaticToolbar.h"
 #import "GRTDetailedTitleButtonView.h"
+#import "GRTStopDetailsManager.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -24,7 +25,7 @@
 
 @implementation GRTStopDetailsViewController
 
-@synthesize stopDetails = _stopDetails;
+@synthesize stopDetailsManager = _stopDetailsManager;
 @synthesize viewsSegmentedControl = _viewsSegmentedControl;
 @synthesize favButton = _favButton;
 
@@ -44,6 +45,16 @@
 	}
 }
 
+- (NSArray *)stopTimes
+{
+	return self.stopTimesViewController.stopTimes;
+}
+
+- (void)setStopTimes:(NSArray *)stopTimes
+{
+	self.stopTimesViewController.stopTimes = stopTimes;
+}
+
 #pragma mark - view life-cycle
 
 - (void)viewDidLoad
@@ -60,20 +71,19 @@
 	}
 	
 	// Prepare data for views construction
-	NSAssert(self.stopDetails != nil, @"Must have a stopTimes");
+	NSAssert(self.stopDetailsManager != nil, @"Must have a stopTimes");
 	
-	self.title = self.stopDetails.stop.stopName;
-	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopDetails.stop];
+//	self.title = self.stopDetails.stop.stopName;
+	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopDetailsManager.stopDetails.stop];
 	self.view.backgroundColor = [UIColor underPageBackgroundColor];
 	[self.favButton setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIFont boldSystemFontOfSize:17.0] forKey:UITextAttributeFont] forState:UIControlStateNormal];
 	
 	// Construct view controllers
 	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
-	stopTimesVC.stopTimes = [self.stopDetails stopTimesForDate:[NSDate date]];
 	stopTimesVC.delegate = self;
 	
 	GRTStopRoutesViewController *stopRoutesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopRoutesView"];
-	stopRoutesVC.routes = [self.stopDetails routes];
+	stopRoutesVC.routes = [self.stopDetailsManager.stopDetails routes];
 	stopRoutesVC.delegate = self;
 	
 	// Assign view controllers
@@ -100,10 +110,10 @@
 	[self.viewsSegmentedControl setSelectedSegmentIndex:index.integerValue];
 	
 	// Config navigation bar
-	GRTDetailedTitleButtonView *titleView = [[GRTDetailedTitleButtonView alloc] initWithText:self.title detailText:@"Today ▾"];
-	[titleView addTarget:self action:@selector(showModePicker:) forControlEvents:UIControlEventTouchUpInside];
-	[self.navigationItem setTitleView:titleView];
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
+	
+	// Let stop details manager setup the data
+	self.stopDetailsManager.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -141,30 +151,8 @@
 		}
 	}
 	else {
-		self.favoriteStop = [[GRTUserProfile defaultUserProfile] addStop:self.stopDetails.stop];
+		self.favoriteStop = [[GRTUserProfile defaultUserProfile] addStop:self.stopDetailsManager.stopDetails.stop];
 	}
-}
-
-- (IBAction)showModePicker:(id)sender
-{
-	CGPoint point = CGPointMake(self.view.frame.size.width / 2.0, 0.0f);
-	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.view withStringArray:[NSArray arrayWithObjects:@"Today", @"Day in a week", /*@"Certain Date", */nil] delegate:self];
-	popoverView.tag = 0;
-}
-
-- (IBAction)showDayPicker:(id)sender
-{
-	CGPoint point = CGPointMake(self.view.frame.size.width / 2.0, 0.0f);
-	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.view withTitle:@"Pick a date" withStringArray:[NSArray arrayWithObjects: @"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", nil] delegate:self];
-	popoverView.tag = 1;
-}
-
-- (IBAction)showDatePicker:(id)sender
-{
-	CGPoint point = CGPointMake(self.view.frame.size.width / 2.0, 0.0f);
-	// TODO: Use Calendar Instead
-	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.view withTitle:@"Pick a date" withStringArray:[NSArray arrayWithObjects: @"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", nil] delegate:self];
-	popoverView.tag = 2;
 }
 
 #pragma mark - page view data source
@@ -218,36 +206,12 @@
 - (void)stopRoutesViewController:(GRTStopRoutesViewController *)stopRoutesViewController didSelectRoute:(GRTRoute *)route
 {
 	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
-	stopTimesVC.title = [NSString stringWithFormat:@"%@ %@", route.routeId, route.routeLongName];
+//	stopTimesVC.title = [NSString stringWithFormat:@"%@ %@", route.routeId, route.routeLongName];
 	stopTimesVC.delegate = self;
+	stopTimesVC.stopDetailsManager = [[GRTStopDetailsManager alloc] initWithStopDetails:self.stopDetailsManager.stopDetails route:route];
 	[self.navigationController pushViewController:stopTimesVC animated:YES];
 
-	stopTimesVC.stopTimes = [self.stopDetails stopTimesForDate:[NSDate date] andRoute:route];
-}
-
-#pragma mark - popover view delegate
-
-- (void)popoverView:(PopoverView *)popoverView didSelectItemAtIndex:(NSInteger)index
-{
-	NSUInteger tag = popoverView.tag;
-	[popoverView dismiss];
-	if (tag == 0) {
-		switch (index) {
-			case 1:
-				[self showDayPicker:self];
-				break;
-			case 2:
-				[self showDatePicker:self];
-				break;
-			default:
-				self.stopTimesViewController.stopTimes = [self.stopDetails stopTimesForDate:[NSDate date]];
-				break;
-		}
-	}
-	else if (tag == 1) {
-		self.stopTimesViewController.stopTimes = [self.stopDetails stopTimesForDayInWeek:index + 1];
-	}
-	// TODO: Handle other type of popovers
+//	stopTimesVC.stopTimes = [self.stopDetailsManager.stopDetails stopTimesForDate:[NSDate date] andRoute:route];
 }
 
 @end

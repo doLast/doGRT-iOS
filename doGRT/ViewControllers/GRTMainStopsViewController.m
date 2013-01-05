@@ -12,6 +12,7 @@
 #import "GRTPreferencesViewController.h"
 #import "UIViewController+GRTGtfsUpdater.h"
 
+#import "GRTStopDetailsManager.h"
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
 
@@ -259,8 +260,9 @@ enum GRTStopsViewQueue {
 - (void)pushStopDetailsForStop:(GRTStop *)stop
 {
 	GRTStopDetails *stopDetails = [[GRTStopDetails alloc] initWithStop:stop];
+	GRTStopDetailsManager *stopDetailsManager = [[GRTStopDetailsManager alloc] initWithStopDetails:stopDetails];
 	GRTStopDetailsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"stopDetailsView"];
-	viewController.stopDetails = stopDetails;
+	viewController.stopDetailsManager = stopDetailsManager;
 	[self.navigationController popToRootViewControllerAnimated:NO];
 	[self.navigationController pushViewController:viewController animated:YES];
 }

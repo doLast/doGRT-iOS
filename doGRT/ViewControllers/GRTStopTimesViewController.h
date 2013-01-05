@@ -6,6 +6,8 @@
 //
 //
 
+#import "GRTStopDetailsManager.h"
+
 @class GRTStopTime;
 @class GRTStopTimesViewController;
 
@@ -15,8 +17,9 @@
 
 @end
 
-@interface GRTStopTimesViewController : UITableViewController
+@interface GRTStopTimesViewController : UITableViewController <GRTStopDetailsManagerDelegate>
 
+@property (nonatomic, strong) GRTStopDetailsManager *stopDetailsManager;
 @property (nonatomic, weak) id<GRTStopTimesViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSArray *stopTimes;
 

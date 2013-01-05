@@ -57,6 +57,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
+	// If self is working as a independent view controller, stopDetailsManager must be setted
+	if (self.parentViewController == nil || [self.parentViewController isKindOfClass:[UINavigationController class]]) {
+		NSAssert(self.stopDetailsManager != nil, @"Must have a stopTimes");
+		self.stopDetailsManager.delegate = self;
+	}
 }
 
 #pragma mark - view updates
