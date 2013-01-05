@@ -27,6 +27,7 @@
 	if (self) {
 		UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 2.0, labelWidth, 16.0)];
 		textLabel.textAlignment = NSTextAlignmentCenter;
+		textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
 		textLabel.font = [UIFont boldSystemFontOfSize:[UIFont systemFontSize]];
 		textLabel.backgroundColor = [UIColor clearColor];
 		textLabel.textColor = [UIColor whiteColor];
