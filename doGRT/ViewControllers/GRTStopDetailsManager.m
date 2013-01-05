@@ -121,15 +121,12 @@
 	if (tag == 0) {
 		switch (index) {
 			case 1:
-				[self showDayPicker:self];
-				break;
+				return [self showDayPicker:self];
 			case 2:
-				[self showDatePicker:self];
-				break;
+				return [self showDatePicker:self];
 			default:
 				self.date = [NSDate date];
 				self.stopDetailsTitleView.detailTextLabel.text = @"Today ▾";
-				break;
 		}
 	}
 	else if (tag == 1) {
