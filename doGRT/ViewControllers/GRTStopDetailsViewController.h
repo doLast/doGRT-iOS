@@ -15,7 +15,6 @@
 @property (nonatomic, strong) GRTStopDetailsManager *stopDetailsManager;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *viewsSegmentedControl;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *favButton;
-@property (nonatomic) NSArray *stopTimes;
 
 - (IBAction)toggleViews:(id)sender;
 - (IBAction)toggleStopFavorite:(id)sender;

@@ -26,23 +26,30 @@
 @synthesize stopTimes = _stopTimes;
 @synthesize comingBusIndex = _comingBusIndex;
 @synthesize comingBusIndexUpdateTimer = _comingBusIndexUpdateTimer;
+@synthesize splitLeftAndComingBuses = _splitLeftAndComingBuses;
 
 - (void)setStopTimes:(NSArray *)stopTimes
 {
 	if (_stopTimes != stopTimes) {
 		_stopTimes = stopTimes;
-		
-		[self.comingBusIndexUpdateTimer invalidate];
-		self.comingBusIndexUpdateTimer = nil;
+	}
+	
+	[self.comingBusIndexUpdateTimer invalidate];
+	self.comingBusIndexUpdateTimer = nil;
+	if (self.splitLeftAndComingBuses && stopTimes != nil && [stopTimes count] > 0) {
 		[self updateComingBusIndex];
 		self.comingBusIndexUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateComingBusIndex) userInfo:nil repeats:YES];
-		
-		[self scrollToComingBusIndexAnimated:NO];
 	}
 	else {
-		[self.comingBusIndexUpdateTimer invalidate];
-		self.comingBusIndexUpdateTimer = nil;
+		[self.tableView reloadData];
 	}
+	[self scrollToAppropriateIndexAnimated:self.isViewLoaded];
+}
+
+- (void)setStopTimes:(NSArray *)stopTimes splitLeftAndComingBuses:(BOOL)split
+{
+	_splitLeftAndComingBuses = split;
+	[self setStopTimes:stopTimes];
 }
 
 - (void)setComingBusIndex:(NSInteger)comingBusIndex
@@ -55,9 +62,16 @@
 	[self.tableView reloadData];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	[self scrollToAppropriateIndexAnimated:NO];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	_splitLeftAndComingBuses = YES;
 	
 	// If self is working as a independent view controller, stopDetailsManager must be setted
 	if (self.parentViewController == nil || [self.parentViewController isKindOfClass:[UINavigationController class]]) {
@@ -80,14 +94,19 @@
 		}
 		return NO;
 	}].firstIndex;
-	if (comingBusIndex != self.comingBusIndex) {
+//	if (comingBusIndex != self.comingBusIndex) {
 		self.comingBusIndex = comingBusIndex;
-	}
+//	}
 }
 
-- (void)scrollToComingBusIndexAnimated:(BOOL)animated
+- (void)scrollToAppropriateIndexAnimated:(BOOL)animated
 {
-	if (self.stopTimes == nil || [self.stopTimes count] == 0 || self.comingBusIndex < 2) {
+	if (self.stopTimes == nil || [self.stopTimes count] == 0) {
+		return;
+	}
+	
+	if (!self.splitLeftAndComingBuses || self.comingBusIndex < 2) {
+		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:animated];
 		return;
 	}
 	
@@ -129,7 +148,10 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	NSString *title;
-	if (section == 0) {
+	if (!self.splitLeftAndComingBuses) {
+		title = nil;
+	}
+	else if (section == 0) {
 		title = @"Left Buses";
 	}
 	else if (section == 1) {
@@ -140,13 +162,17 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return 2;
+	NSInteger numberOfSections = [self.stopTimes count] == 0 ? 0 : self.splitLeftAndComingBuses ? 2 : 1;
+	return numberOfSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	NSInteger result;
-	if (section == 0) {
+	if (!self.splitLeftAndComingBuses) {
+		result = [self.stopTimes count];
+	}
+	else if (section == 0) {
 		result = self.comingBusIndex;
 	}
 	else {
@@ -166,6 +192,7 @@
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
     
+	NSLog(@"IndexPath: %@", indexPath);
 	GRTStopTime *stopTime = [self.stopTimes objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)];
 	NSInteger time = [stopTime.departureTime integerValue];
 	if(time >= 240000){
@@ -176,7 +203,7 @@
 	}
 	
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
-	cell.detailTextLabel.textColor = indexPath.section == 0 ? [UIColor lightGrayColor] : [UIColor darkTextColor];
+	cell.detailTextLabel.textColor = (indexPath.section > 0 || !self.splitLeftAndComingBuses) ? [UIColor darkTextColor] : [UIColor lightGrayColor];
 	
 	cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", time / 10000, (time / 100) % 100 ];
     

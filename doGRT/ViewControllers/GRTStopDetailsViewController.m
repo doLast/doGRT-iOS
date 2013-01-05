@@ -45,15 +45,11 @@
 	}
 }
 
-- (NSArray *)stopTimes
+- (void)setStopTimes:(NSArray *)stopTimes splitLeftAndComingBuses:(BOOL)split
 {
-	return self.stopTimesViewController.stopTimes;
+	[self.stopTimesViewController setStopTimes:stopTimes splitLeftAndComingBuses:split];
 }
 
-- (void)setStopTimes:(NSArray *)stopTimes
-{
-	self.stopTimesViewController.stopTimes = stopTimes;
-}
 
 #pragma mark - view life-cycle
 

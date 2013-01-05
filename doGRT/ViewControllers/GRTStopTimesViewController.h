@@ -23,8 +23,10 @@
 @property (nonatomic, strong) GRTStopDetailsManager *stopDetailsManager;
 @property (nonatomic, weak) id<GRTStopTimesViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSArray *stopTimes;
+@property (nonatomic, readonly) BOOL splitLeftAndComingBuses;
 
 - (void)showTripDetailsForStopTime:(GRTStopTime *)stopTime inNavigationController:(UINavigationController *)navigationController;
-- (void)scrollToComingBusIndexAnimated:(BOOL)animated;
+- (void)setStopTimes:(NSArray *)stopTimes splitLeftAndComingBuses:(BOOL)split;
+- (void)scrollToAppropriateIndexAnimated:(BOOL)animated;
 
 @end
