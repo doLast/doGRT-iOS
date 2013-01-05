@@ -223,6 +223,16 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	}];
 	[root addSection:defaultScheduleViewSection];
 	
+	// Display 24 hour view section
+	NSNumber *display24Hour = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDisplay24HourPreference];
+	QBooleanElement *display24HourToggle = [[QBooleanElement alloc] initWithTitle:@"Show Time as 24 Hour" BoolValue:display24Hour.boolValue];
+	[display24HourToggle setOnValueChanged:^{
+		[[GRTUserProfile defaultUserProfile] setPreference:[NSNumber numberWithBool:display24HourToggle.boolValue] forKey:GRTUserDisplay24HourPreference];
+	}];
+	QSection *display24HourSection = [[QSection alloc] init];
+	[display24HourSection addElement:display24HourToggle];
+	[root addSection:display24HourSection];
+	
 	// Data update
 	QSection *dataUpdateSection = [[QSection alloc] initWithTitle:@"Schedule Data Update"];
 	NSNumber *endDate = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataEndDateKey];

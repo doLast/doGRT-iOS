@@ -13,6 +13,7 @@
 extern NSString *GRTUserLaunchCountKey;
 extern NSString *GRTUserNearbyDistancePreference;
 extern NSString *GRTUserDefaultScheduleViewPreference;
+extern NSString *GRTUserDisplay24HourPreference;
 extern NSString *GRTUserProfileUpdateNotification;
 
 @interface GRTUserProfile : NSObject

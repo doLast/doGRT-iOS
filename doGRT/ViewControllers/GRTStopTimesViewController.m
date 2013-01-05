@@ -187,7 +187,7 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
-		cell.textLabel.font = [UIFont boldSystemFontOfSize:21];
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
 		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
@@ -205,7 +205,13 @@
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
 	cell.detailTextLabel.textColor = (indexPath.section > 0 || !self.splitLeftAndComingBuses) ? [UIColor darkTextColor] : [UIColor lightGrayColor];
 	
-	cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", time / 10000, (time / 100) % 100 ];
+	NSNumber *display24Hour = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDisplay24HourPreference];
+	if (display24Hour.boolValue) {
+		cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", time / 10000, (time / 100) % 100 ];
+	}
+	else {
+		cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d %@", (time / 10000) % 12, (time / 100) % 100, ((time / 10000) / 12) ? @"pm" : @"am"];
+	}
     
     return cell;
 }

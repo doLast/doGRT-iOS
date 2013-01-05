@@ -12,6 +12,7 @@
 NSString *GRTUserLaunchCountKey = @"GRTUserLaunchCountKey";
 NSString *GRTUserNearbyDistancePreference = @"GRTUserNearbyDistancePreference";
 NSString *GRTUserDefaultScheduleViewPreference = @"GRTUserDefaultScheduleViewPreference";
+NSString *GRTUserDisplay24HourPreference = @"GRTUserDisplay24HourPreference";
 NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification";
 
 @interface GRTUserProfile ()
@@ -33,7 +34,7 @@ NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification"
 	self = [super init];
 	if (self != nil) {
 		self.managedObjectContext = [(id) [[UIApplication sharedApplication] delegate]managedObjectContext];
-		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:0], GRTUserLaunchCountKey, [NSNumber numberWithDouble:500.0], GRTUserNearbyDistancePreference, [NSNumber numberWithInteger:0], GRTUserDefaultScheduleViewPreference, nil]];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:0], GRTUserLaunchCountKey, [NSNumber numberWithDouble:500.0], GRTUserNearbyDistancePreference, [NSNumber numberWithInteger:0], GRTUserDefaultScheduleViewPreference, [NSNumber numberWithBool:YES], GRTUserDisplay24HourPreference, nil]];
 		[self refreshFavoriteStops];
 	}
 	return self;
