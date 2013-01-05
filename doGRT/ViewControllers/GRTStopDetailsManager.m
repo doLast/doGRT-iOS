@@ -114,7 +114,7 @@
 - (IBAction)showDayPicker:(id)sender
 {
 	CGPoint point = CGPointMake(self.delegate.view.frame.size.width / 2.0, 0.0f);
-	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.delegate.view withTitle:@"Pick a date" withStringArray:@[@"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday"] delegate:self];
+	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.delegate.view withStringArray:@[@"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday"] delegate:self];
 	popoverView.tag = 1;
 }
 
