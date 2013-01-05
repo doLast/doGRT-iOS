@@ -17,8 +17,9 @@
 
 @end
 
-@interface GRTStopTimesViewController : UITableViewController <GRTStopDetailsManagerDelegate>
+@interface GRTStopTimesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, GRTStopDetailsManagerDelegate>
 
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) GRTStopDetailsManager *stopDetailsManager;
 @property (nonatomic, weak) id<GRTStopTimesViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSArray *stopTimes;

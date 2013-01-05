@@ -21,6 +21,7 @@
 
 @implementation GRTStopTimesViewController
 
+@synthesize tableView = _tableView;
 @synthesize delegate = _delegate;
 @synthesize stopTimes = _stopTimes;
 @synthesize comingBusIndex = _comingBusIndex;
