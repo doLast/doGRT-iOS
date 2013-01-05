@@ -12,7 +12,7 @@
 
 @protocol GRTStopDetailsManagerDelegate <NSObject>
 
-@property (nonatomic, readwrite) NSArray *stopTimes;
+- (void)setStopTimes:(NSArray *)stopTimes splitLeftAndComingBuses:(BOOL)split;
 - (UIView *)view;
 - (UINavigationItem *)navigationItem;
 
