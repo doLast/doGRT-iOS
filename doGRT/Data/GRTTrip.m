@@ -42,6 +42,11 @@
 	return [[GRTGtfsSystem defaultGtfsSystem] shapeById:self.shapeId];
 }
 
+- (NSArray *)stopTimes
+{
+	return [[GRTGtfsSystem defaultGtfsSystem] stopTimesForTrip:self];
+}
+
 - (GRTTrip *)initWithTripId:(NSNumber *)tripId tripHeadsign:(NSString *)tripHeadsign routeId:(NSNumber *)routeId serviceId:(NSString *)serviceId shapeId:(NSNumber *)shapeId
 {
 	self = [super init];

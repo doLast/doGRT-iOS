@@ -142,4 +142,43 @@
 	return shape;
 }
 
+- (NSArray *)stopTimesForTrip:(GRTTrip *)trip
+{
+	NSMutableArray *arguments = [NSMutableArray arrayWithObject:trip.tripId];
+	NSString *query = [NSString stringWithFormat:@"SELECT S.* \
+					   FROM stop_times as S \
+					   WHERE S.trip_id=? "];
+	
+	// execute database query
+	FMDatabase *db = self.db;
+	FMResultSet *result = [db executeQuery:query withArgumentsInArray:arguments];
+	if (result == nil){
+		NSLog(@"%@", [db lastErrorMessage]);
+		abort();
+	}
+	
+	// process the data
+	NSMutableArray *stopTimes = [[NSMutableArray alloc] init];
+	while ([result next]) {
+		//retrieve values for each record
+		NSNumber *tripId = [NSNumber numberWithInt:[result intForColumn:@"trip_id"]];
+		NSNumber *stopSequence = [NSNumber numberWithInt:[result intForColumn:@"stop_sequence"]];
+		NSNumber *stopId = [NSNumber numberWithInt:[result intForColumn:@"stop_id"]];
+		NSInteger arrivalInt = [result intForColumn:@"arrival_time"];
+		NSInteger departureInt = [result intForColumn:@"departure_time"];
+		
+		NSNumber *arrivalTime = [NSNumber numberWithInt:arrivalInt];
+		NSNumber *departureTime = [NSNumber numberWithInt:departureInt];
+		
+		GRTStopTime *stopTime = [[GRTStopTime alloc] initWithTripId:tripId stopSequence:stopSequence stopId:stopId arrivalTime:arrivalTime departureTime:departureTime];
+		[stopTimes addObject:stopTime];
+	}
+	
+	NSLog(@"Obtain %d stopTimes", [stopTimes count]);
+	
+	[result close];
+	
+	return stopTimes;
+}
+
 @end

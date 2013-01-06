@@ -127,7 +127,7 @@
 	[navigationController pushViewController:tripDetailsVC animated:YES];
 	
 	tripDetailsVC.shape = stopTime.trip.shape;
-	tripDetailsVC.stops = [[GRTGtfsSystem defaultGtfsSystem] stopTimesForTrip:stopTime.trip];
+	tripDetailsVC.stops = stopTime.trip.stopTimes;
 	
 	NSUInteger stopTimeIndex = [tripDetailsVC.stops indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop){
 		GRTStopTime *stopTimeObj = obj;

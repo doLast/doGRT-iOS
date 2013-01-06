@@ -23,5 +23,6 @@
 - (GRTRoute *)routeById:(NSNumber *)routeId;
 - (GRTTrip *)tripById:(NSNumber *)tripId;
 - (GRTShape *)shapeById:(NSNumber *)shapeId;
+- (NSArray *)stopTimesForTrip:(GRTTrip *)trip;
 
 @end

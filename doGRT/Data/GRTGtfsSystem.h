@@ -40,6 +40,5 @@ extern NSString * const GRTGtfsDataUpdateDidFinishNotification;
 - (NSArray *)stopsInRegion:(MKCoordinateRegion)region;
 - (NSArray *)stopsAroundLocation:(CLLocation *)location withinDistance:(CLLocationDistance)distance;
 - (NSArray *)stopsWithNameLike:(NSString *)str;
-- (NSArray *)stopTimesForTrip:(GRTTrip *)trip;
 
 @end
