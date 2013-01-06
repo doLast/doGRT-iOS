@@ -36,14 +36,12 @@
 	
 	[self.comingBusIndexUpdateTimer invalidate];
 	self.comingBusIndexUpdateTimer = nil;
+	[self updateComingBusIndex];
+	[self scrollToAppropriateIndexAnimated:self.isViewLoaded];
+
 	if (self.splitLeftAndComingBuses && stopTimes != nil && [stopTimes count] > 0) {
-		[self updateComingBusIndex];
 		self.comingBusIndexUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateComingBusIndex) userInfo:nil repeats:YES];
 	}
-	else {
-		[self.tableView reloadData];
-	}
-	[self scrollToAppropriateIndexAnimated:self.isViewLoaded];
 }
 
 - (void)setStopTimes:(NSArray *)stopTimes splitLeftAndComingBuses:(BOOL)split
@@ -62,11 +60,12 @@
 	[self.tableView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-	[super viewWillAppear:animated];
-	[self scrollToAppropriateIndexAnimated:NO];
-}
+//- (void)viewDidAppear:(BOOL)animated
+//{
+//	[super viewDidAppear:animated];
+//	NSLog(@"Frame: %f, %f", self.view.frame.size.width, self.view.frame.size.height);
+//	[self scrollToAppropriateIndexAnimated:YES];
+//}
 
 - (void)viewDidLoad
 {
@@ -94,9 +93,7 @@
 		}
 		return NO;
 	}].firstIndex;
-//	if (comingBusIndex != self.comingBusIndex) {
-		self.comingBusIndex = comingBusIndex;
-//	}
+	self.comingBusIndex = comingBusIndex;
 }
 
 - (void)scrollToAppropriateIndexAnimated:(BOOL)animated
@@ -105,7 +102,7 @@
 		return;
 	}
 	
-	if (!self.splitLeftAndComingBuses || self.comingBusIndex < 2) {
+	if (self.comingBusIndex < 2) {
 		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:animated];
 		return;
 	}
