@@ -69,7 +69,6 @@
 	// Prepare data for views construction
 	NSAssert(self.stopDetailsManager != nil, @"Must have a stopTimes");
 	
-//	self.title = self.stopDetails.stop.stopName;
 	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopDetailsManager.stopDetails.stop];
 	self.view.backgroundColor = [UIColor underPageBackgroundColor];
 	[self.favButton setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIFont boldSystemFontOfSize:17.0] forKey:UITextAttributeFont] forState:UIControlStateNormal];
@@ -207,8 +206,6 @@
 	stopTimesVC.stopDetailsManager.dayInWeek = self.stopDetailsManager.dayInWeek;
 	stopTimesVC.stopDetailsManager.date = self.stopDetailsManager.date;
 	[self.navigationController pushViewController:stopTimesVC animated:YES];
-
-//	stopTimesVC.stopTimes = [self.stopDetailsManager.stopDetails stopTimesForDate:[NSDate date] andRoute:route];
 }
 
 @end
