@@ -11,7 +11,9 @@
 #import "FMDatabase.h"
 #import "ASIHTTPRequest.h"
 
-static const int kMaxStopsLimit = 30;
+static const NSInteger kMaxStopsLimit = 30;
+static const NSInteger kBuiltInDataVersion = 20121227;
+static const NSInteger kBuiltInDataEndDate = 20130428;
 
 NSString * const GRTGtfsDataVersionKey = @"GRTGtfsDataVersionKey";
 NSString * const GRTGtfsDataEndDateKey = @"GRTGtfsDataEndDateKey";
@@ -103,7 +105,7 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/grt_gtfs_data/g
 		self.routes = [[NSCache alloc] init];
 		self.trips = [[NSCache alloc] init];
 		self.shapes = [[NSCache alloc] init];
-		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:20121227], GRTGtfsDataVersionKey, [NSNumber numberWithInteger:20130428], GRTGtfsDataEndDateKey, nil]];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:kBuiltInDataVersion], GRTGtfsDataVersionKey, [NSNumber numberWithInteger:kBuiltInDataEndDate], GRTGtfsDataEndDateKey, nil]];
 	}
 	return self;
 }
@@ -139,18 +141,19 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/grt_gtfs_data/g
 	// Copy database to documents directory if does not exists
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSURL *localURL = [self dbURL];
+	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
 	
-	if (![fileManager fileExistsAtPath:localURL.path]) {
+	if (![fileManager fileExistsAtPath:localURL.path] || dataVersion.integerValue < kBuiltInDataVersion) {
 		NSURL *dbURL = [[NSBundle mainBundle] URLForResource:@"GRT_GTFS" withExtension:@"sqlite"];
 		NSError *error = nil;
-//		[fileManager removeItemAtURL:localURL error:nil];
+		[fileManager removeItemAtURL:localURL error:nil];
 		if (![fileManager copyItemAtURL:dbURL toURL:localURL error:&error]) {
 			NSLog(@"Fail to copy db with error %@", error.localizedDescription);
 			abort();
 		}
 		NSLog(@"DB copied from %@ to %@", dbURL, localURL);
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20121227] forKey:GRTGtfsDataVersionKey];
-		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:20130428] forKey:GRTGtfsDataEndDateKey];
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:kBuiltInDataVersion] forKey:GRTGtfsDataVersionKey];
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:kBuiltInDataEndDate] forKey:GRTGtfsDataEndDateKey];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	[self addSkipBackupAttributeToItemAtURL:localURL];
