@@ -101,14 +101,14 @@
 	if (self.stopTimes == nil || [self.stopTimes count] == 0) {
 		return;
 	}
-    
+	
 	NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
 	if (self.comingBusIndex > 2){
 		scrollIndexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 2 inSection:0];
 	}
-    else if(self.comingBusIndex > 0) {
-        scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    }
+	else if(self.comingBusIndex > 0) {
+		scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+	}
 	
 	NSLog(@"Scrolling to indexPath: %@, comingBusIndex: %d", scrollIndexPath, self.comingBusIndex);
 	[self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:animated];
