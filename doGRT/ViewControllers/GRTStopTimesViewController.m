@@ -101,8 +101,8 @@
 	if (self.stopTimes == nil || [self.stopTimes count] == 0) {
 		return;
 	}
-	
-	NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+
+	NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:self.splitLeftAndComingBuses ? 1 : 0];
 	if (self.comingBusIndex > 2){
 		scrollIndexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 2 inSection:0];
 	}
