@@ -102,17 +102,12 @@
 		return;
 	}
 	
-	if (self.comingBusIndex < 2) {
-		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:animated];
-		return;
-	}
-	
-	NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:[self.stopTimes count] - 1 inSection:0];
-	if (self.comingBusIndex != [self.stopTimes count]){
-		scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-	}
-	if (self.comingBusIndex >= 2){
+	NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+	if (self.comingBusIndex > 2){
 		scrollIndexPath = [NSIndexPath indexPathForRow:self.comingBusIndex - 2 inSection:0];
+	}
+	else if(self.comingBusIndex > 0) {
+		scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 	}
 	
 	NSLog(@"Scrolling to indexPath: %@, comingBusIndex: %d", scrollIndexPath, self.comingBusIndex);
