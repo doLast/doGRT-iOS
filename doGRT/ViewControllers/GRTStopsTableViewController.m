@@ -150,7 +150,7 @@
 	else if ([[self stopAtIndex:indexPath.row] isKindOfClass:[GRTStop class]]) {
 		return UITableViewCellEditingStyleInsert;
 	}
-	return UITableViewCellAccessoryNone;
+	return UITableViewCellEditingStyleNone;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath

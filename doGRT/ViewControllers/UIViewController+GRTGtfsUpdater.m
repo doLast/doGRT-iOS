@@ -101,7 +101,7 @@ static id theOneRequestUpdate = nil;
 		NSInteger date = endDate.integerValue;
 		labelBarItemSet = [ITLabelBarItemSet labelBarItemSetWithDismissTarget:self andAction:@selector(hideBarItemSet:)];
 		labelBarItemSet.textLabel.text = @"Update Succeed!";
-		labelBarItemSet.detailTextLabel.text = [NSString stringWithFormat:@"New schedule valie until %d/%d/%d", (date / 100) % 100, date % 100, date / 10000];
+		labelBarItemSet.detailTextLabel.text = [NSString stringWithFormat:@"New schedule valid until %d/%d/%d", (date / 100) % 100, date % 100, date / 10000];
 	}
 	else {
 		labelBarItemSet = [ITConfirmationBarItemSet confirmationBarItemSetWithTarget:self andConfirmAction:@selector(startUpdate:) andDismissAction:@selector(hideBarItemSet:)];
