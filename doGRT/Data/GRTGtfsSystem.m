@@ -23,7 +23,7 @@ NSString * const GRTGtfsDataUpdateCheckNotification = @"GRTGtfsDataUpdateCheckNo
 NSString * const GRTGtfsDataUpdateInProgressNotification = @"GRTGtfsDataUpdateInProgressNotification";
 NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDidFinishNotification";
 
-NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/grt_gtfs_data/grt_gtfs.json";
+NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/gtfs_data/grt.json";
 
 @interface GRTGtfsSystem ()
 
@@ -188,21 +188,25 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/grt_gtfs_data/g
 	}
 	NSURL *localURL = [self dbURL];
 	NSURL *remoteURL = [NSURL URLWithString:(id) [self.updateInfo objectForKey:@"url"]];
-	NSLog(@"Starting update, local: %@, remote: %@", localURL, remoteURL);
 	
 	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:remoteURL];
 	self.updateRequest = request;
-	
+
 	[request setDownloadDestinationPath:[localURL.path copy]];
+
+	NSString *releaseDate = [self.updateInfo objectForKey:@"releaseDate"];
+	localURL = [localURL URLByAppendingPathExtension:releaseDate];
 	localURL = [localURL URLByAppendingPathExtension:@"download"];
 	[request setTemporaryFileDownloadPath:[localURL.path copy]];
+
 	[request setAllowResumeForFileDownloads:YES];
-	
 	[request setDownloadProgressDelegate:self];
 	[request setDelegate:self];
 	[request setDidFinishSelector:@selector(didFinishDownloadUpdate:)];
 	[request setDidFailSelector:@selector(didFailDownloadUpdate:)];
-	
+
+	NSLog(@"Starting update, local: %@, remote: %@, temp: %@", request.downloadDestinationPath, request.url, localURL);
+
 	[request startAsynchronous];
 }
 
@@ -216,6 +220,8 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/grt_gtfs_data/g
 	self.updateRequest = nil;
 	[request clearDelegatesAndCancel];
 	NSURL *localURL = [self dbURL];
+	NSString *releaseDate = [self.updateInfo objectForKey:@"releaseDate"];
+	localURL = [localURL URLByAppendingPathExtension:releaseDate];
 	localURL = [localURL URLByAppendingPathExtension:@"download"];
 	[[NSFileManager defaultManager] removeItemAtURL:localURL error:nil];
 	NSLog(@"Update abort, local deleted %@", localURL);
@@ -235,9 +241,16 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/grt_gtfs_data/g
 	
 	NSLog(@"Update Info: %@", json);
 	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
-	NSNumber *releaseDate = [json objectForKey:@"releaseDate"];
+	NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:[NSDate date]];
+	NSInteger currentDate = components.year * 10000 + components.month * 100 + components.day;
+
+	NSString *releaseDate = [json objectForKey:@"releaseDate"];
 	NSString *releaseName = [json objectForKey:@"releaseName"];
-	if (releaseDate.integerValue > dataVersion.integerValue) {
+	NSString *startDate = [json objectForKey:@"startDate"];
+
+	NSLog(@"CurrentRelease: %d StartDate: %d DataVersion: %d CurrentDate: %d", releaseDate.integerValue, startDate.integerValue, dataVersion.integerValue, currentDate);
+	if (releaseDate.integerValue > dataVersion.integerValue &&
+		currentDate >= startDate.integerValue) {
 		self.updateInfo = json;
 		[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateCheckNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:releaseDate, GRTGtfsDataVersionKey, releaseName, GRTGtfsDataReleaseNameKey, nil]]];
 	}
