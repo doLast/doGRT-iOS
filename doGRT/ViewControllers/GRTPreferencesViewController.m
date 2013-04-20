@@ -218,16 +218,18 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	// Default schedule view section
 	NSNumber *defaultScheduleView = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDefaultScheduleViewPreference];
 	QRadioSection *defaultScheduleViewSection = [[QRadioSection alloc] initWithItems:@[@"Mixed Schedule", @"Routes List"] selected:defaultScheduleView.integerValue title:@"Default Schedule View"];
+	__weak QRadioSection *defaultScheduleViewSectionWeak = defaultScheduleViewSection;
 	[defaultScheduleViewSection setOnSelected:^{
-		[[GRTUserProfile defaultUserProfile] setPreference:[defaultScheduleViewSection.selectedIndexes objectAtIndex:0] forKey:GRTUserDefaultScheduleViewPreference];
+		[[GRTUserProfile defaultUserProfile] setPreference:[defaultScheduleViewSectionWeak.selectedIndexes objectAtIndex:0] forKey:GRTUserDefaultScheduleViewPreference];
 	}];
 	[root addSection:defaultScheduleViewSection];
 	
 	// Display 24 hour view section
 	NSNumber *display24Hour = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDisplay24HourPreference];
 	QBooleanElement *display24HourToggle = [[QBooleanElement alloc] initWithTitle:@"Show Time as 24 Hour" BoolValue:display24Hour.boolValue];
+	__weak QBooleanElement *display24HourToggleWeak = display24HourToggle;
 	[display24HourToggle setOnValueChanged:^(QRootElement *root){
-		[[GRTUserProfile defaultUserProfile] setPreference:[NSNumber numberWithBool:display24HourToggle.boolValue] forKey:GRTUserDisplay24HourPreference];
+		[[GRTUserProfile defaultUserProfile] setPreference:[NSNumber numberWithBool:display24HourToggleWeak.boolValue] forKey:GRTUserDisplay24HourPreference];
 	}];
 	QSection *display24HourSection = [[QSection alloc] init];
 	[display24HourSection addElement:display24HourToggle];
