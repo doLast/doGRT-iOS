@@ -284,7 +284,7 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/gtfs_data/grt.j
 - (void)didFailDownloadUpdate:(ASIHTTPRequest *)request
 {
 	self.updateRequest = nil;
-	NSURL *tempURL = [NSURL URLWithString:request.temporaryFileDownloadPath];
+	NSURL *tempURL = [NSURL fileURLWithPath:request.temporaryFileDownloadPath];
 	[self addSkipBackupAttributeToItemAtURL:tempURL];
 	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateDidFinishNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO], @"result", nil]]];
 }
