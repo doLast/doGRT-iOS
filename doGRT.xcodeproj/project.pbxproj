@@ -64,9 +64,9 @@
 		25831FCD162B5AD500EDD65D /* ASIFormDataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 25831FC9162B5AD400EDD65D /* ASIFormDataRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		25831FCE162B5AD500EDD65D /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 25831FCB162B5AD500EDD65D /* ASINetworkQueue.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		25831FD0162B5B4600EDD65D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 25831FCF162B5B4500EDD65D /* libz.dylib */; };
+		258D7D6A178354C000D287A0 /* GRT_GTFS.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 258D7D69178354C000D287A0 /* GRT_GTFS.sqlite */; };
 		2590035F1610E5A100FE051C /* GRTMainStopsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2590035E1610E5A100FE051C /* GRTMainStopsViewController.m */; };
 		259003651610EB4A00FE051C /* UINavigationController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 259003641610EB4A00FE051C /* UINavigationController+Rotation.m */; };
-		25900367161101BD00FE051C /* GRT_GTFS.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 25900366161101BD00FE051C /* GRT_GTFS.sqlite */; };
 		2590037D1611639000FE051C /* GRTRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = 2590037C1611639000FE051C /* GRTRoute.m */; };
 		25900383161166AD00FE051C /* GRTShapePt.m in Sources */ = {isa = PBXBuildFile; fileRef = 25900382161166AC00FE051C /* GRTShapePt.m */; };
 		2590038A161168BA00FE051C /* GRTGtfsSystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 25900389161168BA00FE051C /* GRTGtfsSystem.m */; };
@@ -227,11 +227,11 @@
 		25831FCA162B5AD400EDD65D /* ASINetworkQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASINetworkQueue.h; path = "asi-http-request/Classes/ASINetworkQueue.h"; sourceTree = "<group>"; };
 		25831FCB162B5AD500EDD65D /* ASINetworkQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASINetworkQueue.m; path = "asi-http-request/Classes/ASINetworkQueue.m"; sourceTree = "<group>"; };
 		25831FCF162B5B4500EDD65D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		258D7D69178354C000D287A0 /* GRT_GTFS.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = GRT_GTFS.sqlite; sourceTree = "<group>"; };
 		2590035D1610E5A100FE051C /* GRTMainStopsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GRTMainStopsViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2590035E1610E5A100FE051C /* GRTMainStopsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GRTMainStopsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		259003631610EB4A00FE051C /* UINavigationController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Rotation.h"; sourceTree = "<group>"; };
 		259003641610EB4A00FE051C /* UINavigationController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Rotation.m"; sourceTree = "<group>"; };
-		25900366161101BD00FE051C /* GRT_GTFS.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = GRT_GTFS.sqlite; sourceTree = "<group>"; };
 		2590037B1611639000FE051C /* GRTRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTRoute.h; sourceTree = "<group>"; };
 		2590037C1611639000FE051C /* GRTRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTRoute.m; sourceTree = "<group>"; };
 		25900381161166AC00FE051C /* GRTShapePt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTShapePt.h; sourceTree = "<group>"; };
@@ -419,7 +419,7 @@
 				250DE3CB16285A58002B9344 /* Images */,
 				25C7493B15E09173003AB331 /* iPhoneStoryboard.storyboard */,
 				25C7493D15E09190003AB331 /* iPadStoryboard.storyboard */,
-				25900366161101BD00FE051C /* GRT_GTFS.sqlite */,
+				258D7D69178354C000D287A0 /* GRT_GTFS.sqlite */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -678,7 +678,6 @@
 				25C7493C15E09173003AB331 /* iPhoneStoryboard.storyboard in Resources */,
 				25C7493E15E09190003AB331 /* iPadStoryboard.storyboard in Resources */,
 				253519D8160E52C40042BEA4 /* Default-568h@2x.png in Resources */,
-				25900367161101BD00FE051C /* GRT_GTFS.sqlite in Resources */,
 				257B1C8E1620A96F00176083 /* Icon-72.png in Resources */,
 				257B1C8F1620A96F00176083 /* Icon-72@2x.png in Resources */,
 				257B1C901620A96F00176083 /* Icon-Small-50.png in Resources */,
@@ -697,6 +696,7 @@
 				25F06FE51639E9AC001151B0 /* Default-Portrait.png in Resources */,
 				25F06FE61639E9AC001151B0 /* Default-Landscape@2x.png in Resources */,
 				25F06FE71639E9AC001151B0 /* Default-Landscape.png in Resources */,
+				258D7D6A178354C000D287A0 /* GRT_GTFS.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
