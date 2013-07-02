@@ -11,6 +11,7 @@
 #import "GRTStopsTableViewController.h"
 #import "GRTPreferencesViewController.h"
 #import "UIViewController+GRTGtfsUpdater.h"
+#import "InformaticToolbar.h"
 
 #import "GRTStopDetailsManager.h"
 #import "GRTGtfsSystem.h"
@@ -42,12 +43,14 @@ typedef enum GRTStopsViewType {
 
 @property (nonatomic, strong, readonly) NSArray *tableViewControllers;
 @property (nonatomic, strong) NSIndexPath *editingFavIndexPath;
-@property (atomic) GRTStopsViewType currentViewType;
 
 @property (nonatomic, strong, readonly) NSArray *operationQueues;
 @property (nonatomic, strong) UIBarButtonItem *locateButton;
 @property (nonatomic, strong) UIBarButtonItem *searchButton;
 @property (nonatomic, strong) UIBarButtonItem *preferencesButton;
+
+@property (atomic) GRTStopsViewType currentViewType;
+@property (nonatomic, strong) UISegmentedControl *viewsSegmentedControl;
 
 @end
 
@@ -60,6 +63,9 @@ typedef enum GRTStopsViewType {
 @synthesize locateButton = _locateButton;
 @synthesize searchButton = _searchButton;
 @synthesize preferencesButton = _preferencesButton;
+
+@synthesize currentViewType = _currentViewType;
+@synthesize viewsSegmentedControl = _viewsSegmentedControl;
 
 @synthesize tableView = _tableView;
 @synthesize searchResultViewController = _searchResultViewController;
@@ -135,6 +141,21 @@ typedef enum GRTStopsViewType {
 	// Hide SearchBar
 	UISearchBar *searchBar = self.searchDisplayController.searchBar;
 	[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
+
+	// Construct Segmented Control
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone &&
+		self.viewsSegmentedControl == nil) {
+		UISegmentedControl *viewsSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Stops List", @"Map"]];
+		viewsSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+		[viewsSegmentedControl addTarget:self action:@selector(toggleViews:) forControlEvents:UIControlEventValueChanged];
+		UIBarButtonItem *segmentedControlItem = [[UIBarButtonItem alloc] initWithCustomView:viewsSegmentedControl];
+
+		ITBarItemSet *barItemSet = [[ITBarItemSet alloc] initWithItems:@[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], segmentedControlItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]]];
+
+		[self pushBarItemSet:barItemSet animated:YES];
+
+		self.viewsSegmentedControl = viewsSegmentedControl;
+	}
 	
 	// Set search table view controller delegate
 	self.searchResultViewController.delegate = self;
@@ -214,6 +235,7 @@ typedef enum GRTStopsViewType {
 		[self.stopsMapViewController setMapAlpha:1.0 animationDuration:duration];
 	}
 	self.currentViewType = type;
+	self.viewsSegmentedControl.selectedSegmentIndex = type;
 }
 
 - (void)updateFavoriteStops
@@ -286,6 +308,12 @@ typedef enum GRTStopsViewType {
 }
 
 #pragma mark - actions
+
+- (IBAction)toggleViews:(UISegmentedControl *)sender
+{
+	NSInteger viewIndex = sender.selectedSegmentIndex;
+	[self showViewType:viewIndex animationDuration:0.2];
+}
 
 - (IBAction)showPreferences:(id)sender
 {
