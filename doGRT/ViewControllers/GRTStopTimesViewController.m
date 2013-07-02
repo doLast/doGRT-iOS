@@ -201,7 +201,9 @@
 		cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", time / 10000, (time / 100) % 100 ];
 	}
 	else {
-		cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d %@", (time / 10000) % 12, (time / 100) % 100, ((time / 10000) / 12) ? @"pm" : @"am"];
+		int hour = time / 10000;
+		hour = hour == 12 ? 12 : hour % 12;
+		cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d %@", hour, (time / 100) % 100, ((time / 10000) / 12) ? @"pm" : @"am"];
 	}
     
     return cell;
