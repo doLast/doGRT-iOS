@@ -12,8 +12,8 @@
 #import "ASIHTTPRequest.h"
 
 static const NSInteger kMaxStopsLimit = 30;
-static const NSInteger kBuiltInDataVersion = 20121227;
-static const NSInteger kBuiltInDataEndDate = 20130428;
+static const NSInteger kBuiltInDataVersion = 20130901;
+static const NSInteger kBuiltInDataEndDate = 20131222;
 
 NSString * const GRTGtfsDataVersionKey = @"GRTGtfsDataVersionKey";
 NSString * const GRTGtfsDataEndDateKey = @"GRTGtfsDataEndDateKey";
@@ -284,7 +284,7 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/gtfs_data/grt.j
 - (void)didFailDownloadUpdate:(ASIHTTPRequest *)request
 {
 	self.updateRequest = nil;
-	NSURL *tempURL = [NSURL URLWithString:request.temporaryFileDownloadPath];
+	NSURL *tempURL = [NSURL fileURLWithPath:request.temporaryFileDownloadPath];
 	[self addSkipBackupAttributeToItemAtURL:tempURL];
 	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateDidFinishNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO], @"result", nil]]];
 }
