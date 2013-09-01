@@ -11,6 +11,7 @@
 #import "GRTStopsTableViewController.h"
 #import "GRTPreferencesViewController.h"
 #import "UIViewController+GRTGtfsUpdater.h"
+#import "InformaticToolbar.h"
 
 #import "GRTStopDetailsManager.h"
 #import "GRTGtfsSystem.h"
@@ -32,6 +33,12 @@ enum GRTStopsViewQueue {
 	GRTStopsViewQueueTotal,
 };
 
+typedef enum GRTStopsViewType {
+	GRTStopsTableView = 0,
+	GRTStopsMapView,
+	GRTStopsViewTypeTotal,
+} GRTStopsViewType;
+
 @interface GRTMainStopsViewController ()
 
 @property (nonatomic, strong, readonly) NSArray *tableViewControllers;
@@ -41,6 +48,9 @@ enum GRTStopsViewQueue {
 @property (nonatomic, strong) UIBarButtonItem *locateButton;
 @property (nonatomic, strong) UIBarButtonItem *searchButton;
 @property (nonatomic, strong) UIBarButtonItem *preferencesButton;
+
+@property (atomic) GRTStopsViewType currentViewType;
+@property (nonatomic, strong) UISegmentedControl *viewsSegmentedControl;
 
 @end
 
@@ -53,6 +63,9 @@ enum GRTStopsViewQueue {
 @synthesize locateButton = _locateButton;
 @synthesize searchButton = _searchButton;
 @synthesize preferencesButton = _preferencesButton;
+
+@synthesize currentViewType = _currentViewType;
+@synthesize viewsSegmentedControl = _viewsSegmentedControl;
 
 @synthesize tableView = _tableView;
 @synthesize searchResultViewController = _searchResultViewController;
@@ -128,6 +141,21 @@ enum GRTStopsViewQueue {
 	// Hide SearchBar
 	UISearchBar *searchBar = self.searchDisplayController.searchBar;
 	[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
+
+	// Construct Segmented Control
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone &&
+		self.viewsSegmentedControl == nil) {
+		UISegmentedControl *viewsSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Stops List", @"Map"]];
+		viewsSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+		[viewsSegmentedControl addTarget:self action:@selector(toggleViews:) forControlEvents:UIControlEventValueChanged];
+		UIBarButtonItem *segmentedControlItem = [[UIBarButtonItem alloc] initWithCustomView:viewsSegmentedControl];
+
+		ITBarItemSet *barItemSet = [[ITBarItemSet alloc] initWithItems:@[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], segmentedControlItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]]];
+
+		[self pushBarItemSet:barItemSet animated:YES];
+
+		self.viewsSegmentedControl = viewsSegmentedControl;
+	}
 	
 	// Set search table view controller delegate
 	self.searchResultViewController.delegate = self;
@@ -157,7 +185,6 @@ enum GRTStopsViewQueue {
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 	
 	[self setNavigationBarHidden:self.searchDisplayController.active animated:animated];
-	[self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
 	
 	// Gtfs update
 	[self updateGtfsUpdaterStatus];
@@ -179,15 +206,11 @@ enum GRTStopsViewQueue {
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-			self.navigationItem.leftBarButtonItem = self.locateButton;
-			self.navigationItem.rightBarButtonItem = self.searchButton;
-			[self.stopsMapViewController setMapAlpha:1.0 animationDuration:duration];
+		if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+			[self showViewType:GRTStopsTableView animationDuration:duration];
 		}
 		else {
-			self.navigationItem.leftBarButtonItem = self.editButtonItem;
-			self.navigationItem.rightBarButtonItem = self.preferencesButton;
-			[self.stopsMapViewController setMapAlpha:0.0 animationDuration:duration];
+			[self showViewType:GRTStopsMapView animationDuration:duration];
 		}
 	}
 	else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -197,6 +220,22 @@ enum GRTStopsViewQueue {
 }
 
 #pragma mark - view update
+
+- (void)showViewType:(GRTStopsViewType)type animationDuration:(NSTimeInterval)duration
+{
+	if (type == GRTStopsTableView) {
+		self.navigationItem.leftBarButtonItem = self.editButtonItem;
+		self.navigationItem.rightBarButtonItem = self.preferencesButton;
+		[self.stopsMapViewController setMapAlpha:0.0 animationDuration:duration];
+	}
+	else if (type == GRTStopsMapView) {
+		self.navigationItem.leftBarButtonItem = self.locateButton;
+		self.navigationItem.rightBarButtonItem = self.searchButton;
+		[self.stopsMapViewController setMapAlpha:1.0 animationDuration:duration];
+	}
+	self.currentViewType = type;
+	self.viewsSegmentedControl.selectedSegmentIndex = type;
+}
 
 - (void)updateFavoriteStops
 {
@@ -269,6 +308,12 @@ enum GRTStopsViewQueue {
 
 #pragma mark - actions
 
+- (IBAction)toggleViews:(UISegmentedControl *)sender
+{
+	NSInteger viewIndex = sender.selectedSegmentIndex;
+	[self showViewType:viewIndex animationDuration:0.2];
+}
+
 - (IBAction)showPreferences:(id)sender
 {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -276,16 +321,6 @@ enum GRTStopsViewQueue {
 	}
 	else if ([sender isKindOfClass:[UIBarButtonItem class]]) {
 		[GRTPreferencesViewController showPreferencesFromBarButtonItem:sender];
-	}
-}
-
-- (IBAction)didTapLeftNavButton:(id)sender
-{
-	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-		[self showPreferences:sender];
-	}
-	else {
-		[self.stopsMapViewController startTrackingUserLocation:sender];
 	}
 }
 
@@ -300,16 +335,6 @@ enum GRTStopsViewQueue {
 		[self.searchDisplayController.searchBar becomeFirstResponder];
 	}];
 	[self setNavigationBarHidden:YES animated:YES];
-}
-
-- (IBAction)didTapRightNavButton:(id)sender
-{
-	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-		[self showPreferences:sender];
-	}
-	else {
-		[self showSearch:sender];
-	}
 }
 
 #pragma mark - search delegate
@@ -353,13 +378,13 @@ enum GRTStopsViewQueue {
 
 - (void)presentStop:(GRTStop *)stop
 {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || self.currentViewType == GRTStopsMapView) {
 		GRTFavoriteStop *favStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:stop];
 		[self.stopsMapViewController selectStop: favStop != nil ? favStop : stop];
 		
 		[self.searchDisplayController setActive:NO animated:YES];
 	}
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || self.currentViewType == GRTStopsTableView) {
 		[self pushStopDetailsForStop:stop];
 	}
 }
