@@ -185,7 +185,6 @@ typedef enum GRTStopsViewType {
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 	
 	[self setNavigationBarHidden:self.searchDisplayController.active animated:animated];
-	[self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
 	
 	// Gtfs update
 	[self updateGtfsUpdaterStatus];
