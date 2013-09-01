@@ -125,7 +125,9 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/gtfs_data/grt.j
 
 - (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL
 {
-    assert([[NSFileManager defaultManager] fileExistsAtPath: [URL path]]);
+    if (![[NSFileManager defaultManager] fileExistsAtPath: [URL path]]) {
+        return false;
+    }
 	
     NSError *error = nil;
     BOOL success = [URL setResourceValue: [NSNumber numberWithBool: YES]
@@ -284,6 +286,7 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/gtfs_data/grt.j
 - (void)didFailDownloadUpdate:(ASIHTTPRequest *)request
 {
 	self.updateRequest = nil;
+	NSLog(@"Fail to download update: %@", request.error);
 	NSURL *tempURL = [NSURL fileURLWithPath:request.temporaryFileDownloadPath];
 	[self addSkipBackupAttributeToItemAtURL:tempURL];
 	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateDidFinishNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO], @"result", nil]]];
