@@ -169,6 +169,9 @@ typedef enum GRTStopsViewType {
 	
 	// Reload favorites
 	[self updateFavoriteStops];
+    
+    // Init default view type
+    [self showViewType:GRTStopsTableView animationDuration:0.0f];
 	
 	// Subscribe to user profile update
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFavoriteStops) name:GRTUserProfileUpdateNotification object:[GRTUserProfile defaultUserProfile]];
