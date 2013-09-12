@@ -5,16 +5,19 @@ PODS:
   - FMDB/standard (2.1):
     - FMDB/common
   - InformaticToolbar (0.2.1)
+  - PopoverView (0.0.1)
   - QuickDialog (0.9)
 
 DEPENDENCIES:
   - FMDB (~> 2.x)
   - InformaticToolbar (~> 0.2.x)
+  - PopoverView (~> 0.0.x)
   - QuickDialog (~> 0.9.x)
 
 SPEC CHECKSUMS:
   FMDB: 2769004a271eae0bbd8bd4f45a3f2acfd0d3df0e
   InformaticToolbar: 2cdade68b58b7dcfd81cd1914ce18bfa06c1f313
+  PopoverView: 571c17ebd5f0c20570e1f12ca1800bd56e1b6dc3
   QuickDialog: aea6a7b1a235ba0439065a45e5b124a8422f4e2c
 
 COCOAPODS: 0.24.0

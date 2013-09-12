@@ -32,7 +32,6 @@
 		2564647016129142000FC7DC /* GRTFavoriteStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 2564646F16129142000FC7DC /* GRTFavoriteStop.m */; };
 		256464731612916E000FC7DC /* GRTUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 256464721612916E000FC7DC /* GRTUserProfile.m */; };
 		256464761612AAB3000FC7DC /* GRTStopTimesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 256464751612AAB2000FC7DC /* GRTStopTimesViewController.m */; };
-		256858AF1690D6A100860ED9 /* PopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 256858AD1690D6A100860ED9 /* PopoverView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		2572166F162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 2572166E162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.m */; };
 		257B1C8E1620A96F00176083 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 257B1C841620A96F00176083 /* Icon-72.png */; };
 		257B1C8F1620A96F00176083 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 257B1C851620A96F00176083 /* Icon-72@2x.png */; };
@@ -125,8 +124,6 @@
 		256464721612916E000FC7DC /* GRTUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTUserProfile.m; sourceTree = "<group>"; };
 		256464741612AAB2000FC7DC /* GRTStopTimesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopTimesViewController.h; sourceTree = "<group>"; };
 		256464751612AAB2000FC7DC /* GRTStopTimesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopTimesViewController.m; sourceTree = "<group>"; };
-		256858AC1690D6A100860ED9 /* PopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView.h; sourceTree = "<group>"; };
-		256858AD1690D6A100860ED9 /* PopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverView.m; sourceTree = "<group>"; };
 		2572166D162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+GRTGtfsUpdater.h"; sourceTree = "<group>"; };
 		2572166E162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+GRTGtfsUpdater.m"; sourceTree = "<group>"; };
 		257B1C841620A96F00176083 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
@@ -184,7 +181,6 @@
 		2591430A1614ACE600F0D215 /* GRTStopRoutesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopRoutesViewController.m; sourceTree = "<group>"; };
 		25C7493B15E09173003AB331 /* iPhoneStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPhoneStoryboard.storyboard; sourceTree = "<group>"; };
 		25C7493D15E09190003AB331 /* iPadStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPadStoryboard.storyboard; sourceTree = "<group>"; };
-		25D1C70F1690DF8B004C984A /* PopoverView_Configuration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopoverView_Configuration.h; sourceTree = "<group>"; };
 		25D1C7121690FA6F004C984A /* GRTDetailedTitleButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTDetailedTitleButtonView.h; sourceTree = "<group>"; };
 		25D1C7131690FA6F004C984A /* GRTDetailedTitleButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTDetailedTitleButtonView.m; sourceTree = "<group>"; };
 		25EAB19514CD783F004A9DEC /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -305,7 +301,6 @@
 			isa = PBXGroup;
 			children = (
 				25831FA8162B578700EDD65D /* ASIHttpRequest */,
-				256858AB1690D6A100860ED9 /* PopoverView */,
 				25831FCF162B5B4500EDD65D /* libz.dylib */,
 				25EAB19514CD783F004A9DEC /* libsqlite3.dylib */,
 				2515EDAB14C5839300FDCD6D /* MessageUI.framework */,
@@ -386,17 +381,6 @@
 				2564646F16129142000FC7DC /* GRTFavoriteStop.m */,
 			);
 			path = UserProfile;
-			sourceTree = "<group>";
-		};
-		256858AB1690D6A100860ED9 /* PopoverView */ = {
-			isa = PBXGroup;
-			children = (
-				25D1C70F1690DF8B004C984A /* PopoverView_Configuration.h */,
-				256858AC1690D6A100860ED9 /* PopoverView.h */,
-				256858AD1690D6A100860ED9 /* PopoverView.m */,
-			);
-			name = PopoverView;
-			path = PopoverView/PopoverView;
 			sourceTree = "<group>";
 		};
 		25831FA8162B578700EDD65D /* ASIHttpRequest */ = {
@@ -633,7 +617,6 @@
 				25831FCE162B5AD500EDD65D /* ASINetworkQueue.m in Sources */,
 				2572166F162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.m in Sources */,
 				255F60B91638CC96001F3B4C /* GRTPreferencesViewController.m in Sources */,
-				256858AF1690D6A100860ED9 /* PopoverView.m in Sources */,
 				25D1C7141690FA6F004C984A /* GRTDetailedTitleButtonView.m in Sources */,
 				2504F0701698812700D3D1A3 /* GRTStopDetailsManager.m in Sources */,
 			);
