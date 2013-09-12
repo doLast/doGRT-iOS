@@ -54,7 +54,7 @@
                         <outlet property="searchResultViewController" destination="u28-Yq-Lso" id="TG2-2X-Ks7"/>
                         <outlet property="stopsMapViewController" destination="6JJ-VQ-37h" id="1xo-V4-ORM"/>
                         <outlet property="tableView" destination="0D2-La-YVf" id="Shv-Yn-Fmt"/>
-                        <segue destination="GJh-9J-LUE" kind="push" identifier="showStopDetails" id="bZ4-5A-tHJ"/>
+                        <segue destination="yVH-Cd-ZwP" kind="push" identifier="showStopDetails" id="dc5-do-Vmv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jeR-kR-laY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -77,30 +77,64 @@
             <point key="canvasLocation" x="11" y="801"/>
         </scene>
         <!--Stop Details View Controller-->
-        <scene sceneID="wRr-gh-5nY">
+        <scene sceneID="r1z-ht-qYO">
             <objects>
-                <pageViewController storyboardIdentifier="stopDetailsView" autoresizesArchivedViewToFullSize="NO" hidesBottomBarWhenPushed="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="GJh-9J-LUE" customClass="GRTStopDetailsViewController" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Y0o-BL-DEZ">
-                        <nil key="title"/>
-                        <barButtonItem key="rightBarButtonItem" title="TOGGLE_FAV" id="Tbf-o1-emc">
-                            <connections>
-                                <action selector="toggleStopFavorite:" destination="GJh-9J-LUE" id="8cL-Ia-XOc"/>
-                            </connections>
-                        </barButtonItem>
+                <viewController storyboardIdentifier="stopDetailsView" id="yVH-Cd-ZwP" customClass="GRTStopDetailsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="iQl-5H-LGI">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="W9F-Jm-hvF">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="f3g-Xg-8EE" id="Kpl-nH-Xew"/>
+                                    <outlet property="delegate" destination="f3g-Xg-8EE" id="mgH-zX-GAH"/>
+                                </connections>
+                            </tableView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="JXv-ev-KkK">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="bF3-od-yEx" id="bco-m9-AIr"/>
+                                    <outlet property="delegate" destination="bF3-od-yEx" id="4Fg-KV-oZj"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="6Bx-0P-UG6">
+                        <barButtonItem key="rightBarButtonItem" title="FAVBUTTON" id="Ug5-Sp-zXn"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="favButton" destination="Tbf-o1-emc" id="cma-e4-yLl"/>
-                        <segue destination="hB1-oF-SDn" kind="push" identifier="showTripDetails" id="cE1-Pr-at0"/>
+                        <outlet property="favButton" destination="Ug5-Sp-zXn" id="VEw-YL-ATM"/>
+                        <outlet property="stopRoutesViewController" destination="f3g-Xg-8EE" id="nQ7-n6-r06"/>
+                        <outlet property="stopTimesViewController" destination="bF3-od-yEx" id="9wA-Ix-W7k"/>
+                        <segue destination="hB1-oF-SDn" kind="push" identifier="showTripDetails" id="icp-S7-INv"/>
                     </connections>
-                </pageViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="X1k-hZ-wE4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MWo-4f-Rni" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="bF3-od-yEx" customClass="GRTStopTimesViewController">
+                    <connections>
+                        <outlet property="delegate" destination="yVH-Cd-ZwP" id="SyA-4N-JeG"/>
+                        <outlet property="tableView" destination="JXv-ev-KkK" id="P0v-0K-bBY"/>
+                    </connections>
+                </customObject>
+                <customObject id="f3g-Xg-8EE" customClass="GRTStopRoutesViewController">
+                    <connections>
+                        <outlet property="delegate" destination="yVH-Cd-ZwP" id="KiY-Ss-fgQ"/>
+                        <outlet property="tableView" destination="W9F-Jm-hvF" id="qpL-w2-otY"/>
+                    </connections>
+                </customObject>
             </objects>
-            <point key="canvasLocation" x="499" y="800"/>
+            <point key="canvasLocation" x="475" y="801"/>
         </scene>
         <!--Stops Map View Controller-->
         <scene sceneID="upB-qW-Thd">
             <objects>
-                <viewController storyboardIdentifier="tripDetailsView" hidesBottomBarWhenPushed="YES" id="hB1-oF-SDn" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="tripDetailsView" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hB1-oF-SDn" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rVz-yu-EDs">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -128,7 +162,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yjT-cA-BPE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="944" y="800"/>
+            <point key="canvasLocation" x="942" y="801"/>
         </scene>
         <!--Stop Times View Controller-->
         <scene sceneID="vhU-yj-HpH">
@@ -166,22 +200,25 @@
             <point key="canvasLocation" x="11" y="1427"/>
         </scene>
         <!--Stop Routes View Controller-->
-        <scene sceneID="TwM-Hd-2pd">
+        <scene sceneID="6ty-9r-Yc8">
             <objects>
-                <tableViewController storyboardIdentifier="stopRoutesView" hidesBottomBarWhenPushed="YES" id="gER-jB-dFc" customClass="GRTStopRoutesViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="lWc-Uv-jXz">
+                <viewController storyboardIdentifier="stopRoutesView" id="Orl-zk-Mgh" customClass="GRTStopRoutesViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fRH-7I-RHB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="gER-jB-dFc" id="2L7-ba-H4P"/>
-                            <outlet property="delegate" destination="gER-jB-dFc" id="QeN-4u-LK5"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Njk-aW-eAf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ecs-cJ-c9h">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="edg-oq-h2U" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="499" y="1427"/>
+            <point key="canvasLocation" x="475" y="1427"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Swd-Uk-wLe">
@@ -199,7 +236,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tFh-CX-LWL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-515" y="801"/>
+            <point key="canvasLocation" x="-465" y="801"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

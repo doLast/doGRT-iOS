@@ -107,16 +107,23 @@
 	[self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:animated];
 }
 
-- (void)showTripDetailsForStopTime:(GRTStopTime *)stopTime inNavigationController:(UINavigationController *)navigationController
+- (void)pushTripDetailsForStopTime:(GRTStopTime *)stopTime toNavigationController:(UINavigationController *)navigationController
 {
 	GRTStopsMapViewController *tripDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"tripDetailsView"];
+	[self pushTripDetailsView:tripDetailsVC forStopTime:stopTime toNavigationController:navigationController];
+}
+
+- (void)pushTripDetailsView:(GRTStopsMapViewController *)tripDetailsVC
+				forStopTime:(GRTStopTime *)stopTime
+	 toNavigationController:(UINavigationController *)navigationController
+{
 	tripDetailsVC.title = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
 	tripDetailsVC.inRegionStopsDisplayThreshold = 0.03;
 	[navigationController pushViewController:tripDetailsVC animated:YES];
-	
+
 	tripDetailsVC.shape = stopTime.trip.shape;
 	tripDetailsVC.stops = stopTime.trip.stopTimes;
-	
+
 	NSUInteger stopTimeIndex = [tripDetailsVC.stops indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop){
 		GRTStopTime *stopTimeObj = obj;
 		if (stopTimeObj.stopSequence.integerValue == stopTime.stopSequence.integerValue) {
@@ -212,7 +219,7 @@
 		[self.delegate stopTimesViewController:self didSelectStopTime:stopTime];
 	}
 	else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		[self showTripDetailsForStopTime:stopTime inNavigationController:self.navigationController];
+		[self pushTripDetailsForStopTime:stopTime toNavigationController:self.navigationController];
 	}
 }
 
