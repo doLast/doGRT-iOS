@@ -60,13 +60,6 @@
 	[self.tableView reloadData];
 }
 
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//	[super viewDidAppear:animated];
-//	NSLog(@"Frame: %f, %f", self.view.frame.size.width, self.view.frame.size.height);
-//	[self scrollToAppropriateIndexAnimated:YES];
-//}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -181,6 +174,7 @@
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
 		cell.textLabel.textAlignment = NSTextAlignmentCenter;
+		cell.textLabel.textColor = [UIColor colorWithRed:51.0/255.0 green:118.0/255.0 blue:194.0/255.0 alpha:1.0];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
     
