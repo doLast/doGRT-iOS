@@ -106,7 +106,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="6Bx-0P-UG6">
-                        <barButtonItem key="rightBarButtonItem" title="FAVBUTTON" id="Ug5-Sp-zXn"/>
+                        <barButtonItem key="rightBarButtonItem" title="FAVBUTTON" id="Ug5-Sp-zXn">
+                            <connections>
+                                <action selector="toggleStopFavorite:" destination="yVH-Cd-ZwP" id="J9l-QV-Zqv"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="favButton" destination="Ug5-Sp-zXn" id="VEw-YL-ATM"/>
