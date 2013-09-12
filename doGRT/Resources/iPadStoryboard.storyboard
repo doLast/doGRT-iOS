@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="11G63" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="GAJ-ki-y1e">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="GAJ-ki-y1e">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
+        <deployment defaultVersion="1296" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <scenes>
         <!--Split View Controller-->
@@ -45,15 +45,15 @@
             <objects>
                 <viewController storyboardIdentifier="stopTimesView" id="PuM-di-VkF" customClass="GRTStopTimesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Wcs-Oz-5kg">
-                        <rect key="frame" x="0.0" y="64" width="320" height="704"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Qyz-WA-mSe">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="704"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Qyz-WA-mSe">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <label key="tableFooterView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="No More Bus for This Day" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yfm-lh-q2M">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -82,11 +82,11 @@
             <objects>
                 <viewController storyboardIdentifier="tripDetailsView" hidesBottomBarWhenPushed="YES" id="72Y-dW-iZ5" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Dox-x2-iCp">
-                        <rect key="frame" x="0.0" y="64" width="703" height="704"/>
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="CV6-TA-sBe">
-                                <rect key="frame" x="0.0" y="0.0" width="703" height="704"/>
+                                <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="72Y-dW-iZ5" id="m2V-k0-s52"/>
@@ -115,8 +115,8 @@
         <scene sceneID="J6E-SQ-yXv">
             <objects>
                 <tableViewController storyboardIdentifier="stopRoutesView" hidesBottomBarWhenPushed="YES" id="IRc-cL-yxk" customClass="GRTStopRoutesViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Xby-UQ-M9a">
-                        <rect key="frame" x="0.0" y="64" width="320" height="704"/>
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Xby-UQ-M9a">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -139,11 +139,11 @@
             <objects>
                 <viewController storyboardIdentifier="mainStopsView" hidesBottomBarWhenPushed="YES" id="rdx-iT-Rdk" customClass="GRTMainStopsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZoW-Fp-zsm">
-                        <rect key="frame" x="0.0" y="64" width="320" height="704"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dia-SW-H6U">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="704"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dia-SW-H6U">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -194,11 +194,11 @@
             <objects>
                 <viewController storyboardIdentifier="stopsMapView" hidesBottomBarWhenPushed="YES" id="tHJ-Mx-d2m" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="i0Y-Tf-hSJ">
-                        <rect key="frame" x="0.0" y="64" width="703" height="704"/>
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="FH9-j4-ThK">
-                                <rect key="frame" x="0.0" y="0.0" width="703" height="704"/>
+                                <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="tHJ-Mx-d2m" id="SoI-Z2-LEj"/>
@@ -261,60 +261,8 @@
             <point key="canvasLocation" x="448" y="-364"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="GRTMainStopsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTMainStopsViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="didTapLeftNavButton:"/>
-                <relationship kind="action" name="didTapRightNavButton:"/>
-                <relationship kind="action" name="showPreferences:"/>
-                <relationship kind="action" name="showSearch:"/>
-                <relationship kind="outlet" name="searchResultViewController" candidateClass="GRTStopsTableViewController"/>
-                <relationship kind="outlet" name="stopsMapViewController" candidateClass="GRTStopsMapViewController"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="GRTStopDetailsViewController" superclassName="UIPageViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopDetailsViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="toggleStopFavorite:"/>
-                <relationship kind="action" name="toggleViews:"/>
-                <relationship kind="outlet" name="favButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="viewsSegmentedControl" candidateClass="UISegmentedControl"/>
-            </relationships>
-        </class>
-        <class className="GRTStopRoutesViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopRoutesViewController.h"/>
-        </class>
-        <class className="GRTStopTimesViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopTimesViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="GRTStopsMapViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsMapViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="startTrackingUserLocation:"/>
-                <relationship kind="outlet" name="delegate"/>
-                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
-            </relationships>
-        </class>
-        <class className="GRTStopsTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsTableViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="delegate"/>
-            </relationships>
-        </class>
-        <class className="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UIViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="checkForUpdate:"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
+        <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
