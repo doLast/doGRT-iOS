@@ -61,11 +61,6 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	[super viewDidUnload];
 }
 
-- (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath
-{
-	return;
-}
-
 - (IBAction)done:(id)sender
 {
 	if (popoverController != nil) {
@@ -147,7 +142,6 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	NSString *appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     QTextElement *title = [[QTextElement alloc] initWithText:
 						   [NSString stringWithFormat:@"%@ %@", @"doGRT", appVersion]];
-	title.font = [UIFont boldSystemFontOfSize:24];
 	
     QTextElement *intro = [[QTextElement alloc] initWithText:
 						   @"This is an unofficial GRT Schedule app. \n© Greg@doLast.com"];

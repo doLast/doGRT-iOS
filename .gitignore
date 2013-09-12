@@ -3,6 +3,7 @@
 *~.nib
 
 build/
+Pods
 
 *.pbxuser
 *.perspective
@@ -11,6 +12,7 @@ build/
 *.mode1v3
 *.mode2v3
 
+*.xcworkspace
 xcuserdata
 
 *.sqlite
