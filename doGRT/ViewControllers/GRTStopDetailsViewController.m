@@ -76,8 +76,6 @@
 	
 	// Let stop details manager setup the data
 	self.stopDetailsManager.delegate = self;
-
-	self.automaticallyAdjustsScrollViewInsets = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
