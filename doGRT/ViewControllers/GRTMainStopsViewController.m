@@ -413,22 +413,20 @@ typedef enum GRTStopsViewType {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {	
 	id<GRTStopAnnotation> stop = [[self stopsTableViewControllerForSection:indexPath.section].stops objectAtIndex:indexPath.row];
-	[self presentStop:stop.stop];
-}
-
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-	id<GRTStopAnnotation> stop = [[self stopsTableViewControllerForSection:indexPath.section].stops objectAtIndex:indexPath.row];
-	if ([stop isKindOfClass:[GRTFavoriteStop class]]) {
+	if (tableView.isEditing && [stop isKindOfClass:[GRTFavoriteStop class]]) {
 		GRTFavoriteStop *favStop = stop;
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Edit Favorite Stop Name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
 		alert.alertViewStyle = UIAlertViewStylePlainTextInput;
 		UITextField *textField = [alert textFieldAtIndex:0];
-		
+
 		self.editingFavIndexPath = indexPath;
 		textField.text = favStop.displayName;
-		
+
 		[alert show];
+	} else if (tableView.isEditing) {
+		[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+	} else {
+		[self presentStop:stop.stop];
 	}
 }
 
@@ -451,6 +449,7 @@ typedef enum GRTStopsViewType {
 			self.editingFavIndexPath = nil;
 		}
     }
+	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
 @end
