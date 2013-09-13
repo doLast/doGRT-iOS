@@ -14,10 +14,16 @@
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
 
+typedef enum GRTStopDetailsViewType {
+	GRTStopDetailsViewTypeMixed = 0,
+	GRTStopDetailsViewTypeRoutes,
+	GRTStopDetailsViewTypeTotal
+} GRTStopDetailsViewType;
+
 @interface GRTStopDetailsViewController ()
 
 @property (nonatomic, strong) GRTFavoriteStop *favoriteStop;
-@property (nonatomic, strong) NSArray *candidateViewControllers;
+@property (nonatomic) GRTStopDetailsViewType viewType;
 
 @end
 
@@ -39,6 +45,17 @@
 	[self.stopTimesViewController setStopTimes:stopTimes splitLeftAndComingBuses:split];
 }
 
+- (void)setViewType:(GRTStopDetailsViewType)viewType
+{
+	if (viewType != _viewType) {
+		[UIView animateWithDuration:0.2 animations:^(){
+			self.stopTimesViewController.tableView.alpha =
+			viewType == GRTStopDetailsViewTypeMixed ? 1.0f : 0.0f;
+		}];
+	}
+	[self.viewsSegmentedControl setSelectedSegmentIndex:viewType];
+	_viewType = viewType;
+}
 
 #pragma mark - view life-cycle
 
@@ -69,8 +86,8 @@
 	}
 	
 	NSNumber *index = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDefaultScheduleViewPreference];
-	[self.viewsSegmentedControl setSelectedSegmentIndex:index.integerValue];
-	
+	self.viewType = index.integerValue;
+
 	// Config navigation bar
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
 	
@@ -93,9 +110,9 @@
 
 #pragma mark - actions
 
-- (IBAction)toggleViews:(id)sender
+- (IBAction)toggleViews:(UISegmentedControl *)sender
 {
-	// TODO
+	self.viewType = sender.selectedSegmentIndex;
 }
 
 - (IBAction)toggleStopFavorite:(id)sender

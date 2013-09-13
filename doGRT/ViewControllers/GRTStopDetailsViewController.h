@@ -18,7 +18,7 @@
 @property (nonatomic, weak) IBOutlet GRTStopTimesViewController *stopTimesViewController;
 @property (nonatomic, weak) IBOutlet GRTStopRoutesViewController *stopRoutesViewController;
 
-- (IBAction)toggleViews:(id)sender;
+- (IBAction)toggleViews:(UISegmentedControl *)sender;
 - (IBAction)toggleStopFavorite:(id)sender;
 
 @end
