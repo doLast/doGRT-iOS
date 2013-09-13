@@ -119,20 +119,17 @@
 {
 	tripDetailsVC.title = [NSString stringWithFormat:@"%@", stopTime.trip.tripHeadsign];
 	tripDetailsVC.inRegionStopsDisplayThreshold = 0.03;
-	[navigationController pushViewController:tripDetailsVC animated:YES];
-
 	tripDetailsVC.shape = stopTime.trip.shape;
 	tripDetailsVC.stops = stopTime.trip.stopTimes;
 
 	NSUInteger stopTimeIndex = [tripDetailsVC.stops indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop){
 		GRTStopTime *stopTimeObj = obj;
-		if (stopTimeObj.stopSequence.integerValue == stopTime.stopSequence.integerValue) {
-			*stop = YES;
-			return YES;
-		}
-		return NO;
+		*stop = stopTimeObj.stopSequence.integerValue == stopTime.stopSequence.integerValue;
+		return *stop;
 	}].firstIndex;
 	[tripDetailsVC selectStop:[tripDetailsVC.stops objectAtIndex:stopTimeIndex]];
+
+	[navigationController pushViewController:tripDetailsVC animated:YES];
 }
 
 #pragma mark - Table view data source
