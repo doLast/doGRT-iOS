@@ -49,7 +49,7 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="TFG-e5-Oqx">
-                        <barButtonItem key="leftBarButtonItem" title="Locate" id="6yw-dF-nWQ">
+                        <barButtonItem key="leftBarButtonItem" title="Locate Me" id="6yw-dF-nWQ">
                             <connections>
                                 <action selector="startTrackingUserLocation:" destination="6JJ-VQ-37h" id="TIz-Ch-V3c"/>
                             </connections>
@@ -166,7 +166,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="uik-u2-UH5">
-                        <barButtonItem key="rightBarButtonItem" title="START_TRACKING" id="m3s-Nl-eTa">
+                        <barButtonItem key="rightBarButtonItem" title="Locate Me" id="m3s-Nl-eTa">
                             <connections>
                                 <action selector="startTrackingUserLocation:" destination="hB1-oF-SDn" id="z9i-ux-9uX"/>
                             </connections>

@@ -137,7 +137,7 @@
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" id="4AB-Fn-A96">
-                        <barButtonItem key="rightBarButtonItem" title="START_TRACKING" id="K5b-8W-rdR">
+                        <barButtonItem key="rightBarButtonItem" title="Locate Me" id="K5b-8W-rdR">
                             <connections>
                                 <action selector="startTrackingUserLocation:" destination="72Y-dW-iZ5" id="JkR-3o-VoN"/>
                             </connections>
@@ -246,7 +246,7 @@
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" id="3F5-mc-ENt">
-                        <barButtonItem key="rightBarButtonItem" title="START_TRACKING" id="pmX-EQ-Z6V">
+                        <barButtonItem key="rightBarButtonItem" title="Locate Me" id="pmX-EQ-Z6V">
                             <connections>
                                 <action selector="startTrackingUserLocation:" destination="tHJ-Mx-d2m" id="PF1-1N-v8w"/>
                             </connections>
