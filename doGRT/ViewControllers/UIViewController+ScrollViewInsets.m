@@ -12,7 +12,7 @@
 
 - (UIEdgeInsets)insetsAvoidingBars
 {
-	if (SYSTEM_VERSION_LESS_THAN(@"7.0") || self.edgesForExtendedLayout == UIRectEdgeAll) {
+	if (SYSTEM_VERSION_LESS_THAN(@"7.0") || self.edgesForExtendedLayout == UIRectEdgeNone) {
 		return UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
 	}
 
