@@ -20,12 +20,11 @@
 #import <QuartzCore/QuartzCore.h>
 
 enum GRTStopsTableSection {
-	GRTStopsTableHeaderSection = 0,
-	GRTStopsTableFavoritesSection,
+	GRTStopsTableFavoritesSection = 0,
 	GRTStopsTableNearbySection,
 	GRTStopsTableSectionTotal, 
 };
-static const NSString *GRTStopsTableSectionName[GRTStopsTableSectionTotal] = { @"",  @"Favorites", @"Locating..."};
+static const NSString *GRTStopsTableSectionName[GRTStopsTableSectionTotal] = { @"Favorites", @"Locating..."};
 
 enum GRTStopsViewQueue {
 	GRTStopsViewMapUpdateQueue = -1,
@@ -76,7 +75,7 @@ typedef enum GRTStopsViewType {
 	if (_tableViewControllers == nil) {
 		int i;
 		NSMutableArray *tableViewControllers = [NSMutableArray arrayWithCapacity:GRTStopsTableSectionTotal];
-		for (i = GRTStopsTableHeaderSection; i < GRTStopsTableSectionTotal; i++) {
+		for (i = 0; i < GRTStopsTableSectionTotal; i++) {
 			GRTStopsTableViewController *vc = [[GRTStopsTableViewController alloc] init];
 			vc.title = [GRTStopsTableSectionName[i] copy];
 			[tableViewControllers addObject:vc];
@@ -423,41 +422,20 @@ typedef enum GRTStopsViewType {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	if (section == GRTStopsTableHeaderSection) {
-		return nil;
-	}
 	return [self stopsTableViewControllerForSection:section].title;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if (section == GRTStopsTableHeaderSection) {
-		return 1;
-	}
 	return [[self stopsTableViewControllerForSection:section] tableView:tableView numberOfRowsInSection:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.section == GRTStopsTableHeaderSection) {
-		static NSString *CellIdentifier = @"searchButtonCell";
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-			cell.textLabel.text = @"Tap to Search";
-			cell.textLabel.textAlignment = UITextAlignmentCenter;
-			cell.textLabel.textColor = [UIColor lightGrayColor];
-			cell.editing = YES;
-		}
-		return cell;
-	}
 	return [[self stopsTableViewControllerForSection:indexPath.section] tableView:tableView cellForRowAtIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (indexPath.section == GRTStopsTableHeaderSection) {
-		return [self tableView:tableView didSelectRowAtIndexPath:indexPath];
-	}
 	[[self stopsTableViewControllerForSection:indexPath.section] tableView:tableView commitEditingStyle:editingStyle forRowAtIndexPath:indexPath];
 }
 
@@ -475,21 +453,13 @@ typedef enum GRTStopsViewType {
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (indexPath.section == GRTStopsTableHeaderSection) {
-		return UITableViewCellEditingStyleInsert;
-	}
 	return [[self stopsTableViewControllerForSection:indexPath.section] tableView:tableView editingStyleForRowAtIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {	
 	id<GRTStopAnnotation> stop = [[self stopsTableViewControllerForSection:indexPath.section].stops objectAtIndex:indexPath.row];
-	if (indexPath.section == GRTStopsTableHeaderSection) {
-		return [self showSearch:tableView];
-	}
-	else {
-		[self presentStop:stop.stop];
-	}
+	[self presentStop:stop.stop];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
