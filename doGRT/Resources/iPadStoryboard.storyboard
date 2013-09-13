@@ -186,19 +186,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search by Stop Number/Name" id="nZf-EI-rTJ">
+                                    <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
                                 <connections>
                                     <outlet property="dataSource" destination="rdx-iT-Rdk" id="L9E-Ft-1Oo"/>
                                     <outlet property="delegate" destination="rdx-iT-Rdk" id="Q10-OO-zQO"/>
                                 </connections>
                             </tableView>
-                            <searchBar contentMode="redraw" id="3L3-d3-eiL">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="rdx-iT-Rdk" id="JVq-ya-ay6"/>
-                                </connections>
-                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -220,7 +217,7 @@
                 <searchDisplayController id="LyH-fV-Ccb">
                     <connections>
                         <outlet property="delegate" destination="rdx-iT-Rdk" id="8m1-7o-c14"/>
-                        <outlet property="searchBar" destination="3L3-d3-eiL" id="LcP-y5-oZK"/>
+                        <outlet property="searchBar" destination="nZf-EI-rTJ" id="Y94-tB-O6P"/>
                         <outlet property="searchContentsController" destination="rdx-iT-Rdk" id="uVh-DH-Sbn"/>
                         <outlet property="searchResultsDataSource" destination="2vm-SG-cdz" id="VJ8-84-eZS"/>
                         <outlet property="searchResultsDelegate" destination="2vm-SG-cdz" id="XgC-fv-hgx"/>

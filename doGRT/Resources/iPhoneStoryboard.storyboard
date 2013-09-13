@@ -36,7 +36,7 @@
                                     <outlet property="delegate" destination="6JJ-VQ-37h" id="791-4U-65Z"/>
                                 </connections>
                             </mapView>
-                            <searchBar contentMode="redraw" id="1hd-tm-iyX">
+                            <searchBar contentMode="redraw" placeholder="Search by Stop Number/Name" id="1hd-tm-iyX">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>

@@ -109,8 +109,10 @@ typedef enum GRTStopsViewType {
 	self.editingFavIndexPath = nil;
 	
 	// Hide SearchBar
-	UISearchBar *searchBar = self.searchDisplayController.searchBar;
-	[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		UISearchBar *searchBar = self.searchDisplayController.searchBar;
+		[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
+	}
 
 	// Construct Segmented Control
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone &&
@@ -163,17 +165,9 @@ typedef enum GRTStopsViewType {
 {
 	[super viewWillAppear:animated];
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-	
-	[self setNavigationBarHidden:self.searchDisplayController.active animated:animated];
-	
+
 	// Gtfs update
 	[self updateGtfsUpdaterStatus];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-	[self setNavigationBarHidden:NO animated:animated];
-	[super viewDidDisappear:animated];
 }
 
 - (void)viewDidUnload
@@ -303,38 +297,26 @@ typedef enum GRTStopsViewType {
 	UISearchBar *searchBar = self.searchDisplayController.searchBar;
 	// animate in
     [UIView animateWithDuration:0.2 animations:^{
-		[searchBar setFrame:CGRectMake(0, 0, searchBar.frame.size.width, searchBar.frame.size.height)];
+		CGFloat y = SYSTEM_VERSION_LESS_THAN(@"7.0") ? 0 : self.navigationController.navigationBar.frame.origin.y;
+		[searchBar setFrame:CGRectMake(0, y, searchBar.frame.size.width, searchBar.frame.size.height)];
 	} completion:^(BOOL finished) {
-		[self.searchDisplayController setActive:YES animated:YES];
 		[self.searchDisplayController.searchBar becomeFirstResponder];
 	}];
-	[self setNavigationBarHidden:YES animated:YES];
 }
 
 #pragma mark - search delegate
 
-- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
-{
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		[super.navigationController setNavigationBarHidden:hidden animated:animated];
-	}
-}
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
-{
-	[self setNavigationBarHidden:YES animated:YES];
-}
-
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
 {
-	UISearchBar *searchBar = self.searchDisplayController.searchBar;
-	// animate out
-	[UIView animateWithDuration:0.2 animations:^{
-		[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
-	} completion:^(BOOL finished){
-		
-	}];
-	[self setNavigationBarHidden:NO animated:YES];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		UISearchBar *searchBar = self.searchDisplayController.searchBar;
+		// animate out
+		[UIView animateWithDuration:0.2 animations:^{
+			[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
+		} completion:^(BOOL finished){
+			
+		}];
+	}
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
