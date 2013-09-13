@@ -21,22 +21,62 @@
             <point key="canvasLocation" x="-726" y="-836"/>
         </scene>
         <!--Stop Details View Controller-->
-        <scene sceneID="khV-0K-3yp">
+        <scene sceneID="mQV-nY-Ln6">
             <objects>
-                <pageViewController storyboardIdentifier="stopDetailsView" autoresizesArchivedViewToFullSize="NO" hidesBottomBarWhenPushed="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="p51-iS-z1u" customClass="GRTStopDetailsViewController" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="9Ah-GY-6JJ">
-                        <barButtonItem key="rightBarButtonItem" title="TOGGLE_FAV" id="qDF-5P-bmM">
+                <viewController storyboardIdentifier="stopDetailsView" id="1Y9-Fh-WFH" customClass="GRTStopDetailsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5mI-7u-hgQ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Fau-54-xu2">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="dO2-C8-hNf" id="jY8-mH-Lhn"/>
+                                    <outlet property="delegate" destination="dO2-C8-hNf" id="lrt-g8-ogL"/>
+                                </connections>
+                            </tableView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="PMU-cs-TA5">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="MI8-Yu-nab" id="eXA-g3-xmR"/>
+                                    <outlet property="delegate" destination="MI8-Yu-nab" id="45B-B1-OxD"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="dFt-Ar-8MI">
+                        <barButtonItem key="rightBarButtonItem" title="FAVBUTTON" id="hml-e8-OnM">
                             <connections>
-                                <action selector="toggleStopFavorite:" destination="p51-iS-z1u" id="jci-ZU-JXI"/>
+                                <action selector="toggleStopFavorite:" destination="1Y9-Fh-WFH" id="143-lu-k5E"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="favButton" destination="qDF-5P-bmM" id="V6K-rD-5G4"/>
-                        <segue destination="IRc-cL-yxk" kind="push" identifier="showStopRoutes" id="WkN-3y-fp6"/>
+                        <outlet property="favButton" destination="hml-e8-OnM" id="vLh-IO-f9J"/>
+                        <outlet property="stopRoutesViewController" destination="dO2-C8-hNf" id="Vfe-NQ-mbh"/>
+                        <outlet property="stopTimesViewController" destination="MI8-Yu-nab" id="l4z-Z6-sPb"/>
+                        <segue destination="IRc-cL-yxk" kind="push" identifier="showStopRoutes" id="F33-Hq-HWm"/>
                     </connections>
-                </pageViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5FH-ng-U9E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FBu-Fi-yrc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="MI8-Yu-nab" customClass="GRTStopTimesViewController">
+                    <connections>
+                        <outlet property="delegate" destination="1Y9-Fh-WFH" id="LKn-PN-LYl"/>
+                        <outlet property="tableView" destination="PMU-cs-TA5" id="0En-f9-9s6"/>
+                    </connections>
+                </customObject>
+                <customObject id="dO2-C8-hNf" customClass="GRTStopRoutesViewController">
+                    <connections>
+                        <outlet property="delegate" destination="1Y9-Fh-WFH" id="5AA-rV-xWE"/>
+                        <outlet property="tableView" destination="Fau-54-xu2" id="iD0-Ny-kVf"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="1318" y="-1513"/>
         </scene>
@@ -168,7 +208,7 @@
                         <outlet property="searchDisplayController" destination="LyH-fV-Ccb" id="JHP-OL-5HO"/>
                         <outlet property="searchResultViewController" destination="2vm-SG-cdz" id="SfE-dH-96p"/>
                         <outlet property="tableView" destination="dia-SW-H6U" id="yOh-Kx-Jjb"/>
-                        <segue destination="p51-iS-z1u" kind="push" identifier="showStopDetails" id="lh4-JG-vlN"/>
+                        <segue destination="1Y9-Fh-WFH" kind="push" identifier="showStopDetails" id="PI1-4c-2Xq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lYO-wO-ROY" userLabel="First Responder" sceneMemberID="firstResponder"/>
