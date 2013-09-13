@@ -42,9 +42,7 @@
 		for (id<GRTStopAnnotation> stop in _stops) {
 			[toRemove addObject:stop.stop];
 		}
-		
-//		NSLog(@"Adding: %@, Removing: %@", toAdd, toRemove);
-		
+
 		[self.mapView removeAnnotations:toRemove];
 		[self.mapView addAnnotations:toAdd];
 		[self updateMapView];
@@ -81,9 +79,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-	
-	self.title = @"All Stops";
 	
 	// Center Waterloo on map
 	[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
@@ -211,15 +206,9 @@
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-	self.title = view.annotation.title;
 	if (view.annotation == self.willBePresentedStop) {
 		self.willBePresentedStop = nil;
 	}
-}
-
-- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
-{
-	self.title = @"All Stops";
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views

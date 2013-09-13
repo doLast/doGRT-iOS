@@ -117,7 +117,7 @@
 				forStopTime:(GRTStopTime *)stopTime
 	 toNavigationController:(UINavigationController *)navigationController
 {
-	tripDetailsVC.title = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
+	tripDetailsVC.title = [NSString stringWithFormat:@"%@", stopTime.trip.tripHeadsign];
 	tripDetailsVC.inRegionStopsDisplayThreshold = 0.03;
 	[navigationController pushViewController:tripDetailsVC animated:YES];
 
