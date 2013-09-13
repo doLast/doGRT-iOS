@@ -12,20 +12,23 @@
 
 - (UIEdgeInsets)insetsAvoidingBars
 {
+	if (SYSTEM_VERSION_LESS_THAN(@"7.0") || self.edgesForExtendedLayout == UIRectEdgeAll) {
+		return UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+	}
+
 	CGFloat topInset = 0, bottomInset = 0;
 	if (self.navigationController != nil) {
-		if (self.navigationController.navigationBar != nil) {
+		if (self.edgesForExtendedLayout & UIRectEdgeTop && self.navigationController.navigationBar != nil) {
 			topInset =
 			self.navigationController.navigationBar.frame.origin.y +
 			self.navigationController.navigationBar.frame.size.height;
 		}
-		if (self.navigationController.toolbar != nil) {
+		if (self.edgesForExtendedLayout & UIRectEdgeBottom && self.navigationController.toolbar != nil) {
 			bottomInset = self.navigationController.toolbar.frame.size.height;
 		}
 	}
 
 	UIEdgeInsets insets = UIEdgeInsetsMake(topInset, 0.0, bottomInset, 0.0);
-	NSLog(@"Insets top: %f, bottom: %f", topInset, bottomInset);
 	return insets;
 }
 
