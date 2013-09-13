@@ -48,8 +48,20 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="TFG-e5-Oqx"/>
+                    <navigationItem key="navigationItem" id="TFG-e5-Oqx">
+                        <barButtonItem key="leftBarButtonItem" title="Locate" id="6yw-dF-nWQ">
+                            <connections>
+                                <action selector="startTrackingUserLocation:" destination="6JJ-VQ-37h" id="TIz-Ch-V3c"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Search" id="nTF-KQ-2TF">
+                            <connections>
+                                <action selector="showSearch:" destination="1Mx-hj-Dgb" id="Soa-vJ-P6C"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="locateButton" destination="6yw-dF-nWQ" id="hRy-EH-MOt"/>
                         <outlet property="searchDisplayController" destination="RGR-NG-JVr" id="Psa-UH-sRd"/>
                         <outlet property="searchResultViewController" destination="u28-Yq-Lso" id="TG2-2X-Ks7"/>
                         <outlet property="stopsMapViewController" destination="6JJ-VQ-37h" id="1xo-V4-ORM"/>

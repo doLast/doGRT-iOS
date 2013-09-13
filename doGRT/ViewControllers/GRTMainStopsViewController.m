@@ -44,9 +44,6 @@ typedef enum GRTStopsViewType {
 @property (nonatomic, strong) NSIndexPath *editingFavIndexPath;
 
 @property (nonatomic, strong, readonly) NSArray *operationQueues;
-@property (nonatomic, strong) UIBarButtonItem *locateButton;
-@property (nonatomic, strong) UIBarButtonItem *searchButton;
-@property (nonatomic, strong) UIBarButtonItem *preferencesButton;
 
 @property (atomic) GRTStopsViewType currentViewType;
 @property (nonatomic, strong) UISegmentedControl *viewsSegmentedControl;
@@ -60,8 +57,6 @@ typedef enum GRTStopsViewType {
 
 @synthesize operationQueues = _operationQueues;
 @synthesize locateButton = _locateButton;
-@synthesize searchButton = _searchButton;
-@synthesize preferencesButton = _preferencesButton;
 
 @synthesize currentViewType = _currentViewType;
 @synthesize viewsSegmentedControl = _viewsSegmentedControl;
@@ -113,30 +108,6 @@ typedef enum GRTStopsViewType {
 	self.title = @"doGRT";
 	self.editingFavIndexPath = nil;
 	
-	UIImage *location = [UIImage imageNamed:@"location"];
-	UIButton *locateButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[locateButton setImage:location forState:UIControlStateNormal];
-	[locateButton addTarget:self.stopsMapViewController action:@selector(startTrackingUserLocation:) forControlEvents:UIControlEventTouchUpInside];
-	locateButton.layer.shadowColor = [UIColor blackColor].CGColor;
-	locateButton.layer.shadowOpacity = 0.5;
-	locateButton.layer.shadowRadius = 0;
-	locateButton.layer.shadowOffset = CGSizeMake(0.0f, -1.0f);
-	locateButton.frame = CGRectMake(0.0, 0.0, 28.0, 28.0);
-	self.locateButton = [[UIBarButtonItem alloc] initWithCustomView:locateButton];
-	
-	UIImage *search = [UIImage imageNamed:@"magnifier"];
-	UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[searchButton addTarget:self action:@selector(showSearch:) forControlEvents:UIControlEventTouchUpInside];
-	[searchButton setImage:search forState:UIControlStateNormal];
-	searchButton.layer.shadowColor = [UIColor blackColor].CGColor;
-	searchButton.layer.shadowOpacity = 0.5;
-	searchButton.layer.shadowRadius = 0;
-	searchButton.layer.shadowOffset = CGSizeMake(0.0f, -1.0f);
-	searchButton.frame = CGRectMake(0.0, 0.0, 28.0, 28.0);
-	self.searchButton = [[UIBarButtonItem alloc] initWithCustomView:searchButton];
-	
-	self.preferencesButton = [[UIBarButtonItem alloc] initWithTitle:@"Setting" style:UIBarButtonItemStyleBordered target:self action:@selector(showPreferences:)];
-	
 	// Hide SearchBar
 	UISearchBar *searchBar = self.searchDisplayController.searchBar;
 	[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
@@ -149,7 +120,9 @@ typedef enum GRTStopsViewType {
 		[viewsSegmentedControl addTarget:self action:@selector(toggleViews:) forControlEvents:UIControlEventValueChanged];
 		UIBarButtonItem *segmentedControlItem = [[UIBarButtonItem alloc] initWithCustomView:viewsSegmentedControl];
 
-		ITBarItemSet *barItemSet = [[ITBarItemSet alloc] initWithItems:@[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], segmentedControlItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]]];
+		UIBarButtonItem *preferenceButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"⚙" style:UIBarButtonItemStylePlain target:self action:@selector(showPreferences:)];
+
+		ITBarItemSet *barItemSet = [[ITBarItemSet alloc] initWithItems:@[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], segmentedControlItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], preferenceButtonItem]];
 
 		[self pushBarItemSet:barItemSet animated:YES];
 
@@ -170,7 +143,12 @@ typedef enum GRTStopsViewType {
 	[self updateFavoriteStops];
     
     // Init default view type
-    [self showViewType:GRTStopsTableView animationDuration:0.0f];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		self.navigationItem.leftBarButtonItem = self.editButtonItem;
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Setting" style:UIBarButtonItemStylePlain target:self action:@selector(showPreferences:)];
+	} else {
+		[self showViewType:GRTStopsTableView animationDuration:0.0f];
+	}
 	
 	// Subscribe to user profile update
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFavoriteStops) name:GRTUserProfileUpdateNotification object:[GRTUserProfile defaultUserProfile]];
@@ -215,10 +193,6 @@ typedef enum GRTStopsViewType {
 			[self showViewType:GRTStopsMapView animationDuration:duration];
 		}
 	}
-	else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.navigationItem.leftBarButtonItem = self.editButtonItem;
-		self.navigationItem.rightBarButtonItem = self.preferencesButton;
-	}
 }
 
 #pragma mark - view update
@@ -227,12 +201,10 @@ typedef enum GRTStopsViewType {
 {
 	if (type == GRTStopsTableView) {
 		self.navigationItem.leftBarButtonItem = self.editButtonItem;
-		self.navigationItem.rightBarButtonItem = self.preferencesButton;
 		[self.stopsMapViewController setMapAlpha:0.0 animationDuration:duration];
 	}
 	else if (type == GRTStopsMapView) {
 		self.navigationItem.leftBarButtonItem = self.locateButton;
-		self.navigationItem.rightBarButtonItem = self.searchButton;
 		[self.stopsMapViewController setMapAlpha:1.0 animationDuration:duration];
 	}
 	self.currentViewType = type;
