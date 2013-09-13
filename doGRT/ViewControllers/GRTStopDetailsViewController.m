@@ -10,6 +10,7 @@
 #import "InformaticToolbar.h"
 #import "GRTDetailedTitleButtonView.h"
 #import "GRTStopDetailsManager.h"
+#import "UIViewController+ScrollViewInsets.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
@@ -98,7 +99,7 @@ typedef enum GRTStopDetailsViewType {
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	
+
 	[self updateToolbarToLatestStateAnimated:animated];
 	// TODO: fix scroll to coming bus index
 }
@@ -106,6 +107,16 @@ typedef enum GRTStopDetailsViewType {
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[self.navigationController setToolbarHidden:YES animated:YES];
+}
+
+- (void)viewDidLayoutSubviews
+{
+	[self adjustAllScrollViewsInsets];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	[self adjustAllScrollViewsInsets];
 }
 
 #pragma mark - actions

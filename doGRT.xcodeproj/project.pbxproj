@@ -26,6 +26,7 @@
 		251D26D2161A8FCC0068CDC1 /* GRTStopsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 251D26D1161A8FCC0068CDC1 /* GRTStopsTableViewController.m */; };
 		252C3DE21617520000C5A933 /* GRTShape.m in Sources */ = {isa = PBXBuildFile; fileRef = 252C3DE1161751FF00C5A933 /* GRTShape.m */; };
 		253519D8160E52C40042BEA4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 253519D7160E52C40042BEA4 /* Default-568h@2x.png */; };
+		254BDD5F17E2980A00A418E7 /* UIViewController+ScrollViewInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 254BDD5E17E2980A00A418E7 /* UIViewController+ScrollViewInsets.m */; };
 		255F60B91638CC96001F3B4C /* GRTPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 255F60B81638CC96001F3B4C /* GRTPreferencesViewController.m */; };
 		2564645416121561000FC7DC /* GRTGtfsSystem+Internal.m in Sources */ = {isa = PBXBuildFile; fileRef = 2564645316121561000FC7DC /* GRTGtfsSystem+Internal.m */; };
 		2564645B16122864000FC7DC /* GRTService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2564645A16122863000FC7DC /* GRTService.m */; };
@@ -112,6 +113,8 @@
 		252C3DE0161751FF00C5A933 /* GRTShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTShape.h; sourceTree = "<group>"; };
 		252C3DE1161751FF00C5A933 /* GRTShape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTShape.m; sourceTree = "<group>"; };
 		253519D7160E52C40042BEA4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		254BDD5D17E2980A00A418E7 /* UIViewController+ScrollViewInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ScrollViewInsets.h"; sourceTree = "<group>"; };
+		254BDD5E17E2980A00A418E7 /* UIViewController+ScrollViewInsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ScrollViewInsets.m"; sourceTree = "<group>"; };
 		255F60B71638CC96001F3B4C /* GRTPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTPreferencesViewController.h; sourceTree = "<group>"; };
 		255F60B81638CC96001F3B4C /* GRTPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTPreferencesViewController.m; sourceTree = "<group>"; };
 		2564645216121561000FC7DC /* GRTGtfsSystem+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GRTGtfsSystem+Internal.h"; sourceTree = "<group>"; };
@@ -372,6 +375,19 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		254BDD5C17E2966200A418E7 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				259003631610EB4A00FE051C /* UINavigationController+Rotation.h */,
+				259003641610EB4A00FE051C /* UINavigationController+Rotation.m */,
+				2572166D162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.h */,
+				2572166E162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.m */,
+				254BDD5D17E2980A00A418E7 /* UIViewController+ScrollViewInsets.h */,
+				254BDD5E17E2980A00A418E7 /* UIViewController+ScrollViewInsets.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		2564646D161290B4000FC7DC /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
@@ -424,12 +440,9 @@
 		2590035B1610E53C00FE051C /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				254BDD5C17E2966200A418E7 /* Categories */,
 				2504F06916987B7400D3D1A3 /* MainStopsViewController */,
 				2504F06A16987B9600D3D1A3 /* StopDetailsViewController */,
-				259003631610EB4A00FE051C /* UINavigationController+Rotation.h */,
-				259003641610EB4A00FE051C /* UINavigationController+Rotation.m */,
-				2572166D162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.h */,
-				2572166E162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.m */,
 				255F60B71638CC96001F3B4C /* GRTPreferencesViewController.h */,
 				255F60B81638CC96001F3B4C /* GRTPreferencesViewController.m */,
 			);
@@ -598,6 +611,7 @@
 				259003921611691B00FE051C /* GRTStopDetails.m in Sources */,
 				2564645416121561000FC7DC /* GRTGtfsSystem+Internal.m in Sources */,
 				2564645B16122864000FC7DC /* GRTService.m in Sources */,
+				254BDD5F17E2980A00A418E7 /* UIViewController+ScrollViewInsets.m in Sources */,
 				2564647016129142000FC7DC /* GRTFavoriteStop.m in Sources */,
 				256464731612916E000FC7DC /* GRTUserProfile.m in Sources */,
 				256464761612AAB3000FC7DC /* GRTStopTimesViewController.m in Sources */,
