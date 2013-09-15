@@ -72,6 +72,11 @@
 	}
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[self.stopDetailsManager closeMenu:self];
+}
+
 #pragma mark - view updates
 
 - (void)updateComingBusIndex

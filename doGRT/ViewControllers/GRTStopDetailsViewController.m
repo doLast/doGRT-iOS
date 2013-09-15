@@ -108,6 +108,7 @@ typedef enum GRTStopDetailsViewType {
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+	[self.stopDetailsManager closeMenu:self];
 }
 
 - (void)viewDidLayoutSubviews
