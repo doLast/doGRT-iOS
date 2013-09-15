@@ -308,6 +308,14 @@ typedef enum GRTStopsViewType {
 
 #pragma mark - search delegate
 
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+{
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+		CGFloat y = SYSTEM_VERSION_LESS_THAN(@"7.0") ? 0 : self.navigationController.navigationBar.frame.origin.y;
+		[controller.searchBar setFrame:CGRectMake(0, y, controller.searchBar.frame.size.width, controller.searchBar.frame.size.height)];
+	}
+}
+
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
 {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
