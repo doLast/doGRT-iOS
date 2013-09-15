@@ -113,7 +113,7 @@ typedef enum GRTStopsViewType {
 		UISearchBar *searchBar = self.searchDisplayController.searchBar;
 		[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
 	} else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.tableView setContentOffset:CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height) animated:YES];
+		[self.tableView setContentOffset:CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height) animated:NO];
 	}
 
 	// Construct Segmented Control
