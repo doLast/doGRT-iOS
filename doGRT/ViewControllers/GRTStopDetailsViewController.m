@@ -108,7 +108,6 @@ typedef enum GRTStopDetailsViewType {
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 - (void)viewDidLayoutSubviews

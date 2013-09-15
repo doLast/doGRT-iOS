@@ -191,7 +191,7 @@
         <!--Stop Times View Controller-->
         <scene sceneID="vhU-yj-HpH">
             <objects>
-                <viewController storyboardIdentifier="stopTimesView" id="ggk-ay-zUN" customClass="GRTStopTimesViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="stopTimesView" hidesBottomBarWhenPushed="YES" id="ggk-ay-zUN" customClass="GRTStopTimesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nAp-Ke-3oh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
