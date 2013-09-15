@@ -105,8 +105,8 @@
 
 - (REMenu *)constructMenuWithItems:(NSArray *)items
 {
-	UIColor *lightColor = [UIColor colorWithWhite:1 alpha:0.95];
-	UIColor *darkColor = [UIColor colorWithWhite:0.8 alpha:0.95];
+	UIColor *lightColor = [UIColor colorWithWhite:1 alpha:0.85];
+	UIColor *darkColor = [UIColor colorWithWhite:0.8 alpha:1];
 	UIColor *textColor = [UIColor darkTextColor];
 	UIColor *clearColor = [UIColor clearColor];
 	REMenu *menu = [[REMenu alloc] initWithItems:items];
