@@ -101,6 +101,8 @@ typedef enum GRTStopDetailsViewType {
 	[super viewDidAppear:animated];
 
 	[self updateToolbarToLatestStateAnimated:animated];
+	[self.stopTimesViewController.tableView deselectRowAtIndexPath:[self.stopTimesViewController.tableView indexPathForSelectedRow] animated:YES];
+	[self.stopRoutesViewController.tableView deselectRowAtIndexPath:[self.stopRoutesViewController.tableView indexPathForSelectedRow] animated:YES];
 	// TODO: fix scroll to coming bus index
 }
 
