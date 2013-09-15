@@ -109,6 +109,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <label key="tableFooterView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="No More Bus for This Day" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qaR-42-190">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                                 <connections>
                                     <outlet property="dataSource" destination="bF3-od-yEx" id="bco-m9-AIr"/>
                                     <outlet property="delegate" destination="bF3-od-yEx" id="4Fg-KV-oZj"/>
@@ -129,6 +136,7 @@
                         <outlet property="stopRoutesViewController" destination="f3g-Xg-8EE" id="nQ7-n6-r06"/>
                         <outlet property="stopTimesViewController" destination="bF3-od-yEx" id="9wA-Ix-W7k"/>
                         <segue destination="hB1-oF-SDn" kind="push" identifier="showTripDetails" id="icp-S7-INv"/>
+                        <segue destination="ggk-ay-zUN" kind="push" identifier="showStopRouteTimes" id="9pX-QT-wPi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MWo-4f-Rni" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -150,7 +158,7 @@
         <!--Stops Map View Controller-->
         <scene sceneID="upB-qW-Thd">
             <objects>
-                <viewController storyboardIdentifier="tripDetailsView" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hB1-oF-SDn" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="tripDetailsView" hidesBottomBarWhenPushed="YES" id="hB1-oF-SDn" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rVz-yu-EDs">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -178,7 +186,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yjT-cA-BPE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="942" y="801"/>
+            <point key="canvasLocation" x="973" y="480"/>
         </scene>
         <!--Stop Times View Controller-->
         <scene sceneID="vhU-yj-HpH">
@@ -193,7 +201,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <label key="tableFooterView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="No More Bus for This Day" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Sko-Mw-Gj7">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -207,34 +215,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="ehl-ma-e44"/>
                     <connections>
                         <outlet property="tableView" destination="ZxS-lP-oKZ" id="b8V-kQ-Z9s"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lnf-Zh-ma8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="11" y="1427"/>
-        </scene>
-        <!--Stop Routes View Controller-->
-        <scene sceneID="6ty-9r-Yc8">
-            <objects>
-                <viewController storyboardIdentifier="stopRoutesView" id="Orl-zk-Mgh" customClass="GRTStopRoutesViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="fRH-7I-RHB">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ecs-cJ-c9h">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="edg-oq-h2U" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="475" y="1427"/>
+            <point key="canvasLocation" x="973" y="1073"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Swd-Uk-wLe">

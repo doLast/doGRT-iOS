@@ -41,6 +41,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <label key="tableFooterView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="No More Bus for This Day" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cvS-WE-QYb">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                                 <connections>
                                     <outlet property="dataSource" destination="MI8-Yu-nab" id="eXA-g3-xmR"/>
                                     <outlet property="delegate" destination="MI8-Yu-nab" id="45B-B1-OxD"/>
@@ -61,7 +68,7 @@
                         <outlet property="favButton" destination="hml-e8-OnM" id="vLh-IO-f9J"/>
                         <outlet property="stopRoutesViewController" destination="dO2-C8-hNf" id="Vfe-NQ-mbh"/>
                         <outlet property="stopTimesViewController" destination="MI8-Yu-nab" id="l4z-Z6-sPb"/>
-                        <segue destination="IRc-cL-yxk" kind="push" identifier="showStopRoutes" id="F33-Hq-HWm"/>
+                        <segue destination="PuM-di-VkF" kind="push" identifier="showStopRouteTimes" id="7BE-Yz-PRW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FBu-Fi-yrc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -115,7 +122,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5fN-AR-Pgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2334" y="-1513"/>
+            <point key="canvasLocation" x="1758" y="-1513"/>
         </scene>
         <!--Stops Map View Controller-->
         <scene sceneID="BR3-lH-JBE">
@@ -150,29 +157,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pyR-al-SLI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2334" y="-364"/>
-        </scene>
-        <!--Stop Routes View Controller-->
-        <scene sceneID="J6E-SQ-yXv">
-            <objects>
-                <tableViewController storyboardIdentifier="stopRoutesView" hidesBottomBarWhenPushed="YES" id="IRc-cL-yxk" customClass="GRTStopRoutesViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Xby-UQ-M9a">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                        <connections>
-                            <outlet property="dataSource" destination="IRc-cL-yxk" id="Sbt-ov-w7y"/>
-                            <outlet property="delegate" destination="IRc-cL-yxk" id="yi9-75-uKy"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="Svu-LL-jCv"/>
-                    <connections>
-                        <segue destination="PuM-di-VkF" kind="push" identifier="showStopTimes" id="7ua-Hn-Abv"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hBR-k8-0aX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1805" y="-1513"/>
         </scene>
         <!--Main Stops View Controller-->
         <scene sceneID="PFo-DY-xgG">
