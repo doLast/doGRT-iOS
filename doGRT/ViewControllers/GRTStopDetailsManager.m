@@ -99,7 +99,7 @@
 		// TODO: It's not today, display the Date
 	}
 	
-	[titleView addTarget:self action:@selector(showModeMenu:) forControlEvents:UIControlEventTouchUpInside];
+	[titleView addTarget:self action:@selector(toggleMenu:) forControlEvents:UIControlEventTouchUpInside];
 	return titleView;
 }
 
@@ -152,6 +152,15 @@
 		BOOL isToday = [self isSameDayWithDate1:self.date date2:[NSDate date]];
 		[self.delegate setStopTimes:stopTimes splitLeftAndComingBuses:isToday];
 	}
+}
+
+- (IBAction)toggleMenu:(id)sender
+{
+    if (self.menu != nil && self.menu.isOpen) {
+        [self closeMenu:sender];
+    } else {
+        [self showModeMenu:sender];
+    }
 }
 
 - (IBAction)closeMenu:(id)sender
