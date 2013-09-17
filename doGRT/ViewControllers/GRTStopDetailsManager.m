@@ -105,30 +105,31 @@
 
 - (REMenu *)constructMenuWithItems:(NSArray *)items
 {
-	UIColor *lightColor = [UIColor colorWithWhite:1 alpha:0.85];
-	UIColor *darkColor = [UIColor colorWithWhite:0.8 alpha:1];
-	UIColor *textColor = [UIColor darkTextColor];
-	UIColor *clearColor = [UIColor clearColor];
 	REMenu *menu = [[REMenu alloc] initWithItems:items];
 
-	menu.backgroundColor = lightColor;
-	menu.textColor = textColor;
-	menu.textShadowColor = clearColor;
-	menu.separatorColor = darkColor;
-	menu.borderColor = darkColor;
+	if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+		UIColor *lightColor = [UIColor colorWithWhite:1 alpha:0.85];
+		UIColor *darkColor = [UIColor colorWithWhite:0.8 alpha:1];
+		UIColor *textColor = [UIColor darkTextColor];
+		UIColor *clearColor = [UIColor clearColor];
 
-	menu.highlightedBackgroundColor = darkColor;
-	menu.highlightedTextColor = textColor;
-	menu.highlightedTextShadowColor = clearColor;
-	menu.highlightedSeparatorColor = darkColor;
+		menu.backgroundColor = lightColor;
+		menu.textColor = textColor;
+		menu.textShadowColor = clearColor;
+		menu.separatorColor = darkColor;
+		menu.borderColor = darkColor;
 
-	CGFloat borderWidth = 1.0;
-	if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] &&
-		([UIScreen mainScreen].scale == 2.0)) {
-		borderWidth = 0.5;
+		menu.highlightedBackgroundColor = darkColor;
+		menu.highlightedTextColor = textColor;
+		menu.highlightedTextShadowColor = clearColor;
+		menu.highlightedSeparatorColor = darkColor;
 	}
+
+	CGFloat borderWidth = 1.0 / [UIScreen mainScreen].scale;
 	menu.separatorHeight = borderWidth;
 	menu.borderWidth = borderWidth;
+
+	menu.itemHeight = 38.0;
 	menu.bounce = NO;
 
 	menu.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
