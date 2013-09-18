@@ -71,7 +71,7 @@
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		if ([stop isKindOfClass:[GRTFavoriteStop class]]) {
-			cell.editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		}
 	}
 	

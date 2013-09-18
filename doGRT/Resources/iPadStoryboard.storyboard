@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="11G63" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="GAJ-ki-y1e">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="GAJ-ki-y1e">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
+        <deployment defaultVersion="1296" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <scenes>
         <!--Split View Controller-->
@@ -21,39 +21,86 @@
             <point key="canvasLocation" x="-726" y="-836"/>
         </scene>
         <!--Stop Details View Controller-->
-        <scene sceneID="khV-0K-3yp">
+        <scene sceneID="mQV-nY-Ln6">
             <objects>
-                <pageViewController storyboardIdentifier="stopDetailsView" autoresizesArchivedViewToFullSize="NO" hidesBottomBarWhenPushed="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="p51-iS-z1u" customClass="GRTStopDetailsViewController" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="9Ah-GY-6JJ">
-                        <barButtonItem key="rightBarButtonItem" title="TOGGLE_FAV" id="qDF-5P-bmM">
+                <viewController storyboardIdentifier="stopDetailsView" id="1Y9-Fh-WFH" customClass="GRTStopDetailsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5mI-7u-hgQ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Fau-54-xu2">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="dO2-C8-hNf" id="jY8-mH-Lhn"/>
+                                    <outlet property="delegate" destination="dO2-C8-hNf" id="lrt-g8-ogL"/>
+                                </connections>
+                            </tableView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="PMU-cs-TA5">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <label key="tableFooterView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="No More Bus for This Day" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cvS-WE-QYb">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <connections>
+                                    <outlet property="dataSource" destination="MI8-Yu-nab" id="eXA-g3-xmR"/>
+                                    <outlet property="delegate" destination="MI8-Yu-nab" id="45B-B1-OxD"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="dFt-Ar-8MI">
+                        <barButtonItem key="rightBarButtonItem" title="FAVBUTTON" id="hml-e8-OnM">
                             <connections>
-                                <action selector="toggleStopFavorite:" destination="p51-iS-z1u" id="jci-ZU-JXI"/>
+                                <action selector="toggleStopFavorite:" destination="1Y9-Fh-WFH" id="143-lu-k5E"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="favButton" destination="qDF-5P-bmM" id="V6K-rD-5G4"/>
-                        <segue destination="IRc-cL-yxk" kind="push" identifier="showStopRoutes" id="WkN-3y-fp6"/>
+                        <outlet property="favButton" destination="hml-e8-OnM" id="vLh-IO-f9J"/>
+                        <outlet property="stopRoutesViewController" destination="dO2-C8-hNf" id="Vfe-NQ-mbh"/>
+                        <outlet property="stopTimesViewController" destination="MI8-Yu-nab" id="l4z-Z6-sPb"/>
+                        <segue destination="PuM-di-VkF" kind="push" identifier="showStopRouteTimes" id="7BE-Yz-PRW"/>
                     </connections>
-                </pageViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5FH-ng-U9E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FBu-Fi-yrc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="MI8-Yu-nab" customClass="GRTStopTimesViewController">
+                    <connections>
+                        <outlet property="delegate" destination="1Y9-Fh-WFH" id="LKn-PN-LYl"/>
+                        <outlet property="tableView" destination="PMU-cs-TA5" id="0En-f9-9s6"/>
+                    </connections>
+                </customObject>
+                <customObject id="dO2-C8-hNf" customClass="GRTStopRoutesViewController">
+                    <connections>
+                        <outlet property="delegate" destination="1Y9-Fh-WFH" id="5AA-rV-xWE"/>
+                        <outlet property="tableView" destination="Fau-54-xu2" id="iD0-Ny-kVf"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="1318" y="-1513"/>
         </scene>
         <!--Stop Times View Controller-->
         <scene sceneID="3MT-rO-369">
             <objects>
-                <viewController storyboardIdentifier="stopTimesView" id="PuM-di-VkF" customClass="GRTStopTimesViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="stopTimesView" hidesBottomBarWhenPushed="YES" id="PuM-di-VkF" customClass="GRTStopTimesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Wcs-Oz-5kg">
-                        <rect key="frame" x="0.0" y="64" width="320" height="704"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Qyz-WA-mSe">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="704"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Qyz-WA-mSe">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <label key="tableFooterView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="No More Bus for This Day" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yfm-lh-q2M">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -75,18 +122,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5fN-AR-Pgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2334" y="-1513"/>
+            <point key="canvasLocation" x="1758" y="-1513"/>
         </scene>
         <!--Stops Map View Controller-->
         <scene sceneID="BR3-lH-JBE">
             <objects>
                 <viewController storyboardIdentifier="tripDetailsView" hidesBottomBarWhenPushed="YES" id="72Y-dW-iZ5" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Dox-x2-iCp">
-                        <rect key="frame" x="0.0" y="64" width="703" height="704"/>
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="CV6-TA-sBe">
-                                <rect key="frame" x="0.0" y="0.0" width="703" height="704"/>
+                                <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="72Y-dW-iZ5" id="m2V-k0-s52"/>
@@ -97,7 +144,7 @@
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" id="4AB-Fn-A96">
-                        <barButtonItem key="rightBarButtonItem" title="START_TRACKING" id="K5b-8W-rdR">
+                        <barButtonItem key="rightBarButtonItem" title="Locate Me" id="K5b-8W-rdR">
                             <connections>
                                 <action selector="startTrackingUserLocation:" destination="72Y-dW-iZ5" id="JkR-3o-VoN"/>
                             </connections>
@@ -111,54 +158,28 @@
             </objects>
             <point key="canvasLocation" x="2334" y="-364"/>
         </scene>
-        <!--Stop Routes View Controller-->
-        <scene sceneID="J6E-SQ-yXv">
-            <objects>
-                <tableViewController storyboardIdentifier="stopRoutesView" hidesBottomBarWhenPushed="YES" id="IRc-cL-yxk" customClass="GRTStopRoutesViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Xby-UQ-M9a">
-                        <rect key="frame" x="0.0" y="64" width="320" height="704"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                        <connections>
-                            <outlet property="dataSource" destination="IRc-cL-yxk" id="Sbt-ov-w7y"/>
-                            <outlet property="delegate" destination="IRc-cL-yxk" id="yi9-75-uKy"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="Svu-LL-jCv"/>
-                    <connections>
-                        <segue destination="PuM-di-VkF" kind="push" identifier="showStopTimes" id="7ua-Hn-Abv"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hBR-k8-0aX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1805" y="-1513"/>
-        </scene>
         <!--Main Stops View Controller-->
         <scene sceneID="PFo-DY-xgG">
             <objects>
                 <viewController storyboardIdentifier="mainStopsView" hidesBottomBarWhenPushed="YES" id="rdx-iT-Rdk" customClass="GRTMainStopsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZoW-Fp-zsm">
-                        <rect key="frame" x="0.0" y="64" width="320" height="704"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dia-SW-H6U">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="704"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dia-SW-H6U">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search by Stop Number/Name" id="nZf-EI-rTJ">
+                                    <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
                                 <connections>
                                     <outlet property="dataSource" destination="rdx-iT-Rdk" id="L9E-Ft-1Oo"/>
                                     <outlet property="delegate" destination="rdx-iT-Rdk" id="Q10-OO-zQO"/>
                                 </connections>
                             </tableView>
-                            <searchBar contentMode="redraw" id="3L3-d3-eiL">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="rdx-iT-Rdk" id="JVq-ya-ay6"/>
-                                </connections>
-                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -168,7 +189,7 @@
                         <outlet property="searchDisplayController" destination="LyH-fV-Ccb" id="JHP-OL-5HO"/>
                         <outlet property="searchResultViewController" destination="2vm-SG-cdz" id="SfE-dH-96p"/>
                         <outlet property="tableView" destination="dia-SW-H6U" id="yOh-Kx-Jjb"/>
-                        <segue destination="p51-iS-z1u" kind="push" identifier="showStopDetails" id="lh4-JG-vlN"/>
+                        <segue destination="1Y9-Fh-WFH" kind="push" identifier="showStopDetails" id="PI1-4c-2Xq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lYO-wO-ROY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -180,7 +201,7 @@
                 <searchDisplayController id="LyH-fV-Ccb">
                     <connections>
                         <outlet property="delegate" destination="rdx-iT-Rdk" id="8m1-7o-c14"/>
-                        <outlet property="searchBar" destination="3L3-d3-eiL" id="LcP-y5-oZK"/>
+                        <outlet property="searchBar" destination="nZf-EI-rTJ" id="Y94-tB-O6P"/>
                         <outlet property="searchContentsController" destination="rdx-iT-Rdk" id="uVh-DH-Sbn"/>
                         <outlet property="searchResultsDataSource" destination="2vm-SG-cdz" id="VJ8-84-eZS"/>
                         <outlet property="searchResultsDelegate" destination="2vm-SG-cdz" id="XgC-fv-hgx"/>
@@ -194,11 +215,11 @@
             <objects>
                 <viewController storyboardIdentifier="stopsMapView" hidesBottomBarWhenPushed="YES" id="tHJ-Mx-d2m" customClass="GRTStopsMapViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="i0Y-Tf-hSJ">
-                        <rect key="frame" x="0.0" y="64" width="703" height="704"/>
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="FH9-j4-ThK">
-                                <rect key="frame" x="0.0" y="0.0" width="703" height="704"/>
+                                <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="tHJ-Mx-d2m" id="SoI-Z2-LEj"/>
@@ -209,7 +230,7 @@
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <navigationItem key="navigationItem" id="3F5-mc-ENt">
-                        <barButtonItem key="rightBarButtonItem" title="START_TRACKING" id="pmX-EQ-Z6V">
+                        <barButtonItem key="rightBarButtonItem" title="Locate Me" id="pmX-EQ-Z6V">
                             <connections>
                                 <action selector="startTrackingUserLocation:" destination="tHJ-Mx-d2m" id="PF1-1N-v8w"/>
                             </connections>
@@ -261,60 +282,8 @@
             <point key="canvasLocation" x="448" y="-364"/>
         </scene>
     </scenes>
-    <classes>
-        <class className="GRTMainStopsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTMainStopsViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="didTapLeftNavButton:"/>
-                <relationship kind="action" name="didTapRightNavButton:"/>
-                <relationship kind="action" name="showPreferences:"/>
-                <relationship kind="action" name="showSearch:"/>
-                <relationship kind="outlet" name="searchResultViewController" candidateClass="GRTStopsTableViewController"/>
-                <relationship kind="outlet" name="stopsMapViewController" candidateClass="GRTStopsMapViewController"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="GRTStopDetailsViewController" superclassName="UIPageViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopDetailsViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="toggleStopFavorite:"/>
-                <relationship kind="action" name="toggleViews:"/>
-                <relationship kind="outlet" name="favButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="viewsSegmentedControl" candidateClass="UISegmentedControl"/>
-            </relationships>
-        </class>
-        <class className="GRTStopRoutesViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopRoutesViewController.h"/>
-        </class>
-        <class className="GRTStopTimesViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopTimesViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="GRTStopsMapViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsMapViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="startTrackingUserLocation:"/>
-                <relationship kind="outlet" name="delegate"/>
-                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
-            </relationships>
-        </class>
-        <class className="GRTStopsTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GRTStopsTableViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="delegate"/>
-            </relationships>
-        </class>
-        <class className="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UIViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="checkForUpdate:"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
+        <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>

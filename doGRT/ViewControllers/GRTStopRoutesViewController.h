@@ -15,9 +15,10 @@
 
 @end
 
-@interface GRTStopRoutesViewController : UITableViewController
+@interface GRTStopRoutesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, weak) id<GRTStopRoutesViewControllerDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<GRTStopRoutesViewControllerDelegate> delegate;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *routes;
 
 @end
