@@ -31,8 +31,8 @@
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
 // Title and subtitle for use by selection UI.
-@property (nonatomic, readonly) NSString *title;
-@property (nonatomic, readonly) NSString *subtitle;
+@property (nonatomic, readonly, copy) NSString *title;
+@property (nonatomic, readonly, copy) NSString *subtitle;
 
 - (GRTStop *) initWithStopId:(NSNumber *)stopId stopName:(NSString *)stopName stopLat:(NSNumber *)stopLat stopLon:(NSNumber *)stopLon;
 

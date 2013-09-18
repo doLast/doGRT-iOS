@@ -7,6 +7,7 @@
 //
 
 #import "GRTDetailedTitleButtonView.h"
+#import <REMenu/REMenu.h>
 
 #import "GRTStopDetailsManager.h"
 #import "GRTGtfsSystem.h"
@@ -14,18 +15,11 @@
 @interface GRTStopDetailsManager ()
 
 @property (nonatomic, weak) GRTDetailedTitleButtonView *stopDetailsTitleView;
+@property (nonatomic, strong) REMenu *menu;
 
 @end
 
 @implementation GRTStopDetailsManager
-
-@synthesize stopDetails = _stopDetails;
-@synthesize route = _route;
-@synthesize dayInWeek = _dayInWeek;
-@synthesize date = _date;
-@synthesize delegate = _delegate;
-
-@synthesize stopDetailsTitleView = _stopDetailsTitleView;
 
 - (void)setDelegate:(id<GRTStopDetailsManagerDelegate>)delegate
 {
@@ -40,6 +34,12 @@
 {
 	_stopDetailsTitleView = stopDetailsTitleView;
 	self.delegate.navigationItem.titleView = stopDetailsTitleView;
+}
+
+- (void)setMenu:(REMenu *)menu
+{
+	[_menu close];
+	_menu = menu;
 }
 
 #pragma mark - general helpers
@@ -79,6 +79,11 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[self.menu close];
+}
+
 - (GRTDetailedTitleButtonView *)constructTitleView
 {
 	NSString *title = self.stopDetails.stop.stopName;
@@ -94,8 +99,44 @@
 		// TODO: It's not today, display the Date
 	}
 	
-	[titleView addTarget:self action:@selector(showModePicker:) forControlEvents:UIControlEventTouchUpInside];
+	[titleView addTarget:self action:@selector(toggleMenu:) forControlEvents:UIControlEventTouchUpInside];
 	return titleView;
+}
+
+- (REMenu *)constructMenuWithItems:(NSArray *)items
+{
+	REMenu *menu = [[REMenu alloc] initWithItems:items];
+
+	if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+		UIColor *lightColor = [UIColor colorWithWhite:1 alpha:0.85];
+		UIColor *darkColor = [UIColor colorWithWhite:0.8 alpha:1];
+		UIColor *textColor = [UIColor darkTextColor];
+		UIColor *clearColor = [UIColor clearColor];
+
+		menu.backgroundColor = lightColor;
+		menu.textColor = textColor;
+		menu.textShadowColor = clearColor;
+		menu.separatorColor = darkColor;
+		menu.borderColor = darkColor;
+
+		menu.highlightedBackgroundColor = darkColor;
+		menu.highlightedTextColor = textColor;
+		menu.highlightedTextShadowColor = clearColor;
+		menu.highlightedSeparatorColor = darkColor;
+	}
+
+	CGFloat borderWidth = 1.0 / [UIScreen mainScreen].scale;
+	menu.separatorHeight = borderWidth;
+	menu.borderWidth = borderWidth;
+
+	menu.itemHeight = 38.0;
+	menu.bounce = NO;
+
+	menu.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+	menu.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	menu.backgroundView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
+
+	return menu;
 }
 
 #pragma mark - actions
@@ -114,54 +155,64 @@
 	}
 }
 
-- (IBAction)showModePicker:(id)sender
+- (IBAction)toggleMenu:(id)sender
 {
-	CGPoint point = CGPointMake(self.delegate.view.frame.size.width / 2.0, 0.0f);
-	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.delegate.view withStringArray:[NSArray arrayWithObjects:@"Today", @"Day in a week", /*@"Certain Date", */nil] delegate:self];
-	popoverView.tag = 0;
+    if (self.menu != nil && self.menu.isOpen) {
+        [self closeMenu:sender];
+    } else {
+        [self showModeMenu:sender];
+    }
 }
 
-- (IBAction)showDayPicker:(id)sender
+- (IBAction)closeMenu:(id)sender
 {
-	CGPoint point = CGPointMake(self.delegate.view.frame.size.width / 2.0, 0.0f);
-	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.delegate.view withStringArray:@[@"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday"] delegate:self];
-	popoverView.tag = 1;
+	[self.menu close];
 }
 
-- (IBAction)showDatePicker:(id)sender
+- (IBAction)showModeMenu:(id)sender
 {
-	CGPoint point = CGPointMake(self.delegate.view.frame.size.width / 2.0, 0.0f);
-	// TODO: Use Calendar Instead
-	PopoverView *popoverView = [PopoverView showPopoverAtPoint:point inView:self.delegate.view withTitle:@"Pick a date" withStringArray:@[@"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday"] delegate:self];
-	popoverView.tag = 2;
+	REMenuItem *today = [[REMenuItem alloc] initWithTitle:@"Today"
+												 subtitle:nil
+													image:nil
+										 highlightedImage:nil
+												   action:^(REMenuItem *item) {
+													   self.date = [NSDate date];
+													   self.stopDetailsTitleView.detailTextLabel.text = @"Today ▾";
+													   [self updateStopTimes];
+												   }];
+	REMenuItem *dayInAWeek = [[REMenuItem alloc] initWithTitle:@"Day in a week"
+													  subtitle:nil
+														 image:nil
+											  highlightedImage:nil
+														action:^(REMenuItem *item) {
+															[self showDayMenu:item];
+														}];
+
+	self.menu = [self constructMenuWithItems:@[today, dayInAWeek]];
+	[self.menu showFromNavigationController:self.delegate.navigationController];
 }
 
-#pragma mark - popover view delegate
-
-- (void)popoverView:(PopoverView *)popoverView didSelectItemAtIndex:(NSInteger)index
+- (IBAction)showDayMenu:(id)sender
 {
-	NSUInteger tag = popoverView.tag;
-	[popoverView dismiss];
-	if (tag == 0) {
-		switch (index) {
-			case 1:
-				return [self showDayPicker:self];
-			case 2:
-				return [self showDatePicker:self];
-			default:
-				self.date = [NSDate date];
-				self.stopDetailsTitleView.detailTextLabel.text = @"Today ▾";
-		}
+	NSArray *dayNames = @[@"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday"];
+	NSMutableArray *items = [NSMutableArray arrayWithCapacity:[dayNames count]];
+	for (NSUInteger i = 0; i < [dayNames count]; i++) {
+		NSString *dayName = [dayNames objectAtIndex:i];
+		REMenuItem *day = [[REMenuItem alloc] initWithTitle:dayName
+												   subtitle:nil
+													  image:nil
+										   highlightedImage:nil
+													 action:^(REMenuItem *item) {
+														 self.dayInWeek = i + 1;
+														 self.date = nil;
+														 self.stopDetailsTitleView.detailTextLabel.text = [NSString stringWithFormat:@"%@ ▾", dayName];
+														 [self updateStopTimes];
+													 }];
+		[items addObject:day];
 	}
-	else if (tag == 1) {
-		self.dayInWeek = index + 1;
-		self.date = nil;
-		NSArray *days = @[@"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday"];
-		self.stopDetailsTitleView.detailTextLabel.text = [NSString stringWithFormat:@"%@ ▾", [days objectAtIndex:index]];
-	}
-	// TODO: Handle other type of popovers
-	
-	[self updateStopTimes];
+
+	self.menu = [self constructMenuWithItems:items];
+	[self.menu showFromNavigationController:self.delegate.navigationController];
 }
 
 @end

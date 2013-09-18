@@ -60,13 +60,6 @@
 	[self.tableView reloadData];
 }
 
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//	[super viewDidAppear:animated];
-//	NSLog(@"Frame: %f, %f", self.view.frame.size.width, self.view.frame.size.height);
-//	[self scrollToAppropriateIndexAnimated:YES];
-//}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -77,6 +70,11 @@
 		NSAssert(self.stopDetailsManager != nil, @"Must have a stopTimes");
 		self.stopDetailsManager.delegate = self;
 	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[self.stopDetailsManager closeMenu:self];
 }
 
 #pragma mark - view updates
@@ -114,25 +112,29 @@
 	[self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:animated];
 }
 
-- (void)showTripDetailsForStopTime:(GRTStopTime *)stopTime inNavigationController:(UINavigationController *)navigationController
+- (void)pushTripDetailsForStopTime:(GRTStopTime *)stopTime toNavigationController:(UINavigationController *)navigationController
 {
 	GRTStopsMapViewController *tripDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"tripDetailsView"];
-	tripDetailsVC.title = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
+	[self pushTripDetailsView:tripDetailsVC forStopTime:stopTime toNavigationController:navigationController];
+}
+
+- (void)pushTripDetailsView:(GRTStopsMapViewController *)tripDetailsVC
+				forStopTime:(GRTStopTime *)stopTime
+	 toNavigationController:(UINavigationController *)navigationController
+{
+	tripDetailsVC.title = [NSString stringWithFormat:@"%@", stopTime.trip.tripHeadsign];
 	tripDetailsVC.inRegionStopsDisplayThreshold = 0.03;
-	[navigationController pushViewController:tripDetailsVC animated:YES];
-	
 	tripDetailsVC.shape = stopTime.trip.shape;
 	tripDetailsVC.stops = stopTime.trip.stopTimes;
-	
+
 	NSUInteger stopTimeIndex = [tripDetailsVC.stops indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop){
 		GRTStopTime *stopTimeObj = obj;
-		if (stopTimeObj.stopSequence.integerValue == stopTime.stopSequence.integerValue) {
-			*stop = YES;
-			return YES;
-		}
-		return NO;
+		*stop = stopTimeObj.stopSequence.integerValue == stopTime.stopSequence.integerValue;
+		return *stop;
 	}].firstIndex;
 	[tripDetailsVC selectStop:[tripDetailsVC.stops objectAtIndex:stopTimeIndex]];
+
+	[navigationController pushViewController:tripDetailsVC animated:YES];
 }
 
 #pragma mark - Table view data source
@@ -181,6 +183,7 @@
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
 		cell.textLabel.textAlignment = NSTextAlignmentCenter;
+		cell.textLabel.textColor = [UIColor colorWithRed:51.0/255.0 green:118.0/255.0 blue:194.0/255.0 alpha:1.0];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
     
@@ -218,7 +221,7 @@
 		[self.delegate stopTimesViewController:self didSelectStopTime:stopTime];
 	}
 	else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		[self showTripDetailsForStopTime:stopTime inNavigationController:self.navigationController];
+		[self pushTripDetailsForStopTime:stopTime toNavigationController:self.navigationController];
 	}
 }
 

@@ -10,29 +10,25 @@
 #import "InformaticToolbar.h"
 #import "GRTDetailedTitleButtonView.h"
 #import "GRTStopDetailsManager.h"
+#import "UIViewController+ScrollViewInsets.h"
 
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
 
+typedef enum GRTStopDetailsViewType {
+	GRTStopDetailsViewTypeMixed = 0,
+	GRTStopDetailsViewTypeRoutes,
+	GRTStopDetailsViewTypeTotal
+} GRTStopDetailsViewType;
+
 @interface GRTStopDetailsViewController ()
 
 @property (nonatomic, strong) GRTFavoriteStop *favoriteStop;
-@property (nonatomic, strong) GRTStopTimesViewController *stopTimesViewController;
-@property (nonatomic, strong) GRTStopRoutesViewController *stopRoutesViewController;
-@property (nonatomic, strong) NSArray *candidateViewControllers;
+@property (nonatomic) GRTStopDetailsViewType viewType;
 
 @end
 
 @implementation GRTStopDetailsViewController
-
-@synthesize stopDetailsManager = _stopDetailsManager;
-@synthesize viewsSegmentedControl = _viewsSegmentedControl;
-@synthesize favButton = _favButton;
-
-@synthesize favoriteStop = _favoriteStop;
-@synthesize stopTimesViewController = _stopTimesViewController;
-@synthesize stopRoutesViewController = _stopRoutesViewController;
-@synthesize candidateViewControllers = _candidateViewControllers;
 
 - (void)setFavoriteStop:(GRTFavoriteStop *)favoriteStop
 {
@@ -50,42 +46,32 @@
 	[self.stopTimesViewController setStopTimes:stopTimes splitLeftAndComingBuses:split];
 }
 
+- (void)setViewType:(GRTStopDetailsViewType)viewType
+{
+	if (viewType != _viewType) {
+		[UIView animateWithDuration:0.2 animations:^(){
+			self.stopTimesViewController.tableView.alpha =
+			viewType == GRTStopDetailsViewTypeMixed ? 1.0f : 0.0f;
+		}];
+	}
+	[self.viewsSegmentedControl setSelectedSegmentIndex:viewType];
+	_viewType = viewType;
+}
 
 #pragma mark - view life-cycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-	// Config page view
-	self.delegate = self;
-	self.dataSource = self;
-	for (UIGestureRecognizer *recognizer in self.gestureRecognizers) {
-		if ([recognizer isKindOfClass:[UITapGestureRecognizer class]]) {
-			recognizer.enabled = NO;
-		}
-	}
-	
+
 	// Prepare data for views construction
 	NSAssert(self.stopDetailsManager != nil, @"Must have a stopTimes");
-	
+
+	// Setup view controllers
 	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopDetailsManager.stopDetails.stop];
 	self.view.backgroundColor = [UIColor underPageBackgroundColor];
-	[self.favButton setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIFont boldSystemFontOfSize:17.0] forKey:UITextAttributeFont] forState:UIControlStateNormal];
-	
-	// Construct view controllers
-	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
-	stopTimesVC.delegate = self;
-	
-	GRTStopRoutesViewController *stopRoutesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopRoutesView"];
-	stopRoutesVC.routes = [self.stopDetailsManager.stopDetails routes];
-	stopRoutesVC.delegate = self;
-	
-	// Assign view controllers
-	self.candidateViewControllers = @[stopTimesVC, stopRoutesVC];
-	self.stopTimesViewController = stopTimesVC;
-	self.stopRoutesViewController = stopRoutesVC;
-	
+	self.stopRoutesViewController.routes = [self.stopDetailsManager.stopDetails routes];
+
 	// Construct Segmented Control
 	if (self.viewsSegmentedControl == nil) {
 		UISegmentedControl *viewsSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Mixed Schedule", @"Routes List"]];
@@ -101,9 +87,8 @@
 	}
 	
 	NSNumber *index = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDefaultScheduleViewPreference];
-	[self setViewControllers:@[[self.candidateViewControllers objectAtIndex:index.integerValue]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-	[self.viewsSegmentedControl setSelectedSegmentIndex:index.integerValue];
-	
+	self.viewType = index.integerValue;
+
 	// Config navigation bar
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
 	
@@ -114,28 +99,33 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	
+
 	[self updateToolbarToLatestStateAnimated:animated];
+	[self.stopTimesViewController.tableView deselectRowAtIndexPath:[self.stopTimesViewController.tableView indexPathForSelectedRow] animated:YES];
+	[self.stopRoutesViewController.tableView deselectRowAtIndexPath:[self.stopRoutesViewController.tableView indexPathForSelectedRow] animated:YES];
 	// TODO: fix scroll to coming bus index
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[self.navigationController setToolbarHidden:YES animated:YES];
+	[self.stopDetailsManager closeMenu:self];
+}
+
+- (void)viewDidLayoutSubviews
+{
+	[self adjustAllScrollViewsInsets];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	[self adjustAllScrollViewsInsets];
 }
 
 #pragma mark - actions
 
-- (IBAction)toggleViews:(id)sender
+- (IBAction)toggleViews:(UISegmentedControl *)sender
 {
-	NSInteger old = [self.candidateViewControllers indexOfObject:[self.viewControllers objectAtIndex:0]];
-	NSInteger new = (old + 1) % [self.candidateViewControllers count];
-	
-	UIPageViewControllerNavigationDirection direction = new < old ? UIPageViewControllerNavigationDirectionReverse : UIPageViewControllerNavigationDirectionForward;
-	
-	[self setViewControllers:@[[self.candidateViewControllers objectAtIndex:new]] direction:direction animated:YES completion:nil];
-	
-	// TODO: Toggling the view too fast will cause crash
+	self.viewType = sender.selectedSegmentIndex;
 }
 
 - (IBAction)toggleStopFavorite:(id)sender
@@ -150,49 +140,23 @@
 	}
 }
 
-#pragma mark - page view data source
-
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
-{
-	NSInteger index = [self.candidateViewControllers indexOfObject:viewController];
-	if (index == [self.candidateViewControllers count] - 1) {
-		return nil;
-	}
-	index = (index + 1) % [self.candidateViewControllers count];
-	
-	return [self.candidateViewControllers objectAtIndex:index];
-}
-
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
-{
-	NSInteger index = [self.candidateViewControllers indexOfObject:viewController];
-	if (index == 0) {
-		return nil;
-	}
-	index = (index - 1) % [self.candidateViewControllers count];
-	
-	return [self.candidateViewControllers objectAtIndex:index];
-}
-
-#pragma mark - page view delegate
-
-- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
-{
-	NSInteger index = [self.candidateViewControllers indexOfObject:[self.viewControllers objectAtIndex:0]];
-	[self.viewsSegmentedControl setSelectedSegmentIndex:index];
-}
-
 #pragma mark - stop times view controller delegate
 
 - (void)stopTimesViewController:(GRTStopTimesViewController *)stopTimesViewController didSelectStopTime:(GRTStopTime *)stopTime
 {
+	GRTStopsMapViewController *tripDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"tripDetailsView"];
+
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		[stopTimesViewController showTripDetailsForStopTime:stopTime inNavigationController:self.navigationController];
+		[stopTimesViewController pushTripDetailsView:tripDetailsVC
+										 forStopTime:stopTime
+							  toNavigationController:self.navigationController];
 	}
 	else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		UINavigationController *detailNav = (id)[self.splitViewController.viewControllers objectAtIndex:1];
 		[detailNav popToRootViewControllerAnimated:NO];
-		[stopTimesViewController showTripDetailsForStopTime:stopTime inNavigationController:detailNav];
+		[stopTimesViewController pushTripDetailsView:tripDetailsVC
+										 forStopTime:stopTime
+							  toNavigationController:detailNav];
 	}
 }
 

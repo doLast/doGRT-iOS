@@ -6,19 +6,18 @@
 //
 //
 
-#import "PopoverView.h"
 @class GRTStopDetails;
 @class GRTRoute;
 
 @protocol GRTStopDetailsManagerDelegate <NSObject>
 
 - (void)setStopTimes:(NSArray *)stopTimes splitLeftAndComingBuses:(BOOL)split;
-- (UIView *)view;
 - (UINavigationItem *)navigationItem;
+- (UINavigationController *)navigationController;
 
 @end
 
-@interface GRTStopDetailsManager : NSObject <PopoverViewDelegate>
+@interface GRTStopDetailsManager : NSObject
 
 @property (nonatomic, strong) GRTStopDetails *stopDetails;
 @property (nonatomic, strong) GRTRoute *route;
@@ -28,5 +27,9 @@
 
 - (GRTStopDetailsManager *)initWithStopDetails:(GRTStopDetails *)stopDetails;
 - (GRTStopDetailsManager *)initWithStopDetails:(GRTStopDetails *)stopDetails route:(GRTRoute *)route;
+
+- (IBAction)closeMenu:(id)sender;
+- (IBAction)showModeMenu:(id)sender;
+- (IBAction)showDayMenu:(id)sender;
 
 @end

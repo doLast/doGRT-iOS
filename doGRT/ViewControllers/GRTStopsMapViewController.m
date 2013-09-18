@@ -17,7 +17,7 @@
 
 @interface GRTStopsMapViewController ()
 
-@property (nonatomic, weak) id<GRTStopAnnotation> willBePresentedStop;
+@property (atomic, weak) id<GRTStopAnnotation> willBePresentedStop;
 @property (nonatomic, strong, readonly) NSOperationQueue *annotationUpdateQueue;
 
 @end
@@ -42,9 +42,7 @@
 		for (id<GRTStopAnnotation> stop in _stops) {
 			[toRemove addObject:stop.stop];
 		}
-		
-//		NSLog(@"Adding: %@, Removing: %@", toAdd, toRemove);
-		
+
 		[self.mapView removeAnnotations:toRemove];
 		[self.mapView addAnnotations:toAdd];
 		[self updateMapView];
@@ -81,23 +79,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-	
-	self.title = @"All Stops";
-	
-	// Center Waterloo on map
-	[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
-	
-	UIImage *location = [UIImage imageNamed:@"location"];
-	UIButton *locateButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[locateButton setImage:location forState:UIControlStateNormal];
-	[locateButton addTarget:self action:@selector(startTrackingUserLocation:) forControlEvents:UIControlEventTouchUpInside];
-	locateButton.layer.shadowColor = [UIColor blackColor].CGColor;
-	locateButton.layer.shadowOpacity = 0.5;
-	locateButton.layer.shadowRadius = 0;
-	locateButton.layer.shadowOffset = CGSizeMake(0.0f, -1.0f);
-	locateButton.frame = CGRectMake(0.0, 0.0, 28.0, 28.0);
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:locateButton];
+
+	// Center will be presented stop on map
+	if (self.willBePresentedStop != nil) {
+		CLLocationCoordinate2D coord = self.willBePresentedStop.location.coordinate;
+		[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(coord, 2000, 2000) animated:NO];
+	} else if ([[self.mapView selectedAnnotations] count] == 0) {
+		[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
+	}
+
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
@@ -160,6 +150,14 @@
 	}
 }
 
+- (void)selectSingleAnnotation:(id<MKAnnotation>)annotation
+{
+	for (id<MKAnnotation> annotationView in self.mapView.selectedAnnotations) {
+		[self.mapView deselectAnnotation:annotationView animated:NO];
+	}
+	[self.mapView selectAnnotation:self.willBePresentedStop animated:YES];
+}
+
 #pragma mark - actions
 
 - (IBAction)startTrackingUserLocation:(id)sender
@@ -174,12 +172,6 @@
 
 - (void)centerMapToRegion:(MKCoordinateRegion)region animated:(BOOL)animated
 {
-	if (self.willBePresentedStop != nil) {
-		for (id<MKAnnotation> annotationView in self.mapView.selectedAnnotations) {
-			[self.mapView deselectAnnotation:annotationView animated:NO];
-		}
-		[self.mapView selectAnnotation:self.willBePresentedStop animated:NO];
-	}
 	[self.mapView setRegion:region animated:animated];
 }
 
@@ -206,20 +198,18 @@
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
+	if (self.willBePresentedStop != nil && [mapView.annotations containsObject:self.willBePresentedStop]) {
+		[self selectSingleAnnotation:self.willBePresentedStop];
+	}
+
 	[self updateMapView];
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-	self.title = view.annotation.title;
 	if (view.annotation == self.willBePresentedStop) {
 		self.willBePresentedStop = nil;
 	}
-}
-
-- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
-{
-	self.title = @"All Stops";
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
@@ -239,8 +229,8 @@
 			pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 		}
 	}
-	if (self.willBePresentedStop != nil && [mapView.selectedAnnotations count] == 0) {
-		[mapView selectAnnotation:self.willBePresentedStop animated:NO];
+	if (self.willBePresentedStop != nil) {
+		[self selectSingleAnnotation:self.willBePresentedStop];
 	}
 }
 

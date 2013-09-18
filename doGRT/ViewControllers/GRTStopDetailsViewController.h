@@ -10,13 +10,15 @@
 #import "GRTStopRoutesViewController.h"
 #import "GRTStopDetailsManager.h"
 
-@interface GRTStopDetailsViewController : UIPageViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate, GRTStopTimesViewControllerDelegate, GRTStopRoutesViewControllerDelegate, GRTStopDetailsManagerDelegate>
+@interface GRTStopDetailsViewController : UIViewController <GRTStopTimesViewControllerDelegate, GRTStopRoutesViewControllerDelegate, GRTStopDetailsManagerDelegate>
 
 @property (nonatomic, strong) GRTStopDetailsManager *stopDetailsManager;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *viewsSegmentedControl;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *favButton;
+@property (nonatomic, strong) IBOutlet GRTStopTimesViewController *stopTimesViewController;
+@property (nonatomic, strong) IBOutlet GRTStopRoutesViewController *stopRoutesViewController;
 
-- (IBAction)toggleViews:(id)sender;
+- (IBAction)toggleViews:(UISegmentedControl *)sender;
 - (IBAction)toggleStopFavorite:(id)sender;
 
 @end
