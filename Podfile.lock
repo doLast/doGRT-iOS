@@ -6,13 +6,13 @@ PODS:
     - FMDB/common
   - InformaticToolbar (0.2.1)
   - QuickDialog (0.9)
-  - REMenu (1.4.2)
+  - REMenu (HEAD based on 1.4.2)
 
 DEPENDENCIES:
-  - FMDB (~> 2.x)
-  - InformaticToolbar (~> 0.2.x)
-  - QuickDialog (~> 0.9.x)
-  - REMenu (~> 1.4.x)
+  - FMDB (~> 2.1)
+  - InformaticToolbar (~> 0.2.1)
+  - QuickDialog (~> 0.9)
+  - REMenu (HEAD)
 
 SPEC CHECKSUMS:
   FMDB: 2769004a271eae0bbd8bd4f45a3f2acfd0d3df0e
