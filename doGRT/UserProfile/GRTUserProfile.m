@@ -9,11 +9,13 @@
 #import "GRTUserProfile.h"
 #import "GRTGtfsSystem+Internal.h"
 
-NSString *GRTUserLaunchCountKey = @"GRTUserLaunchCountKey";
-NSString *GRTUserNearbyDistancePreference = @"GRTUserNearbyDistancePreference";
-NSString *GRTUserDefaultScheduleViewPreference = @"GRTUserDefaultScheduleViewPreference";
-NSString *GRTUserDisplay24HourPreference = @"GRTUserDisplay24HourPreference";
-NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification";
+NSString * const GRTUserLaunchCountKey = @"GRTUserLaunchCountKey";
+NSString * const GRTUserNearbyDistancePreference = @"GRTUserNearbyDistancePreference";
+NSString * const GRTUserDefaultScheduleViewPreference = @"GRTUserDefaultScheduleViewPreference";
+NSString * const GRTUserDisplay24HourPreference = @"GRTUserDisplay24HourPreference";
+NSString * const GRTUserDisplayTerminusStopTimesPreference = @"GRTUserDisplayTerminusStopTimesPreference";
+
+NSString * const GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification";
 
 @interface GRTUserProfile ()
 
@@ -34,7 +36,13 @@ NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification"
 	self = [super init];
 	if (self != nil) {
 		self.managedObjectContext = [(id) [[UIApplication sharedApplication] delegate]managedObjectContext];
-		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:0], GRTUserLaunchCountKey, [NSNumber numberWithDouble:500.0], GRTUserNearbyDistancePreference, [NSNumber numberWithInteger:0], GRTUserDefaultScheduleViewPreference, [NSNumber numberWithBool:YES], GRTUserDisplay24HourPreference, nil]];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:
+		 [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:0], GRTUserLaunchCountKey,
+		  [NSNumber numberWithDouble:500.0], GRTUserNearbyDistancePreference,
+		  [NSNumber numberWithInteger:0], GRTUserDefaultScheduleViewPreference,
+		  [NSNumber numberWithBool:YES], GRTUserDisplay24HourPreference,
+		  [NSNumber numberWithBool:NO], GRTUserDisplayTerminusStopTimesPreference,
+		  nil]];
 		[self refreshFavoriteStops];
 	}
 	return self;
@@ -62,12 +70,12 @@ NSString *GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotification"
 
 #pragma mark - preferences
 
-- (id)preferenceForKey:(NSString *)key
+- (id)preferenceForKey:(NSString * const)key
 {
 	return [[NSUserDefaults standardUserDefaults] objectForKey:key];
 }
 
-- (void)setPreference:(id)value forKey:(NSString *)key
+- (void)setPreference:(id)value forKey:(NSString * const)key
 {
 	[[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
 	[[NSNotificationCenter defaultCenter] postNotificationName:key object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:value, @"value", nil]];
