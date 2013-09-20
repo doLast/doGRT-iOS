@@ -52,6 +52,11 @@
 	return _stopTimes;
 }
 
+- (NSUInteger)totalStops
+{
+	return [self.stopTimes count];
+}
+
 - (GRTTrip *)initWithTripId:(NSNumber *)tripId tripHeadsign:(NSString *)tripHeadsign routeId:(NSNumber *)routeId serviceId:(NSString *)serviceId shapeId:(NSNumber *)shapeId
 {
 	self = [super init];
