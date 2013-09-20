@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSNumber *routeId;
 @property (nonatomic, strong) NSString *serviceId;
 @property (nonatomic, strong) NSNumber *shapeId;
+@property (nonatomic, strong) NSArray *stopTimes;
 
 @end
 
@@ -26,6 +27,7 @@
 @synthesize routeId = _routeId;
 @synthesize serviceId = _serviceId;
 @synthesize shapeId = _shapeId;
+@synthesize stopTimes = _stopTimes;
 
 - (GRTRoute *)route
 {
@@ -44,7 +46,10 @@
 
 - (NSArray *)stopTimes
 {
-	return [[GRTGtfsSystem defaultGtfsSystem] stopTimesForTrip:self];
+	if (_stopTimes == nil) {
+		_stopTimes = [[GRTGtfsSystem defaultGtfsSystem] stopTimesForTrip:self];
+	}
+	return _stopTimes;
 }
 
 - (GRTTrip *)initWithTripId:(NSNumber *)tripId tripHeadsign:(NSString *)tripHeadsign routeId:(NSNumber *)routeId serviceId:(NSString *)serviceId shapeId:(NSNumber *)shapeId
