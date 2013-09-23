@@ -43,12 +43,6 @@
 	[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:1.0]];
 	[[UIToolbar appearance] setTintColor:[UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:1.0]];
 
-	if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-		[[UINavigationBar appearance] setBarTintColor:[UIColor clearColor]];
-		[[UIToolbar appearance] setBarTintColor:[UIColor clearColor]];
-		[[UISearchBar appearance] setBarTintColor:[UIColor colorWithWhite:1 alpha:0.85]];
-	}
-
     return YES;
 }
 							

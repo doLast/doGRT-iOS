@@ -10,11 +10,13 @@
 
 @class GRTStop;
 
-extern NSString *GRTUserLaunchCountKey;
-extern NSString *GRTUserNearbyDistancePreference;
-extern NSString *GRTUserDefaultScheduleViewPreference;
-extern NSString *GRTUserDisplay24HourPreference;
-extern NSString *GRTUserProfileUpdateNotification;
+extern NSString * const GRTUserLaunchCountKey;
+extern NSString * const GRTUserNearbyDistancePreference;
+extern NSString * const GRTUserDefaultScheduleViewPreference;
+extern NSString * const GRTUserDisplay24HourPreference;
+extern NSString * const GRTUserDisplayTerminusStopTimesPreference;
+
+extern NSString * const GRTUserProfileUpdateNotification;
 
 @interface GRTUserProfile : NSObject
 
