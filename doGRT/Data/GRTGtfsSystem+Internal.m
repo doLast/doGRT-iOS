@@ -174,8 +174,6 @@
 		[stopTimes addObject:stopTime];
 	}
 	
-	NSLog(@"Obtain %d stopTimes", [stopTimes count]);
-	
 	[result close];
 	
 	return stopTimes;

@@ -6,18 +6,18 @@ PODS:
     - FMDB/common
   - InformaticToolbar (0.2.1)
   - QuickDialog (0.9)
-  - REMenu (HEAD based on 1.4.2)
+  - REMenu (1.5)
 
 DEPENDENCIES:
   - FMDB (~> 2.1)
   - InformaticToolbar (~> 0.2.1)
   - QuickDialog (~> 0.9)
-  - REMenu (HEAD)
+  - REMenu (~> 1.5)
 
 SPEC CHECKSUMS:
   FMDB: 2769004a271eae0bbd8bd4f45a3f2acfd0d3df0e
   InformaticToolbar: 2cdade68b58b7dcfd81cd1914ce18bfa06c1f313
   QuickDialog: aea6a7b1a235ba0439065a45e5b124a8422f4e2c
-  REMenu: 51437b773cb4949fbf3daec606b0b8598ec188fb
+  REMenu: 6b0583aea38a1eae802d56ec9a0202dacbed3f88
 
 COCOAPODS: 0.24.0

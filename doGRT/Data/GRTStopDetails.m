@@ -10,6 +10,7 @@
 #import "GRTGtfsSystem+Internal.h"
 
 #import "FMDatabase.h"
+#import "GRTUserProfile.h"
 
 @interface GRTStopDetails ()
 
@@ -121,6 +122,7 @@
 	}
 	
 	// process the data
+	BOOL displayTerminusStopTimes = [[[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDisplayTerminusStopTimesPreference] boolValue];
 	NSMutableArray *stopTimes = [[NSMutableArray alloc] init];
 	while ([result next]) {
 		//retrieve values for each record
@@ -137,7 +139,11 @@
 		NSNumber *departureTime = [NSNumber numberWithInt:departureInt];
 		
 		GRTStopTime *stopTime = [[GRTStopTime alloc] initWithTripId:tripId stopSequence:stopSequence stopId:stopId arrivalTime:arrivalTime departureTime:departureTime];
-		[stopTimes addObject:stopTime];
+		if (!displayTerminusStopTimes &&
+			[stopTime.stopSequence integerValue] == stopTime.trip.totalStops) {
+		} else {
+			[stopTimes addObject:stopTime];
+		}
 	}
 	
 	[result close];

@@ -218,16 +218,29 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	}];
 	[root addSection:defaultScheduleViewSection];
 	
-	// Display 24 hour view section
+	// Toggles section
+	// Display 24 hour view toggle
 	NSNumber *display24Hour = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDisplay24HourPreference];
-	QBooleanElement *display24HourToggle = [[QBooleanElement alloc] initWithTitle:@"Show Time as 24 Hour" BoolValue:display24Hour.boolValue];
+	QBooleanElement *display24HourToggle = [[QBooleanElement alloc] initWithTitle:@"Show time as 24 hour" BoolValue:display24Hour.boolValue];
 	__weak QBooleanElement *display24HourToggleWeak = display24HourToggle;
 	[display24HourToggle setOnValueChanged:^(QRootElement *root){
 		[[GRTUserProfile defaultUserProfile] setPreference:[NSNumber numberWithBool:display24HourToggleWeak.boolValue] forKey:GRTUserDisplay24HourPreference];
 	}];
-	QSection *display24HourSection = [[QSection alloc] init];
-	[display24HourSection addElement:display24HourToggle];
-	[root addSection:display24HourSection];
+	
+	// Display Terminus stop times toggle
+	NSNumber *displayTerminus = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDisplayTerminusStopTimesPreference];
+	QBooleanElement *displayTerminusToggle = [[QBooleanElement alloc] initWithTitle:@"Show arrival time for terminus" BoolValue:displayTerminus.boolValue];
+	__weak QBooleanElement *displayTerminusToggleWeak = displayTerminusToggle;
+	[displayTerminusToggleWeak setOnValueChanged:^(QRootElement *root){
+		[[GRTUserProfile defaultUserProfile] setPreference:[NSNumber numberWithBool:displayTerminusToggleWeak.boolValue] forKey:GRTUserDisplayTerminusStopTimesPreference];
+	}];
+
+	QSection *togglesSection = [[QSection alloc] init];
+	[togglesSection addElement:display24HourToggle];
+	[togglesSection addElement:displayTerminusToggle];
+	togglesSection.title = @"Stop Time Display";
+	togglesSection.footer = @"Terminus is the last stop in a route.";
+	[root addSection:togglesSection];
 	
 	// Data update
 	QSection *dataUpdateSection = [[QSection alloc] initWithTitle:@"Schedule Data Update"];

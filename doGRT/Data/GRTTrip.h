@@ -17,7 +17,8 @@
 @property (nonatomic, weak, readonly) GRTRoute *route;
 @property (nonatomic, weak, readonly) GRTService *service;
 @property (nonatomic, weak, readonly) GRTShape *shape;
-@property (nonatomic, weak, readonly) NSArray *stopTimes;
+@property (nonatomic, strong, readonly) NSArray *stopTimes;
+@property (nonatomic, readonly) NSUInteger totalStops;
 
 - (GRTTrip *)initWithTripId:(NSNumber *)tripId tripHeadsign:(NSString *)tripHeadsign routeId:(NSNumber *)routeId serviceId:(NSString *)serviceId shapeId:(NSNumber *)shapeId;
 
