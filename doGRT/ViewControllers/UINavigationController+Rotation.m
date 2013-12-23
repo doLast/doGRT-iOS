@@ -21,7 +21,7 @@
 
 - (NSUInteger)supportedInterfaceOrientations {
 	
-    NSUInteger result = UIInterfaceOrientationMaskAll; // self.topViewController.supportedInterfaceOrientations;
+    NSUInteger result = UIInterfaceOrientationMaskAllButUpsideDown; // self.topViewController.supportedInterfaceOrientations;
 	
     return result;
 }
@@ -33,7 +33,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-	return YES;
+	return toInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
 }
 
 @end
