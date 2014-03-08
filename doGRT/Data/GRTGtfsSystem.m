@@ -12,7 +12,7 @@
 #import "ASIHTTPRequest.h"
 
 static const NSInteger kMaxStopsLimit = 30;
-static const NSInteger kBuiltInDataVersion = 20140105;
+static const NSInteger kBuiltInDataVersion = 20140308;
 static const NSInteger kBuiltInDataEndDate = 20140427;
 
 NSString * const GRTGtfsDataVersionKey = @"GRTGtfsDataVersionKey";
