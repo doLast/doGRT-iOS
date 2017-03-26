@@ -62,7 +62,7 @@
 		25EAB19614CD783F004A9DEC /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 25EAB19514CD783F004A9DEC /* libsqlite3.dylib */; };
 		25EAB19D14CD82B1004A9DEC /* GRTStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EAB19C14CD82B1004A9DEC /* GRTStop.m */; };
 		25F18A9C14DBDC2E008B1A31 /* GRTTrip.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F18A9B14DBDC2E008B1A31 /* GRTTrip.m */; };
-		70B56BEC2987439891B4B3CE /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC7BE1EC1DA4CA1A00F358A /* libPods.a */; };
+		A88802FDF1A616714DCA9000 /* libPods-doGRT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE29D95533A278CA05A7EEE /* libPods-doGRT.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -162,9 +162,9 @@
 		25EAB19C14CD82B1004A9DEC /* GRTStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStop.m; sourceTree = "<group>"; };
 		25F18A9A14DBDC2E008B1A31 /* GRTTrip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTTrip.h; sourceTree = "<group>"; };
 		25F18A9B14DBDC2E008B1A31 /* GRTTrip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTTrip.m; sourceTree = "<group>"; };
-		876FB120D321E75197EAF3E3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		9C4134EB92B4EA08945253D2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		CDC7BE1EC1DA4CA1A00F358A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CE29D95533A278CA05A7EEE /* libPods-doGRT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-doGRT.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		464A30AEC836D8C16401F031 /* Pods-doGRT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-doGRT.release.xcconfig"; path = "Pods/Target Support Files/Pods-doGRT/Pods-doGRT.release.xcconfig"; sourceTree = "<group>"; };
+		FFCC2FCC5E05639A952BE9D0 /* Pods-doGRT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-doGRT.debug.xcconfig"; path = "Pods/Target Support Files/Pods-doGRT/Pods-doGRT.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,22 +184,13 @@
 				2515ED3614C5817600FDCD6D /* Foundation.framework in Frameworks */,
 				2515ED3814C5817600FDCD6D /* CoreGraphics.framework in Frameworks */,
 				2515ED3A14C5817600FDCD6D /* CoreData.framework in Frameworks */,
-				70B56BEC2987439891B4B3CE /* libPods.a in Frameworks */,
+				A88802FDF1A616714DCA9000 /* libPods-doGRT.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		071A840B82D7605B02C803FE /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				876FB120D321E75197EAF3E3 /* Pods.debug.xcconfig */,
-				9C4134EB92B4EA08945253D2 /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		2504F06916987B7400D3D1A3 /* MainStopsViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,7 +234,7 @@
 				2515ED3B14C5817600FDCD6D /* doGRT */,
 				2515ED3214C5817600FDCD6D /* Frameworks */,
 				2515ED3014C5817600FDCD6D /* Products */,
-				071A840B82D7605B02C803FE /* Pods */,
+				4A78BF1447C1736FBDFA8106 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -271,7 +262,7 @@
 				2515ED3514C5817600FDCD6D /* Foundation.framework */,
 				2515ED3714C5817600FDCD6D /* CoreGraphics.framework */,
 				2515ED3914C5817600FDCD6D /* CoreData.framework */,
-				CDC7BE1EC1DA4CA1A00F358A /* libPods.a */,
+				3CE29D95533A278CA05A7EEE /* libPods-doGRT.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -433,6 +424,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		4A78BF1447C1736FBDFA8106 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FFCC2FCC5E05639A952BE9D0 /* Pods-doGRT.debug.xcconfig */,
+				464A30AEC836D8C16401F031 /* Pods-doGRT.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -440,11 +440,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2515ED4C14C5817600FDCD6D /* Build configuration list for PBXNativeTarget "doGRT" */;
 			buildPhases = (
-				E14ADE38E8A2425F9A89CFEE /* Check Pods Manifest.lock */,
+				CE913EE2DA026577D1C927D6 /* [CP] Check Pods Manifest.lock */,
 				2515ED2B14C5817600FDCD6D /* Sources */,
 				2515ED2C14C5817600FDCD6D /* Frameworks */,
 				2515ED2D14C5817600FDCD6D /* Resources */,
-				C1A422A9EF244F1FB4D2F50B /* Copy Pods Resources */,
+				1CB0ABE9B4BBFC76C6DF20F6 /* [CP] Embed Pods Frameworks */,
+				3EFAF50D62260985CB2709C1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -461,7 +462,12 @@
 		2515ED2614C5817500FDCD6D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0820;
+				TargetAttributes = {
+					2515ED2E14C5817600FDCD6D = {
+						DevelopmentTeam = 456YE6HY56;
+					};
+				};
 			};
 			buildConfigurationList = 2515ED2914C5817500FDCD6D /* Build configuration list for PBXProject "doGRT" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -498,34 +504,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		C1A422A9EF244F1FB4D2F50B /* Copy Pods Resources */ = {
+		1CB0ABE9B4BBFC76C6DF20F6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-doGRT/Pods-doGRT-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E14ADE38E8A2425F9A89CFEE /* Check Pods Manifest.lock */ = {
+		3EFAF50D62260985CB2709C1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-doGRT/Pods-doGRT-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE913EE2DA026577D1C927D6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -597,15 +618,19 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -620,7 +645,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -637,7 +662,9 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -645,6 +672,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -653,7 +681,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -664,13 +692,14 @@
 		};
 		2515ED4D14C5817600FDCD6D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 876FB120D321E75197EAF3E3 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = FFCC2FCC5E05639A952BE9D0 /* Pods-doGRT.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = 456YE6HY56;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "doGRT/doGRT-Prefix.pch";
 				INFOPLIST_FILE = "doGRT/doGRT-Info.plist";
@@ -678,6 +707,7 @@
 					"$(inherited)",
 					"-ObjC",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.doLast.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -688,13 +718,14 @@
 		};
 		2515ED4E14C5817600FDCD6D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9C4134EB92B4EA08945253D2 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 464A30AEC836D8C16401F031 /* Pods-doGRT.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = 456YE6HY56;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "doGRT/doGRT-Prefix.pch";
 				INFOPLIST_FILE = "doGRT/doGRT-Info.plist";
@@ -702,6 +733,7 @@
 					"$(inherited)",
 					"-ObjC",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.doLast.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
