@@ -58,6 +58,7 @@
 		2591430B1614ACE700F0D215 /* GRTStopRoutesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2591430A1614ACE600F0D215 /* GRTStopRoutesViewController.m */; };
 		25C7493C15E09173003AB331 /* iPhoneStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25C7493B15E09173003AB331 /* iPhoneStoryboard.storyboard */; };
 		25C7493E15E09190003AB331 /* iPadStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25C7493D15E09190003AB331 /* iPadStoryboard.storyboard */; };
+		25C77AD31E87AD2100F06D98 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25C77AD21E87AD2100F06D98 /* Launch Screen.storyboard */; };
 		25D1C7141690FA6F004C984A /* GRTDetailedTitleButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D1C7131690FA6F004C984A /* GRTDetailedTitleButtonView.m */; };
 		25EAB19614CD783F004A9DEC /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 25EAB19514CD783F004A9DEC /* libsqlite3.dylib */; };
 		25EAB19D14CD82B1004A9DEC /* GRTStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EAB19C14CD82B1004A9DEC /* GRTStop.m */; };
@@ -155,6 +156,7 @@
 		2591430A1614ACE600F0D215 /* GRTStopRoutesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopRoutesViewController.m; sourceTree = "<group>"; };
 		25C7493B15E09173003AB331 /* iPhoneStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPhoneStoryboard.storyboard; sourceTree = "<group>"; };
 		25C7493D15E09190003AB331 /* iPadStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPadStoryboard.storyboard; sourceTree = "<group>"; };
+		25C77AD21E87AD2100F06D98 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		25D1C7121690FA6F004C984A /* GRTDetailedTitleButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTDetailedTitleButtonView.h; sourceTree = "<group>"; };
 		25D1C7131690FA6F004C984A /* GRTDetailedTitleButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTDetailedTitleButtonView.m; sourceTree = "<group>"; };
 		25EAB19514CD783F004A9DEC /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -301,6 +303,7 @@
 				250DE3CB16285A58002B9344 /* Images */,
 				25C7493B15E09173003AB331 /* iPhoneStoryboard.storyboard */,
 				25C7493D15E09190003AB331 /* iPadStoryboard.storyboard */,
+				25C77AD21E87AD2100F06D98 /* Launch Screen.storyboard */,
 				258D7D69178354C000D287A0 /* GRT_GTFS.sqlite */,
 			);
 			path = Resources;
@@ -493,6 +496,7 @@
 			files = (
 				2515ED4014C5817600FDCD6D /* InfoPlist.strings in Resources */,
 				254BDD6117E2A6C500A418E7 /* Images.xcassets in Resources */,
+				25C77AD31E87AD2100F06D98 /* Launch Screen.storyboard in Resources */,
 				25C7493C15E09173003AB331 /* iPhoneStoryboard.storyboard in Resources */,
 				25C7493E15E09190003AB331 /* iPadStoryboard.storyboard in Resources */,
 				257B1C961620A96F00176083 /* iTunesArtwork.png in Resources */,

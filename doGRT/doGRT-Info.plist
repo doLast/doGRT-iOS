@@ -24,6 +24,8 @@
 	<string>20131010</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UILaunchStoryboardName</key>
+	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>iPhoneStoryboard</string>
 	<key>UIMainStoryboardFile~ipad</key>

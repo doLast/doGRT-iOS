@@ -167,8 +167,8 @@
 		NSInteger arrivalInt = [result intForColumn:@"arrival_time"];
 		NSInteger departureInt = [result intForColumn:@"departure_time"];
 		
-		NSNumber *arrivalTime = [NSNumber numberWithInt:arrivalInt];
-		NSNumber *departureTime = [NSNumber numberWithInt:departureInt];
+		NSNumber *arrivalTime = [NSNumber numberWithLong:arrivalInt];
+		NSNumber *departureTime = [NSNumber numberWithLong:departureInt];
 		
 		GRTStopTime *stopTime = [[GRTStopTime alloc] initWithTripId:tripId stopSequence:stopSequence stopId:stopId arrivalTime:arrivalTime departureTime:departureTime];
 		[stopTimes addObject:stopTime];

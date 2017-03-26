@@ -54,7 +54,7 @@ NSString * const GRTUserProfileUpdateNotification = @"GRTUserProfileUpdateNotifi
 	launchCount++;
 	[[NSUserDefaults standardUserDefaults] setInteger:launchCount forKey:GRTUserLaunchCountKey];
 	
-	NSLog(@"UserProfile boot with launchCount: %d", launchCount);
+	NSLog(@"UserProfile boot with launchCount: %ld", (long)launchCount);
 }
 
 + (GRTUserProfile *)defaultUserProfile

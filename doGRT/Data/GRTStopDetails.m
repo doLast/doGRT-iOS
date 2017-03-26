@@ -135,8 +135,8 @@
 			arrivalInt -= 240000;
 			departureInt -= 240000;
 		}
-		NSNumber *arrivalTime = [NSNumber numberWithInt:arrivalInt];
-		NSNumber *departureTime = [NSNumber numberWithInt:departureInt];
+		NSNumber *arrivalTime = [NSNumber numberWithLong:arrivalInt];
+		NSNumber *departureTime = [NSNumber numberWithLong:departureInt];
 		
 		GRTStopTime *stopTime = [[GRTStopTime alloc] initWithTripId:tripId stopSequence:stopSequence stopId:stopId arrivalTime:arrivalTime departureTime:departureTime];
 		if (!displayTerminusStopTimes &&
