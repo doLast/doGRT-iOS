@@ -5,4 +5,6 @@ target 'doGRT' do
   pod 'QuickDialog', '~> 1.0'
   pod 'InformaticToolbar', '~> 0.2.1'
   pod 'REMenu', '~> 1.10'
+  pod 'AFNetworking', '~> 3.0'
+  pod 'NSLogger'
 end
