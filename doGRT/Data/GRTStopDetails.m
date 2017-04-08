@@ -42,10 +42,10 @@
 
 - (NSArray *)stopTimesForDayInWeek:(NSUInteger)dayInWeek andRoute:(GRTRoute *)route
 {
-	NSArray *stopTimes = [self fetchStopTimesForDay:dayInWeek - 1 andRoute:route dawnOnly:YES];
-	stopTimes = [stopTimes arrayByAddingObjectsFromArray:[self fetchStopTimesForDay:dayInWeek andRoute:route dawnOnly:NO]];
+	NSArray *stopTimes = [self fetchStopTimesForDay:dayInWeek - 1 andRoute:route thatDepartAfterMidnight:YES];
+	stopTimes = [stopTimes arrayByAddingObjectsFromArray:[self fetchStopTimesForDay:dayInWeek andRoute:route thatDepartAfterMidnight:NO]];
 	
-	NSLog(@"Fetching for day #%d and route %@, obtained %d stopTimes", dayInWeek, route, [stopTimes count]);
+	NSLog(@"Fetching for day #%lu and route %@, obtained %lu stopTimes", (unsigned long)dayInWeek, route, (unsigned long)[stopTimes count]);
 	
 	return stopTimes;
 }
@@ -92,7 +92,7 @@
 	return dayName;
 }
 
-- (NSArray *)fetchStopTimesForDay:(NSUInteger)day andRoute:(GRTRoute *)route dawnOnly:(BOOL)dawnOnly
+- (NSArray *)fetchStopTimesForDay:(NSUInteger)day andRoute:(GRTRoute *)route thatDepartAfterMidnight:(BOOL)afterMidnight
 {
 	NSString *dayName = [self dayNameForDayInWeek:day];
 	NSString *query = [NSString stringWithFormat:@"SELECT S.* \
@@ -102,7 +102,7 @@
 					   dayName];
 	NSMutableArray *arguments = [NSMutableArray arrayWithObject:self.stop.stopId];
 
-	if (dawnOnly) {
+	if (afterMidnight) {
 		query = [query stringByAppendingFormat:@"AND S.departure_time>=? "];
 		[arguments addObject:[NSNumber numberWithInt:240000]];
 	}
@@ -131,7 +131,7 @@
 		NSNumber *stopId = [NSNumber numberWithInt:[result intForColumn:@"stop_id"]];
 		NSInteger arrivalInt = [result intForColumn:@"arrival_time"];
 		NSInteger departureInt = [result intForColumn:@"departure_time"];
-		if (dawnOnly) {
+		if (afterMidnight) {
 			arrivalInt -= 240000;
 			departureInt -= 240000;
 		}
