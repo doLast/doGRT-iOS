@@ -69,13 +69,12 @@ typedef enum GRTStopDetailsViewType {
 
 	// Setup view controllers
 	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopDetailsManager.stopDetails.stop];
-	self.view.backgroundColor = [UIColor underPageBackgroundColor];
+	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 	self.stopRoutesViewController.routes = [self.stopDetailsManager.stopDetails routes];
 
 	// Construct Segmented Control
 	if (self.viewsSegmentedControl == nil) {
 		UISegmentedControl *viewsSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Mixed Schedule", @"Routes List"]];
-		viewsSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
 		[viewsSegmentedControl addTarget:self action:@selector(toggleViews:) forControlEvents:UIControlEventValueChanged];
 		UIBarButtonItem *segmentedControlItem = [[UIBarButtonItem alloc] initWithCustomView:viewsSegmentedControl];
 		
@@ -87,7 +86,7 @@ typedef enum GRTStopDetailsViewType {
 	}
 	
 	NSNumber *index = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDefaultScheduleViewPreference];
-	self.viewType = index.integerValue;
+	self.viewType = (GRTStopDetailsViewType) index.integerValue;
 
 	// Config navigation bar
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -125,7 +124,7 @@ typedef enum GRTStopDetailsViewType {
 
 - (IBAction)toggleViews:(UISegmentedControl *)sender
 {
-	self.viewType = sender.selectedSegmentIndex;
+	self.viewType = (GRTStopDetailsViewType) sender.selectedSegmentIndex;
 }
 
 - (IBAction)toggleStopFavorite:(id)sender
@@ -144,7 +143,7 @@ typedef enum GRTStopDetailsViewType {
 
 - (void)stopTimesViewController:(GRTStopTimesViewController *)stopTimesViewController didSelectStopTime:(GRTStopTime *)stopTime
 {
-	GRTStopsMapViewController *tripDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"tripDetailsView"];
+	GRTStopsMapViewController *tripDetailsVC = (GRTStopsMapViewController *) [self.storyboard instantiateViewControllerWithIdentifier:@"tripDetailsView"];
 
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 		[stopTimesViewController pushTripDetailsView:tripDetailsVC
@@ -167,7 +166,6 @@ typedef enum GRTStopDetailsViewType {
 	GRTStopTimesViewController *stopTimesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"stopTimesView"];
 	stopTimesVC.delegate = self;
 	stopTimesVC.stopDetailsManager = [[GRTStopDetailsManager alloc] initWithStopDetails:self.stopDetailsManager.stopDetails route:route];
-	stopTimesVC.stopDetailsManager.dayInWeek = self.stopDetailsManager.dayInWeek;
 	stopTimesVC.stopDetailsManager.date = self.stopDetailsManager.date;
 	[self.navigationController pushViewController:stopTimesVC animated:YES];
 }

@@ -73,7 +73,6 @@
 	if (self != nil) {
 		self.stopDetails = stopDetails;
 		self.route = route;
-		self.dayInWeek = 1;
 		self.date = [NSDate date];
 	}
 	return self;
@@ -88,15 +87,15 @@
 {
 	NSString *title = self.stopDetails.stop.stopName;
 	if (self.route != nil) {
-		title = [title stringByAppendingFormat:@" - %d", self.route.routeId.integerValue];
+		title = [title stringByAppendingFormat:@" - %ld", (long)self.route.routeId.integerValue];
 	}
 	GRTDetailedTitleButtonView *titleView = [[GRTDetailedTitleButtonView alloc] initWithText:title detailText:@"Today ▾"];
-	if (self.date == nil) {
-		NSArray *days = @[@"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday"];
-		titleView.detailTextLabel.text = [NSString stringWithFormat:@"%@ ▾", [days objectAtIndex:self.dayInWeek - 1]];
-	}
-	else if (![self isSameDayWithDate1:self.date date2:[NSDate date]]) {
+	if (![self isSameDayWithDate1:self.date date2:[NSDate date]]) {
 		// TODO: It's not today, display the Date
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+        dateFormatter.timeStyle = NSDateFormatterNoStyle;
+        titleView.detailTextLabel.text = [NSString stringWithFormat:@"%@ ▾", [dateFormatter stringFromDate:self.date]];
 	}
 	
 	[titleView addTarget:self action:@selector(toggleMenu:) forControlEvents:UIControlEventTouchUpInside];
@@ -144,15 +143,9 @@
 - (void)updateStopTimes
 {
 	NSArray *stopTimes = nil;
-	if (self.date == nil) {
-		stopTimes = [self.stopDetails stopTimesForDayInWeek:self.dayInWeek andRoute:self.route];
-		[self.delegate setStopTimes:stopTimes splitLeftAndComingBuses:NO];
-	}
-	else {
-		stopTimes = [self.stopDetails stopTimesForDate:self.date andRoute:self.route];
-		BOOL isToday = [self isSameDayWithDate1:self.date date2:[NSDate date]];
-		[self.delegate setStopTimes:stopTimes splitLeftAndComingBuses:isToday];
-	}
+    stopTimes = [self.stopDetails stopTimesForDate:self.date andRoute:self.route];
+    BOOL isToday = [self isSameDayWithDate1:self.date date2:[NSDate date]];
+    [self.delegate setStopTimes:stopTimes splitLeftAndComingBuses:isToday];
 }
 
 - (IBAction)toggleMenu:(id)sender
@@ -195,6 +188,9 @@
 - (IBAction)showDayMenu:(id)sender
 {
 	NSArray *dayNames = @[@"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday"];
+    NSDate *today = [NSDate date];
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+    NSDate *lastSunday = [calendar dateBySettingUnit:NSCalendarUnitWeekday value:1 ofDate:today options:NSCalendarWrapComponents];
 	NSMutableArray *items = [NSMutableArray arrayWithCapacity:[dayNames count]];
 	for (NSUInteger i = 0; i < [dayNames count]; i++) {
 		NSString *dayName = [dayNames objectAtIndex:i];
@@ -203,8 +199,7 @@
 													  image:nil
 										   highlightedImage:nil
 													 action:^(REMenuItem *item) {
-														 self.dayInWeek = i + 1;
-														 self.date = nil;
+														 self.date = [calendar dateByAddingUnit:NSCalendarUnitWeekday value:i+1 toDate:lastSunday options:NSCalendarWrapComponents];
 														 self.stopDetailsTitleView.detailTextLabel.text = [NSString stringWithFormat:@"%@ ▾", dayName];
 														 [self updateStopTimes];
 													 }];

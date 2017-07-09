@@ -21,7 +21,6 @@
 
 @property (nonatomic, strong) GRTStopDetails *stopDetails;
 @property (nonatomic, strong) GRTRoute *route;
-@property (nonatomic) NSUInteger dayInWeek;
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, weak) id<GRTStopDetailsManagerDelegate> delegate;
 
