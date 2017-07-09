@@ -41,7 +41,6 @@ typedef enum GRTStopsViewType {
 @interface GRTMainStopsViewController ()
 
 @property (nonatomic, strong, readonly) NSArray *tableViewControllers;
-@property (nonatomic, strong) NSIndexPath *editingFavIndexPath;
 
 @property (nonatomic, strong, readonly) NSArray *operationQueues;
 
@@ -53,7 +52,6 @@ typedef enum GRTStopsViewType {
 @implementation GRTMainStopsViewController
 
 @synthesize tableViewControllers = _tableViewControllers;
-@synthesize editingFavIndexPath = _editingFavIndexPath;
 
 @synthesize operationQueues = _operationQueues;
 @synthesize locateButton = _locateButton;
@@ -106,7 +104,6 @@ typedef enum GRTStopsViewType {
     [super viewDidLoad];
 	
 	self.title = @"doGRT";
-	self.editingFavIndexPath = nil;
 	
 	// Hide SearchBar
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -120,7 +117,6 @@ typedef enum GRTStopsViewType {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone &&
 		self.viewsSegmentedControl == nil) {
 		UISegmentedControl *viewsSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Stops List", @"Map"]];
-		viewsSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
 		[viewsSegmentedControl addTarget:self action:@selector(toggleViews:) forControlEvents:UIControlEventValueChanged];
 		UIBarButtonItem *segmentedControlItem = [[UIBarButtonItem alloc] initWithCustomView:viewsSegmentedControl];
 
