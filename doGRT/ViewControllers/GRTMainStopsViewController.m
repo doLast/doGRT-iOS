@@ -290,7 +290,7 @@ typedef enum GRTStopsViewType {
 		[GRTPreferencesViewController showPreferencesInViewController:self];
 	}
 	else if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-		[GRTPreferencesViewController showPreferencesFromBarButtonItem:sender];
+        [GRTPreferencesViewController showPreferencesInViewController:self fromBarButtonItem:sender];
 	}
 }
 

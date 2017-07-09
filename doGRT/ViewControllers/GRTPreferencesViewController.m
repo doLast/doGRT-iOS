@@ -12,7 +12,7 @@
 #import "GRTUserProfile.h"
 #import "GRTGtfsSystem.h"
 
-static UIPopoverController *popoverController = nil;
+static UINavigationController *preferencesNavigationController = nil;
 static double GRTPreferencesMinNearbyDistance = 200.0;
 static double GRTPreferencesMaxNearbyDistance = 2000.0;
 
@@ -63,25 +63,15 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 
 - (IBAction)done:(id)sender
 {
-	if (popoverController != nil) {
-		[popoverController dismissPopoverAnimated:YES];
-	}
-	else {
-		[self dismissModalViewControllerAnimated:YES];
-	}
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)redirectToRatingPage:(id)sender
 {
 	// added work arround for wrong URL Scheme & iOS 6
-	NSString *reviewURL;
-	if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) {
-		reviewURL = @"itms-apps://itunes.apple.com/en/app/id495688038";
-		//			reviewURL = [reviewURL stringByReplacingOccurrencesOfString:@"LANGUAGE" withString:[NSString stringWithFormat:@"%@", [[NSLocale preferredLanguages] objectAtIndex:0]]];
-	} else {
-		reviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=495688038";
-	}
-	[[UIApplication sharedApplication] openURL: [NSURL URLWithString:reviewURL]];
+	NSString *reviewURL = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%d", 495688038];
+
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:reviewURL] options:@{} completionHandler:nil];
 }
 
 - (IBAction)updateNearbyDistanceLabel:(id)sender
@@ -120,7 +110,7 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
     [picker setMessageBody:emailBody isHTML:NO];
 	
     // Present the mail composition interface.
-    [self presentModalViewController:picker animated:YES];
+    [self presentViewController:picker animated:YES completion:nil];
 }
 
 // The mail compose view controller delegate method
@@ -128,7 +118,7 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 		  didFinishWithResult:(MFMailComposeResult)result
 						error:(NSError *)error
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - element builder
@@ -181,7 +171,9 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	[feedback setControllerAction:@"displayComposerSheet:"];
 	
 	[section addElement:rating];
-	[section addElement:feedback];
+    if ([MFMailComposeViewController canSendMail]) {
+        [section addElement:feedback];
+    }
 	[section addElement:[GRTPreferencesViewController createAboutElements]];
 	
 	return section;
@@ -246,7 +238,7 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 	QSection *dataUpdateSection = [[QSection alloc] initWithTitle:@"Schedule Data Update"];
 	NSNumber *endDate = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataEndDateKey];
 	NSInteger date = endDate.integerValue;
-	dataUpdateSection.footer = [NSString stringWithFormat:@"Current schedule valid until %d/%d/%d", (date / 100) % 100, date % 100, date / 10000];
+	dataUpdateSection.footer = [NSString stringWithFormat:@"Current schedule valid until %ld/%ld/%ld", (date / 100) % 100, date % 100, date / 10000];
 	QButtonElement *checkUpdate = [[QButtonElement alloc] initWithTitle:@"Check for update now"];
 	[checkUpdate setControllerAction:@"checkForUpdate:"];
 	[dataUpdateSection addElement:checkUpdate];
@@ -264,17 +256,19 @@ static double GRTPreferencesMaxNearbyDistance = 2000.0;
 {
 	QRootElement *root = [GRTPreferencesViewController createElements];
 	UINavigationController *preferences = [QuickDialogController controllerWithNavigationForRoot:root];
-	[viewController presentModalViewController:preferences animated:YES];
+	[viewController presentViewController:preferences animated:YES completion:nil];
 }
 
-+ (void)showPreferencesFromBarButtonItem:(UIBarButtonItem *)barButtonItem
++ (void)showPreferencesInViewController:(UIViewController *)viewController fromBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
-	if (popoverController == nil) {
+	if (preferencesNavigationController == nil) {
 		QRootElement *root = [GRTPreferencesViewController createElements];
-		UINavigationController *preferences = [QuickDialogController controllerWithNavigationForRoot:root];
-		popoverController = [[UIPopoverController alloc] initWithContentViewController:preferences];
+		preferencesNavigationController = [QuickDialogController controllerWithNavigationForRoot:root];
+        preferencesNavigationController.modalPresentationStyle = UIModalPresentationPopover;
 	}
-	[popoverController presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    preferencesNavigationController.popoverPresentationController.barButtonItem = barButtonItem;
+    preferencesNavigationController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    [viewController presentViewController:preferencesNavigationController animated:YES completion:nil];
 }
 
 @end
