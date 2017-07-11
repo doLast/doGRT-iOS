@@ -46,6 +46,7 @@ typedef enum GRTStopsViewType {
 
 @property (atomic) GRTStopsViewType currentViewType;
 @property (nonatomic, strong) UISegmentedControl *viewsSegmentedControl;
+@property (nonatomic, strong) UIBarButtonItem *locateButton;
 
 @end
 
@@ -128,7 +129,10 @@ typedef enum GRTStopsViewType {
 
 		self.viewsSegmentedControl = viewsSegmentedControl;
 	}
-	
+
+    // Construct Locate Button
+    self.locateButton = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.stopsMapViewController.mapView];
+
 	// Set search table view controller delegate
 	self.searchResultViewController.delegate = self;
 	self.stopsMapViewController.delegate = self;
