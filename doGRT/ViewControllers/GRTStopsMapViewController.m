@@ -19,6 +19,7 @@
 
 @property (atomic, weak) id<GRTStopAnnotation> willBePresentedStop;
 @property (nonatomic, strong, readonly) NSOperationQueue *annotationUpdateQueue;
+@property (nonatomic, strong) CLLocationManager *locationManager;
 
 @end
 
@@ -31,6 +32,7 @@
 @synthesize inRegionStopsDisplayThreshold = _inRegionStopsDisplayThreshold;
 @synthesize willBePresentedStop = _willBePresentedStop;
 @synthesize annotationUpdateQueue = _annotationUpdateQueue;
+@synthesize locationManager = _locationManager;
 
 - (void)setStops:(NSArray *)stops
 {
@@ -74,6 +76,14 @@
 		_annotationUpdateQueue = [[NSOperationQueue alloc] init];
 	}
 	return _annotationUpdateQueue;
+}
+
+- (CLLocationManager *)locationManager
+{
+    if (_locationManager == nil) {
+        _locationManager = [[CLLocationManager alloc] init];
+    }
+    return _locationManager;
 }
 
 - (void)viewDidLoad
@@ -162,6 +172,7 @@
 
 - (IBAction)startTrackingUserLocation:(id)sender
 {
+    [self.locationManager requestWhenInUseAuthorization];
 	[self setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
 }
 

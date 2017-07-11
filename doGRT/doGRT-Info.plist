@@ -32,6 +32,8 @@
 	<string>iPadStoryboard</string>
 	<key>UIPrerenderedIcon</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>doGRT will use your location to show the nearby bus stops. </string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
