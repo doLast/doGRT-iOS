@@ -229,13 +229,13 @@
 		if ([view isKindOfClass:[MKPinAnnotationView class]]) {
 			MKPinAnnotationView *pin = (MKPinAnnotationView *) view;
 			if ([view.annotation isKindOfClass:[GRTFavoriteStop class]]) {
-				pin.pinColor = MKPinAnnotationColorGreen;
+				pin.pinTintColor = [UIColor greenColor];
 			}
 			else if ([view.annotation isKindOfClass:[GRTStopTime class]]) {
-				pin.pinColor = MKPinAnnotationColorPurple;
+                pin.pinTintColor = [UIColor purpleColor];
 			}
 			else {
-				pin.pinColor = MKPinAnnotationColorRed;
+                pin.pinTintColor = [UIColor redColor];
 			}
 			pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 		}
@@ -263,13 +263,13 @@
 	}
 }
 
-- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay;
 {
 	if ([overlay isKindOfClass:[MKPolyline class]]) {
-		MKPolylineView *polylineView = [[MKPolylineView alloc] initWithPolyline:overlay];
-		polylineView.strokeColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:0.8];
-		polylineView.lineWidth = 8;
-		return polylineView;
+        MKPolylineRenderer *polylineRenderer = [[MKPolylineRenderer alloc] initWithOverlay:overlay];
+		polylineRenderer.strokeColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:0.8];
+		polylineRenderer.lineWidth = 3;
+		return polylineRenderer;
 	}
 	return nil;
 }
