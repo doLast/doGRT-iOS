@@ -243,14 +243,14 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/gtfs_data/grt.j
 	
 	NSLog(@"Update Info: %@", json);
 	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
-	NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:[NSDate date]];
+	NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
 	NSInteger currentDate = components.year * 10000 + components.month * 100 + components.day;
 
 	NSString *releaseDate = [json objectForKey:@"releaseDate"];
 	NSString *releaseName = [json objectForKey:@"releaseName"];
 	NSString *startDate = [json objectForKey:@"startDate"];
 
-	NSLog(@"CurrentRelease: %d StartDate: %d DataVersion: %d CurrentDate: %d", releaseDate.integerValue, startDate.integerValue, dataVersion.integerValue, currentDate);
+	NSLog(@"CurrentRelease: %ld StartDate: %ld DataVersion: %ld CurrentDate: %ld", (long)releaseDate.integerValue, (long)startDate.integerValue, (long)dataVersion.integerValue, (long)currentDate);
 	if (releaseDate.integerValue > dataVersion.integerValue &&
 		currentDate >= startDate.integerValue) {
 		self.updateInfo = json;
