@@ -40,6 +40,7 @@ typedef enum GRTStopsViewType {
 
 @interface GRTMainStopsViewController ()
 
+@property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong, readonly) NSArray *tableViewControllers;
 
 @property (nonatomic, strong, readonly) NSArray *operationQueues;
@@ -47,6 +48,7 @@ typedef enum GRTStopsViewType {
 @property (atomic) GRTStopsViewType currentViewType;
 @property (nonatomic, strong) UISegmentedControl *viewsSegmentedControl;
 @property (nonatomic, strong) UIBarButtonItem *locateButton;
+@property (nonatomic, strong) UIBarButtonItem *preferenceButton;
 
 @end
 
@@ -105,14 +107,12 @@ typedef enum GRTStopsViewType {
     [super viewDidLoad];
 	
 	self.title = @"doGRT";
-	
-	// Hide SearchBar
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		UISearchBar *searchBar = self.searchDisplayController.searchBar;
-		[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
-	} else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.tableView setContentOffset:CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height) animated:NO];
-	}
+
+    // Setup Search
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultViewController];
+    self.searchController.searchResultsUpdater = self;
+    self.tableView.tableHeaderView = self.searchController.searchBar;
+    self.definesPresentationContext = YES;
 
 	// Construct Segmented Control
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone &&
@@ -121,17 +121,16 @@ typedef enum GRTStopsViewType {
 		[viewsSegmentedControl addTarget:self action:@selector(toggleViews:) forControlEvents:UIControlEventValueChanged];
 		UIBarButtonItem *segmentedControlItem = [[UIBarButtonItem alloc] initWithCustomView:viewsSegmentedControl];
 
-		UIBarButtonItem *preferenceButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"⚙" style:UIBarButtonItemStylePlain target:self action:@selector(showPreferences:)];
-
-		ITBarItemSet *barItemSet = [[ITBarItemSet alloc] initWithItems:@[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], segmentedControlItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], preferenceButtonItem]];
+		ITBarItemSet *barItemSet = [[ITBarItemSet alloc] initWithItems:@[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], segmentedControlItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]]];
 
 		[self pushBarItemSet:barItemSet animated:YES];
 
 		self.viewsSegmentedControl = viewsSegmentedControl;
 	}
 
-    // Construct Locate Button
+    // Construct Buttons
     self.locateButton = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.stopsMapViewController.mapView];
+    self.preferenceButton = [[UIBarButtonItem alloc] initWithTitle:@"Setting" style:UIBarButtonItemStylePlain target:self action:@selector(showPreferences:)];
 
 	// Set search table view controller delegate
 	self.searchResultViewController.delegate = self;
@@ -149,7 +148,7 @@ typedef enum GRTStopsViewType {
     // Init default view type
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.navigationItem.leftBarButtonItem = self.editButtonItem;
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Setting" style:UIBarButtonItemStylePlain target:self action:@selector(showPreferences:)];
+        self.navigationItem.rightBarButtonItem = self.preferenceButton;
 	} else {
 		[self showViewType:GRTStopsTableView animationDuration:0.0f];
 	}
@@ -197,10 +196,12 @@ typedef enum GRTStopsViewType {
 {
 	if (type == GRTStopsTableView) {
 		self.navigationItem.leftBarButtonItem = self.editButtonItem;
+        self.navigationItem.rightBarButtonItem = self.preferenceButton;
 		[self.stopsMapViewController setMapAlpha:0.0 animationDuration:duration];
 	}
 	else if (type == GRTStopsMapView) {
-		self.navigationItem.leftBarButtonItem = self.locateButton;
+        self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.rightBarButtonItem = self.locateButton;
 		[self.stopsMapViewController setMapAlpha:1.0 animationDuration:duration];
 	}
 	self.currentViewType = type;
@@ -294,50 +295,16 @@ typedef enum GRTStopsViewType {
 	}
 }
 
-- (IBAction)showSearch:(id)sender
-{
-	UISearchBar *searchBar = self.searchDisplayController.searchBar;
-	// animate in
-    [UIView animateWithDuration:0.2 animations:^{
-		CGFloat y = SYSTEM_VERSION_LESS_THAN(@"7.0") ? 0 : self.navigationController.navigationBar.frame.origin.y;
-		[searchBar setFrame:CGRectMake(0, y, searchBar.frame.size.width, searchBar.frame.size.height)];
-	} completion:^(BOOL finished) {
-		[self.searchDisplayController.searchBar becomeFirstResponder];
-	}];
-}
-
 #pragma mark - search delegate
 
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		CGFloat y = SYSTEM_VERSION_LESS_THAN(@"7.0") ? 0 : self.navigationController.navigationBar.frame.origin.y;
-		[controller.searchBar setFrame:CGRectMake(0, y, controller.searchBar.frame.size.width, controller.searchBar.frame.size.height)];
-	}
-}
-
-- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
-{
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		UISearchBar *searchBar = self.searchDisplayController.searchBar;
-		// animate out
-		[UIView animateWithDuration:0.2 animations:^{
-			[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
-		} completion:^(BOOL finished){
-			
-		}];
-	}
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-}
-
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
-{
-	if (controller.active && [searchString length] > 0) {
+    NSString *searchString = searchController.searchBar.text;
+	if (searchController.active && [searchString length] > 0) {
 		self.searchResultViewController.stops = [[GRTGtfsSystem defaultGtfsSystem] stopsWithNameLike:searchString];
-		return YES;
+        [self.searchResultViewController.tableView reloadData];
 	}
 	self.searchResultViewController.stops = nil;
-	return NO;
 }
 
 #pragma mark - stops search delegate

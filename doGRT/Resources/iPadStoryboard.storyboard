@@ -164,11 +164,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="1024"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search by Stop Number/Name" id="nZf-EI-rTJ">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                </searchBar>
                                 <connections>
                                     <outlet property="dataSource" destination="rdx-iT-Rdk" id="L9E-Ft-1Oo"/>
                                     <outlet property="delegate" destination="rdx-iT-Rdk" id="Q10-OO-zQO"/>
@@ -179,7 +174,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="pnc-nf-Iud"/>
                     <connections>
-                        <outlet property="searchDisplayController" destination="LyH-fV-Ccb" id="JHP-OL-5HO"/>
                         <outlet property="searchResultViewController" destination="2vm-SG-cdz" id="SfE-dH-96p"/>
                         <outlet property="tableView" destination="dia-SW-H6U" id="yOh-Kx-Jjb"/>
                         <segue destination="1Y9-Fh-WFH" kind="push" identifier="showStopDetails" id="PI1-4c-2Xq"/>
@@ -191,15 +185,6 @@
                         <outlet property="delegate" destination="rdx-iT-Rdk" id="hSe-O8-26f"/>
                     </connections>
                 </customObject>
-                <searchDisplayController id="LyH-fV-Ccb">
-                    <connections>
-                        <outlet property="delegate" destination="rdx-iT-Rdk" id="8m1-7o-c14"/>
-                        <outlet property="searchBar" destination="nZf-EI-rTJ" id="Y94-tB-O6P"/>
-                        <outlet property="searchContentsController" destination="rdx-iT-Rdk" id="uVh-DH-Sbn"/>
-                        <outlet property="searchResultsDataSource" destination="2vm-SG-cdz" id="VJ8-84-eZS"/>
-                        <outlet property="searchResultsDelegate" destination="2vm-SG-cdz" id="XgC-fv-hgx"/>
-                    </connections>
-                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="1422" y="-1513"/>
         </scene>

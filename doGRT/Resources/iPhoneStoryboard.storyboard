@@ -40,27 +40,12 @@
                                     <outlet property="delegate" destination="6JJ-VQ-37h" id="791-4U-65Z"/>
                                 </connections>
                             </mapView>
-                            <searchBar contentMode="redraw" placeholder="Search by Stop Number/Name" id="1hd-tm-iyX">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="1Mx-hj-Dgb" id="xJw-xb-uuW"/>
-                                </connections>
-                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="TFG-e5-Oqx">
-                        <barButtonItem key="rightBarButtonItem" title="Search" id="nTF-KQ-2TF">
-                            <connections>
-                                <action selector="showSearch:" destination="1Mx-hj-Dgb" id="Soa-vJ-P6C"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="TFG-e5-Oqx"/>
                     <connections>
-                        <outlet property="searchDisplayController" destination="RGR-NG-JVr" id="Psa-UH-sRd"/>
                         <outlet property="searchResultViewController" destination="u28-Yq-Lso" id="TG2-2X-Ks7"/>
                         <outlet property="stopsMapViewController" destination="6JJ-VQ-37h" id="1xo-V4-ORM"/>
                         <outlet property="tableView" destination="0D2-La-YVf" id="Shv-Yn-Fmt"/>
@@ -68,21 +53,12 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jeR-kR-laY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="u28-Yq-Lso" customClass="GRTStopsTableViewController"/>
                 <customObject id="6JJ-VQ-37h" customClass="GRTStopsMapViewController">
                     <connections>
                         <outlet property="mapView" destination="kEk-4b-I4Q" id="D0x-WE-hIP"/>
                     </connections>
                 </customObject>
-                <searchDisplayController id="RGR-NG-JVr">
-                    <connections>
-                        <outlet property="delegate" destination="1Mx-hj-Dgb" id="DnU-Bl-5ke"/>
-                        <outlet property="searchBar" destination="1hd-tm-iyX" id="fDu-Yj-wz3"/>
-                        <outlet property="searchContentsController" destination="1Mx-hj-Dgb" id="zmP-n4-Vm1"/>
-                        <outlet property="searchResultsDataSource" destination="u28-Yq-Lso" id="HR4-h4-Iws"/>
-                        <outlet property="searchResultsDelegate" destination="u28-Yq-Lso" id="Dx7-Qk-jdr"/>
-                    </connections>
-                </searchDisplayController>
+                <customObject id="u28-Yq-Lso" customClass="GRTStopsTableViewController"/>
             </objects>
             <point key="canvasLocation" x="11" y="801"/>
         </scene>
