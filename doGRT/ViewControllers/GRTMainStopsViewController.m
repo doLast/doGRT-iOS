@@ -303,8 +303,9 @@ typedef enum GRTStopsViewType {
 	if (searchController.active && [searchString length] > 0) {
 		self.searchResultViewController.stops = [[GRTGtfsSystem defaultGtfsSystem] stopsWithNameLike:searchString];
         [self.searchResultViewController.tableView reloadData];
-	}
-	self.searchResultViewController.stops = nil;
+    } else {
+        self.searchResultViewController.stops = nil;
+    }
 }
 
 #pragma mark - stops search delegate
@@ -314,9 +315,7 @@ typedef enum GRTStopsViewType {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || self.currentViewType == GRTStopsMapView) {
 		GRTFavoriteStop *favStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:stop];
 		[self.stopsMapViewController selectStop: favStop != nil ? favStop : stop];
-		
-		[self.searchDisplayController setActive:NO animated:YES];
-	}
+    }
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || self.currentViewType == GRTStopsTableView) {
 		[self pushStopDetailsForStop:stop];
 	}
