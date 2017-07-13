@@ -18,7 +18,7 @@
 @interface GRTStopsMapViewController ()
 
 @property (atomic, weak) id<GRTStopAnnotation> willBePresentedStop;
-@property (nonatomic, strong, readonly) NSOperationQueue *annotationUpdateQueue;
+@property (nonatomic, strong, readonly) NSOperationQueue *mapViewUpdateQueue;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 
 @end
@@ -31,36 +31,42 @@
 @synthesize shape = _shape;
 @synthesize inRegionStopsDisplayThreshold = _inRegionStopsDisplayThreshold;
 @synthesize willBePresentedStop = _willBePresentedStop;
-@synthesize annotationUpdateQueue = _annotationUpdateQueue;
+@synthesize mapViewUpdateQueue = _mapViewUpdateQueue;
 @synthesize locationManager = _locationManager;
 
 - (void)setStops:(NSArray *)stops
 {
 	NSMutableArray *toRemove = [NSMutableArray arrayWithArray:_stops];
 	NSMutableArray *toAdd = [NSMutableArray arrayWithArray:stops];
-	_stops = [stops copy];
-	
-	dispatch_async(dispatch_get_main_queue(), ^{
-		for (id<GRTStopAnnotation> stop in _stops) {
-			[toRemove addObject:stop.stop];
-		}
 
-		[self.mapView removeAnnotations:toRemove];
-		[self.mapView addAnnotations:toAdd];
-		[self updateMapView];
-	});
+    _stops = [stops copy];
+
+    // Remove the GRTStop instances when adding GRTStopTime or GRTFavoriteStop
+    for (id<GRTStopAnnotation> stop in _stops) {
+        [toRemove addObject:stop.stop];
+    }
+
+    [self.mapViewUpdateQueue addOperationWithBlock:^(void) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.mapView removeAnnotations:toRemove];
+            [self.mapView addAnnotations:toAdd];
+            [self updateMapView];
+        });
+    }];
 }
 
 - (void)setShape:(GRTShape *)shape
 {
 	if (_shape != nil) {
-		[self.mapView removeOverlay:_shape.polyline];
+        [self.mapView removeOverlay:_shape.polyline];
 	}
 	_shape = shape;
 	if (shape != nil) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self.mapView addOverlay:_shape.polyline];
-		});
+        [self.mapViewUpdateQueue addOperationWithBlock:^(void) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.mapView addOverlay:_shape.polyline];
+            });
+        }];
 	}
 }
 
@@ -70,12 +76,13 @@
 	[self updateMapView];
 }
 
-- (NSOperationQueue *)annotationUpdateQueue
+- (NSOperationQueue *)mapViewUpdateQueue
 {
-	if (_annotationUpdateQueue == nil) {
-		_annotationUpdateQueue = [[NSOperationQueue alloc] init];
+	if (_mapViewUpdateQueue == nil) {
+		_mapViewUpdateQueue = [[NSOperationQueue alloc] init];
+        _mapViewUpdateQueue.suspended = YES;
 	}
-	return _annotationUpdateQueue;
+	return _mapViewUpdateQueue;
 }
 
 - (CLLocationManager *)locationManager
@@ -90,6 +97,9 @@
 {
     [super viewDidLoad];
 
+    // Start map update operations
+    self.mapViewUpdateQueue.suspended = NO;
+
 	// Center will be presented stop on map
 	if (self.willBePresentedStop != nil) {
 		CLLocationCoordinate2D coord = self.willBePresentedStop.location.coordinate;
@@ -99,7 +109,7 @@
 	}
 
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.rightBarButtonItem = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];;
+    self.navigationItem.rightBarButtonItem = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
 }
 
 #pragma mark - view update
@@ -125,7 +135,7 @@
 	
 	NSOperation *annotationUpdate = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performAnnotationUpdate) object:nil];
 	
-	[self.annotationUpdateQueue addOperation:annotationUpdate];
+	[self.mapViewUpdateQueue addOperation:annotationUpdate];
 }
 
 - (void)performAnnotationUpdate
