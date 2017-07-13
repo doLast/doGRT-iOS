@@ -97,22 +97,27 @@
 {
     [super viewDidLoad];
 
-    // Start map update operations
-    self.mapViewUpdateQueue.suspended = NO;
-
-	// Center will be presented stop on map
-	if (self.willBePresentedStop != nil) {
-		CLLocationCoordinate2D coord = self.willBePresentedStop.location.coordinate;
-		[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(coord, 2000, 2000) animated:NO];
-	} else if ([[self.mapView selectedAnnotations] count] == 0) {
-		[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
-	}
+    [self initializeMapView];
 
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.rightBarButtonItem = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
 }
 
 #pragma mark - view update
+
+- (void)initializeMapView
+{
+    // Start map update operations
+    self.mapViewUpdateQueue.suspended = NO;
+
+    // Center will be presented stop on map
+    if (self.willBePresentedStop != nil) {
+        CLLocationCoordinate2D coord = self.willBePresentedStop.location.coordinate;
+        [self centerMapToRegion:MKCoordinateRegionMakeWithDistance(coord, 2000, 2000) animated:NO];
+    } else if ([[self.mapView selectedAnnotations] count] == 0) {
+        [self centerMapToRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
+    }
+}
 
 - (void)updateMapView
 {
@@ -181,7 +186,7 @@
 
 #pragma mark - actions
 
-- (IBAction)startTrackingUserLocation:(id)sender
+- (void)startTrackingUserLocation:(id)sender
 {
     [self.locationManager requestWhenInUseAuthorization];
 	[self setUserTrackingMode:MKUserTrackingModeFollow animated:YES];

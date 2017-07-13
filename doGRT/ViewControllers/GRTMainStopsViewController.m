@@ -132,20 +132,20 @@ typedef enum GRTStopsViewType {
     self.locateButton = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.stopsMapViewController.mapView];
     self.preferenceButton = [[UIBarButtonItem alloc] initWithTitle:@"Setting" style:UIBarButtonItemStylePlain target:self action:@selector(showPreferences:)];
 
-	// Set search table view controller delegate
+	// Set sub view controller delegate
 	self.searchResultViewController.delegate = self;
 	self.stopsMapViewController.delegate = self;
 	
-	// Center Waterloo on map
-	[self.stopsMapViewController centerMapToRegion: MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
-	
+	// Initialize map view display
+    [self.stopsMapViewController initializeMapView];
+
 	// Enable user location tracking
 	[self.stopsMapViewController performSelector:@selector(startTrackingUserLocation:) withObject:self afterDelay:2];
 	
 	// Reload favorites
 	[self updateFavoriteStops];
     
-    // Init default view type
+    // Initialize default view type
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.navigationItem.leftBarButtonItem = self.editButtonItem;
         self.navigationItem.rightBarButtonItem = self.preferenceButton;

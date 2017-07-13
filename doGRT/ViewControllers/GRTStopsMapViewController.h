@@ -26,8 +26,8 @@
 @property (nonatomic, strong) GRTShape *shape;
 @property (nonatomic) CLLocationDegrees inRegionStopsDisplayThreshold;
 
-- (IBAction)startTrackingUserLocation:(id)sender;
-- (void)centerMapToRegion:(MKCoordinateRegion)region animated:(BOOL)animated;
+- (void)initializeMapView;
+- (void)startTrackingUserLocation:(id)sender;
 - (void)setMapAlpha:(CGFloat)alpha animationDuration:(NSTimeInterval)duration;
 - (void)selectStop:(id<GRTStopAnnotation>)annotation;
 
