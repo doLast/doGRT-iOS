@@ -118,7 +118,7 @@
                        @"      )"
                        @"    )"
                        @"  )"
-                       @")",
+                       @") ",
 					   dayName];
 	NSMutableArray *arguments = [NSMutableArray arrayWithObjects:self.stop.stopId, dateValue, dateValue, nil];
     NSLog(@"Querying %@ with args %@", query, arguments);
