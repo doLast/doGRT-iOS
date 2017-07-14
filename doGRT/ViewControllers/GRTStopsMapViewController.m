@@ -281,13 +281,10 @@
 
 - (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay;
 {
-	if ([overlay isKindOfClass:[MKPolyline class]]) {
-        MKPolylineRenderer *polylineRenderer = [[MKPolylineRenderer alloc] initWithOverlay:overlay];
-		polylineRenderer.strokeColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:0.8];
-		polylineRenderer.lineWidth = 3;
-		return polylineRenderer;
-	}
-	return nil;
+    MKPolylineRenderer *polylineRenderer = [[MKPolylineRenderer alloc] initWithOverlay:overlay];
+    polylineRenderer.strokeColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:0.8];
+    polylineRenderer.lineWidth = 3;
+    return polylineRenderer;
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
