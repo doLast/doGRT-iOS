@@ -74,6 +74,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
 	[self.stopDetailsManager closeMenu:self];
 }
 
