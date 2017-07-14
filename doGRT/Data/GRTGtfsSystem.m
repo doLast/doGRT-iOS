@@ -8,8 +8,8 @@
 
 #import "GRTGtfsSystem.h"
 
-#import "FMDatabase.h"
-#import "ASIHTTPRequest.h"
+#import <FMDB.h>
+#import <AFNetworking.h>
 
 static const NSInteger kMaxStopsLimit = 30;
 static const NSInteger kBuiltInDataVersion = 20161018;
@@ -35,7 +35,8 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/gtfs_data/grt.j
 @property (nonatomic, strong) NSCache *shapes;
 
 @property (nonatomic, copy) NSDictionary *updateInfo;
-@property (nonatomic, weak) ASIHTTPRequest *updateRequest;
+@property (nonatomic, weak) NSURLSessionDownloadTask *updateTask;
+@property (nonatomic, strong) AFURLSessionManager *urlSessionManager;
 
 @end
 
@@ -106,6 +107,9 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/gtfs_data/grt.j
 		self.trips = [[NSCache alloc] init];
 		self.shapes = [[NSCache alloc] init];
 		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:kBuiltInDataVersion], GRTGtfsDataVersionKey, [NSNumber numberWithInteger:kBuiltInDataEndDate], GRTGtfsDataEndDateKey, nil]];
+
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        self.urlSessionManager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
 	}
 	return self;
 }
@@ -169,133 +173,112 @@ NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/gtfs_data/grt.j
 
 - (void)checkForUpdate
 {
-	if (self.updateRequest != nil) {
+	if (self.updateTask != nil) {
 		return;
 	}
 	
 	// Check Update Json source
 	NSURL *url = [NSURL URLWithString:kGRTGtfsDataUpdateJsonUrl];
-	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-	[request setDelegate:self];
-	[request setDidFinishSelector:@selector(didFinishCheckingUpdate:)];
-	[request startAsynchronous];
-	
-	return;
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+    NSLog(@"Checking for update from %@", url);
+
+    NSURLSessionDataTask *checkUpdateTask = [self.urlSessionManager dataTaskWithRequest:urlRequest completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        if (error || !responseObject) {
+            NSLog(@"Failed to check update: %@", error);
+            return;
+        }
+        NSDictionary *updateInfo = responseObject;
+
+        NSLog(@"Update Info: %@", updateInfo);
+        NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
+        NSInteger currentDate = components.year * 10000 + components.month * 100 + components.day;
+
+        NSString *releaseDate = [updateInfo objectForKey:@"releaseDate"];
+        NSString *releaseName = [updateInfo objectForKey:@"releaseName"];
+        NSString *startDate = [updateInfo objectForKey:@"startDate"];
+
+        NSLog(@"CurrentRelease: %ld StartDate: %ld DataVersion: %ld CurrentDate: %ld", (long)releaseDate.integerValue, (long)startDate.integerValue, (long)dataVersion.integerValue, (long)currentDate);
+        if (releaseDate.integerValue > dataVersion.integerValue &&
+            currentDate >= startDate.integerValue) {
+            self.updateInfo = updateInfo;
+            [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateCheckNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:releaseDate, GRTGtfsDataVersionKey, releaseName, GRTGtfsDataReleaseNameKey, nil]]];
+        }
+        else {
+            [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateCheckNotification object:self userInfo:[NSDictionary dictionary]]];
+        }
+    }];
+    [checkUpdateTask resume];
 }
 
 - (void)startUpdate
 {
-	if (self.updateRequest != nil) {
+	if (self.updateTask != nil) {
 		return;
 	}
 	NSURL *localURL = [self dbURL];
 	NSURL *remoteURL = [NSURL URLWithString:(id) [self.updateInfo objectForKey:@"url"]];
-	
-	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:remoteURL];
-	self.updateRequest = request;
+    NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:remoteURL];
 
-	[request setDownloadDestinationPath:[localURL.path copy]];
+    self.updateTask = [self.urlSessionManager downloadTaskWithRequest:downloadRequest progress:^(NSProgress * _Nonnull downloadProgress) {
 
-	NSString *releaseDate = [self.updateInfo objectForKey:@"releaseDate"];
-	localURL = [localURL URLByAppendingPathExtension:releaseDate];
-	localURL = [localURL URLByAppendingPathExtension:@"download"];
-	[request setTemporaryFileDownloadPath:[localURL.path copy]];
+        NSNumber *p = [NSNumber numberWithDouble:downloadProgress.fractionCompleted];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GRTGtfsDataUpdateInProgressNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:p, @"progress", nil]];
 
-	[request setAllowResumeForFileDownloads:YES];
-	[request setDownloadProgressDelegate:self];
-	[request setDelegate:self];
-	[request setDidFinishSelector:@selector(didFinishDownloadUpdate:)];
-	[request setDidFailSelector:@selector(didFailDownloadUpdate:)];
+    } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
 
-	NSLog(@"Starting update, local: %@, remote: %@, temp: %@", request.downloadDestinationPath, request.url, localURL);
+        return [localURL copy];
 
-	[request startAsynchronous];
+    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+
+        if (error) {
+            if (error.code == NSURLErrorCancelled) {
+                [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateDidFinishNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"cancelled", nil]]];
+                return;
+            }
+
+            self.updateTask = nil;
+            NSLog(@"Fail to download update: %@", error);
+            [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateDidFinishNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO], @"result", nil]]];
+            return;
+        }
+
+        NSLog(@"Update downloaded: %@", filePath);
+        [self addSkipBackupAttributeToItemAtURL:localURL];
+
+        // Update data version
+        [[NSUserDefaults standardUserDefaults] setObject:[self.updateInfo objectForKey:@"releaseDate"] forKey:GRTGtfsDataVersionKey];
+        [[NSUserDefaults standardUserDefaults] setObject:[self.updateInfo objectForKey:@"endDate"] forKey:GRTGtfsDataEndDateKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        // Reset local data
+        self.stops = nil;
+        [self.services removeAllObjects];
+        [self.routes removeAllObjects];
+        [self.trips removeAllObjects];
+        [self.shapes removeAllObjects];
+        [self.db close];
+
+        self.updateTask = nil;
+        self.updateInfo = nil;
+
+        [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateDidFinishNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"result", nil]]];
+    }];
+
+    NSLog(@"Starting update, local: %@, remote: %@", localURL, remoteURL);
+    [self.updateTask resume];
 }
 
 - (void)abortUpdate
 {
-	if (self.updateRequest == nil) {
+	if (self.updateTask == nil) {
 		return;
 	}
-	
-	ASIHTTPRequest *request = self.updateRequest;
-	self.updateRequest = nil;
-	[request clearDelegatesAndCancel];
-	NSURL *localURL = [self dbURL];
-	NSString *releaseDate = [self.updateInfo objectForKey:@"releaseDate"];
-	localURL = [localURL URLByAppendingPathExtension:releaseDate];
-	localURL = [localURL URLByAppendingPathExtension:@"download"];
-	[[NSFileManager defaultManager] removeItemAtURL:localURL error:nil];
-	NSLog(@"Update abort, local deleted %@", localURL);
-	
-	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateDidFinishNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"cancelled", nil]]];
-}
 
-#pragma mark - ASI HTTP Request delegate
+    [self.updateTask cancel];
+    self.updateTask = nil;
 
-- (void)didFinishCheckingUpdate:(ASIHTTPRequest *)request
-{
-	NSData *response = [request responseData];
-	NSDictionary *json = [NSJSONSerialization JSONObjectWithData:response options:0 error:nil];
-	if (json == nil) {
-		return;
-	}
-	
-	NSLog(@"Update Info: %@", json);
-	NSNumber *dataVersion = [[NSUserDefaults standardUserDefaults] objectForKey:GRTGtfsDataVersionKey];
-	NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
-	NSInteger currentDate = components.year * 10000 + components.month * 100 + components.day;
-
-	NSString *releaseDate = [json objectForKey:@"releaseDate"];
-	NSString *releaseName = [json objectForKey:@"releaseName"];
-	NSString *startDate = [json objectForKey:@"startDate"];
-
-	NSLog(@"CurrentRelease: %ld StartDate: %ld DataVersion: %ld CurrentDate: %ld", (long)releaseDate.integerValue, (long)startDate.integerValue, (long)dataVersion.integerValue, (long)currentDate);
-	if (releaseDate.integerValue > dataVersion.integerValue &&
-		currentDate >= startDate.integerValue) {
-		self.updateInfo = json;
-		[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateCheckNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:releaseDate, GRTGtfsDataVersionKey, releaseName, GRTGtfsDataReleaseNameKey, nil]]];
-	}
-	else {
-		[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateCheckNotification object:self userInfo:[NSDictionary dictionary]]];
-	}
-}
-
-- (void)didFinishDownloadUpdate:(ASIHTTPRequest *)request
-{
-	NSURL *localURL = [self dbURL];
-	[self addSkipBackupAttributeToItemAtURL:localURL];
-	
-	// Update data version
-	[[NSUserDefaults standardUserDefaults] setObject:[self.updateInfo objectForKey:@"releaseDate"] forKey:GRTGtfsDataVersionKey];
-	[[NSUserDefaults standardUserDefaults] setObject:[self.updateInfo objectForKey:@"endDate"] forKey:GRTGtfsDataEndDateKey];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-	self.stops = nil;
-	[self.services removeAllObjects];
-	[self.routes removeAllObjects];
-	[self.trips removeAllObjects];
-	[self.shapes removeAllObjects];
-	[self.db close];
-	
-	self.updateRequest = nil;
-	self.updateInfo = nil;
-	
-	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateDidFinishNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"result", nil]]];
-}
-
-- (void)didFailDownloadUpdate:(ASIHTTPRequest *)request
-{
-	self.updateRequest = nil;
-	NSLog(@"Fail to download update: %@", request.error);
-	NSURL *tempURL = [NSURL fileURLWithPath:request.temporaryFileDownloadPath];
-	[self addSkipBackupAttributeToItemAtURL:tempURL];
-	[[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:GRTGtfsDataUpdateDidFinishNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO], @"result", nil]]];
-}
-
-- (void)setProgress:(float)progress
-{
-	NSNumber *p = [NSNumber numberWithFloat:progress];
-	[[NSNotificationCenter defaultCenter] postNotificationName:GRTGtfsDataUpdateInProgressNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:p, @"progress", nil]];
+	NSLog(@"Update aborted");
 }
 
 #pragma mark - data access

@@ -73,13 +73,16 @@ static id theOneRequestUpdate = nil;
 - (void)handleUpdateProgressNotification:(NSNotification *)notification
 {
 	NSNumber *p = [notification.userInfo objectForKey:@"progress"];
-	if (self.updateProgressBarItemSet == nil) {
-		self.updateProgressBarItemSet = [ITProgressBarItemSet progressBarItemSetWithTitle:@"Downloading New Schedule..." dismissTarget:self andAction:@selector(abortUpdate:)];
-	}
-	if (![self.barItemSets containsObject:self.updateProgressBarItemSet]) {
-		[self pushBarItemSet:self.updateProgressBarItemSet animated:YES];
-	}
-	[self.updateProgressBarItemSet setProgress:p.floatValue animated:YES];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if (self.updateProgressBarItemSet == nil) {
+            self.updateProgressBarItemSet = [ITProgressBarItemSet progressBarItemSetWithTitle:@"Downloading New Schedule..." dismissTarget:self andAction:@selector(abortUpdate:)];
+        }
+
+        if (![self.barItemSets containsObject:self.updateProgressBarItemSet]) {
+            [self pushBarItemSet:self.updateProgressBarItemSet animated:YES];
+        }
+        [self.updateProgressBarItemSet setProgress:p.floatValue animated:YES];
+    }];
 }
 
 - (void)handelUpdateFinishNotification:(NSNotification *)notification
@@ -101,7 +104,7 @@ static id theOneRequestUpdate = nil;
 		NSInteger date = endDate.integerValue;
 		labelBarItemSet = [ITLabelBarItemSet labelBarItemSetWithDismissTarget:self andAction:@selector(hideBarItemSet:)];
 		labelBarItemSet.textLabel.text = @"Update Succeed!";
-		labelBarItemSet.detailTextLabel.text = [NSString stringWithFormat:@"New schedule valid until %d/%d/%d", (date / 100) % 100, date % 100, date / 10000];
+		labelBarItemSet.detailTextLabel.text = [NSString stringWithFormat:@"New schedule valid until %ld/%ld/%ld", (date / 100) % 100, date % 100, date / 10000];
 	}
 	else {
 		labelBarItemSet = [ITConfirmationBarItemSet confirmationBarItemSetWithTarget:self andConfirmAction:@selector(startUpdate:) andDismissAction:@selector(hideBarItemSet:)];
