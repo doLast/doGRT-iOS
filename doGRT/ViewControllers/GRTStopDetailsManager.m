@@ -190,7 +190,7 @@
 	NSArray *dayNames = @[@"Sunday/Holiday", @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday"];
     NSDate *today = [NSDate date];
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-    NSDate *lastSunday = [calendar dateBySettingUnit:NSCalendarUnitWeekday value:1 ofDate:today options:NSCalendarWrapComponents];
+    NSDate *sunday = [calendar dateBySettingUnit:NSCalendarUnitWeekday value:1 ofDate:today options:NSCalendarWrapComponents];
 	NSMutableArray *items = [NSMutableArray arrayWithCapacity:[dayNames count]];
 	for (NSUInteger i = 0; i < [dayNames count]; i++) {
 		NSString *dayName = [dayNames objectAtIndex:i];
@@ -199,7 +199,7 @@
 													  image:nil
 										   highlightedImage:nil
 													 action:^(REMenuItem *item) {
-														 self.date = [calendar dateByAddingUnit:NSCalendarUnitWeekday value:i+1 toDate:lastSunday options:NSCalendarWrapComponents];
+														 self.date = [calendar dateByAddingUnit:NSCalendarUnitWeekday value:i toDate:sunday options:NSCalendarWrapComponents];
 														 self.stopDetailsTitleView.detailTextLabel.text = [NSString stringWithFormat:@"%@ ▾", dayName];
 														 [self updateStopTimes];
 													 }];
