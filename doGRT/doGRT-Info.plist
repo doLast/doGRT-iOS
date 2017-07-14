@@ -31,6 +31,8 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>doGRT will use your location to show the nearby bus stops. </string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Can we access your photo library?</string>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>
