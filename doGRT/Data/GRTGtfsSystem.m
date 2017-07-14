@@ -23,7 +23,7 @@ NSString * const GRTGtfsDataUpdateCheckNotification = @"GRTGtfsDataUpdateCheckNo
 NSString * const GRTGtfsDataUpdateInProgressNotification = @"GRTGtfsDataUpdateInProgressNotification";
 NSString * const GRTGtfsDataUpdateDidFinishNotification = @"GRTGtfsDataUpdateDidFinishNotification";
 
-NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/gtfs_data/grt.json";
+NSString * const kGRTGtfsDataUpdateJsonUrl = @"http://dolast.com/dogrt/updates/gtfs.json";
 
 @interface GRTGtfsSystem ()
 
