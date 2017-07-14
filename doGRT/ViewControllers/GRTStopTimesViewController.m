@@ -202,12 +202,12 @@
 	
 	NSNumber *display24Hour = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDisplay24HourPreference];
 	if (display24Hour.boolValue) {
-		cell.textLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", time / 10000, (time / 100) % 100 ];
+		cell.textLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", (long)time / 10000, (long)(time / 100) % 100 ];
 	}
 	else {
 		long hour = time / 10000;
 		hour = hour == 12 ? 12 : hour % 12;
-		cell.textLabel.text = [NSString stringWithFormat:@"%02ld:%02ld %@", hour, (time / 100) % 100, ((time / 10000) / 12) ? @"pm" : @"am"];
+		cell.textLabel.text = [NSString stringWithFormat:@"%02ld:%02ld %@", (long)hour, (long)(time / 100) % 100, ((time / 10000) / 12) ? @"pm" : @"am"];
 	}
     
     return cell;
