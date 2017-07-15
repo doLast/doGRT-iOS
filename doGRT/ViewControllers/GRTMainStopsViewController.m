@@ -18,6 +18,7 @@
 #import "GRTUserProfile.h"
 
 #import <QuartzCore/QuartzCore.h>
+#import <FontAwesomeKit.h>
 
 enum GRTStopsTableSection {
 	GRTStopsTableFavoritesSection = 0,
@@ -130,7 +131,9 @@ typedef enum GRTStopsViewType {
 
     // Construct Buttons
     self.locateButton = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.stopsMapViewController.mapView];
-    self.preferenceButton = [[UIBarButtonItem alloc] initWithTitle:@"Setting" style:UIBarButtonItemStylePlain target:self action:@selector(showPreferences:)];
+    FAKFontAwesome *cogIcon = [FAKFontAwesome cogIconWithSize:20];
+    UIImage *cogImage = [cogIcon imageWithSize:CGSizeMake(20, 20)];
+    self.preferenceButton = [[UIBarButtonItem alloc] initWithImage:cogImage style:UIBarButtonItemStylePlain target:self action:@selector(showPreferences:)];
 
 	// Set sub view controller delegate
 	self.searchResultViewController.delegate = self;
