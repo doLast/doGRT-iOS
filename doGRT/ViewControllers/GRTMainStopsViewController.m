@@ -149,9 +149,9 @@ typedef enum GRTStopsViewType {
 	[self updateFavoriteStops];
     
     // Initialize default view type
+    self.navigationItem.leftBarButtonItem = self.preferenceButton;
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		self.navigationItem.leftBarButtonItem = self.editButtonItem;
-        self.navigationItem.rightBarButtonItem = self.preferenceButton;
+		self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	} else {
 		[self showViewType:GRTStopsTableView animationDuration:0.0f];
 	}
@@ -198,12 +198,10 @@ typedef enum GRTStopsViewType {
 - (void)showViewType:(GRTStopsViewType)type animationDuration:(NSTimeInterval)duration
 {
 	if (type == GRTStopsTableView) {
-		self.navigationItem.leftBarButtonItem = self.editButtonItem;
-        self.navigationItem.rightBarButtonItem = self.preferenceButton;
+		self.navigationItem.rightBarButtonItem = self.editButtonItem;
 		[self.stopsMapViewController setMapAlpha:0.0 animationDuration:duration];
 	}
 	else if (type == GRTStopsMapView) {
-        self.navigationItem.leftBarButtonItem = nil;
 		self.navigationItem.rightBarButtonItem = self.locateButton;
 		[self.stopsMapViewController setMapAlpha:1.0 animationDuration:duration];
 	}
