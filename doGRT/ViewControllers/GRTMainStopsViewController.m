@@ -131,9 +131,8 @@ typedef enum GRTStopsViewType {
 
     // Construct Buttons
     self.locateButton = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.stopsMapViewController.mapView];
-    FAKFontAwesome *cogIcon = [FAKFontAwesome cogIconWithSize:20];
-    UIImage *cogImage = [cogIcon imageWithSize:CGSizeMake(20, 20)];
-    self.preferenceButton = [[UIBarButtonItem alloc] initWithImage:cogImage style:UIBarButtonItemStylePlain target:self action:@selector(showPreferences:)];
+    self.preferenceButton = [[UIBarButtonItem alloc] initWithTitle:[FAKFontAwesome cogIconWithSize:20].attributedString.string style:UIBarButtonItemStylePlain target:self action:@selector(showPreferences:)];
+    [self.preferenceButton setTitleTextAttributes:@{NSFontAttributeName: [FAKFontAwesome iconFontWithSize:20]} forState:UIControlStateNormal];
 
 	// Set sub view controller delegate
 	self.searchResultViewController.delegate = self;
