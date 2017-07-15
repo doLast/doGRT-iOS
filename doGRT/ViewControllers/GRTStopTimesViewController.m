@@ -74,6 +74,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
 	[self.stopDetailsManager closeMenu:self];
 }
 
@@ -81,8 +82,8 @@
 
 - (void)updateComingBusIndex
 {
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+	NSDateComponents *comps = [calendar components:NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:[NSDate date]];
 	NSInteger curTime = comps.hour * 10000 + comps.minute * 100 + comps.second;
 	NSInteger comingBusIndex = [self.stopTimes indexesOfObjectsPassingTest:^BOOL(GRTStopTime *obj, NSUInteger idx, BOOL *stop){
 		if (obj.departureTime.integerValue >= curTime) {
@@ -108,7 +109,7 @@
 		scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 	}
 	
-	NSLog(@"Scrolling to indexPath: %@, comingBusIndex: %d", scrollIndexPath, self.comingBusIndex);
+	NSLog(@"Scrolling to indexPath: %@, comingBusIndex: %ld", scrollIndexPath, (long)self.comingBusIndex);
 	[self.tableView scrollToRowAtIndexPath:scrollIndexPath atScrollPosition:UITableViewScrollPositionTop animated:animated];
 }
 
@@ -201,12 +202,12 @@
 	
 	NSNumber *display24Hour = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDisplay24HourPreference];
 	if (display24Hour.boolValue) {
-		cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d", time / 10000, (time / 100) % 100 ];
+		cell.textLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", (long)time / 10000, (long)(time / 100) % 100 ];
 	}
 	else {
-		int hour = time / 10000;
+		long hour = time / 10000;
 		hour = hour == 12 ? 12 : hour % 12;
-		cell.textLabel.text = [NSString stringWithFormat:@"%02d:%02d %@", hour, (time / 100) % 100, ((time / 10000) / 12) ? @"pm" : @"am"];
+		cell.textLabel.text = [NSString stringWithFormat:@"%02ld:%02ld %@", (long)hour, (long)(time / 100) % 100, ((time / 10000) / 12) ? @"pm" : @"am"];
 	}
     
     return cell;

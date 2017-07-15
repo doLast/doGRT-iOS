@@ -40,20 +40,21 @@ typedef enum GRTStopsViewType {
 
 @interface GRTMainStopsViewController ()
 
+@property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong, readonly) NSArray *tableViewControllers;
-@property (nonatomic, strong) NSIndexPath *editingFavIndexPath;
 
 @property (nonatomic, strong, readonly) NSArray *operationQueues;
 
 @property (atomic) GRTStopsViewType currentViewType;
 @property (nonatomic, strong) UISegmentedControl *viewsSegmentedControl;
+@property (nonatomic, strong) UIBarButtonItem *locateButton;
+@property (nonatomic, strong) UIBarButtonItem *preferenceButton;
 
 @end
 
 @implementation GRTMainStopsViewController
 
 @synthesize tableViewControllers = _tableViewControllers;
-@synthesize editingFavIndexPath = _editingFavIndexPath;
 
 @synthesize operationQueues = _operationQueues;
 @synthesize locateButton = _locateButton;
@@ -106,50 +107,48 @@ typedef enum GRTStopsViewType {
     [super viewDidLoad];
 	
 	self.title = @"doGRT";
-	self.editingFavIndexPath = nil;
-	
-	// Hide SearchBar
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		UISearchBar *searchBar = self.searchDisplayController.searchBar;
-		[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
-	} else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.tableView setContentOffset:CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height) animated:NO];
-	}
+
+    // Setup Search
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultViewController];
+    self.searchController.searchResultsUpdater = self;
+    self.tableView.tableHeaderView = self.searchController.searchBar;
+    self.definesPresentationContext = YES;
 
 	// Construct Segmented Control
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone &&
 		self.viewsSegmentedControl == nil) {
 		UISegmentedControl *viewsSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Stops List", @"Map"]];
-		viewsSegmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
 		[viewsSegmentedControl addTarget:self action:@selector(toggleViews:) forControlEvents:UIControlEventValueChanged];
 		UIBarButtonItem *segmentedControlItem = [[UIBarButtonItem alloc] initWithCustomView:viewsSegmentedControl];
 
-		UIBarButtonItem *preferenceButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"⚙" style:UIBarButtonItemStylePlain target:self action:@selector(showPreferences:)];
-
-		ITBarItemSet *barItemSet = [[ITBarItemSet alloc] initWithItems:@[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], segmentedControlItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], preferenceButtonItem]];
+		ITBarItemSet *barItemSet = [[ITBarItemSet alloc] initWithItems:@[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil], segmentedControlItem, [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]]];
 
 		[self pushBarItemSet:barItemSet animated:YES];
 
 		self.viewsSegmentedControl = viewsSegmentedControl;
 	}
-	
-	// Set search table view controller delegate
+
+    // Construct Buttons
+    self.locateButton = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.stopsMapViewController.mapView];
+    self.preferenceButton = [[UIBarButtonItem alloc] initWithTitle:@"Setting" style:UIBarButtonItemStylePlain target:self action:@selector(showPreferences:)];
+
+	// Set sub view controller delegate
 	self.searchResultViewController.delegate = self;
 	self.stopsMapViewController.delegate = self;
 	
-	// Center Waterloo on map
-	[self.stopsMapViewController centerMapToRegion: MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
-	
+	// Initialize map view display
+    [self.stopsMapViewController initializeMapView];
+
 	// Enable user location tracking
 	[self.stopsMapViewController performSelector:@selector(startTrackingUserLocation:) withObject:self afterDelay:2];
 	
 	// Reload favorites
 	[self updateFavoriteStops];
     
-    // Init default view type
+    // Initialize default view type
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		self.navigationItem.leftBarButtonItem = self.editButtonItem;
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Setting" style:UIBarButtonItemStylePlain target:self action:@selector(showPreferences:)];
+        self.navigationItem.rightBarButtonItem = self.preferenceButton;
 	} else {
 		[self showViewType:GRTStopsTableView animationDuration:0.0f];
 	}
@@ -197,10 +196,12 @@ typedef enum GRTStopsViewType {
 {
 	if (type == GRTStopsTableView) {
 		self.navigationItem.leftBarButtonItem = self.editButtonItem;
+        self.navigationItem.rightBarButtonItem = self.preferenceButton;
 		[self.stopsMapViewController setMapAlpha:0.0 animationDuration:duration];
 	}
 	else if (type == GRTStopsMapView) {
-		self.navigationItem.leftBarButtonItem = self.locateButton;
+        self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.rightBarButtonItem = self.locateButton;
 		[self.stopsMapViewController setMapAlpha:1.0 animationDuration:duration];
 	}
 	self.currentViewType = type;
@@ -281,7 +282,7 @@ typedef enum GRTStopsViewType {
 - (IBAction)toggleViews:(UISegmentedControl *)sender
 {
 	NSInteger viewIndex = sender.selectedSegmentIndex;
-	[self showViewType:viewIndex animationDuration:0.2];
+	[self showViewType:(GRTStopsViewType)viewIndex animationDuration:0.2];
 }
 
 - (IBAction)showPreferences:(id)sender
@@ -290,54 +291,21 @@ typedef enum GRTStopsViewType {
 		[GRTPreferencesViewController showPreferencesInViewController:self];
 	}
 	else if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-		[GRTPreferencesViewController showPreferencesFromBarButtonItem:sender];
+        [GRTPreferencesViewController showPreferencesInViewController:self fromBarButtonItem:sender];
 	}
-}
-
-- (IBAction)showSearch:(id)sender
-{
-	UISearchBar *searchBar = self.searchDisplayController.searchBar;
-	// animate in
-    [UIView animateWithDuration:0.2 animations:^{
-		CGFloat y = SYSTEM_VERSION_LESS_THAN(@"7.0") ? 0 : self.navigationController.navigationBar.frame.origin.y;
-		[searchBar setFrame:CGRectMake(0, y, searchBar.frame.size.width, searchBar.frame.size.height)];
-	} completion:^(BOOL finished) {
-		[self.searchDisplayController.searchBar becomeFirstResponder];
-	}];
 }
 
 #pragma mark - search delegate
 
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		CGFloat y = SYSTEM_VERSION_LESS_THAN(@"7.0") ? 0 : self.navigationController.navigationBar.frame.origin.y;
-		[controller.searchBar setFrame:CGRectMake(0, y, controller.searchBar.frame.size.width, controller.searchBar.frame.size.height)];
-	}
-}
-
-- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
-{
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-		UISearchBar *searchBar = self.searchDisplayController.searchBar;
-		// animate out
-		[UIView animateWithDuration:0.2 animations:^{
-			[searchBar setFrame:CGRectMake(0, 0 - searchBar.frame.size.height, searchBar.frame.size.width, searchBar.frame.size.height)];
-		} completion:^(BOOL finished){
-			
-		}];
-	}
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-}
-
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
-{
-	if (controller.active && [searchString length] > 0) {
+    NSString *searchString = searchController.searchBar.text;
+	if (searchController.active && [searchString length] > 0) {
 		self.searchResultViewController.stops = [[GRTGtfsSystem defaultGtfsSystem] stopsWithNameLike:searchString];
-		return YES;
-	}
-	self.searchResultViewController.stops = nil;
-	return NO;
+        [self.searchResultViewController.tableView reloadData];
+    } else {
+        self.searchResultViewController.stops = nil;
+    }
 }
 
 #pragma mark - stops search delegate
@@ -347,9 +315,7 @@ typedef enum GRTStopsViewType {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || self.currentViewType == GRTStopsMapView) {
 		GRTFavoriteStop *favStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:stop];
 		[self.stopsMapViewController selectStop: favStop != nil ? favStop : stop];
-		
-		[self.searchDisplayController setActive:NO animated:YES];
-	}
+    }
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || self.currentViewType == GRTStopsTableView) {
 		[self pushStopDetailsForStop:stop];
 	}
@@ -424,15 +390,31 @@ typedef enum GRTStopsViewType {
 {	
 	id<GRTStopAnnotation> stop = [[self stopsTableViewControllerForSection:indexPath.section].stops objectAtIndex:indexPath.row];
 	if (tableView.isEditing && [stop isKindOfClass:[GRTFavoriteStop class]]) {
-		GRTFavoriteStop *favStop = stop;
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Edit Favorite Stop Name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
-		alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-		UITextField *textField = [alert textFieldAtIndex:0];
+		GRTFavoriteStop *favStop = (GRTFavoriteStop *) stop;
 
-		self.editingFavIndexPath = indexPath;
-		textField.text = favStop.displayName;
+        UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Edit Favorite Stop Name" message:nil preferredStyle:UIAlertControllerStyleAlert];
 
-		[alert show];
+        [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.text = favStop.displayName;
+        }];
+
+        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+            [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+        }];
+        [alertController addAction:cancelAction];
+
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Save" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            UITextField *nameTextField = alertController.textFields.firstObject;
+            BOOL result = [[GRTUserProfile defaultUserProfile] renameFavoriteStop:favStop withName:nameTextField.text];
+            if (result) {
+                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            } else {
+                [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+            }
+        }];
+        [alertController addAction:defaultAction];
+
+        [self presentViewController:alertController animated:YES completion:nil];
 	} else if (tableView.isEditing) {
 		[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 	} else {
@@ -443,23 +425,6 @@ typedef enum GRTStopsViewType {
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
 {
 	return [[self stopsTableViewControllerForSection:sourceIndexPath.section] tableView:tableView targetIndexPathForMoveFromRowAtIndexPath:sourceIndexPath toProposedIndexPath:proposedDestinationIndexPath];
-}
-
-#pragma mark - Alert View Delegate
-
-- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-		UITextField *textField = [alertView textFieldAtIndex:0];
-		if(textField.text.length > 0) {
-			GRTFavoriteStop *favStop = [[self stopsTableViewControllerForSection:self.editingFavIndexPath.section].stops objectAtIndex:self.editingFavIndexPath.row];
-			BOOL result = [[GRTUserProfile defaultUserProfile] renameFavoriteStop:favStop withName:textField.text];
-			if (result) {
-				[self.tableView reloadRowsAtIndexPaths:@[self.editingFavIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-			}
-			self.editingFavIndexPath = nil;
-		}
-    }
-	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
 @end

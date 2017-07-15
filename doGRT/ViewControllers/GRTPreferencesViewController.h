@@ -12,6 +12,6 @@
 @interface GRTPreferencesViewController : QuickDialogController <MFMailComposeViewControllerDelegate>
 
 + (void)showPreferencesInViewController:(UIViewController *)viewController;
-+ (void)showPreferencesFromBarButtonItem:(UIBarButtonItem *)barButtonItem;
++ (void)showPreferencesInViewController:(UIViewController *)viewController fromBarButtonItem:(UIBarButtonItem *)barButtonItem;
 
 @end

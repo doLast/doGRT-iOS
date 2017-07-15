@@ -34,18 +34,9 @@
 		2572166F162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 2572166E162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.m */; };
 		257B1C961620A96F00176083 /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 257B1C8C1620A96F00176083 /* iTunesArtwork.png */; };
 		257B1C971620A96F00176083 /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 257B1C8D1620A96F00176083 /* iTunesArtwork@2x.png */; };
-		25831FAB162B581C00EDD65D /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 25831FAA162B581C00EDD65D /* ASIHTTPRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		25831FAF162B584600EDD65D /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 25831FAE162B584600EDD65D /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		25831FB1162B58D100EDD65D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25831FB0162B58D100EDD65D /* CFNetwork.framework */; };
 		25831FB3162B594800EDD65D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25831FB2162B594800EDD65D /* SystemConfiguration.framework */; };
-		25831FBA162B59CB00EDD65D /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 25831FB9162B59CB00EDD65D /* ASIAuthenticationDialog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		25831FC1162B5A2300EDD65D /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 25831FBC162B5A2200EDD65D /* ASIDataCompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		25831FC2162B5A2300EDD65D /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 25831FBE162B5A2200EDD65D /* ASIDataDecompressor.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		25831FC3162B5A2300EDD65D /* ASIInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 25831FC0162B5A2200EDD65D /* ASIInputStream.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		25831FC5162B5A7100EDD65D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25831FC4162B5A7100EDD65D /* MobileCoreServices.framework */; };
-		25831FCC162B5AD500EDD65D /* ASIDownloadCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 25831FC7162B5AD400EDD65D /* ASIDownloadCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		25831FCD162B5AD500EDD65D /* ASIFormDataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 25831FC9162B5AD400EDD65D /* ASIFormDataRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		25831FCE162B5AD500EDD65D /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 25831FCB162B5AD500EDD65D /* ASINetworkQueue.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		25831FD0162B5B4600EDD65D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 25831FCF162B5B4500EDD65D /* libz.dylib */; };
 		258D7D6A178354C000D287A0 /* GRT_GTFS.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 258D7D69178354C000D287A0 /* GRT_GTFS.sqlite */; };
 		2590035F1610E5A100FE051C /* GRTMainStopsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2590035E1610E5A100FE051C /* GRTMainStopsViewController.m */; };
@@ -58,15 +49,15 @@
 		2591430B1614ACE700F0D215 /* GRTStopRoutesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2591430A1614ACE600F0D215 /* GRTStopRoutesViewController.m */; };
 		25C7493C15E09173003AB331 /* iPhoneStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25C7493B15E09173003AB331 /* iPhoneStoryboard.storyboard */; };
 		25C7493E15E09190003AB331 /* iPadStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25C7493D15E09190003AB331 /* iPadStoryboard.storyboard */; };
+		25C77AD31E87AD2100F06D98 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25C77AD21E87AD2100F06D98 /* Launch Screen.storyboard */; };
 		25D1C7141690FA6F004C984A /* GRTDetailedTitleButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25D1C7131690FA6F004C984A /* GRTDetailedTitleButtonView.m */; };
 		25EAB19614CD783F004A9DEC /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 25EAB19514CD783F004A9DEC /* libsqlite3.dylib */; };
 		25EAB19D14CD82B1004A9DEC /* GRTStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EAB19C14CD82B1004A9DEC /* GRTStop.m */; };
 		25F18A9C14DBDC2E008B1A31 /* GRTTrip.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F18A9B14DBDC2E008B1A31 /* GRTTrip.m */; };
-		70B56BEC2987439891B4B3CE /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC7BE1EC1DA4CA1A00F358A /* libPods.a */; };
+		A88802FDF1A616714DCA9000 /* libPods-doGRT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE29D95533A278CA05A7EEE /* libPods-doGRT.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0DD746289AE5454AB85B8DD7 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		2504F06E1698812700D3D1A3 /* GRTStopDetailsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTStopDetailsManager.h; sourceTree = "<group>"; };
 		2504F06F1698812700D3D1A3 /* GRTStopDetailsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopDetailsManager.m; sourceTree = "<group>"; };
 		2515ED2F14C5817600FDCD6D /* doGRT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = doGRT.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,31 +102,9 @@
 		2572166E162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+GRTGtfsUpdater.m"; sourceTree = "<group>"; };
 		257B1C8C1620A96F00176083 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
 		257B1C8D1620A96F00176083 /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
-		25831FA9162B581C00EDD65D /* ASIHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIHTTPRequest.h; path = "asi-http-request/Classes/ASIHTTPRequest.h"; sourceTree = "<group>"; };
-		25831FAA162B581C00EDD65D /* ASIHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASIHTTPRequest.m; path = "asi-http-request/Classes/ASIHTTPRequest.m"; sourceTree = "<group>"; };
-		25831FAD162B584600EDD65D /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		25831FAE162B584600EDD65D /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		25831FB0162B58D100EDD65D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		25831FB2162B594800EDD65D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		25831FB4162B599F00EDD65D /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASICacheDelegate.h; path = "asi-http-request/Classes/ASICacheDelegate.h"; sourceTree = "<group>"; };
-		25831FB5162B599F00EDD65D /* ASIHTTPRequestConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIHTTPRequestConfig.h; path = "asi-http-request/Classes/ASIHTTPRequestConfig.h"; sourceTree = "<group>"; };
-		25831FB6162B599F00EDD65D /* ASIHTTPRequestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIHTTPRequestDelegate.h; path = "asi-http-request/Classes/ASIHTTPRequestDelegate.h"; sourceTree = "<group>"; };
-		25831FB7162B599F00EDD65D /* ASIProgressDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIProgressDelegate.h; path = "asi-http-request/Classes/ASIProgressDelegate.h"; sourceTree = "<group>"; };
-		25831FB8162B59CB00EDD65D /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIAuthenticationDialog.h; path = "asi-http-request/Classes/ASIAuthenticationDialog.h"; sourceTree = "<group>"; };
-		25831FB9162B59CB00EDD65D /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASIAuthenticationDialog.m; path = "asi-http-request/Classes/ASIAuthenticationDialog.m"; sourceTree = "<group>"; };
-		25831FBB162B5A2200EDD65D /* ASIDataCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIDataCompressor.h; path = "asi-http-request/Classes/ASIDataCompressor.h"; sourceTree = "<group>"; };
-		25831FBC162B5A2200EDD65D /* ASIDataCompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASIDataCompressor.m; path = "asi-http-request/Classes/ASIDataCompressor.m"; sourceTree = "<group>"; };
-		25831FBD162B5A2200EDD65D /* ASIDataDecompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIDataDecompressor.h; path = "asi-http-request/Classes/ASIDataDecompressor.h"; sourceTree = "<group>"; };
-		25831FBE162B5A2200EDD65D /* ASIDataDecompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASIDataDecompressor.m; path = "asi-http-request/Classes/ASIDataDecompressor.m"; sourceTree = "<group>"; };
-		25831FBF162B5A2200EDD65D /* ASIInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIInputStream.h; path = "asi-http-request/Classes/ASIInputStream.h"; sourceTree = "<group>"; };
-		25831FC0162B5A2200EDD65D /* ASIInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASIInputStream.m; path = "asi-http-request/Classes/ASIInputStream.m"; sourceTree = "<group>"; };
 		25831FC4162B5A7100EDD65D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		25831FC6162B5AD400EDD65D /* ASIDownloadCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIDownloadCache.h; path = "asi-http-request/Classes/ASIDownloadCache.h"; sourceTree = "<group>"; };
-		25831FC7162B5AD400EDD65D /* ASIDownloadCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASIDownloadCache.m; path = "asi-http-request/Classes/ASIDownloadCache.m"; sourceTree = "<group>"; };
-		25831FC8162B5AD400EDD65D /* ASIFormDataRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIFormDataRequest.h; path = "asi-http-request/Classes/ASIFormDataRequest.h"; sourceTree = "<group>"; };
-		25831FC9162B5AD400EDD65D /* ASIFormDataRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASIFormDataRequest.m; path = "asi-http-request/Classes/ASIFormDataRequest.m"; sourceTree = "<group>"; };
-		25831FCA162B5AD400EDD65D /* ASINetworkQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASINetworkQueue.h; path = "asi-http-request/Classes/ASINetworkQueue.h"; sourceTree = "<group>"; };
-		25831FCB162B5AD500EDD65D /* ASINetworkQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASINetworkQueue.m; path = "asi-http-request/Classes/ASINetworkQueue.m"; sourceTree = "<group>"; };
 		25831FCF162B5B4500EDD65D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		258D7D69178354C000D287A0 /* GRT_GTFS.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = GRT_GTFS.sqlite; sourceTree = "<group>"; };
 		2590035D1610E5A100FE051C /* GRTMainStopsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GRTMainStopsViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -156,6 +125,7 @@
 		2591430A1614ACE600F0D215 /* GRTStopRoutesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStopRoutesViewController.m; sourceTree = "<group>"; };
 		25C7493B15E09173003AB331 /* iPhoneStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPhoneStoryboard.storyboard; sourceTree = "<group>"; };
 		25C7493D15E09190003AB331 /* iPadStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPadStoryboard.storyboard; sourceTree = "<group>"; };
+		25C77AD21E87AD2100F06D98 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		25D1C7121690FA6F004C984A /* GRTDetailedTitleButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTDetailedTitleButtonView.h; sourceTree = "<group>"; };
 		25D1C7131690FA6F004C984A /* GRTDetailedTitleButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTDetailedTitleButtonView.m; sourceTree = "<group>"; };
 		25EAB19514CD783F004A9DEC /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -163,7 +133,9 @@
 		25EAB19C14CD82B1004A9DEC /* GRTStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStop.m; sourceTree = "<group>"; };
 		25F18A9A14DBDC2E008B1A31 /* GRTTrip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTTrip.h; sourceTree = "<group>"; };
 		25F18A9B14DBDC2E008B1A31 /* GRTTrip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTTrip.m; sourceTree = "<group>"; };
-		CDC7BE1EC1DA4CA1A00F358A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CE29D95533A278CA05A7EEE /* libPods-doGRT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-doGRT.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		464A30AEC836D8C16401F031 /* Pods-doGRT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-doGRT.release.xcconfig"; path = "Pods/Target Support Files/Pods-doGRT/Pods-doGRT.release.xcconfig"; sourceTree = "<group>"; };
+		FFCC2FCC5E05639A952BE9D0 /* Pods-doGRT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-doGRT.debug.xcconfig"; path = "Pods/Target Support Files/Pods-doGRT/Pods-doGRT.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,7 +155,7 @@
 				2515ED3614C5817600FDCD6D /* Foundation.framework in Frameworks */,
 				2515ED3814C5817600FDCD6D /* CoreGraphics.framework in Frameworks */,
 				2515ED3A14C5817600FDCD6D /* CoreData.framework in Frameworks */,
-				70B56BEC2987439891B4B3CE /* libPods.a in Frameworks */,
+				A88802FDF1A616714DCA9000 /* libPods-doGRT.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,7 +205,7 @@
 				2515ED3B14C5817600FDCD6D /* doGRT */,
 				2515ED3214C5817600FDCD6D /* Frameworks */,
 				2515ED3014C5817600FDCD6D /* Products */,
-				0DD746289AE5454AB85B8DD7 /* Pods.xcconfig */,
+				4A78BF1447C1736FBDFA8106 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -248,7 +220,6 @@
 		2515ED3214C5817600FDCD6D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				25831FA8162B578700EDD65D /* ASIHttpRequest */,
 				25831FCF162B5B4500EDD65D /* libz.dylib */,
 				25EAB19514CD783F004A9DEC /* libsqlite3.dylib */,
 				2515EDAB14C5839300FDCD6D /* MessageUI.framework */,
@@ -261,7 +232,7 @@
 				2515ED3514C5817600FDCD6D /* Foundation.framework */,
 				2515ED3714C5817600FDCD6D /* CoreGraphics.framework */,
 				2515ED3914C5817600FDCD6D /* CoreData.framework */,
-				CDC7BE1EC1DA4CA1A00F358A /* libPods.a */,
+				3CE29D95533A278CA05A7EEE /* libPods-doGRT.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -300,6 +271,7 @@
 				250DE3CB16285A58002B9344 /* Images */,
 				25C7493B15E09173003AB331 /* iPhoneStoryboard.storyboard */,
 				25C7493D15E09190003AB331 /* iPadStoryboard.storyboard */,
+				25C77AD21E87AD2100F06D98 /* Launch Screen.storyboard */,
 				258D7D69178354C000D287A0 /* GRT_GTFS.sqlite */,
 			);
 			path = Resources;
@@ -345,44 +317,6 @@
 			path = UserProfile;
 			sourceTree = "<group>";
 		};
-		25831FA8162B578700EDD65D /* ASIHttpRequest */ = {
-			isa = PBXGroup;
-			children = (
-				25831FAC162B584600EDD65D /* Reachability */,
-				25831FA9162B581C00EDD65D /* ASIHTTPRequest.h */,
-				25831FAA162B581C00EDD65D /* ASIHTTPRequest.m */,
-				25831FB4162B599F00EDD65D /* ASICacheDelegate.h */,
-				25831FB5162B599F00EDD65D /* ASIHTTPRequestConfig.h */,
-				25831FB6162B599F00EDD65D /* ASIHTTPRequestDelegate.h */,
-				25831FB7162B599F00EDD65D /* ASIProgressDelegate.h */,
-				25831FB8162B59CB00EDD65D /* ASIAuthenticationDialog.h */,
-				25831FB9162B59CB00EDD65D /* ASIAuthenticationDialog.m */,
-				25831FBB162B5A2200EDD65D /* ASIDataCompressor.h */,
-				25831FBC162B5A2200EDD65D /* ASIDataCompressor.m */,
-				25831FBD162B5A2200EDD65D /* ASIDataDecompressor.h */,
-				25831FBE162B5A2200EDD65D /* ASIDataDecompressor.m */,
-				25831FBF162B5A2200EDD65D /* ASIInputStream.h */,
-				25831FC0162B5A2200EDD65D /* ASIInputStream.m */,
-				25831FC6162B5AD400EDD65D /* ASIDownloadCache.h */,
-				25831FC7162B5AD400EDD65D /* ASIDownloadCache.m */,
-				25831FC8162B5AD400EDD65D /* ASIFormDataRequest.h */,
-				25831FC9162B5AD400EDD65D /* ASIFormDataRequest.m */,
-				25831FCA162B5AD400EDD65D /* ASINetworkQueue.h */,
-				25831FCB162B5AD500EDD65D /* ASINetworkQueue.m */,
-			);
-			name = ASIHttpRequest;
-			sourceTree = "<group>";
-		};
-		25831FAC162B584600EDD65D /* Reachability */ = {
-			isa = PBXGroup;
-			children = (
-				25831FAD162B584600EDD65D /* Reachability.h */,
-				25831FAE162B584600EDD65D /* Reachability.m */,
-			);
-			name = Reachability;
-			path = "asi-http-request/External/Reachability";
-			sourceTree = "<group>";
-		};
 		2590035B1610E53C00FE051C /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -423,6 +357,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		4A78BF1447C1736FBDFA8106 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FFCC2FCC5E05639A952BE9D0 /* Pods-doGRT.debug.xcconfig */,
+				464A30AEC836D8C16401F031 /* Pods-doGRT.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -430,11 +373,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2515ED4C14C5817600FDCD6D /* Build configuration list for PBXNativeTarget "doGRT" */;
 			buildPhases = (
-				E14ADE38E8A2425F9A89CFEE /* Check Pods Manifest.lock */,
+				CE913EE2DA026577D1C927D6 /* [CP] Check Pods Manifest.lock */,
 				2515ED2B14C5817600FDCD6D /* Sources */,
 				2515ED2C14C5817600FDCD6D /* Frameworks */,
 				2515ED2D14C5817600FDCD6D /* Resources */,
-				C1A422A9EF244F1FB4D2F50B /* Copy Pods Resources */,
+				1CB0ABE9B4BBFC76C6DF20F6 /* [CP] Embed Pods Frameworks */,
+				3EFAF50D62260985CB2709C1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -451,7 +395,13 @@
 		2515ED2614C5817500FDCD6D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0820;
+				TargetAttributes = {
+					2515ED2E14C5817600FDCD6D = {
+						DevelopmentTeam = 456YE6HY56;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 2515ED2914C5817500FDCD6D /* Build configuration list for PBXProject "doGRT" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -477,6 +427,7 @@
 			files = (
 				2515ED4014C5817600FDCD6D /* InfoPlist.strings in Resources */,
 				254BDD6117E2A6C500A418E7 /* Images.xcassets in Resources */,
+				25C77AD31E87AD2100F06D98 /* Launch Screen.storyboard in Resources */,
 				25C7493C15E09173003AB331 /* iPhoneStoryboard.storyboard in Resources */,
 				25C7493E15E09190003AB331 /* iPadStoryboard.storyboard in Resources */,
 				257B1C961620A96F00176083 /* iTunesArtwork.png in Resources */,
@@ -488,34 +439,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		C1A422A9EF244F1FB4D2F50B /* Copy Pods Resources */ = {
+		1CB0ABE9B4BBFC76C6DF20F6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-doGRT/Pods-doGRT-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E14ADE38E8A2425F9A89CFEE /* Check Pods Manifest.lock */ = {
+		3EFAF50D62260985CB2709C1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-doGRT/Pods-doGRT-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE913EE2DA026577D1C927D6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -548,15 +514,6 @@
 				252C3DE21617520000C5A933 /* GRTShape.m in Sources */,
 				251D26D2161A8FCC0068CDC1 /* GRTStopsTableViewController.m in Sources */,
 				251A9F4D161E603000D72F3E /* GRTStopsMapViewController.m in Sources */,
-				25831FAB162B581C00EDD65D /* ASIHTTPRequest.m in Sources */,
-				25831FAF162B584600EDD65D /* Reachability.m in Sources */,
-				25831FBA162B59CB00EDD65D /* ASIAuthenticationDialog.m in Sources */,
-				25831FC1162B5A2300EDD65D /* ASIDataCompressor.m in Sources */,
-				25831FC2162B5A2300EDD65D /* ASIDataDecompressor.m in Sources */,
-				25831FC3162B5A2300EDD65D /* ASIInputStream.m in Sources */,
-				25831FCC162B5AD500EDD65D /* ASIDownloadCache.m in Sources */,
-				25831FCD162B5AD500EDD65D /* ASIFormDataRequest.m in Sources */,
-				25831FCE162B5AD500EDD65D /* ASINetworkQueue.m in Sources */,
 				2572166F162B8EE000A206D4 /* UIViewController+GRTGtfsUpdater.m in Sources */,
 				255F60B91638CC96001F3B4C /* GRTPreferencesViewController.m in Sources */,
 				25D1C7141690FA6F004C984A /* GRTDetailedTitleButtonView.m in Sources */,
@@ -587,13 +544,19 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -608,7 +571,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -625,12 +588,17 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -639,7 +607,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -650,19 +618,26 @@
 		};
 		2515ED4D14C5817600FDCD6D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0DD746289AE5454AB85B8DD7 /* Pods.xcconfig */;
+			baseConfigurationReference = FFCC2FCC5E05639A952BE9D0 /* Pods-doGRT.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = 456YE6HY56;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "doGRT/doGRT-Prefix.pch";
 				INFOPLIST_FILE = "doGRT/doGRT-Info.plist";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.doLast.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/InformaticToolbar/\"/** \"${PROJECT_DIR}/QuickDialog\"/**";
 				WRAPPER_EXTENSION = app;
@@ -671,19 +646,26 @@
 		};
 		2515ED4E14C5817600FDCD6D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0DD746289AE5454AB85B8DD7 /* Pods.xcconfig */;
+			baseConfigurationReference = 464A30AEC836D8C16401F031 /* Pods-doGRT.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = 456YE6HY56;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "doGRT/doGRT-Prefix.pch";
 				INFOPLIST_FILE = "doGRT/doGRT-Info.plist";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.doLast.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/InformaticToolbar/\"/** \"${PROJECT_DIR}/QuickDialog\"/**";
 				WRAPPER_EXTENSION = app;

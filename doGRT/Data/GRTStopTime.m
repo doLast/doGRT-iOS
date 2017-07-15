@@ -61,7 +61,7 @@
 	else if(time < 0){
 		time += 240000;
 	}
-	return [NSString stringWithFormat:@"%@ Leave at: %02d:%02d", self.trip.route.routeId, time / 10000, (time / 100) % 100 ];
+	return [NSString stringWithFormat:@"%@ Leave at: %02ld:%02ld", self.trip.route.routeId, (long)time / 10000, (long)(time / 100) % 100 ];
 }
 
 - (GRTStopTime *)initWithTripId:(NSNumber *)tripId stopSequence:(NSNumber *)stopSequence stopId:(NSNumber *)stopId arrivalTime:(NSNumber *)arrivalTime departureTime:(NSNumber *)departureTime

@@ -13,14 +13,12 @@
 
 @class GRTStop;
 
-@interface GRTMainStopsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate, GRTStopsTableViewControllerDelegate, GRTStopsMapViewControllerDelegate>
+@interface GRTMainStopsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UISearchControllerDelegate, UISearchResultsUpdating, GRTStopsTableViewControllerDelegate, GRTStopsMapViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *locateButton;
 @property (nonatomic, strong) IBOutlet GRTStopsTableViewController *searchResultViewController;
 @property (nonatomic, strong) IBOutlet GRTStopsMapViewController *stopsMapViewController;
 
 - (IBAction)showPreferences:(id)sender;
-- (IBAction)showSearch:(id)sender;
 
 @end

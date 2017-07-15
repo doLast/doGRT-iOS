@@ -100,8 +100,7 @@
 	}
 	else if (editingStyle == UITableViewCellEditingStyleDelete) {
 		if ([stop isKindOfClass:[GRTFavoriteStop class]]) {
-			favoriteStop = stop;
-			[[GRTUserProfile defaultUserProfile] removeFavoriteStop:favoriteStop];
+			[[GRTUserProfile defaultUserProfile] removeFavoriteStop:(GRTFavoriteStop *) stop];
 		}
 	}
 }
@@ -112,7 +111,7 @@
 	if (![stop isKindOfClass:[GRTFavoriteStop class]]) {
 		return;
 	}
-	[[GRTUserProfile defaultUserProfile] moveFavoriteStop:stop toIndex:destinationIndexPath.row];
+	[[GRTUserProfile defaultUserProfile] moveFavoriteStop:(GRTFavoriteStop *)stop toIndex:destinationIndexPath.row];
 }
 
 #pragma mark - Table view delegate

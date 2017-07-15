@@ -18,7 +18,8 @@
 @interface GRTStopsMapViewController ()
 
 @property (atomic, weak) id<GRTStopAnnotation> willBePresentedStop;
-@property (nonatomic, strong, readonly) NSOperationQueue *annotationUpdateQueue;
+@property (nonatomic, strong, readonly) NSOperationQueue *mapViewUpdateQueue;
+@property (nonatomic, strong) CLLocationManager *locationManager;
 
 @end
 
@@ -30,35 +31,42 @@
 @synthesize shape = _shape;
 @synthesize inRegionStopsDisplayThreshold = _inRegionStopsDisplayThreshold;
 @synthesize willBePresentedStop = _willBePresentedStop;
-@synthesize annotationUpdateQueue = _annotationUpdateQueue;
+@synthesize mapViewUpdateQueue = _mapViewUpdateQueue;
+@synthesize locationManager = _locationManager;
 
 - (void)setStops:(NSArray *)stops
 {
 	NSMutableArray *toRemove = [NSMutableArray arrayWithArray:_stops];
 	NSMutableArray *toAdd = [NSMutableArray arrayWithArray:stops];
-	_stops = [stops copy];
-	
-	dispatch_async(dispatch_get_main_queue(), ^{
-		for (id<GRTStopAnnotation> stop in _stops) {
-			[toRemove addObject:stop.stop];
-		}
 
-		[self.mapView removeAnnotations:toRemove];
-		[self.mapView addAnnotations:toAdd];
-		[self updateMapView];
-	});
+    _stops = [stops copy];
+
+    // Remove the GRTStop instances when adding GRTStopTime or GRTFavoriteStop
+    for (id<GRTStopAnnotation> stop in _stops) {
+        [toRemove addObject:stop.stop];
+    }
+
+    [self.mapViewUpdateQueue addOperationWithBlock:^(void) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.mapView removeAnnotations:toRemove];
+            [self.mapView addAnnotations:toAdd];
+            [self updateMapView];
+        });
+    }];
 }
 
 - (void)setShape:(GRTShape *)shape
 {
 	if (_shape != nil) {
-		[self.mapView removeOverlay:_shape.polyline];
+        [self.mapView removeOverlay:_shape.polyline];
 	}
 	_shape = shape;
 	if (shape != nil) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self.mapView addOverlay:_shape.polyline];
-		});
+        [self.mapViewUpdateQueue addOperationWithBlock:^(void) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.mapView addOverlay:_shape.polyline];
+            });
+        }];
 	}
 }
 
@@ -68,30 +76,48 @@
 	[self updateMapView];
 }
 
-- (NSOperationQueue *)annotationUpdateQueue
+- (NSOperationQueue *)mapViewUpdateQueue
 {
-	if (_annotationUpdateQueue == nil) {
-		_annotationUpdateQueue = [[NSOperationQueue alloc] init];
+	if (_mapViewUpdateQueue == nil) {
+		_mapViewUpdateQueue = [[NSOperationQueue alloc] init];
+        _mapViewUpdateQueue.suspended = YES;
 	}
-	return _annotationUpdateQueue;
+	return _mapViewUpdateQueue;
+}
+
+- (CLLocationManager *)locationManager
+{
+    if (_locationManager == nil) {
+        _locationManager = [[CLLocationManager alloc] init];
+    }
+    return _locationManager;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-	// Center will be presented stop on map
-	if (self.willBePresentedStop != nil) {
-		CLLocationCoordinate2D coord = self.willBePresentedStop.location.coordinate;
-		[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(coord, 2000, 2000) animated:NO];
-	} else if ([[self.mapView selectedAnnotations] count] == 0) {
-		[self centerMapToRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
-	}
+    [self initializeMapView];
 
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.rightBarButtonItem = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
 }
 
 #pragma mark - view update
+
+- (void)initializeMapView
+{
+    // Start map update operations
+    self.mapViewUpdateQueue.suspended = NO;
+
+    // Center will be presented stop on map
+    if (self.willBePresentedStop != nil) {
+        CLLocationCoordinate2D coord = self.willBePresentedStop.location.coordinate;
+        [self centerMapToRegion:MKCoordinateRegionMakeWithDistance(coord, 2000, 2000) animated:NO];
+    } else if ([[self.mapView selectedAnnotations] count] == 0) {
+        [self centerMapToRegion:MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(43.47273, -80.541218), 2000, 2000) animated:NO];
+    }
+}
 
 - (void)updateMapView
 {
@@ -114,7 +140,7 @@
 	
 	NSOperation *annotationUpdate = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(performAnnotationUpdate) object:nil];
 	
-	[self.annotationUpdateQueue addOperation:annotationUpdate];
+	[self.mapViewUpdateQueue addOperation:annotationUpdate];
 }
 
 - (void)performAnnotationUpdate
@@ -160,8 +186,9 @@
 
 #pragma mark - actions
 
-- (IBAction)startTrackingUserLocation:(id)sender
+- (void)startTrackingUserLocation:(id)sender
 {
+    [self.locationManager requestWhenInUseAuthorization];
 	[self setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
 }
 
@@ -218,13 +245,13 @@
 		if ([view isKindOfClass:[MKPinAnnotationView class]]) {
 			MKPinAnnotationView *pin = (MKPinAnnotationView *) view;
 			if ([view.annotation isKindOfClass:[GRTFavoriteStop class]]) {
-				pin.pinColor = MKPinAnnotationColorGreen;
+				pin.pinTintColor = [UIColor greenColor];
 			}
 			else if ([view.annotation isKindOfClass:[GRTStopTime class]]) {
-				pin.pinColor = MKPinAnnotationColorPurple;
+                pin.pinTintColor = [UIColor purpleColor];
 			}
 			else {
-				pin.pinColor = MKPinAnnotationColorRed;
+                pin.pinTintColor = [UIColor redColor];
 			}
 			pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 		}
@@ -252,15 +279,12 @@
 	}
 }
 
-- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay;
 {
-	if ([overlay isKindOfClass:[MKPolyline class]]) {
-		MKPolylineView *polylineView = [[MKPolylineView alloc] initWithPolyline:overlay];
-		polylineView.strokeColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:0.8];
-		polylineView.lineWidth = 8;
-		return polylineView;
-	}
-	return nil;
+    MKPolylineRenderer *polylineRenderer = [[MKPolylineRenderer alloc] initWithOverlay:overlay];
+    polylineRenderer.strokeColor = [UIColor colorWithRed:68.0/255.0 green:140.0/255.0 blue:203.0/255.0 alpha:0.8];
+    polylineRenderer.lineWidth = 3;
+    return polylineRenderer;
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation

@@ -1,23 +1,47 @@
 PODS:
-  - FMDB (2.1):
-    - FMDB/standard
-  - FMDB/common (2.1)
-  - FMDB/standard (2.1):
-    - FMDB/common
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
   - InformaticToolbar (0.2.1)
-  - QuickDialog (0.9)
-  - REMenu (1.5)
+  - NSLogger (1.7.0):
+    - NSLogger/Standard (= 1.7.0)
+  - NSLogger/Standard (1.7.0)
+  - QuickDialog (1.1.0):
+    - QuickDialog/Core (= 1.1.0)
+  - QuickDialog/Core (1.1.0)
+  - REMenu (1.10)
 
 DEPENDENCIES:
-  - FMDB (~> 2.1)
+  - AFNetworking (~> 3.0)
+  - FMDB (~> 2.4)
   - InformaticToolbar (~> 0.2.1)
-  - QuickDialog (~> 0.9)
-  - REMenu (~> 1.5)
+  - NSLogger
+  - QuickDialog (~> 1.0)
+  - REMenu (~> 1.10)
 
 SPEC CHECKSUMS:
-  FMDB: 2769004a271eae0bbd8bd4f45a3f2acfd0d3df0e
-  InformaticToolbar: 2cdade68b58b7dcfd81cd1914ce18bfa06c1f313
-  QuickDialog: aea6a7b1a235ba0439065a45e5b124a8422f4e2c
-  REMenu: 6b0583aea38a1eae802d56ec9a0202dacbed3f88
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  InformaticToolbar: 207bab6be699b8365acda7e2509b390f98a590f6
+  NSLogger: daa17368272ddf10a0850c218fe49de23b50f2eb
+  QuickDialog: 6954450c4c2d003a89fbfee48ec8fa4695436b01
+  REMenu: 30dad195930adf6c5eeb8041e3257aa60bf9fa49
 
-COCOAPODS: 0.24.0
+PODFILE CHECKSUM: a1363d54b164f3c9c255664777301356b8d2fada
+
+COCOAPODS: 1.2.0
