@@ -197,7 +197,7 @@
 		time += 240000;
 	}
 	
-	cell.detailTextLabel.text = [NSString stringWithString: stopTime.trip.tripHeadsign];
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
 	cell.detailTextLabel.textColor = (indexPath.section > 0 || !self.splitLeftAndComingBuses) ? [UIColor darkTextColor] : [UIColor lightGrayColor];
 	
 	NSNumber *display24Hour = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDisplay24HourPreference];
