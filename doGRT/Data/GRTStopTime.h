@@ -30,5 +30,6 @@
 @property (nonatomic, readonly, copy) NSString *subtitle;
 
 - (GRTStopTime *)initWithTripId:(NSNumber *)tripId stopSequence:(NSNumber *)stopSequence stopId:(NSNumber *)stopId arrivalTime:(NSNumber *)arrivalTime departureTime:(NSNumber *)departureTime;
+- (NSString *)formattedDepartureTime;
 
 @end
