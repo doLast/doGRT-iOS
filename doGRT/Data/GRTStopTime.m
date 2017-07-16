@@ -98,7 +98,7 @@
     if (display24Hour.boolValue) {
         dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"HHmm" options:0 locale:nil];
     } else {
-        dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"HHmma" options:0 locale:nil];
+        dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"hhmma" options:0 locale:nil];
     }
 
     return [dateFormatter stringFromDate:departureTimeDate];
