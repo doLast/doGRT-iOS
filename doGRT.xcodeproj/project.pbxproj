@@ -54,7 +54,7 @@
 		25EAB19614CD783F004A9DEC /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 25EAB19514CD783F004A9DEC /* libsqlite3.dylib */; };
 		25EAB19D14CD82B1004A9DEC /* GRTStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 25EAB19C14CD82B1004A9DEC /* GRTStop.m */; };
 		25F18A9C14DBDC2E008B1A31 /* GRTTrip.m in Sources */ = {isa = PBXBuildFile; fileRef = 25F18A9B14DBDC2E008B1A31 /* GRTTrip.m */; };
-		A88802FDF1A616714DCA9000 /* libPods-doGRT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE29D95533A278CA05A7EEE /* libPods-doGRT.a */; };
+		98CCD9247CA5C26EE4276BFE /* Pods_doGRT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D58BF4F507287808D141FAE /* Pods_doGRT.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -133,7 +133,7 @@
 		25EAB19C14CD82B1004A9DEC /* GRTStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTStop.m; sourceTree = "<group>"; };
 		25F18A9A14DBDC2E008B1A31 /* GRTTrip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRTTrip.h; sourceTree = "<group>"; };
 		25F18A9B14DBDC2E008B1A31 /* GRTTrip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRTTrip.m; sourceTree = "<group>"; };
-		3CE29D95533A278CA05A7EEE /* libPods-doGRT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-doGRT.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D58BF4F507287808D141FAE /* Pods_doGRT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_doGRT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		464A30AEC836D8C16401F031 /* Pods-doGRT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-doGRT.release.xcconfig"; path = "Pods/Target Support Files/Pods-doGRT/Pods-doGRT.release.xcconfig"; sourceTree = "<group>"; };
 		FFCC2FCC5E05639A952BE9D0 /* Pods-doGRT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-doGRT.debug.xcconfig"; path = "Pods/Target Support Files/Pods-doGRT/Pods-doGRT.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -155,7 +155,7 @@
 				2515ED3614C5817600FDCD6D /* Foundation.framework in Frameworks */,
 				2515ED3814C5817600FDCD6D /* CoreGraphics.framework in Frameworks */,
 				2515ED3A14C5817600FDCD6D /* CoreData.framework in Frameworks */,
-				A88802FDF1A616714DCA9000 /* libPods-doGRT.a in Frameworks */,
+				98CCD9247CA5C26EE4276BFE /* Pods_doGRT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,7 +232,7 @@
 				2515ED3514C5817600FDCD6D /* Foundation.framework */,
 				2515ED3714C5817600FDCD6D /* CoreGraphics.framework */,
 				2515ED3914C5817600FDCD6D /* CoreData.framework */,
-				3CE29D95533A278CA05A7EEE /* libPods-doGRT.a */,
+				3D58BF4F507287808D141FAE /* Pods_doGRT.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

@@ -15,7 +15,7 @@
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
 
-#import <FontAwesomeKit.h>
+#import "FontAwesomeKit.h"
 
 typedef enum GRTStopDetailsViewType {
 	GRTStopDetailsViewTypeMixed = 0,

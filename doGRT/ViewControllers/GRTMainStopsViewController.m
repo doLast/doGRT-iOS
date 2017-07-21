@@ -18,7 +18,7 @@
 #import "GRTUserProfile.h"
 
 #import <QuartzCore/QuartzCore.h>
-#import <FontAwesomeKit.h>
+#import "FontAwesomeKit.h"
 
 enum GRTStopsTableSection {
 	GRTStopsTableFavoritesSection = 0,
