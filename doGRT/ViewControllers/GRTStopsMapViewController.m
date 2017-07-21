@@ -50,7 +50,6 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.mapView removeAnnotations:toRemove];
             [self.mapView addAnnotations:toAdd];
-            [self updateMapView];
         });
     }];
 }
@@ -58,7 +57,11 @@
 - (void)setShape:(GRTShape *)shape
 {
 	if (_shape != nil) {
-        [self.mapView removeOverlay:_shape.polyline];
+        [self.mapViewUpdateQueue addOperationWithBlock:^(void) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.mapView removeOverlay:_shape.polyline];
+            });
+        }];
 	}
 	_shape = shape;
 	if (shape != nil) {
@@ -145,35 +148,33 @@
 
 - (void)performAnnotationUpdate
 {
-	@synchronized(self.mapView) {
-		MKCoordinateRegion region = self.mapView.region;
-		
-		// find out all need to remove annotations
-		NSSet *visibleAnnotations = [self.mapView annotationsInMapRect:[self.mapView visibleMapRect]];
-		NSSet *allAnnotations = [NSSet setWithArray:self.mapView.annotations];
-		NSMutableSet *nonVisibleAnnotations = [NSMutableSet setWithSet:allAnnotations];
-		[nonVisibleAnnotations minusSet:visibleAnnotations];
-		[nonVisibleAnnotations filterUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTStop class]]];
-		
-		// get bus stops in current region
-		NSArray *newStops = [[GRTGtfsSystem defaultGtfsSystem] stopsInRegion:region];
-		NSMutableSet *newAnnotations = [NSMutableSet setWithArray:newStops];
-		[newAnnotations minusSet:visibleAnnotations];
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self.mapView removeAnnotations:[nonVisibleAnnotations allObjects]];
-			
-			// Prevent adding stops which are overlaying on fav stops
-			for (id<GRTStopAnnotation> stop in self.stops) {
-				[newAnnotations removeObject:stop.stop];
-			}
-			
-			// if not too many annotations currently on the map
-			if([[self.mapView annotationsInMapRect:[self.mapView visibleMapRect]] count] < 50){
-				[self.mapView addAnnotations:[newAnnotations allObjects]];
-			}
-		});
-	}
+    dispatch_async(dispatch_get_main_queue(), ^{
+        MKCoordinateRegion region = self.mapView.region;
+        
+        // find out all need to remove annotations
+        NSSet *visibleAnnotations = [self.mapView annotationsInMapRect:[self.mapView visibleMapRect]];
+        NSSet *allAnnotations = [NSSet setWithArray:self.mapView.annotations];
+        NSMutableSet *nonVisibleAnnotations = [NSMutableSet setWithSet:allAnnotations];
+        [nonVisibleAnnotations minusSet:visibleAnnotations];
+        [nonVisibleAnnotations filterUsingPredicate:[NSPredicate predicateWithFormat:@"self isKindOfClass: %@", [GRTStop class]]];
+        
+        // get bus stops in current region
+        NSArray *newStops = [[GRTGtfsSystem defaultGtfsSystem] stopsInRegion:region];
+        NSMutableSet *newAnnotations = [NSMutableSet setWithArray:newStops];
+        [newAnnotations minusSet:visibleAnnotations];
+
+        [self.mapView removeAnnotations:[nonVisibleAnnotations allObjects]];
+        
+        // Prevent adding stops which are overlaying on fav stops
+        for (id<GRTStopAnnotation> stop in self.stops) {
+            [newAnnotations removeObject:stop.stop];
+        }
+        
+        // if not too many annotations currently on the map
+        if([[self.mapView annotationsInMapRect:[self.mapView visibleMapRect]] count] < 50){
+            [self.mapView addAnnotations:[newAnnotations allObjects]];
+        }
+    });
 }
 
 - (void)selectSingleAnnotation:(id<MKAnnotation>)annotation

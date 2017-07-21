@@ -14,13 +14,34 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - FMDB (2.6.2):
-    - FMDB/standard (= 2.6.2)
-  - FMDB/standard (2.6.2)
+  - FMDB (2.7.2):
+    - FMDB/standard (= 2.7.2)
+  - FMDB/standard (2.7.2)
+  - FontAwesomeKit (2.2.1):
+    - FontAwesomeKit/Core (= 2.2.1)
+    - FontAwesomeKit/FontAwesome (= 2.2.1)
+    - FontAwesomeKit/FoundationIcons (= 2.2.1)
+    - FontAwesomeKit/IonIcons (= 2.2.1)
+    - FontAwesomeKit/Material (= 2.2.1)
+    - FontAwesomeKit/Octicons (= 2.2.1)
+    - FontAwesomeKit/Zocial (= 2.2.1)
+  - FontAwesomeKit/Core (2.2.1)
+  - FontAwesomeKit/FontAwesome (2.2.1):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/FoundationIcons (2.2.1):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/IonIcons (2.2.1):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/Material (2.2.1):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/Octicons (2.2.1):
+    - FontAwesomeKit/Core
+  - FontAwesomeKit/Zocial (2.2.1):
+    - FontAwesomeKit/Core
   - InformaticToolbar (0.2.1)
-  - NSLogger (1.7.0):
-    - NSLogger/Standard (= 1.7.0)
-  - NSLogger/Standard (1.7.0)
+  - NSLogger (1.8.3):
+    - NSLogger/ObjC (= 1.8.3)
+  - NSLogger/ObjC (1.8.3)
   - QuickDialog (1.1.0):
     - QuickDialog/Core (= 1.1.0)
   - QuickDialog/Core (1.1.0)
@@ -29,6 +50,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
   - FMDB (~> 2.4)
+  - FontAwesomeKit (~> 2.2.0)
   - InformaticToolbar (~> 0.2.1)
   - NSLogger
   - QuickDialog (~> 1.0)
@@ -36,12 +58,13 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
+  FontAwesomeKit: 3614979b3dbb0ec3f7fac1bd760b91f66c31db67
   InformaticToolbar: 207bab6be699b8365acda7e2509b390f98a590f6
-  NSLogger: daa17368272ddf10a0850c218fe49de23b50f2eb
+  NSLogger: c9b80dbeee1d65eb553647a1f6f1f72171b04808
   QuickDialog: 6954450c4c2d003a89fbfee48ec8fa4695436b01
   REMenu: 30dad195930adf6c5eeb8041e3257aa60bf9fa49
 
-PODFILE CHECKSUM: a1363d54b164f3c9c255664777301356b8d2fada
+PODFILE CHECKSUM: 7ce1ac445332257f5f0b85be97b0733d97a2d3f9
 
 COCOAPODS: 1.2.0

@@ -59,15 +59,8 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" id="dFt-Ar-8MI">
-                        <barButtonItem key="rightBarButtonItem" title="FAVBUTTON" id="hml-e8-OnM">
-                            <connections>
-                                <action selector="toggleStopFavorite:" destination="1Y9-Fh-WFH" id="143-lu-k5E"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="dFt-Ar-8MI"/>
                     <connections>
-                        <outlet property="favButton" destination="hml-e8-OnM" id="vLh-IO-f9J"/>
                         <outlet property="stopRoutesViewController" destination="dO2-C8-hNf" id="Vfe-NQ-mbh"/>
                         <outlet property="stopTimesViewController" destination="MI8-Yu-nab" id="l4z-Z6-sPb"/>
                         <segue destination="PuM-di-VkF" kind="push" identifier="showStopRouteTimes" id="7BE-Yz-PRW"/>

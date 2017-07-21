@@ -189,27 +189,11 @@
 	}
     
 	GRTStopTime *stopTime = [self.stopTimes objectAtIndex:indexPath.row + (self.comingBusIndex * indexPath.section)];
-	NSInteger time = [stopTime.departureTime integerValue];
-	if(time >= 240000){
-		time -= 240000;
-	}
-	else if(time < 0){
-		time += 240000;
-	}
-	
-	cell.detailTextLabel.text = [NSString stringWithString: stopTime.trip.tripHeadsign];
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", stopTime.trip.route.routeId, stopTime.trip.tripHeadsign];
 	cell.detailTextLabel.textColor = (indexPath.section > 0 || !self.splitLeftAndComingBuses) ? [UIColor darkTextColor] : [UIColor lightGrayColor];
 	
-	NSNumber *display24Hour = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDisplay24HourPreference];
-	if (display24Hour.boolValue) {
-		cell.textLabel.text = [NSString stringWithFormat:@"%02ld:%02ld", (long)time / 10000, (long)(time / 100) % 100 ];
-	}
-	else {
-		long hour = time / 10000;
-		hour = hour == 12 ? 12 : hour % 12;
-		cell.textLabel.text = [NSString stringWithFormat:@"%02ld:%02ld %@", (long)hour, (long)(time / 100) % 100, ((time / 10000) / 12) ? @"pm" : @"am"];
-	}
-    
+    cell.textLabel.text = stopTime.formattedDepartureTime;
+
     return cell;
 }
 

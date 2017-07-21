@@ -15,6 +15,8 @@
 #import "GRTGtfsSystem.h"
 #import "GRTUserProfile.h"
 
+#import "FontAwesomeKit.h"
+
 typedef enum GRTStopDetailsViewType {
 	GRTStopDetailsViewTypeMixed = 0,
 	GRTStopDetailsViewTypeRoutes,
@@ -26,6 +28,9 @@ typedef enum GRTStopDetailsViewType {
 @property (nonatomic, strong) GRTFavoriteStop *favoriteStop;
 @property (nonatomic) GRTStopDetailsViewType viewType;
 
+@property (nonatomic, weak) UISegmentedControl *viewsSegmentedControl;
+@property (nonatomic, weak) UIBarButtonItem *favButton;
+
 @end
 
 @implementation GRTStopDetailsViewController
@@ -34,10 +39,10 @@ typedef enum GRTStopDetailsViewType {
 {
 	_favoriteStop = favoriteStop;
 	if (_favoriteStop != nil) {
-		self.favButton.title = @"★";
+		self.favButton.title = [FAKFontAwesome starIconWithSize:20].attributedString.string;
 	}
 	else {
-		self.favButton.title = @"☆";
+		self.favButton.title = [FAKFontAwesome starOIconWithSize:20].attributedString.string;
 	}
 }
 
@@ -67,12 +72,12 @@ typedef enum GRTStopDetailsViewType {
 	// Prepare data for views construction
 	NSAssert(self.stopDetailsManager != nil, @"Must have a stopTimes");
 
-	// Setup view controllers
-	self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopDetailsManager.stopDetails.stop];
-	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-	self.stopRoutesViewController.routes = [self.stopDetailsManager.stopDetails routes];
+    // Config navigation bar
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"FAV" style:UIBarButtonItemStylePlain target:self action:@selector(toggleStopFavorite:)];
+    self.favButton = self.navigationItem.rightBarButtonItem;
+    [self.favButton setTitleTextAttributes:@{NSFontAttributeName: [FAKFontAwesome iconFontWithSize:20]} forState:UIControlStateNormal];
 
-	// Construct Segmented Control
+    // Construct Segmented Control
 	if (self.viewsSegmentedControl == nil) {
 		UISegmentedControl *viewsSegmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Mixed Schedule", @"Routes List"]];
 		[viewsSegmentedControl addTarget:self action:@selector(toggleViews:) forControlEvents:UIControlEventValueChanged];
@@ -84,13 +89,13 @@ typedef enum GRTStopDetailsViewType {
 		
 		self.viewsSegmentedControl = viewsSegmentedControl;
 	}
-	
-	NSNumber *index = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDefaultScheduleViewPreference];
-	self.viewType = (GRTStopDetailsViewType) index.integerValue;
 
-	// Config navigation bar
-	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
-	
+    // Setup view controllers
+    self.favoriteStop = [[GRTUserProfile defaultUserProfile] favoriteStopByStop:self.stopDetailsManager.stopDetails.stop];
+    self.stopRoutesViewController.routes = [self.stopDetailsManager.stopDetails routes];
+    NSNumber *index = [[GRTUserProfile defaultUserProfile] preferenceForKey:GRTUserDefaultScheduleViewPreference];
+    self.viewType = (GRTStopDetailsViewType) index.integerValue;
+
 	// Let stop details manager setup the data
 	self.stopDetailsManager.delegate = self;
 }

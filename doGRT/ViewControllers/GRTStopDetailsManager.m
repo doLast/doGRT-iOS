@@ -44,16 +44,16 @@
 
 #pragma mark - general helpers
 
-- (BOOL)isSameDayWithDate1:(NSDate*)date1 date2:(NSDate*)date2 {
-	NSCalendar *calendar = [NSCalendar currentCalendar];
-	
-    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
-	NSDateComponents *comp1 = [calendar components:unitFlags fromDate:date1];
-	NSDateComponents *comp2 = [calendar components:unitFlags fromDate:date2];
-	
-	return [comp1 day] == [comp2 day] &&
-	[comp1 month] == [comp2 month] &&
-	[comp1 year] == [comp2 year];
+- (NSString *)constructTitleDetailTextForDate:(NSDate *)date {
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+
+    if (![calendar isDate:date inSameDayAsDate:[NSDate date]]) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:@"MMMddEEEE" options:0 locale:nil];
+        NSString *formattedDate = [dateFormatter stringFromDate:self.date];
+        return [NSString stringWithFormat:@"%@ ▾", formattedDate];
+    }
+    return @"Today ▾";
 }
 
 #pragma mark - constructors
@@ -89,15 +89,9 @@
 	if (self.route != nil) {
 		title = [title stringByAppendingFormat:@" - %ld", (long)self.route.routeId.integerValue];
 	}
-	GRTDetailedTitleButtonView *titleView = [[GRTDetailedTitleButtonView alloc] initWithText:title detailText:@"Today ▾"];
-	if (![self isSameDayWithDate1:self.date date2:[NSDate date]]) {
-		// TODO: It's not today, display the Date
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-        dateFormatter.timeStyle = NSDateFormatterNoStyle;
-        titleView.detailTextLabel.text = [NSString stringWithFormat:@"%@ ▾", [dateFormatter stringFromDate:self.date]];
-	}
-	
+    NSString *detailText = [self constructTitleDetailTextForDate:self.date];
+	GRTDetailedTitleButtonView *titleView = [[GRTDetailedTitleButtonView alloc] initWithText:title detailText:detailText];
+
 	[titleView addTarget:self action:@selector(toggleMenu:) forControlEvents:UIControlEventTouchUpInside];
 	return titleView;
 }
@@ -144,7 +138,9 @@
 {
 	NSArray *stopTimes = nil;
     stopTimes = [self.stopDetails stopTimesForDate:self.date andRoute:self.route];
-    BOOL isToday = [self isSameDayWithDate1:self.date date2:[NSDate date]];
+
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    BOOL isToday = [calendar isDate:self.date inSameDayAsDate:[NSDate date]];
     [self.delegate setStopTimes:stopTimes splitLeftAndComingBuses:isToday];
 }
 
@@ -200,7 +196,7 @@
 										   highlightedImage:nil
 													 action:^(REMenuItem *item) {
 														 self.date = [calendar dateByAddingUnit:NSCalendarUnitWeekday value:i toDate:sunday options:NSCalendarWrapComponents];
-														 self.stopDetailsTitleView.detailTextLabel.text = [NSString stringWithFormat:@"%@ ▾", dayName];
+														 self.stopDetailsTitleView.detailTextLabel.text = [self constructTitleDetailTextForDate:self.date];
 														 [self updateStopTimes];
 													 }];
 		[items addObject:day];
